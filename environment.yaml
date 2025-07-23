@@ -1,4 +1,4 @@
-name: llm
+name: board_game_arena
 
 channels:
   - conda-forge

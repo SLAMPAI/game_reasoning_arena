@@ -1,0 +1,3 @@
+slurm_jobs/debug_setup_env.sh
+slurm_jobs/persistent_job.sh
+slurm_jobs/request_node_julich.sh

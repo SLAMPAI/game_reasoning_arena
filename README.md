@@ -1,82 +1,95 @@
-# Project: OpenSpiel LLM Arena
+# OpenSpiel LLM Arena
+
+A framework for evaluating Large Language Models (LLMs) through strategic game-playing using Google's OpenSpiel. Test LLM decision-making capabilities in games like Tic-Tac-Toe, Connect Four, Poker, and more.
+
+## Installation
+
+### Quick Setup
+```bash
+# 1. Clone the repository
+git clone https://github.com/SLAMPAI/board_game_arena.git
+cd board_game_arena
+
+# 2. Install dependencies
+pip install -r environment.yaml
+
+# 3. Install the package in development mode
+pip install -e .
+```
+
+### Prerequisites
+- **Python 3.7+**
+- **OpenSpiel Framework** (see [detailed setup](#openspiel-setup) below)
+- **API Keys** for LLM providers (optional, for LLM vs LLM games)
 
 ## Quick Start
 
-Want to jump right in? Here are the fastest ways to get started:
-
+### 1. Test the Installation
 ```bash
-# 1. Install dependencies
-pip install -r environment.yaml
-
 # Run a quick random vs random test
 python3 scripts/runner.py --config test_config.json
+```
 
-# Try an LLM vs random game (requires API key)
-python3 scripts/runner.py --config test_config.json --override \
-  agents.player_0.type=llm \
-  agents.player_0.model=groq/llama3-8b-8192
-
-# Override to llm_vs_llm with different models
-python3 scripts/runner.py --config test_config.json --override \
-  mode=llm_vs_llm \
-  agents.player_0.type=llm \
-  agents.player_0.model=groq/gemma-7b-it \
-  agents.player_1.type=llm \
-  agents.player_1.model=groq/llama3-70b-8192
-
-
-# 4. Play different games
+### 2. Basic Game Examples
+```bash
+# Different games
 python3 scripts/runner.py --config test_config.json --override env_config.game_name=connect_four
 python3 scripts/runner.py --config test_config.json --override env_config.game_name=kuhn_poker
 
+# LLM vs Random (requires API key)
+python3 scripts/runner.py --config test_config.json --override \
+  agents.player_0.type=llm \
+  agents.player_0.model=litellm_groq/llama3-8b-8192
 
-# Fast model vs High-quality model
-  python3 scripts/runner.py --config test_config.json --override \
+# LLM vs LLM
+python3 scripts/runner.py --config test_config.json --override \
   mode=llm_vs_llm \
   agents.player_0.type=llm \
   agents.player_0.model=litellm_groq/gemma-7b-it \
   agents.player_1.type=llm \
   agents.player_1.model=litellm_groq/llama3-70b-8192
+```
 
-# Groq vs Together AI models
-  python3 scripts/runner.py --config test_config.json --override \
+### 3. Advanced Examples
+```bash
+# Cross-provider comparison (Groq vs Together AI)
+python3 scripts/runner.py --config test_config.json --override \
   mode=llm_vs_llm \
   agents.player_0.model=litellm_groq/llama3-8b-8192 \
-  agents.player_1.type=llm \
   agents.player_1.model=litellm_together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
 
-# Different backends: LiteLLM vs vLLM
-  python3 scripts/runner.py --config test_config.json --override \
+# Mixed backends (API vs Local)
+python3 scripts/runner.py --config test_config.json --override \
   mode=llm_vs_llm \
   agents.player_0.model=litellm_groq/llama3-8b-8192 \
-  agents.player_1.type=llm \
   agents.player_1.model=vllm_Qwen2-7B-Instruct
 
-# Different Groq models
-  python3 scripts/runner.py --config test_config.json --override \
-  mode=llm_vs_llm \
-  agents.player_0.model=litellm_groq/gemma-7b-it \
-  agents.player_1.type=llm \
-  agents.player_1.model=litellm_groq/mixtral-8x7b-32768
-
-# Test with Connect Four (longer game)
-  python3 scripts/runner.py --config test_config.json --override \
+# Multi-episode tournament
+python3 scripts/runner.py --config test_config.json --override \
   env_config.game_name=connect_four \
   mode=llm_vs_llm \
   agents.player_0.model=litellm_groq/llama3-8b-8192 \
-  agents.player_1.type=llm \
   agents.player_1.model=litellm_groq/llama3-70b-8192 \
-  num_episodes=3
+  num_episodes=10
+```
 
+## Configuration
 
-**Model Naming Convention**
+### API Keys Setup
+Create a `.env` file in the project root:
+```bash
+GROQ_API_KEY=your_groq_key_here
+TOGETHER_API_KEY=your_together_key_here
+FIREWORKS_API_KEY=your_fireworks_key_here
+OPENAI_API_KEY=your_openai_key_here
+```
 
-Models are now identified with backend prefixes for clarity:
-- **LiteLLM models**: `litellm_<model_name>` (e.g., `litellm_groq/llama3-8b-8192`)
-- **vLLM models**: `vllm_<model_name>` (e.g., `vllm_Qwen2-7B-Instruct`)
+### Model Naming Convention
+Models use backend prefixes for clarity:
+- **LiteLLM models**: `litellm_<provider>/<model>` (e.g., `litellm_groq/llama3-8b-8192`)
+- **vLLM models**: `vllm_<model>` (e.g., `vllm_Qwen2-7B-Instruct`)
 
-This allows **mixing multiple inference providers in the same simulation**. For example, you can have one LLM using Groq's API and another using local vLLM inference:
-
+This enables **mixing multiple inference providers** in the same simulation:
 ```json
 {
   "agents": {
@@ -92,396 +105,368 @@ This allows **mixing multiple inference providers in the same simulation**. For 
 }
 ```
 
-**Backend Configuration**
-
-The system automatically loads models from both configuration files:
-- Models from `src/configs/litellm_models.json` (API-based inference)
-- Models from `src/configs/vllm_models.json` (local GPU inference)
-
-```
-
-**API keys** Create a `.env` file with your keys, for example:
-
-GROQ_API_KEY=your_groq_key_here
-TOGETHER_API_KEY=your_together_key_here
-
-
-**Important:** If a model is not listed in `litellm_models.json`, it will not be available for use in the simulation. Always keep this file up to date with the models you want to support. If you encounter errors about missing models, check this file first.
-
-## 0. Project Goal
-The goal of this project is to evaluate the decision-making capabilities of Large Language Models (LLMs) by engaging them in simple games implemented using Google's OpenSpiel framework. The LLMs can play against:
-1. A random bot.
-2. Another LLM.
-3. Themselves (self-play).
-
-This project explores how LLMs interpret game states, make strategic decisions, and adapt their behavior through natural language prompts.
+### Available Games
+- `tic_tac_toe` - Classic 3x3 grid game
+- `connect_four` - Drop pieces to connect four
+- `kuhn_poker` - Simple poker with hidden information
+- `prisoners_dilemma` - Cooperation vs defection
+- `matrix_pd` - Matrix form prisoner's dilemma
+- `matching_pennies` - Zero-sum matching game
+- `matrix_rps` - Rock-paper-scissors matrix game
 
 ---
 
-## 1. How to Run
+## Project Overview
+The goal of this project is to evaluate the decision-making capabilities of Large Language Models (LLMs) through strategic game-playing using Google's OpenSpiel framework.
 
-### Prerequisites
-1. **Python Environment**:
-   - Python 3.7 or higher.
-   - Install the required dependencies:
-     ```bash
-     pip install -r environment.yaml
-     ```
-
-2. **Install OpenSpiel Framework**:
-   - Clone and set up OpenSpiel from its official repository:
-     ```bash
-     git clone https://github.com/deepmind/open_spiel.git
-     cd open_spiel
-     ./install.sh
-     ```
-
-3. **Project Setup**:
-   - Clone this repository:
-     ```bash
-     git clone <repository-url>
-     cd <repository-folder>
-     # Installs using pyproject.toml
-     conda run -n llm pip install -e .
-     ```
+### Key Features
+- **Multi-Agent Testing**: LLMs vs Random, LLM vs LLM, Self-play
+- **Multiple Game Types**: Strategy, poker, cooperation, zero-sum games
+- **Flexible Backends**: Support for API-based (LiteLLM) and local (vLLM) inference
+- **Cross-Provider**: Mix different LLM providers in the same game
+- **Extensible**: Easy to add new games and agents
 
 ---
 
-### Running the Simulator
+## Detailed Setup
 
-1. **Basic Usage Examples**:
-
-   ```bash
-   # Quick test with random vs random agents (default: tic_tac_toe)
-   python3 scripts/runner.py --config test_config.json
-
-   # Run 10 episodes of Connect Four
-   python3 scripts/runner.py --config test_config.json --override env_config.game_name=connect_four num_episodes=10
-
-   # Test different games
-   python3 scripts/runner.py --config test_config.json --override env_config.game_name=kuhn_poker
-   python3 scripts/runner.py --config test_config.json --override env_config.game_name=prisoners_dilemma
-
-   # LLM vs Random using Groq
-   python3 scripts/runner.py --config test_config.json --override \
-     agents.player_0.type=llm \
-     agents.player_0.model=groq/llama3-8b-8192 \
-     mode=llm_vs_random
-
-   # LLM vs LLM (self-play)
-   python3 scripts/runner.py --config test_config.json --override \
-     agents.player_0.type=llm \
-     agents.player_0.model=groq/llama3-8b-8192 \
-     agents.player_1.type=llm \
-     agents.player_1.model=groq/llama3-8b-8192 \
-     mode=llm_vs_llm
-
-   # Different LLM providers
-   python3 scripts/runner.py --config test_config.json --override \
-     agents.player_0.type=llm \
-     agents.player_0.model=together/meta-llama/Llama-2-7b-chat-hf \
-     agents.player_1.type=random
-
-   # Test system components
-   python3 -c "from arena.games.registry import registry; print('✓ Available games:', list(registry._registry.keys()))"
-   ```
-
-2. **Configuration Examples**:
-
-   Create custom JSON configuration files for different scenarios:
-
-   ```json
-   // Simple random vs random
-   {
-     "env_config": {"game_name": "tic_tac_toe"},
-     "num_episodes": 5,
-     "seed": 42,
-     "agents": {
-       "player_0": {"type": "random"},
-       "player_1": {"type": "random"}
-     }
-   }
-
-   // LLM vs Random
-   {
-     "env_config": {"game_name": "connect_four"},
-     "num_episodes": 3,
-     "seed": 123,
-     "agents": {
-       "player_0": {
-         "type": "llm",
-         "model": "litellm_groq/llama3-8b-8192"
-       },
-       "player_1": {"type": "random"}
-     },
-     "llm_backend": {
-       "max_tokens": 250,
-       "temperature": 0.1
-     }
-   }
-
-   // LLM vs LLM (different models)
-   {
-     "env_config": {"game_name": "kuhn_poker"},
-     "num_episodes": 10,
-     "agents": {
-       "player_0": {
-         "type": "llm",
-         "model": "groq/llama3-8b-8192"
-       },
-       "player_1": {
-         "type": "llm",
-         "model": "together/meta-llama/Llama-2-7b-chat-hf"
-       }
-     }
-   }
-   ```
-
-3. **Command-line Options**:
-   - `--config`: Specify a JSON configuration file path.
-                 Example: `python3 scripts/runner.py --config test_config.json`
-   - `--override`: Allows modification of specific configuration values.
-                   Examples:
-                   ```bash
-                   # Change game and episodes
-                   python3 scripts/runner.py --config test_config.json --override env_config.game_name=connect_four num_episodes=5
-
-                   # Change agents
-                   python3 scripts/runner.py --config test_config.json --override agents.player_0.type=llm agents.player_0.model=groq/llama3-8b-8192
-
-                   # Multiple overrides
-                   python3 scripts/runner.py --config test_config.json --override \
-                     env_config.game_name=kuhn_poker \
-                     agents.player_0.type=llm \
-                     agents.player_1.type=llm \
-                     num_episodes=10
-                   ```
-
-4. Available games:
-   - `tic_tac_toe`: Classic Tic-Tac-Toe
-   - `connect_four`: Connect Four
-   - `kuhn_poker`: Kuhn Poker
-   - `prisoners_dilemma`: Iterated Prisoner's Dilemma
-   - `matrix_pd`: Matrix Prisoner's Dilemma
-   - `matching_pennies`: Matching Pennies (3P)
-   - `matrix_rps`: Matrix Rock-Paper-Scissors
-
-5. **Game-Specific Examples**:
-
-   ```bash
-   # Tic-Tac-Toe: Quick strategy game
-   python3 scripts/runner.py --config test_config.json --override \
-     env_config.game_name=tic_tac_toe \
-     agents.player_0.type=llm \
-     agents.player_0.model=groq/llama3-8b-8192 \
-     num_episodes=5
-
-   # Connect Four: Longer strategic game
-   python3 scripts/runner.py --config test_config.json --override \
-     env_config.game_name=connect_four \
-     agents.player_0.type=llm \
-     agents.player_0.model=together/meta-llama/Llama-2-7b-chat-hf \
-     num_episodes=3
-
-   # Kuhn Poker: Game with hidden information
-   python3 scripts/runner.py --config test_config.json --override \
-     env_config.game_name=kuhn_poker \
-     agents.player_0.type=llm \
-     agents.player_1.type=llm \
-     num_episodes=10
-
-   # Prisoner's Dilemma: Multi-round cooperation game
-   python3 scripts/runner.py --config test_config.json --override \
-     env_config.game_name=prisoners_dilemma \
-     agents.player_0.type=llm \
-     agents.player_1.type=random \
-     num_episodes=1
-   ```
----
-
-## 2. Directory Structure
-
-### Core Packages
-- **`src/backends/`**: LLM backend management (LiteLLM, vLLM)
-  - `llm_registry.py`: Central registry for model management
-  - `litellm_backend.py`: LiteLLM integration
-  - `vllm_backend.py`: vLLM integration (legacy)
-  - `config.py`: Backend configuration management
-- **`src/arena/games/`**: Game registration and discovery system
-  - `registry.py`: Auto-discovery game registration
-  - `loaders.py`: Game loader implementations with decorators
-- **`src/arena/envs/`**: Environment simulator logic for each game
-- **`src/arena/agents/`**: Agent implementations (Random, LLM, Human)
-- **`src/arena/utils/`**: Shared utility functions (logging, plotting, etc.)
-- **`src/configs/`**: Configuration files and parsing
-
-### Configuration
-- **`test_config.json`**: Simple test configuration for quick testing
-- **`src/configs/example_config.json`**: Full example configuration
-- **`src/configs/litellm.json`**: LiteLLM model configurations
-- **`.env`**: Environment variables for API keys
-
-### Results and Analysis
-- **`results/`**: Stores CSV and JSON files with simulation results
-- **`analysis/`**: Post-game processing and analysis scripts
-- **`plots/`**: Generated visualizations and charts
-
-### Scripts
-- **`scripts/runner.py`**: Main entry point for running simulations
-- **`scripts/simulate.py`**: Core simulation logic
-
-### Tests
-- **`tests/`**: Unit tests for utilities and simulators
-
----
-
-## 3. Adding a New Game
-To add a new game to the OpenSpiel LLM Arena, follow these steps:
-
-### Step 1: Implement the Game Environment
-1. Create a new environment file in **`src/arena/envs/`** folder.
-   - The environment should inherit from `OpenSpielEnv`.
-   - Example: `my_new_game_env.py`
-
-### Step 2: Register the Game Loader
-2. Add a new game loader in **`src/arena/games/loaders.py`** using the decorator pattern:
-   ```python
-   @registry.register(
-       name="my_new_game",
-       module_path="arena.games.loaders",
-       class_name="MyNewGameLoader",
-       environment_path="arena.envs.my_new_game_env.MyNewGameEnv",
-       display_name="My New Game"
-   )
-   class MyNewGameLoader(GameLoader):
-       @staticmethod
-       def load():
-           return pyspiel.load_game("my_new_game")
-   ```
-
-### Step 3: Test the Game
-3. The game will be automatically discovered by the registry system. Test it:
-   ```bash
-   # Verify the game is registered
-   python3 -c "from arena.games.registry import registry; print('Available games:', list(registry._registry.keys()))"
-
-   # Test with your new game
-   python3 scripts/runner.py --config test_config.json --override env_config.game_name=my_new_game
-   ```
-
-**That's it!** The new auto-discovery system will automatically detect and register your game without needing to modify any central registry files.
----
-
-## 4. Adding a New Agent
-
-### Step 1: Implement the Agent Class
-1. Create a new file in **`src/arena/agents/`**, e.g., `rl_agent.py`
-2. Ensure it inherits from `BaseAgent`
-3. Implement the required methods:
-   ```python
-   from .base_agent import BaseAgent
-
-   class RLAgent(BaseAgent):
-       def __init__(self, model=None):
-           super().__init__(model)
-
-       def compute_action(self, observation, legal_actions):
-           # Your RL logic here
-           return selected_action
-   ```
-
-### Step 2: Register the Agent
-1. Modify **`src/arena/agents/agent_registry.py`**:
-   ```python
-   from .rl_agent import RLAgent
-
-   def register_agent(agent_type: str, agent_class):
-       # Registration logic
-
-   # Register your agent
-   register_agent("rl", RLAgent)
-   ```
-
-### Step 3: Use the Agent in Configuration
-1. Update your config file to use the new agent:
-   ```json
-   {
-     "agents": {
-       "player_0": {
-         "type": "rl",
-         "model": "my_trained_rl_model"
-       },
-       "player_1": {
-         "type": "random"
-       }
-     }
-   }
-   ```
-
-### Step 4: Test the Agent
+### OpenSpiel Setup
+Install OpenSpiel framework:
 ```bash
-python3 scripts/runner.py --config test_config.json --override agents.player_0.type=rl agents.player_0.model=my_model
+git clone https://github.com/deepmind/open_spiel.git
+cd open_spiel
+./install.sh
+cd ..
+```
+
+### Project Installation
+```bash
+# Clone this repository
+git clone https://github.com/SLAMPAI/board_game_arena.git
+cd board_game_arena
+
+# Install in development mode (recommended)
+pip install -e .
+
+# Alternative: Install dependencies only
+pip install -r environment.yaml
+```
+
+### Model Configuration
+The system loads models from configuration files:
+- `src/configs/litellm_models.json` - API-based models
+- `src/configs/vllm_models.json` - Local GPU models
+
+**Important**: Models must be listed in these files to be available for use.
+
+---
+
+## Usage Guide
+
+### Command-Line Interface
+
+**Basic Syntax:**
+```bash
+python3 scripts/runner.py --config <config_file> [--override key=value ...]
+```
+
+**Common Commands:**
+```bash
+# Test installation
+python3 scripts/runner.py --config test_config.json
+
+# Change game and episodes
+python3 scripts/runner.py --config test_config.json --override \
+  env_config.game_name=connect_four \
+  num_episodes=5
+
+# Set up LLM agent
+python3 scripts/runner.py --config test_config.json --override \
+  agents.player_0.type=llm \
+  agents.player_0.model=litellm_groq/llama3-8b-8192
+
+# LLM vs LLM with different models
+python3 scripts/runner.py --config test_config.json --override \
+  mode=llm_vs_llm \
+  agents.player_0.type=llm \
+  agents.player_0.model=litellm_groq/llama3-8b-8192 \
+  agents.player_1.type=llm \
+  agents.player_1.model=litellm_groq/llama3-70b-8192
+
+# Verify available games
+python3 -c "from arena.games.registry import registry; print('Available games:', list(registry._registry.keys()))"
+```
+
+### Configuration Files
+
+Create custom JSON configuration files for different scenarios:
+
+**Simple Random vs Random:**
+```json
+{
+  "env_config": {"game_name": "tic_tac_toe"},
+  "num_episodes": 5,
+  "seed": 42,
+  "agents": {
+    "player_0": {"type": "random"},
+    "player_1": {"type": "random"}
+  }
+}
+```
+
+**LLM vs Random:**
+```json
+{
+  "env_config": {"game_name": "connect_four"},
+  "num_episodes": 3,
+  "seed": 123,
+  "agents": {
+    "player_0": {
+      "type": "llm",
+      "model": "litellm_groq/llama3-8b-8192"
+    },
+    "player_1": {"type": "random"}
+  },
+  "llm_backend": {
+    "max_tokens": 250,
+    "temperature": 0.1
+  }
+}
+```
+
+**LLM vs LLM (Cross-Provider):**
+```json
+{
+  "env_config": {"game_name": "kuhn_poker"},
+  "num_episodes": 10,
+  "agents": {
+    "player_0": {
+      "type": "llm",
+      "model": "litellm_groq/llama3-8b-8192"
+    },
+    "player_1": {
+      "type": "llm",
+      "model": "litellm_together_ai/meta-llama/Llama-2-7b-chat-hf"
+    }
+  }
+}
+```
+
+### Game-Specific Examples
+```bash
+# Tic-Tac-Toe: Quick strategy game
+python3 scripts/runner.py --config test_config.json --override \
+  env_config.game_name=tic_tac_toe \
+  agents.player_0.type=llm \
+  agents.player_0.model=litellm_groq/llama3-8b-8192 \
+  num_episodes=5
+
+# Connect Four: Longer strategic game
+python3 scripts/runner.py --config test_config.json --override \
+  env_config.game_name=connect_four \
+  agents.player_0.type=llm \
+  agents.player_0.model=litellm_together_ai/meta-llama/Llama-2-7b-chat-hf \
+  num_episodes=3
+
+# Kuhn Poker: Game with hidden information
+python3 scripts/runner.py --config test_config.json --override \
+  env_config.game_name=kuhn_poker \
+  agents.player_0.type=llm \
+  agents.player_1.type=llm \
+  num_episodes=10
+
+# Prisoner's Dilemma: Multi-round cooperation
+python3 scripts/runner.py --config test_config.json --override \
+  env_config.game_name=prisoners_dilemma \
+  agents.player_0.type=llm \
+  agents.player_1.type=random \
+  num_episodes=1
 ```
 
 ---
 
-## 5. LLM Backend Configuration
+## Project Structure
 
-### Supported Backends
-- **LiteLLM**: Unified interface for multiple LLM providers (OpenAI, Anthropic, Groq, etc.)
-- **vLLM**: Local model hosting (legacy support)
-- **Hybrid**: Both backends available
+```
+board_game_arena/
+├── src/
+│   ├── backends/          # LLM backend management
+│   │   ├── llm_registry.py
+│   │   ├── litellm_backend.py
+│   │   ├── vllm_backend.py
+│   │   └── config.py
+│   ├── arena/
+│   │   ├── games/         # Game registration system
+│   │   │   ├── registry.py
+│   │   │   └── loaders.py
+│   │   ├── envs/          # Game environments
+│   │   ├── agents/        # Agent implementations
+│   │   └── utils/         # Utilities & helpers
+│   └── configs/           # Configuration files
+│       ├── litellm_models.json
+│       ├── vllm_models.json
+│       └── example_config.json
+├── scripts/
+│   ├── runner.py          # Main entry point
+│   └── simulate.py        # Core simulation logic
+├── tests/                 # Unit tests
+├── results/               # Output data (CSV, JSON)
+├── analysis/              # Post-processing scripts
+├── plots/                 # Generated visualizations
+├── test_config.json       # Quick test config
+├── environment.yaml       # Dependencies
+├── pyproject.toml         # Package configuration
+└── .env                   # API keys (create manually)
 
-### Environment Setup
-1. Create a `.env` file in the project root:
-   ```bash
-   # API Keys for LiteLLM providers
-   GROQ_API_KEY=your_groq_key_here
-   TOGETHER_API_KEY=your_together_key_here
-   FIREWORKS_API_KEY=your_fireworks_key_here
-   OPENAI_API_KEY=your_openai_key_here
-   ```
+```
 
-2. Configure models in `src/configs/litellm_models.json` and `src/configs/vllm_models.json`:
+---
 
-   **LiteLLM models (`src/configs/litellm_models.json`):**
-   ```json
-   [
-     "litellm_groq/llama3-8b-8192",
-     "litellm_groq/mixtral-8x7b-32768",
-     "litellm_together_ai/meta-llama/Llama-2-7b-chat-hf"
-   ]
-   ```
+## Development Guide
 
-   **vLLM models (`src/configs/vllm_models.json`):**
-   ```json
-   {
-     "models": [
-       {
-         "name": "vllm_Qwen2-7B-Instruct",
-         "model_path": "/path/to/models/Qwen/Qwen2-7B-Instruct",
-         "tokenizer_path": "/path/to/models/Qwen/Qwen2-7B-Instruct",
-         "description": "Qwen2 7B Instruct model for local inference"
-       }
-     ]
-   }
-   ```
+### Adding a New Game
+
+The system uses auto-discovery for game registration, making it easy to add new games:
+
+**Step 1: Create Game Environment**
+```python
+# src/arena/envs/my_new_game_env.py
+from .base_env import OpenSpielEnv
+
+class MyNewGameEnv(OpenSpielEnv):
+    def __init__(self, game_config):
+        super().__init__(game_config)
+        # Your game-specific initialization
+```
+
+**Step 2: Register Game Loader**
+```python
+# Add to src/arena/games/loaders.py
+@registry.register(
+    name="my_new_game",
+    module_path="arena.games.loaders",
+    class_name="MyNewGameLoader",
+    environment_path="arena.envs.my_new_game_env.MyNewGameEnv",
+    display_name="My New Game"
+)
+class MyNewGameLoader(GameLoader):
+    @staticmethod
+    def load():
+        return pyspiel.load_game("my_new_game")
+```
+
+**Step 3: Test**
+```bash
+# Verify registration
+python3 -c "from arena.games.registry import registry; print(list(registry._registry.keys()))"
+
+# Test the game
+python3 scripts/runner.py --config test_config.json --override env_config.game_name=my_new_game
+```
+
+### Adding a New Agent
+
+**Step 1: Implement Agent Class**
+```python
+# src/arena/agents/my_agent.py
+from .base_agent import BaseAgent
+
+class MyAgent(BaseAgent):
+    def __init__(self, model=None, **kwargs):
+        super().__init__(model)
+        # Your initialization logic
+
+    def compute_action(self, observation, legal_actions):
+        # Your decision logic here
+        return selected_action
+```
+
+**Step 2: Register Agent**
+```python
+# Update src/arena/agents/agent_registry.py
+from .my_agent import MyAgent
+
+# Add to registration
+register_agent("my_agent", MyAgent)
+```
+
+**Step 3: Use in Configuration**
+```json
+{
+  "agents": {
+    "player_0": {
+      "type": "my_agent",
+      "model": "optional_model_parameter"
+    }
+  }
+}
+```
+
+**Step 4: Test**
+```bash
+python3 scripts/runner.py --config test_config.json --override \
+  agents.player_0.type=my_agent \
+  agents.player_0.model=my_model
+```
+
+---
+
+## Backend Configuration
+
+### Supported LLM Backends
+
+**LiteLLM (Recommended)**
+- Unified interface for 100+ LLM providers
+- Supports OpenAI, Anthropic, Groq, Together AI, Fireworks, etc.
+- API-based inference with automatic retries and error handling
+
+**vLLM (Legacy)**
+- Local model hosting on GPU
+- High-throughput inference for self-hosted models
+- Requires local model files and GPU resources
+
+### Model Configuration Files
+
+**LiteLLM Models** (`src/configs/litellm_models.json`):
+```json
+[
+  "litellm_groq/llama3-8b-8192",
+  "litellm_groq/mixtral-8x7b-32768",
+  "litellm_together_ai/meta-llama/Llama-2-7b-chat-hf",
+  "litellm_openai/gpt-4o-mini"
+]
+```
+
+**vLLM Models** (`src/configs/vllm_models.json`):
+```json
+{
+  "models": [
+    {
+      "name": "vllm_Qwen2-7B-Instruct",
+      "model_path": "/path/to/models/Qwen/Qwen2-7B-Instruct",
+      "tokenizer_path": "/path/to/models/Qwen/Qwen2-7B-Instruct",
+      "description": "Qwen2 7B Instruct model for local inference"
+    }
+  ]
+}
+```
 
 ### Backend Selection
-Backends are now automatically selected based on model name prefixes:
-- Models starting with `litellm_` use the LiteLLM backend
-- Models starting with `vllm_` use the vLLM backend
+The system automatically selects backends based on model name prefixes:
+- `litellm_*` → LiteLLM backend
+- `vllm_*` → vLLM backend
 
-Example configuration:
+### Configuration Options
 ```json
 {
   "llm_backend": {
     "max_tokens": 250,
     "temperature": 0.1,
-    "default_model": "litellm_groq/llama3-8b-8192"
+    "default_model": "litellm_groq/llama3-8b-8192",
+    "timeout": 30,
+    "max_retries": 3
   }
 }
-```
 
 ---
 
@@ -500,18 +485,106 @@ Example configuration:
 
 ### Game: Tic-Tac-Toe
 ```
+
+---
+
+## Contributing
+
+We welcome contributions! Here's how to get started:
+
+### Development Workflow
+1. **Fork** this repository
+2. **Create** a feature branch: `git checkout -b feature/my-new-feature`
+3. **Follow** the existing code structure and style
+4. **Add** unit tests for new functionality
+5. **Test** your changes thoroughly
+6. **Submit** a pull request with a clear description
+
+### Code Guidelines
+- Follow PEP 8 for Python code style
+- Add docstrings to new functions and classes
+- Include type hints where appropriate
+- Write unit tests for new features
+- Update documentation as needed
+
+### Areas for Contribution
+- **New Games**: Add support for additional OpenSpiel games
+- **New Agents**: Implement RL agents, tree search agents, etc.
+- **Analysis Tools**: Visualization and statistical analysis
+- **Backend Support**: Additional LLM providers or local models
+- **Performance**: Optimization and caching improvements
+
+---
+
+## Example Output
+
+### Tic-Tac-Toe Game
+```
 Current state of Tic-Tac-Toe:
 x.o
 ...
 ...
-LLM chooses action: 4
+LLM (llama3-8b) chooses action: 4
 ...
 Final state of Tic-Tac-Toe:
 x.o
 ..x
 .o.
-Scores: {'LLM_1': 1.0, 'Random_Bot': -1.0}
+Winner: Player 0 (LLM)
+Scores: {'LLM_llama3-8b': 1.0, 'Random_Bot': -1.0}
 ```
+
+### Connect Four Game
+```
+Current state of Connect Four:
+......
+......
+......
+...o..
+..xo..
+.xxo..
+
+LLM (groq/llama3-70b) chooses action: 3
+...
+Final state of Connect Four:
+......
+......
+..x...
+..xo..
+..xo..
+.xxo..
+Winner: Player 0 (LLM)
+Game completed in 12 moves
+```
+
+### Tournament Results
+```
+Tournament Results (10 episodes):
+├── connect_four_groq_llama3-8b_vs_groq_llama3-70b
+│   ├── Player 0 wins: 3/10 (30%)
+│   ├── Player 1 wins: 6/10 (60%)
+│   └── Draws: 1/10 (10%)
+└── Results saved to: results/tournament_2025-07-23_14-30-15.json
+```
+
+---
+
+## License
+
+This project is open source. Please check the LICENSE file for details.
+
+---
+
+## Resources
+
+- **OpenSpiel Documentation**: [https://github.com/deepmind/open_spiel](https://github.com/deepmind/open_spiel)
+- **LiteLLM Documentation**: [https://litellm.ai](https://litellm.ai)
+- **Issues & Bug Reports**: Use GitHub Issues for bug reports and feature requests
+- **Discussions**: Use GitHub Discussions for questions and community interaction
+
+---
+
+*Built for AI research and strategic game analysis*
 
 ### Game: Rock-Paper-Scissors
 ```

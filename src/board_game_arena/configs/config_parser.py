@@ -6,7 +6,7 @@ import os
 import argparse
 import json
 from typing import Any, Dict
-from arena.games.registry import registry # Initilizes an empty registry dictionary
+from board_game_arena.arena.games.registry import registry # Initilizes an empty registry dictionary
 
 
 def default_simulation_config() -> Dict[str, Any]:

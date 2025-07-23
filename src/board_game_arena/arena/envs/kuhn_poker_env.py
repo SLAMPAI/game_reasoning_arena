@@ -10,7 +10,7 @@ For Kuhn Poker, the game mechanics involve:
 import json
 from typing import Any, Dict, Optional
 from .open_spiel_env import OpenSpielEnv
-from arena.agents.llm_utils import format_prompt
+from board_game_arena.arena.agents.llm_utils import format_prompt
 from transformers import AutoTokenizer
 
 

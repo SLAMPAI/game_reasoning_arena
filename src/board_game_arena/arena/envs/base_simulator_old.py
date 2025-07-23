@@ -5,7 +5,7 @@ import json
 from typing import Dict, Any, List
 from abc import ABC
 import random
-from arena.agents.llm_utils import generate_prompt, llm_decide_move
+from board_game_arena.arena.agents.llm_utils import generate_prompt, llm_decide_move
 from enum import Enum, unique
 
 
