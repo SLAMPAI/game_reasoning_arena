@@ -467,7 +467,7 @@ The system automatically selects backends based on model name prefixes:
     "max_retries": 3
   }
 }
-
+```
 ---
 
 ## 6. Contribution Guidelines
