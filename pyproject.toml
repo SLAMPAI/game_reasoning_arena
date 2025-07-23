@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "open_spiel_arena"
+version = "0.1"
+authors = [ {name = "Lucia Cipolina-Kun"} ]
+description = "OpenSpiel LLM Arena"
+readme = "README.md"
+requires-python = ">=3.7"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
