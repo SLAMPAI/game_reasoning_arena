@@ -416,36 +416,7 @@ Tournament Results (10 episodes):
 - **Issues & Bug Reports**: Use GitHub Issues for bug reports and feature requests
 - **Discussions**: Use GitHub Discussions for questions and community interaction
 
----
 
-*Built for AI research and strategic game analysis*
-
-### Game: Rock-Paper-Scissors
-```
-Final state of Rock-Paper-Scissors:
-Terminal? true
-History: 0, 1
-Returns: -1,1
-Scores: {'google/flan-t5-small': -1.0, 'gpt2': 1.0}
-Results saved to results/rock_paper_scissors_results.json
-```
-
-### Game: Connect Four
-```
-Current state of Connect Four:
-.....
-.....
-...o.
-..x..
-.....
-.....
-...
-Final state of Connect Four:
-x wins!
-Scores: {'google/flan-t5-small': 1.0, 'Random_Bot': -1.0}
-```
-
----
 ---
 
 ## Contributing
