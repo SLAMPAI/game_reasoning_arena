@@ -10,7 +10,7 @@ that receives an observation (board state) and returns an action (move).
 import logging
 from typing import Dict, Any
 from .agent_registry import AGENT_REGISTRY
-from board_game_arena.arena.games.registry import registry
+from ..games.registry import registry
 
 # Configure logger
 logger = logging.getLogger(__name__)

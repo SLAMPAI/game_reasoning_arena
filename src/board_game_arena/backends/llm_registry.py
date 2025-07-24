@@ -15,12 +15,18 @@ from typing import Dict, Any, List
 from .litellm_backend import LiteLLMBackend
 from .vllm_backend import VLLMBackend
 
-# Model configuration paths from environment
+# Get the directory of this file to construct relative paths
+_current_dir = os.path.dirname(os.path.abspath(__file__))
+_configs_dir = os.path.join(os.path.dirname(_current_dir), "configs")
+
+# Model configuration paths from environment with package-relative defaults
 LITELLM_MODELS_PATH = os.getenv(
-    "LITELLM_MODELS_PATH", "src/configs/litellm_models.json"
+    "LITELLM_MODELS_PATH",
+    os.path.join(_configs_dir, "litellm_models.json")
 )
 VLLM_MODELS_PATH = os.getenv(
-    "VLLM_MODELS_PATH", "src/configs/vllm_models.json"
+    "VLLM_MODELS_PATH",
+    os.path.join(_configs_dir, "vllm_models.json")
 )
 
 # Global registry for loaded models
@@ -140,7 +146,7 @@ def initialize_llm_registry(user_config: Dict[str, Any] = None) -> None:
         available_models.extend(litellm_models)
         print(f"Loaded {len(litellm_models)} LiteLLM models")
     except FileNotFoundError:
-        print("Warning: LiteLLM models config not found.")
+        raise FileNotFoundError(f"Error: LiteLLM models config not found at {LITELLM_MODELS_PATH}")
 
     # Load vLLM models
     try:
@@ -159,7 +165,7 @@ def initialize_llm_registry(user_config: Dict[str, Any] = None) -> None:
         available_models.extend(vllm_models)
         print(f"Loaded {len(vllm_models)} vLLM models")
     except FileNotFoundError:
-        print("Warning: vLLM models config not found.")
+        raise FileNotFoundError(f"Error: vLLM models config not found at {VLLM_MODELS_PATH}")
 
     # Register all models
     for model in available_models:

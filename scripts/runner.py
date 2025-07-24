@@ -23,9 +23,9 @@ from typing import Any, Dict, List, Tuple
 from dotenv import load_dotenv
 
 from simulate import simulate_game
-from arena.utils.cleanup import full_cleanup
-from arena.utils.seeding import set_seed
-from configs.config_parser import build_cli_parser, parse_config
+from board_game_arena.arena.utils.cleanup import full_cleanup
+from board_game_arena.arena.utils.seeding import set_seed
+from board_game_arena.configs.config_parser import build_cli_parser, parse_config
 
 
 # Set the soft and hard core file size limits to 0 (disable core dumps)

@@ -10,12 +10,12 @@ import sys
 import time
 import logging
 from typing import Dict, Any, List, Tuple
-from arena.utils.seeding import set_seed
-from arena.games.registry import registry  # Games registry
-from backends import initialize_llm_registry
+from board_game_arena.arena.utils.seeding import set_seed
+from board_game_arena.arena.games.registry import registry  # Games registry
+from board_game_arena.backends import initialize_llm_registry
 
-from arena.agents.policy_manager import initialize_policies, policy_mapping_fn
-from arena.utils.loggers import SQLiteLogger
+from board_game_arena.arena.agents.policy_manager import initialize_policies, policy_mapping_fn
+from board_game_arena.arena.utils.loggers import SQLiteLogger
 from torch.utils.tensorboard import SummaryWriter
 
 #TODO: count the illegal moves and log them

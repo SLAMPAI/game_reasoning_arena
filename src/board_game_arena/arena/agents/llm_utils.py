@@ -10,7 +10,7 @@ import json
 from typing import List, Optional
 from transformers import AutoTokenizer, pipeline
 
-from backends import initialize_llm_registry
+from ...backends import initialize_llm_registry
 
 initialize_llm_registry()
 

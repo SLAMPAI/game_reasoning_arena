@@ -6,7 +6,7 @@ import os
 import argparse
 import json
 from typing import Any, Dict
-from board_game_arena.arena.games.registry import registry # Initilizes an empty registry dictionary
+from ..arena.games.registry import registry # Initilizes an empty registry dictionary
 
 
 def default_simulation_config() -> Dict[str, Any]:
@@ -141,9 +141,9 @@ def apply_backend_config(llm_config: Dict[str, Any]) -> None:
 def get_available_models() -> list:
     """Get list of available models from the backend system."""
     try:
-        from backends import (initialize_llm_registry,
-                              get_available_models as get_models
-                              )
+        from ..backends import (initialize_llm_registry,
+                               get_available_models as get_models
+                               )
         # Initialize the LLM registry to load models
         initialize_llm_registry()
         return get_models()

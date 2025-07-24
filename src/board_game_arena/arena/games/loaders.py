@@ -16,9 +16,9 @@ class GameLoader:
 # Registering games with simplified registry format
 @registry.register(
     name="prisoners_dilemma",
-    module_path="arena.games.loaders",
+    module_path="board_game_arena.arena.games.loaders",
     class_name="PrisonersDilemmaLoader",
-    environment_path="arena.envs.prisoners_dilemma_env.PrisonersDilemmaEnv",
+    environment_path="board_game_arena.arena.envs.prisoners_dilemma_env.PrisonersDilemmaEnv",
     display_name="Iterated Prisoner's Dilemma"
 )
 class PrisonersDilemmaLoader(GameLoader):
@@ -29,9 +29,9 @@ class PrisonersDilemmaLoader(GameLoader):
 
 @registry.register(
     name="tic_tac_toe",
-    module_path="arena.games.loaders",
+    module_path="board_game_arena.arena.games.loaders",
     class_name="TicTacToeLoader",
-    environment_path="arena.envs.tic_tac_toe_env.TicTacToeEnv",
+    environment_path="board_game_arena.arena.envs.tic_tac_toe_env.TicTacToeEnv",
     display_name="Tic-Tac-Toe"
 )
 class TicTacToeLoader(GameLoader):
@@ -42,9 +42,9 @@ class TicTacToeLoader(GameLoader):
 
 @registry.register(
     name="connect_four",
-    module_path="arena.games.loaders",
+    module_path="board_game_arena.arena.games.loaders",
     class_name="ConnectFourLoader",
-    environment_path="arena.envs.connect_four_env.ConnectFourEnv",
+    environment_path="board_game_arena.arena.envs.connect_four_env.ConnectFourEnv",
     display_name="Connect Four"
 )
 class ConnectFourLoader(GameLoader):
@@ -55,9 +55,9 @@ class ConnectFourLoader(GameLoader):
 
 @registry.register(
     name="kuhn_poker",
-    module_path="arena.games.loaders",
+    module_path="board_game_arena.arena.games.loaders",
     class_name="KuhnPokerLoader",
-    environment_path="arena.envs.kuhn_poker_env.KuhnPokerEnv",
+    environment_path="board_game_arena.arena.envs.kuhn_poker_env.KuhnPokerEnv",
     display_name="Kuhn Poker"
 )
 class KuhnPokerLoader(GameLoader):
@@ -70,9 +70,9 @@ class KuhnPokerLoader(GameLoader):
 
 @registry.register(
     name="matrix_pd",
-    module_path="arena.games.loaders",
+    module_path="board_game_arena.arena.games.loaders",
     class_name="MatrixPDLoader",
-    environment_path="arena.envs.matrix_game_env.MatrixGameEnv",
+    environment_path="board_game_arena.arena.envs.matrix_game_env.MatrixGameEnv",
     display_name="Matrix Prisoner's Dilemma"
 )
 class MatrixPDLoader(GameLoader):
@@ -83,9 +83,9 @@ class MatrixPDLoader(GameLoader):
 
 @registry.register(
     name="matching_pennies",
-    module_path="arena.games.loaders",  # pyspiel loader
+    module_path="board_game_arena.arena.games.loaders",  # pyspiel loader
     class_name="MatchingPenniesLoader",
-    environment_path="arena.envs.matrix_game_env.MatrixGameEnv",  # environment
+    environment_path="board_game_arena.arena.envs.matrix_game_env.MatrixGameEnv",  # environment
     display_name="Matching Pennies (3P)"
 )
 class MatchingPenniesLoader(GameLoader):
@@ -96,9 +96,9 @@ class MatchingPenniesLoader(GameLoader):
 
 @registry.register(
     name="matrix_rps",
-    module_path="arena.games.loaders",
+    module_path="board_game_arena.arena.games.loaders",
     class_name="MatrixRPSLoader",
-    environment_path="arena.envs.matrix_game_env.MatrixGameEnv",
+    environment_path="board_game_arena.arena.envs.matrix_game_env.MatrixGameEnv",
     display_name="Matrix Rock-Paper-Scissors"
 )
 class MatrixRPSLoader(GameLoader):

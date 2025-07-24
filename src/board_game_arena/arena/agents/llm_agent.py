@@ -9,7 +9,7 @@ import os
 import re
 import ray
 from typing import Any, Dict
-from backends import LLM_REGISTRY, generate_response
+from ...backends import LLM_REGISTRY, generate_response
 from .base_agent import BaseAgent
 
 MAX_TOKENS = int(os.getenv("MAX_TOKENS", 250))

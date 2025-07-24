@@ -11,14 +11,14 @@ git clone https://github.com/SLAMPAI/board_game_arena.git
 cd board_game_arena
 
 # 2. Install dependencies
-pip install -r environment.yaml
+conda env create -f environment.yaml
 
 # 3. Install the package in development mode
+conda activate board_game_arena
 pip install -e .
 ```
 
 ### Prerequisites
-- **Python 3.7+**
 - **OpenSpiel Framework** (see [detailed setup](#openspiel-setup) below)
 - **API Keys** for LLM providers (optional, for LLM vs LLM games)
 
@@ -194,7 +194,7 @@ python3 scripts/runner.py --config test_config.json --override \
   agents.player_1.model=litellm_groq/llama3-70b-8192
 
 # Verify available games
-python3 -c "from arena.games.registry import registry; print('Available games:', list(registry._registry.keys()))"
+python3 -c "from board_game_arena.arena.games.registry import registry; print('Available games:', list(registry._registry.keys()))"
 ```
 
 ### Configuration Files
@@ -358,7 +358,7 @@ class MyNewGameLoader(GameLoader):
 **Step 3: Test**
 ```bash
 # Verify registration
-python3 -c "from arena.games.registry import registry; print(list(registry._registry.keys()))"
+python3 -c "from board_game_arena.arena.games.registry import registry; print(list(registry._registry.keys()))"
 
 # Test the game
 python3 scripts/runner.py --config test_config.json --override env_config.game_name=my_new_game
