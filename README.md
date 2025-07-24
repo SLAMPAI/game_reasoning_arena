@@ -1,36 +1,67 @@
-# OpenSpiel LLM Arena
+# Board Game Arena
 
 A framework for evaluating Large Language Models (LLMs) through strategic game-playing using Google's OpenSpiel. Test LLM decision-making capabilities in games like Tic-Tac-Toe, Connect Four, Poker, and more.
 
+
+### Key Features
+- **Multi-Agent Testing**: LLMs vs Random, LLM vs LLM, Self-play
+- **Multiple Game Types**: Strategy, poker, cooperation, zero-sum games
+- **Flexible Backends**: Support for API-based (LiteLLM) and local (vLLM) inference
+- **Cross-Provider**: Mix different LLM providers in the same game
+- **Extensible**: Easy to add new games and agents
+
+___
+
 ## Installation
 
-### Quick Setup
-```bash
-# 1. Clone the repository
-git clone https://github.com/SLAMPAI/board_game_arena.git
-cd board_game_arena
-
-# 2. Install dependencies
-conda env create -f environment.yaml
-
-# 3. Install the package in development mode
-conda activate board_game_arena
-pip install -e .
-```
 
 ### Prerequisites
 - **OpenSpiel Framework** (see [detailed setup](#openspiel-setup) below)
-- **API Keys** for LLM providers (optional, for LLM vs LLM games)
+- **API Keys** for LLM providers (liteLLM and VLLM supported)
 
-## Quick Start
+### Setup
+```bash
+# Clone the repository
+git clone https://github.com/SLAMPAI/board_game_arena.git
+cd board_game_arena
 
-### 1. Test the Installation
+# Install dependencies
+conda env create -f environment.yaml
+
+# Install the package in development mode
+conda activate board_game_arena
+pip install -e .
+
+# Create a .env file for the environment variables
+touch .env
+```
+
+#### API Keys Setup
+Create a `.env` file in the project root:
+```bash
+GROQ_API_KEY=your_groq_key_here
+TOGETHER_API_KEY=your_together_key_here
+FIREWORKS_API_KEY=your_fireworks_key_here
+OPENAI_API_KEY=your_openai_key_here
+```
+
+#### OpenSpiel Setup
+Install OpenSpiel framework:
+```bash
+git clone https://github.com/deepmind/open_spiel.git
+cd open_spiel
+./install.sh
+cd ..
+```
+
+### Test the Installation
 ```bash
 # Run a quick random vs random test
 python3 scripts/runner.py --config test_config.json
 ```
 
-### 2. Basic Game Examples
+___
+### Game Examples
 ```bash
 # Different games
 python3 scripts/runner.py --config test_config.json --override env_config.game_name=connect_four
@@ -48,17 +79,8 @@ python3 scripts/runner.py --config test_config.json --override \
   agents.player_0.model=litellm_groq/gemma-7b-it \
   agents.player_1.type=llm \
   agents.player_1.model=litellm_groq/llama3-70b-8192
-```
 
-### 3. Advanced Examples
-```bash
-# Cross-provider comparison (Groq vs Together AI)
-python3 scripts/runner.py --config test_config.json --override \
-  mode=llm_vs_llm \
-  agents.player_0.model=litellm_groq/llama3-8b-8192 \
-  agents.player_1.model=litellm_together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
-
-# Mixed backends (API vs Local)
+# Mixed backends (liteLLM vs vLLM)
 python3 scripts/runner.py --config test_config.json --override \
   mode=llm_vs_llm \
   agents.player_0.model=litellm_groq/llama3-8b-8192 \
@@ -73,38 +95,24 @@ python3 scripts/runner.py --config test_config.json --override \
   num_episodes=10
 ```
 
+___
 ## Configuration
 
-### API Keys Setup
-Create a `.env` file in the project root:
-```bash
-GROQ_API_KEY=your_groq_key_here
-TOGETHER_API_KEY=your_together_key_here
-FIREWORKS_API_KEY=your_fireworks_key_here
-OPENAI_API_KEY=your_openai_key_here
-```
 
 ### Model Naming Convention
 Models use backend prefixes for clarity:
 - **LiteLLM models**: `litellm_<provider>/<model>` (e.g., `litellm_groq/llama3-8b-8192`)
 - **vLLM models**: `vllm_<model>` (e.g., `vllm_Qwen2-7B-Instruct`)
 
-This enables **mixing multiple inference providers** in the same simulation:
-```json
-{
-  "agents": {
-    "player_0": {
-      "type": "llm",
-      "model": "litellm_groq/llama3-8b-8192"
-    },
-    "player_1": {
-      "type": "llm",
-      "model": "vllm_Qwen2-7B-Instruct"
-    }
-  }
-}
-```
+### Backend Configuration
 
+The system loads models from configuration files:
+- `src/configs/litellm_models.json` - API-based models
+- `src/configs/vllm_models.json` - Local GPU models
+
+**Important**: Models must be listed in these files to be available for use.
+
+___
 ### Available Games
 - `tic_tac_toe` - Classic 3x3 grid game
 - `connect_four` - Drop pieces to connect four
@@ -113,51 +121,6 @@ This enables **mixing multiple inference providers** in the same simulation:
 - `matrix_pd` - Matrix form prisoner's dilemma
 - `matching_pennies` - Zero-sum matching game
 - `matrix_rps` - Rock-paper-scissors matrix game
-
----
-
-## Project Overview
-The goal of this project is to evaluate the decision-making capabilities of Large Language Models (LLMs) through strategic game-playing using Google's OpenSpiel framework.
-
-### Key Features
-- **Multi-Agent Testing**: LLMs vs Random, LLM vs LLM, Self-play
-- **Multiple Game Types**: Strategy, poker, cooperation, zero-sum games
-- **Flexible Backends**: Support for API-based (LiteLLM) and local (vLLM) inference
-- **Cross-Provider**: Mix different LLM providers in the same game
-- **Extensible**: Easy to add new games and agents
-
----
-
-## Detailed Setup
-
-### OpenSpiel Setup
-Install OpenSpiel framework:
-```bash
-git clone https://github.com/deepmind/open_spiel.git
-cd open_spiel
-./install.sh
-cd ..
-```
-
-### Project Installation
-```bash
-# Clone this repository
-git clone https://github.com/SLAMPAI/board_game_arena.git
-cd board_game_arena
-
-# Install in development mode (recommended)
-pip install -e .
-
-# Alternative: Install dependencies only
-pip install -r environment.yaml
-```
-
-### Model Configuration
-The system loads models from configuration files:
-- `src/configs/litellm_models.json` - API-based models
-- `src/configs/vllm_models.json` - Local GPU models
-
-**Important**: Models must be listed in these files to be available for use.
 
 ---
 
@@ -172,26 +135,6 @@ python3 scripts/runner.py --config <config_file> [--override key=value ...]
 
 **Common Commands:**
 ```bash
-# Test installation
-python3 scripts/runner.py --config test_config.json
-
-# Change game and episodes
-python3 scripts/runner.py --config test_config.json --override \
-  env_config.game_name=connect_four \
-  num_episodes=5
-
-# Set up LLM agent
-python3 scripts/runner.py --config test_config.json --override \
-  agents.player_0.type=llm \
-  agents.player_0.model=litellm_groq/llama3-8b-8192
-
-# LLM vs LLM with different models
-python3 scripts/runner.py --config test_config.json --override \
-  mode=llm_vs_llm \
-  agents.player_0.type=llm \
-  agents.player_0.model=litellm_groq/llama3-8b-8192 \
-  agents.player_1.type=llm \
-  agents.player_1.model=litellm_groq/llama3-70b-8192
 
 # Verify available games
 python3 -c "from board_game_arena.arena.games.registry import registry; print('Available games:', list(registry._registry.keys()))"
@@ -409,110 +352,6 @@ python3 scripts/runner.py --config test_config.json --override \
   agents.player_0.model=my_model
 ```
 
----
-
-## Backend Configuration
-
-### Supported LLM Backends
-
-**LiteLLM (Recommended)**
-- Unified interface for 100+ LLM providers
-- Supports OpenAI, Anthropic, Groq, Together AI, Fireworks, etc.
-- API-based inference with automatic retries and error handling
-
-**vLLM (Legacy)**
-- Local model hosting on GPU
-- High-throughput inference for self-hosted models
-- Requires local model files and GPU resources
-
-### Model Configuration Files
-
-**LiteLLM Models** (`src/configs/litellm_models.json`):
-```json
-[
-  "litellm_groq/llama3-8b-8192",
-  "litellm_groq/mixtral-8x7b-32768",
-  "litellm_together_ai/meta-llama/Llama-2-7b-chat-hf",
-  "litellm_openai/gpt-4o-mini"
-]
-```
-
-**vLLM Models** (`src/configs/vllm_models.json`):
-```json
-{
-  "models": [
-    {
-      "name": "vllm_Qwen2-7B-Instruct",
-      "model_path": "/path/to/models/Qwen/Qwen2-7B-Instruct",
-      "tokenizer_path": "/path/to/models/Qwen/Qwen2-7B-Instruct",
-      "description": "Qwen2 7B Instruct model for local inference"
-    }
-  ]
-}
-```
-
-### Backend Selection
-The system automatically selects backends based on model name prefixes:
-- `litellm_*` → LiteLLM backend
-- `vllm_*` → vLLM backend
-
-### Configuration Options
-```json
-{
-  "llm_backend": {
-    "max_tokens": 250,
-    "temperature": 0.1,
-    "default_model": "litellm_groq/llama3-8b-8192",
-    "timeout": 30,
-    "max_retries": 3
-  }
-}
-```
----
-
-## 6. Contribution Guidelines
-
-### Steps to Contribute:
-1. Fork this repository.
-2. Create a feature branch.
-3. Follow the directory structure and coding style outlined in this README.
-4. Add appropriate unit tests for your contribution.
-5. Submit a pull request with a detailed explanation of your changes.
-
----
-
-## 7. Example Output
-
-### Game: Tic-Tac-Toe
-```
-
----
-
-## Contributing
-
-We welcome contributions! Here's how to get started:
-
-### Development Workflow
-1. **Fork** this repository
-2. **Create** a feature branch: `git checkout -b feature/my-new-feature`
-3. **Follow** the existing code structure and style
-4. **Add** unit tests for new functionality
-5. **Test** your changes thoroughly
-6. **Submit** a pull request with a clear description
-
-### Code Guidelines
-- Follow PEP 8 for Python code style
-- Add docstrings to new functions and classes
-- Include type hints where appropriate
-- Write unit tests for new features
-- Update documentation as needed
-
-### Areas for Contribution
-- **New Games**: Add support for additional OpenSpiel games
-- **New Agents**: Implement RL agents, tree search agents, etc.
-- **Analysis Tools**: Visualization and statistical analysis
-- **Backend Support**: Additional LLM providers or local models
-- **Performance**: Optimization and caching improvements
 
 ---
 
@@ -567,11 +406,6 @@ Tournament Results (10 episodes):
 └── Results saved to: results/tournament_2025-07-23_14-30-15.json
 ```
 
----
-
-## License
-
-This project is open source. Please check the LICENSE file for details.
 
 ---
 
@@ -610,3 +444,50 @@ Final state of Connect Four:
 x wins!
 Scores: {'google/flan-t5-small': 1.0, 'Random_Bot': -1.0}
 ```
+
+---
+---
+
+## Contributing
+
+We welcome contributions! Here's how to get started:
+
+1. Fork this repository.
+2. Create a feature branch: `git checkout -b feature/my-new-feature`
+3. Follow the directory structure and coding style outlined in this README.
+4. Add appropriate unit tests for your contribution.
+5. Submit a pull request with a detailed explanation of your changes.
+
+
+
+### Code Guidelines
+- Follow PEP 8 for Python code style
+- Add docstrings to new functions and classes
+- Include type hints where appropriate
+- Write unit tests for new features
+- Update documentation as needed
+
+### Areas for Contribution
+- **New Games**: Add support for additional OpenSpiel games
+- **New Agents**: Implement RL agents, tree search agents, etc.
+- **Analysis Tools**: Visualization and statistical analysis
+- **Backend Support**: Additional LLM providers or local models
+- **Performance**: Optimization and caching improvements
+
+___
+## Citation
+If you found this work useful, please consider citing:
+
+```
+@article{cipolina-kun2025board_game_arena,
+    title={},
+    author={},
+    year={2025},
+    journal={arXiv},
+    url={https://arxiv.org/abs/2}
+}
+```
+
+## License
+
+This code is made available under a [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) license, as found in the [LICENSE](LICENSE) file. Some portions of the project are subject to separate license terms outlined in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
