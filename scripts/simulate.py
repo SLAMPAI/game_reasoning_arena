@@ -36,6 +36,40 @@ def log_llm_action(agent_id: int,
        logger.error(f"Terminated due to illegal move: {chosen_action}.")
 
 
+def compute_actions(
+    env, player_to_agent: Dict[int, Any], observations: Dict[int, Any]
+) -> Dict[int, int]:
+    """
+    Computes actions for all players using the RLLib-style approach.
+    Handles both turn-based and simultaneous games consistently.
+
+    Args:
+        env: The game environment.
+        player_to_agent (Dict[int, Any]): Mapping from player index to agent.
+        observations (Dict[int, Any]): Dictionary mapping player IDs to observations.
+
+    Returns:
+        Dict[int, int]: A dictionary mapping player indices to selected actions.
+    """
+    def extract_action(agent_response):
+        """Extract action from agent response (handle both int and dict)."""
+        if isinstance(agent_response, int):
+            return agent_response
+        elif isinstance(agent_response, dict):
+            return agent_response.get("action", -1)
+        else:
+            return -1
+
+    if env.state.is_simultaneous_node():
+        # Simultaneous-move game: All players act at once
+        return {player: extract_action(player_to_agent[player](observations[player]))
+                for player in player_to_agent}
+    else:
+        # Turn-based game: Only the current player acts
+        current_player = env.state.current_player()
+        return {current_player: extract_action(player_to_agent[current_player](observations[current_player]))}
+
+
 def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
     """
     Runs a game simulation, logs agent actions and final rewards to TensorBoard.
@@ -73,7 +107,12 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
             agent_type=agent_config["type"],
             model_name=sanitized_model_name
         )
-    writer = SummaryWriter(log_dir=f"runs/{game_name}") # Tensorboard writer
+    writer = SummaryWriter(log_dir=f"runs/{game_name}")  # Tensorboard writer
+
+    # Create player_to_agent mapping for RLLib-style action computation
+    player_to_agent = {}
+    for i, policy_name in enumerate(policies_dict.keys()):
+        player_to_agent[i] = policies_dict[policy_name]
 
     # Loads the pyspiel game and the env simulator
     env = registry.make_env(game_name, config)
@@ -87,52 +126,50 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
         turn = 0
 
         while not (terminated or truncated):
-            actions = {}
-            for agent_id, observation in observation_dict.items():
-                policy_key = policy_mapping_fn(agent_id) # Map agentID to policy key
-                policy = policies_dict[policy_key]  # Policy class
-                agent_logger = agent_loggers_dict[policy_key]  # Data logger
+            # Use RLLib-style action computation
+            try:
+                action_dict = compute_actions(env, player_to_agent, observation_dict)
+            except Exception as e:
+                logger.error(f"Error computing actions: {e}")
+                truncated = True
+                break
+
+            # Process each action for logging and validation
+            for agent_id, chosen_action in action_dict.items():
+                policy_key = policy_mapping_fn(agent_id)
+                agent_logger = agent_loggers_dict[policy_key]
+                observation = observation_dict[agent_id]
+
+                # Get agent config for logging
                 agent_type = None
                 agent_model = "None"
-
-                # Find the agent config by index - handle both string and int keys
                 for key, value in config["agents"].items():
                     if key.startswith("player_") and int(key.split("_")[1]) == agent_id:
                         agent_type = value["type"]
                         agent_model = value.get("model", "None")
                         break
-                    elif str(key) == str(agent_id):
-                        agent_type = value["type"]
-                        agent_model = value.get("model", "None")
-                        break
-
-                start_time = time.perf_counter()
-                action_metadata = policy(observation)  # Calls `__call__()` -> `_process_action()` -> `log_move()` #noq:E501
-                duration = time.perf_counter() - start_time
-
-                if isinstance(action_metadata, int): # Non-LLM agents
-                    chosen_action = action_metadata
-                    reasoning = "None"  # No reasoning for non-LLM agents
-                else: # LLM agents
-                    chosen_action = action_metadata.get("action", -1)  # Default to -1 if missing
-                    reasoning = str(action_metadata.get("reasoning", "None") or "None")
-
-                actions[agent_id] = chosen_action
 
                 # Check if the chosen action is legal
                 if chosen_action is None or chosen_action not in observation["legal_actions"]:
                     if agent_type == "llm":
-                       log_llm_action(agent_id, agent_model, observation, chosen_action, reasoning, flag = True)
-                    agent_logger.log_illegal_move(game_name=game_name, episode=episode + 1,turn=turn,
-                                                   agent_id=agent_id, illegal_action=chosen_action,
-                                                   reason=reasoning, board_state=observation["state_string"])
+                        log_llm_action(agent_id, agent_model, observation, chosen_action, "Illegal action", flag=True)
+                    agent_logger.log_illegal_move(
+                        game_name=game_name, episode=episode + 1, turn=turn,
+                        agent_id=agent_id, illegal_action=chosen_action,
+                        reason="Illegal action", board_state=observation["state_string"]
+                    )
                     truncated = True
-                    break  # exit the for-loop over agents
+                    break
 
-                # Loggins
+                # Get reasoning if available (for LLM agents)
+                reasoning = "None"
+                if agent_type == "llm" and hasattr(player_to_agent[agent_id], 'last_reasoning'):
+                    reasoning = getattr(player_to_agent[agent_id], 'last_reasoning', "None")
+
+                # Logging
                 opponents = ", ".join(
                     f"{config['agents'][a_id]['type']}_{config['agents'][a_id].get('model', 'None').replace('-', '_')}"
-                    for a_id in config["agents"] if a_id != agent_id
+                    for a_id in config["agents"] if a_id != f"player_{agent_id}"
                 )
 
                 agent_logger.log_move(
@@ -141,19 +178,19 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
                     turn=turn,
                     action=chosen_action,
                     reasoning=reasoning,
-                    opponent= opponents,  # Get all opponents
-                    generation_time=duration,
+                    opponent=opponents,
+                    generation_time=0.0,  # TODO: Add timing back
                     agent_type=agent_type,
                     agent_model=agent_model,
-                    seed = episode_seed
+                    seed=episode_seed
                 )
 
                 if agent_type == "llm":
-                   log_llm_action(agent_id, agent_model, observation, chosen_action, reasoning)
+                    log_llm_action(agent_id, agent_model, observation, chosen_action, reasoning)
 
-            # Step forward in the environment #TODO: check if this works for turn-based games (track the agent playing)
+            # Step forward in the environment
             if not truncated:
-                observation_dict, rewards_dict, terminated, truncated, _ = env.step(actions)
+                observation_dict, rewards_dict, terminated, truncated, _ = env.step(action_dict)
                 turn += 1
 
         # Logging

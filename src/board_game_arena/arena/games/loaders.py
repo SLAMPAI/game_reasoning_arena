@@ -18,13 +18,13 @@ class GameLoader:
     name="prisoners_dilemma",
     module_path="board_game_arena.arena.games.loaders",
     class_name="PrisonersDilemmaLoader",
-    environment_path="board_game_arena.arena.envs.prisoners_dilemma_env.PrisonersDilemmaEnv",
-    display_name="Iterated Prisoner's Dilemma"
+    environment_path="board_game_arena.arena.envs.matrix_game_env.MatrixGameEnv",
+    display_name="Prisoner's Dilemma (Matrix)"
 )
 class PrisonersDilemmaLoader(GameLoader):
     @staticmethod
     def load():
-        return pyspiel.load_game("python_iterated_prisoners_dilemma")
+        return pyspiel.load_game("matrix_pd")
 
 
 @registry.register(
@@ -83,15 +83,15 @@ class MatrixPDLoader(GameLoader):
 
 @registry.register(
     name="matching_pennies",
-    module_path="board_game_arena.arena.games.loaders",  # pyspiel loader
+    module_path="board_game_arena.arena.games.loaders",
     class_name="MatchingPenniesLoader",
-    environment_path="board_game_arena.arena.envs.matrix_game_env.MatrixGameEnv",  # environment
-    display_name="Matching Pennies (3P)"
+    environment_path="board_game_arena.arena.envs.matrix_game_env.MatrixGameEnv",
+    display_name="Matching Pennies (2P)"
 )
 class MatchingPenniesLoader(GameLoader):
     @staticmethod
     def load():
-        return pyspiel.load_game("matching_pennies_3p")
+        return pyspiel.load_game("matrix_mp")
 
 
 @registry.register(

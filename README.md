@@ -57,27 +57,27 @@ cd ..
 ### Test the Installation
 ```bash
 # Run a quick test
-python3 scripts/runner.py --config test_config.yaml
+python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml
 ```
 
 ___
 ### Game Examples
 ```bash
 # Different games
-python3 scripts/runner.py --config test_config.yaml --override env_config.game_name=connect_four
-python3 scripts/runner.py --config test_config.yaml --override env_config.game_name=kuhn_poker
+python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override env_config.game_name=connect_four
+python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override env_config.game_name=kuhn_poker
 
 # LLM vs Random in a multi-episode tournament
-python3 scripts/runner.py --config test_config.yaml --override \
+python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
   agents.player_0.type=llm \
   agents.player_0.model=litellm_groq/llama3-8b-8192 \
   num_episodes=10
 
 # LLM vs LLM with mixed backends (liteLLM vs vLLM)
-python3 scripts/runner.py --config test_config.yaml --override \
-  mode=llm_vs_llm \
-  agents.player_0.model=litellm_groq/llama3-8b-8192 \
-  agents.player_1.model=vllm_Qwen2-7B-Instruct
+python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+mode=llm_vs_llm \
+agents.player_0.model=litellm_groq/llama3-8b-8192 \
+agents.player_1.model=vllm_Qwen2-7B-Instruct
 ```
 
 ___
@@ -99,13 +99,15 @@ The system loads models from configuration files:
 
 ___
 ### Available Games
-- `tic_tac_toe` - Classic 3x3 grid game
-- `connect_four` - Drop pieces to connect four
-- `kuhn_poker` - Simple poker with hidden information
-- `prisoners_dilemma` - Cooperation vs defection
-- `matrix_pd` - Matrix form prisoner's dilemma
-- `matching_pennies` - Zero-sum matching game
-- `matrix_rps` - Rock-paper-scissors matrix game
+- `tic_tac_toe` - Classic 3x3 grid game ✅
+- `connect_four` - Drop pieces to connect four ✅
+- `kuhn_poker` - Simple poker with hidden information ✅
+- `prisoners_dilemma` - Cooperation vs defection (matrix form) ⚠️ *
+- `matrix_pd` - Matrix form prisoner's dilemma ⚠️ *
+- `matching_pennies` - Zero-sum matching game ⚠️ *
+- `matrix_rps` - Rock-paper-scissors matrix game ⚠️ *
+
+*Note: Matrix games are currently experiencing configuration issues and may not work properly.
 
 ---
 
@@ -154,7 +156,7 @@ python3 scripts/runner.py \
 **Option 3: Command-Line Override**
 ```bash
 # Enable Ray with any existing configuration
-  python3 scripts/runner.py --config test_config.yaml \
+  python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml \
  --override use_ray=true parallel_episodes=true
 ```
 
@@ -227,7 +229,7 @@ python3 scripts/runner.py --config <config_file> [--override key=value ...]
 ```bash
 
 # Verify available games
-python3 -c "from board_game_arena.arena.games.registry import registry; print('Available games:', list(registry._registry.keys()))"
+python3 -c "from src.board_game_arena.arena.games.registry import registry; print('Available games:', list(registry._registry.keys()))"
 ```
 
 ### Configuration Files
@@ -251,32 +253,34 @@ agents:
 ### Game-Specific Examples
 ```bash
 # Tic-Tac-Toe: Quick strategy game
-python3 scripts/runner.py --config test_config.yaml --override \
+python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
   env_config.game_name=tic_tac_toe \
   agents.player_0.type=llm \
   agents.player_0.model=litellm_groq/llama3-8b-8192 \
   num_episodes=5
 
 # Connect Four: Longer strategic game
-python3 scripts/runner.py --config test_config.yaml --override \
+python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
   env_config.game_name=connect_four \
   agents.player_0.type=llm \
   agents.player_0.model=litellm_together_ai/meta-llama/Llama-2-7b-chat-hf \
   num_episodes=3
 
 # Kuhn Poker: Game with hidden information
-python3 scripts/runner.py --config test_config.yaml --override \
+python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
   env_config.game_name=kuhn_poker \
   agents.player_0.type=llm \
+  agents.player_0.model=litellm_groq/llama3-8b-8192 \
   agents.player_1.type=llm \
+  agents.player_1.model=litellm_groq/llama3-8b-8192 \
   num_episodes=10
 
-# Prisoner's Dilemma: Multi-round cooperation
-python3 scripts/runner.py --config test_config.yaml --override \
-  env_config.game_name=prisoners_dilemma \
+# Tic-Tac-Toe LLM vs Random: Classic strategy game
+python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+  env_config.game_name=tic_tac_toe \
   agents.player_0.type=llm \
   agents.player_1.type=random \
-  num_episodes=1
+  num_episodes=5
 ```
 
 ---
@@ -311,7 +315,6 @@ board_game_arena/
 ├── results/               # Output data (CSV, JSON)
 ├── analysis/              # Post-processing scripts
 ├── plots/                 # Generated visualizations
-├── test_config.yaml       # Quick test config
 ├── environment.yaml       # Dependencies
 ├── pyproject.toml         # Package configuration
 └── .env                   # API keys (create manually)
@@ -356,10 +359,10 @@ class MyNewGameLoader(GameLoader):
 **Step 3: Test**
 ```bash
 # Verify registration
-python3 -c "from board_game_arena.arena.games.registry import registry; print(list(registry._registry.keys()))"
+python3 -c "from src.board_game_arena.arena.games.registry import registry; print(list(registry._registry.keys()))"
 
 # Test the game
-python3 scripts/runner.py --config test_config.yaml --override env_config.game_name=my_new_game
+python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override env_config.game_name=my_new_game
 ```
 
 ### Adding a New Agent
@@ -398,7 +401,7 @@ agents:
 
 **Step 4: Test**
 ```bash
-python3 scripts/runner.py --config test_config.yaml --override \
+python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
   agents.player_0.type=my_agent \
   agents.player_0.model=my_model
 ```

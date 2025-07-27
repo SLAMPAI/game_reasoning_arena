@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Board Game Arena - Code Flow Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .diagram { margin: 20px 0; }
+        h1, h2 { color: #333; }
+        .description { margin: 10px 0; padding: 10px; background: #f5f5f5; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Board Game Arena - Code Flow for Matrix Games</h1>
+
+    <div class="description">
+        <h2>High-Level Architecture</h2>
+        <p>This diagram shows the main components and their relationships in the Board Game Arena system, with focus on matrix games like Rock-Paper-Scissors and Prisoner's Dilemma.</p>
+    </div>
+
+    <div class="diagram">
+        <div class="mermaid">
+graph TD
+    A[runner.py - Main Entry Point] --> B[simulate.py - Core Simulation]
+    B --> C[registry.py - Game Registry]
+    B --> D[policy_manager.py - Agent Management]
+    B --> E[Environment Classes]
+
+    C --> F[Matrix Game Loader]
+    D --> G[Agent Types: LLM, Random, Human]
+    E --> H[MatrixGameEnv]
+
+    H --> I[OpenSpielEnv Base Class]
+    G --> J[Action Computation]
+    J --> K[Game Step Execution]
+    K --> L[Logging & Results]
+
+    classDef entryPoint fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef simulation fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef environment fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef agent fill:#fff3e0,stroke:#e65100,stroke-width:2px
+
+    class A entryPoint
+    class B,D simulation
+    class C,E,H,I environment
+    class F,G,J,K,L agent
+        </div>
+    </div>
+
+    <div class="description">
+        <h2>Detailed Method Call Flow</h2>
+        <p>This diagram shows the specific method calls and their sequence for matrix games. Matrix games are <strong>simultaneous-move games</strong> where all players act at once.</p>
+    </div>
+
+    <div class="diagram">
+        <div class="mermaid">
+graph TD
+    %% Entry Point
+    A[runner.py::main] --> B[parse_config]
+    A --> C[run_simulation]
+
+    %% Ray Initialization
+    C --> D[initialize_ray]
+
+    %% Simulation Orchestration
+    C --> E[simulate_game]
+
+    %% Core Simulation Setup
+    E --> F[initialize_llm_registry]
+    E --> G[initialize_policies]
+    E --> H[registry.make_env]
+
+    %% Policy Management
+    G --> I[AGENT_REGISTRY lookup]
+    G --> J[LLMAgent.__init__]
+    G --> K[RandomAgent.__init__]
+
+    %% Environment Creation
+    H --> M[registry.get_game_loader]
+    H --> N[MatrixGameEnv.__init__]
+    N --> O[OpenSpielEnv.__init__]
+
+    %% Episode Loop
+    E --> P[env.reset]
+    P --> Q[game.new_initial_state]
+    P --> R[_solve_chance_nodes]
+    P --> S[_state_to_observation]
+
+    %% Matrix Game Observation
+    S --> T[_generate_prompt]
+    T --> U[state.legal_actions]
+    T --> V[state.action_to_string]
+
+    %% Action Computation Loop
+    E --> W[compute_actions]
+    W --> X{is_simultaneous_node?}
+
+    %% Simultaneous Actions (Matrix Games)
+    X -->|Yes - Matrix Games| Y[All players act simultaneously]
+    Y --> Z[player_to_agent[0] - LLM]
+    Y --> AA[player_to_agent[1] - Random]
+
+    %% Agent Decision Making
+    Z --> BB[LLMAgent.compute_action]
+    AA --> CC[RandomAgent.compute_action]
+
+    %% LLM Processing
+    BB --> DD[generate_response]
+    DD --> EE[Ray batch processing]
+
+    %% Random Agent
+    CC --> GG[random.choice]
+
+    %% Environment Step
+    W --> HH[env.step]
+    HH --> II[state.apply_actions - Simultaneous]
+    II --> JJ[OpenSpiel game logic]
+
+    %% Reward and State Update
+    HH --> KK[_compute_reward]
+    HH --> LL[state.is_terminal]
+    HH --> MM[_state_to_observation]
+
+    %% Logging
+    E --> NN[log_llm_action]
+    E --> OO[SQLiteLogger.log_move]
+    E --> PP[TensorBoard logging]
+
+    %% Turn-based Alternative
+    X -->|No - Turn-based Games| QQ[Current player only]
+    QQ --> RR[state.current_player]
+    QQ --> Z
+
+    %% Styling
+    classDef entryPoint fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef simulation fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef environment fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef agent fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef matrix fill:#ffebee,stroke:#c62828,stroke-width:3px
+
+    class A,B,C entryPoint
+    class E,F,G,W,HH simulation
+    class H,N,O,P,S environment
+    class I,J,K,BB,CC agent
+    class Y,Z,AA,II,X matrix
+        </div>
+    </div>
+
+    <div class="description">
+        <h2>Matrix Game Execution Sequence</h2>
+        <p>This sequence diagram shows how a matrix game (e.g., Rock-Paper-Scissors) executes with an LLM player vs Random player.</p>
+    </div>
+
+    <div class="diagram">
+        <div class="mermaid">
+sequenceDiagram
+    participant S as simulate.py
+    participant E as MatrixGameEnv
+    participant P0 as Player 0 (LLM)
+    participant P1 as Player 1 (Random)
+    participant OS as OpenSpiel
+    participant L as Logger
+
+    S->>E: env.reset()
+    E->>OS: game.new_initial_state()
+    E->>E: _state_to_observation()
+    E->>S: observations for all players
+
+    loop Until Game Ends
+        Note over S,L: Action Computation Phase
+        S->>P0: compute_action(observation_0)
+        P0->>P0: Query LLM with prompt<br/>"Available: 0=Rock, 1=Paper, 2=Scissors"
+        P0->>S: {"action": 1, "reasoning": "Paper beats Rock"}
+
+        S->>P1: compute_action(observation_1)
+        P1->>P1: random.choice([0,1,2])
+        P1->>S: 2 (Scissors)
+
+        Note over S,L: Simultaneous Step Phase
+        S->>E: env.step({0: 1, 1: 2})
+        E->>OS: state.apply_actions([1, 2])
+        Note over OS: Paper vs Scissors<br/>Scissors wins!
+        OS->>E: Updated game state
+        E->>E: _compute_reward()<br/>returns {0: -1, 1: +1}
+        E->>S: observations, rewards, terminated=True
+
+        Note over S,L: Logging Phase
+        S->>L: log_llm_action(agent_0, "Paper", reasoning)
+        S->>L: SQLiteLogger.log_move(...)
+        S->>L: TensorBoard metrics
+    end
+
+    S->>S: Episode complete
+        </div>
+    </div>
+
+    <div class="description">
+        <h2>Key Differences: Matrix Games vs Turn-Based Games</h2>
+        <div style="display: flex; gap: 20px;">
+            <div style="flex: 1; background: #ffebee; padding: 15px; border-radius: 5px;">
+                <h3>Matrix Games (Simultaneous)</h3>
+                <ul>
+                    <li><strong>Examples:</strong> Rock-Paper-Scissors, Prisoner's Dilemma, Matching Pennies</li>
+                    <li><strong>Action Collection:</strong> All players act simultaneously</li>
+                    <li><strong>Method:</strong> <code>state.apply_actions([action_0, action_1])</code></li>
+                    <li><strong>Observation:</strong> All players get observations</li>
+                    <li><strong>Decision:</strong> <code>env.state.is_simultaneous_node() → True</code></li>
+                </ul>
+            </div>
+            <div style="flex: 1; background: #e8f5e8; padding: 15px; border-radius: 5px;">
+                <h3>Turn-Based Games</h3>
+                <ul>
+                    <li><strong>Examples:</strong> Tic-Tac-Toe, Connect Four, Chess</li>
+                    <li><strong>Action Collection:</strong> Only current player acts</li>
+                    <li><strong>Method:</strong> <code>state.apply_action(action)</code></li>
+                    <li><strong>Observation:</strong> Only current player gets observation</li>
+                    <li><strong>Decision:</strong> <code>env.state.current_player() → 0 or 1</code></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({startOnLoad:true});
+    </script>
+</body>
+</html>

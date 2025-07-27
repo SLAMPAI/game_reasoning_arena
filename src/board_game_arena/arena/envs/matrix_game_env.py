@@ -36,26 +36,60 @@ class MatrixGameEnv(OpenSpielEnv):
         """
         self.state.apply_actions(action)
 
-    def _state_to_observation(self) -> Dict[str, Any]:
+    def _state_to_observation(self) -> Dict[int, Dict[str, Any]]:
         """
         Generate the observation for the matrix game.
 
         Returns:
-            Dict[str, Any]: Observation dictionary containing:
-                - state_string: A placeholder for state description (None in RPS).
-                - legal_actions: A list of valid actions for each player.
-                - info: A string providing action descriptions.
+            Dict[int, Dict[str, Any]]: Mapping from agent ID to observations.
         """
 
-        # Get available actions for a single player (assume identical for all players)
-        row_action_ids = self.state.legal_actions(0)  # Get action indices (0,1)
-        row_action_names = [self.state.action_to_string(0, action) for action in row_action_ids]
-        action_description = ", ".join(
-                    [f"{name} ({idx})" for name, idx in zip(row_action_names, row_action_ids)]
-                )
+        # Create observations for each player
+        observations = {}
+        for player_id in range(self.state.num_players()):
+            observations[player_id] = {
+                "state_string": f"Matrix game - Player {player_id}",
+                "legal_actions": self.state.legal_actions(player_id),
+                "prompt": self._generate_prompt(player_id)
+            }
 
-        return {
-            "state": None,  # No meaningful observation in simultaneous games
-            "legal_actions": [row_action_ids for _ in range(self.state.num_players())],  # Same for all players,
-            "info": f"Actions available: {action_description}"
-        }
+        return observations
+
+    def _generate_prompt(self, agent_id: int) -> str:
+        """Generate a prompt for the matrix game.
+
+        Args:
+            agent_id (int): The player's ID.
+
+        Returns:
+            str: A formatted prompt for the matrix game.
+        """
+        if self.state.is_terminal():
+            return ""
+
+        # Get action descriptions
+        legal_actions = self.state.legal_actions(agent_id)
+        action_descriptions = []
+        for action in legal_actions:
+            action_name = self.state.action_to_string(agent_id, action)
+            action_descriptions.append(f"{action}: {action_name}")
+
+        action_list = "\n".join(action_descriptions)
+
+        prompt = f"""You are Player {agent_id} in the game: {self.game_name}
+
+Available actions:
+{action_list}
+
+What action do you choose? Reply only with the action number.
+
+First, think through the game strategy and explain your reasoning.
+Only after that, decide on the best action to take.
+
+Reply only in the following JSON format:
+{{
+  'reasoning': <str>,
+  'action': <int>
+}}"""
+
+        return prompt

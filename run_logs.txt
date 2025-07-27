@@ -1,59 +1,25 @@
-2025-07-26 22:58:20,174 - __main__ - INFO - {'env_config': {'game_name': 'tic_tac_toe', 'max_game_rounds': None}, 'num_episodes': True, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama-3.1-8b-instant'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama-3.1-8b-instant'}, 'log_level': 'INFO'}
-2025-07-26 22:58:20,180 - __main__ - INFO - Ray disabled - using sequential execution
-2025-07-26 22:58:20,184 - simulate - INFO - Initializing environment for tic_tac_toe.
-2025-07-26 22:58:20,184 - board_game_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for tic_tac_toe
-2025-07-26 22:58:20,185 - board_game_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama-3.1-8b-instant)
-2025-07-26 22:58:20,185 - board_game_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
-2025-07-26 22:58:22,068 - simulate - INFO - Episode 1 started with seed 42.
-2025-07-26 22:58:22,084 - LiteLLM - INFO - [92m
+2025-07-27 17:34:28,970 - __main__ - INFO - {'env_config': {'game_name': 'matrix_rps', 'max_game_rounds': None}, 'num_episodes': True, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama3-8b-8192'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama3-8b-8192'}, 'log_level': 'INFO', 'env_configs': [{'game_name': 'kuhn_poker', 'max_game_rounds': None}, {'game_name': 'connect_four', 'max_game_rounds': None}, {'game_name': 'tic_tac_toe', 'max_game_rounds': None}]}
+2025-07-27 17:34:28,971 - __main__ - INFO - Ray disabled - using sequential execution
+2025-07-27 17:34:28,976 - simulate - INFO - Initializing environment for matrix_rps.
+2025-07-27 17:34:28,976 - board_game_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for matrix_rps
+2025-07-27 17:34:28,976 - board_game_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama3-8b-8192)
+2025-07-27 17:34:28,976 - board_game_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
+2025-07-27 17:34:30,186 - simulate - INFO - Episode 1 started with seed 42.
+2025-07-27 17:34:30,204 - LiteLLM - INFO - [92m
 
 POST Request Sent from LiteLLM:
 curl -X POST \
 https://api.groq.com/openai/v1/ \
--d '{'model': 'llama-3.1-8b-instant', 'messages': [{'role': 'user', 'content': "You are playing the game: tic_tac_toe\nand you are playing with the: x.\n\nthe current move number is: 0\nBoard state:\n\n...\n...\n... \n\nAvailable actions:[0, 1, 2, 3, 4, 5, 6, 7, 8] (cell indices)\n\n\nWhat action do you choose? Reply only with the available action number.\n\nFirst, think through the game strategy and explain your reasoning.\nOnly after that, decide on the best action to take.\n\nReply only in the following JSON format:\n{\n  'reasoning': <str>,\n  'action': <int>\n}"}], 'temperature': 0.1, 'max_tokens': 250, 'extra_body': {}}'
+-d '{'model': 'llama3-8b-8192', 'messages': [{'role': 'user', 'content': "You are Player 0 in the game: matrix_rps\n\nAvailable actions:\n0: Rock\n1: Paper\n2: Scissors\n\nWhat action do you choose? Reply only with the action number.\n\nFirst, think through the game strategy and explain your reasoning.\nOnly after that, decide on the best action to take.\n\nReply only in the following JSON format:\n{\n  'reasoning': <str>,\n  'action': <int>\n}"}], 'temperature': 0.1, 'max_tokens': 250, 'extra_body': {}}'
 [0m
 
-2025-07-26 22:58:22,740 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-07-26 22:58:22,749 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-07-26 22:58:22,757 - simulate - INFO - Board state: 
-...
-...
-...
-2025-07-26 22:58:22,757 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-2025-07-26 22:58:22,757 - simulate - INFO - Agent 0 (litellm_groq/llama-3.1-8b-instant) chose action: 4 with reasoning: In the beginning of the game, it is best to control the center of the board. This gives the most flexibility for the next move and puts pressure on the opponent to respond. By choosing the center cell, I can potentially create a winning line in any direction.
-2025-07-26 22:58:22,773 - LiteLLM - INFO - [92m
-
-POST Request Sent from LiteLLM:
-curl -X POST \
-https://api.groq.com/openai/v1/ \
--d '{'model': 'llama-3.1-8b-instant', 'messages': [{'role': 'user', 'content': "You are playing the game: tic_tac_toe\nand you are playing with the: x.\n\nthe current move number is: 2\nBoard state:\n\n.o.\n.x.\n... \n\nAvailable actions:[0, 2, 3, 5, 6, 7, 8] (cell indices)\n\n\nWhat action do you choose? Reply only with the available action number.\n\nFirst, think through the game strategy and explain your reasoning.\nOnly after that, decide on the best action to take.\n\nReply only in the following JSON format:\n{\n  'reasoning': <str>,\n  'action': <int>\n}"}], 'temperature': 0.1, 'max_tokens': 250, 'extra_body': {}}'
-[0m
-
-2025-07-26 22:58:23,250 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-07-26 22:58:23,253 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-07-26 22:58:23,259 - simulate - INFO - Board state: 
-.o.
-.x.
-...
-2025-07-26 22:58:23,259 - simulate - INFO - Legal actions: [0, 2, 3, 5, 6, 7, 8]
-2025-07-26 22:58:23,259 - simulate - INFO - Agent 0 (litellm_groq/llama-3.1-8b-instant) chose action: 0 with reasoning: As the current move number is 2, it is likely that the opponent (O) is trying to control the center of the board. To counter this, I should place my X in a position that limits the opponent\
-2025-07-26 22:58:23,281 - LiteLLM - INFO - [92m
-
-POST Request Sent from LiteLLM:
-curl -X POST \
-https://api.groq.com/openai/v1/ \
--d '{'model': 'llama-3.1-8b-instant', 'messages': [{'role': 'user', 'content': "You are playing the game: tic_tac_toe\nand you are playing with the: x.\n\nthe current move number is: 4\nBoard state:\n\nxoo\n.x.\n... \n\nAvailable actions:[3, 5, 6, 7, 8] (cell indices)\n\n\nWhat action do you choose? Reply only with the available action number.\n\nFirst, think through the game strategy and explain your reasoning.\nOnly after that, decide on the best action to take.\n\nReply only in the following JSON format:\n{\n  'reasoning': <str>,\n  'action': <int>\n}"}], 'temperature': 0.1, 'max_tokens': 250, 'extra_body': {}}'
-[0m
-
-2025-07-26 22:58:23,838 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-07-26 22:58:23,839 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-07-26 22:58:23,842 - simulate - INFO - Board state: 
-xoo
-.x.
-...
-2025-07-26 22:58:23,842 - simulate - INFO - Legal actions: [3, 5, 6, 7, 8]
-2025-07-26 22:58:23,842 - simulate - INFO - Agent 0 (litellm_groq/llama-3.1-8b-instant) chose action: 8 with reasoning: To maximize my chances of winning, I need to block the opponent\
-2025-07-26 22:58:23,842 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
-2025-07-26 22:58:23,848 - simulate - INFO - Simulation for game tic_tac_toe, Episode 1 completed.
-2025-07-26 22:58:23,849 - __main__ - INFO - Sequential simulation results for tic_tac_toe completed
-2025-07-26 22:58:23,849 - __main__ - INFO - All simulations completed. Total results: 1
+2025-07-27 17:34:30,916 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-07-27 17:34:30,928 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-07-27 17:34:30,932 - simulate - INFO - Board state: 
+Matrix game - Player 0
+2025-07-27 17:34:30,933 - simulate - INFO - Legal actions: [0, 1, 2]
+2025-07-27 17:34:30,933 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 1 with reasoning: None
+2025-07-27 17:34:30,935 - simulate - INFO - Game status: terminated with rewards dict: {0: -1.0, 1: 1.0}
+2025-07-27 17:34:30,940 - simulate - INFO - Simulation for game matrix_rps, Episode 1 completed.
+2025-07-27 17:34:30,941 - __main__ - INFO - Sequential simulation results for matrix_rps completed
+2025-07-27 17:34:30,941 - __main__ - INFO - All simulations completed. Total results: 1

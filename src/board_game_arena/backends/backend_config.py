@@ -3,8 +3,7 @@ Configuration management for LLM backends.
 """
 
 import os
-import yaml
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 
 
 class BackendConfig:
@@ -24,88 +23,27 @@ class BackendConfig:
                          "vllm_models.yaml")
         )
 
-        self.api_providers_config = os.getenv(
-            "API_PROVIDERS_CONFIG_FILE",
-            os.path.join(os.path.dirname(__file__), "..", "configs",
-                         "api_providers.yaml")
-        )
-
         # Backend selection
         self.inference_backend = os.getenv("INFERENCE_BACKEND", "litellm")
 
-        # Inference parameters
-        self.max_tokens = int(os.getenv("MAX_TOKENS", "250"))
-        self.temperature = float(os.getenv("TEMPERATURE", "0.1"))
-
-        # Load provider configuration
-        self._provider_config = self._load_provider_config()
-
-    def _load_provider_config(self) -> Dict[str, Any]:
-        """Load API provider configuration from YAML file."""
-        try:
-            with open(self.api_providers_config, 'r') as file:
-                config = yaml.safe_load(file)
-                return config.get('providers', {})
-        except FileNotFoundError:
-            raise FileNotFoundError(
-                f"API providers configuration file not found: "
-                f"{self.api_providers_config}. "
-                f"Please ensure the file configs/api_providers.yaml exists."
-            )
-        except Exception as e:
-            raise RuntimeError(f"Failed to load provider config: {e}")
+        # Default inference parameters (can be overridden by YAML config)
+        self.max_tokens = 250
+        self.temperature = 0.1
 
     def get_api_key(self, provider: str) -> str:
-        """Get API key for a specific provider."""
-        provider_lower = provider.lower()
-
-        # Check if provider exists in configuration
-        if provider_lower not in self._provider_config:
-            raise ValueError(f"Unknown provider: {provider}")
-
-        # Get the environment variable name for this provider
-        env_var = self._provider_config[provider_lower].get("api_key_env")
-        if not env_var:
-            # Fallback to standard naming convention
-            env_var = f"{provider.upper()}_API_KEY"
-
+        """Get API key for a provider using standard naming convention."""
+        env_var = f"{provider.upper()}_API_KEY"
         api_key = os.getenv(env_var)
+
         if not api_key:
-            raise ValueError(f"API key not found for {provider}. "
-                             f"Please set {env_var} in your .env file")
+            raise ValueError(f"API key not found for provider '{provider}'. "
+                             f"Please set {env_var} in your environment")
 
         return api_key
 
     def get_api_key_env_var(self, provider: str) -> str:
         """Get the environment variable name for a specific provider."""
-        provider_lower = provider.lower()
-
-        if provider_lower in self._provider_config:
-            env_var = self._provider_config[provider_lower].get("api_key_env")
-            if env_var:
-                return env_var
-
-        # Fallback to standard naming convention
         return f"{provider.upper()}_API_KEY"
-
-    def add_provider(self, provider_name: str, api_key_env: str,
-                     description: str = "") -> None:
-        """
-        Dynamically add a new API provider.
-
-        Args:
-            provider_name: Name of the provider (e.g., 'custom_ai')
-            api_key_env: Environment variable name for the API key
-            description: Optional description of the provider
-        """
-        self._provider_config[provider_name.lower()] = {
-            "api_key_env": api_key_env,
-            "description": description
-        }
-
-    def get_supported_providers(self) -> list:
-        """Get list of all supported providers."""
-        return list(self._provider_config.keys())
 
     def get_inference_params(self) -> Dict[str, Any]:
         """Get inference parameters as a dictionary."""

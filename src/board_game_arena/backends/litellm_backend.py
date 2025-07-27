@@ -128,12 +128,10 @@ class LiteLLMBackend(BaseLLMBackend):
                 ),
                 temperature=kwargs.get(
                     "temperature", inference_params["temperature"]
-            raise RuntimeError(
-                f"LiteLLM inference failed for {model_name}: {e}"
-            ) from e
+                )
             )
             return response.choices[0].message.content
         except Exception as e:
             raise RuntimeError(
                 f"LiteLLM inference failed for {model_name}: {e}"
-                ) from e
+            ) from e
