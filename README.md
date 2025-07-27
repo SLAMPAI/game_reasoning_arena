@@ -99,13 +99,13 @@ The system loads models from configuration files:
 
 ___
 ### Available Games
-- `tic_tac_toe` - Classic 3x3 grid game ✅
-- `connect_four` - Drop pieces to connect four ✅
-- `kuhn_poker` - Simple poker with hidden information ✅
-- `prisoners_dilemma` - Cooperation vs defection (matrix form) ⚠️ *
-- `matrix_pd` - Matrix form prisoner's dilemma ⚠️ *
-- `matching_pennies` - Zero-sum matching game ⚠️ *
-- `matrix_rps` - Rock-paper-scissors matrix game ⚠️ *
+- `tic_tac_toe` - Classic 3x3 grid game
+- `connect_four` - Drop pieces to connect four
+- `kuhn_poker` - Simple poker with hidden information
+- `prisoners_dilemma` - Cooperation vs defection (matrix form)
+- `matrix_pd` - Matrix form prisoner's dilemma
+- `matching_pennies` - Zero-sum matching game
+- `matrix_rps` - Rock-paper-scissors matrix game 
 
 *Note: Matrix games are currently experiencing configuration issues and may not work properly.
 
