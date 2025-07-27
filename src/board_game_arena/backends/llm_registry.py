@@ -10,7 +10,7 @@ This file provides:
 """
 
 import os
-import json
+import yaml
 from typing import Dict, Any, List
 from .litellm_backend import LiteLLMBackend
 from .vllm_backend import VLLMBackend
@@ -19,14 +19,26 @@ from .vllm_backend import VLLMBackend
 _current_dir = os.path.dirname(os.path.abspath(__file__))
 _configs_dir = os.path.join(os.path.dirname(_current_dir), "configs")
 
+
+def _load_config_file(file_path: str) -> Dict[str, Any]:
+    """Load a YAML config file."""
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return yaml.safe_load(f)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Config file not found: {file_path}")
+    except yaml.YAMLError as e:
+        raise ValueError(f"Error parsing YAML config file {file_path}: {e}")
+
+
 # Model configuration paths from environment with package-relative defaults
 LITELLM_MODELS_PATH = os.getenv(
     "LITELLM_MODELS_PATH",
-    os.path.join(_configs_dir, "litellm_models.json")
+    os.path.join(_configs_dir, "litellm_models.yaml")
 )
 VLLM_MODELS_PATH = os.getenv(
     "VLLM_MODELS_PATH",
-    os.path.join(_configs_dir, "vllm_models.json")
+    os.path.join(_configs_dir, "vllm_models.yaml")
 )
 
 # Global registry for loaded models
@@ -123,7 +135,8 @@ def generate_response(model_name: str, prompt: str, **kwargs) -> str:
 def initialize_llm_registry(user_config: Dict[str, Any] = None) -> None:
     """Initialize the global LLM registry.
 
-    Automatically loads models from both litellm_models.json and vllm_models.json.
+    Automatically loads models from both litellm_models.yaml and
+    vllm_models.yaml.
     Backend selection is automatic based on model name prefixes.
     """
     global LLM_REGISTRY, _litellm_backend, _vllm_backend
@@ -140,9 +153,8 @@ def initialize_llm_registry(user_config: Dict[str, Any] = None) -> None:
 
     # Load LiteLLM models
     try:
-        with open(LITELLM_MODELS_PATH, "r", encoding="utf-8") as f:
-            models_json = json.load(f)
-        litellm_models = models_json.get("models", [])
+        models_data = _load_config_file(LITELLM_MODELS_PATH)
+        litellm_models = models_data.get("models", [])
         available_models.extend(litellm_models)
         print(f"Loaded {len(litellm_models)} LiteLLM models")
     except FileNotFoundError:
@@ -150,8 +162,7 @@ def initialize_llm_registry(user_config: Dict[str, Any] = None) -> None:
 
     # Load vLLM models
     try:
-        with open(VLLM_MODELS_PATH, "r", encoding="utf-8") as f:
-            vllm_data = json.load(f)
+        vllm_data = _load_config_file(VLLM_MODELS_PATH)
         vllm_model_configs = vllm_data.get("models", [])
 
         # Extract just the model names from the configurations
@@ -209,9 +220,8 @@ def list_models() -> None:
 def is_litellm_model(model_name: str) -> bool:
     """Check if a model is available via LiteLLM backend."""
     try:
-        with open(LITELLM_MODELS_PATH, "r", encoding="utf-8") as f:
-            models_json = json.load(f)
-        litellm_models = set(models_json.get("models", []))
+        models_data = _load_config_file(LITELLM_MODELS_PATH)
+        litellm_models = set(models_data.get("models", []))
         return model_name in litellm_models
     except FileNotFoundError:
         return False
@@ -220,9 +230,8 @@ def is_litellm_model(model_name: str) -> bool:
 def is_vllm_model(model_name: str) -> bool:
     """Check if a model is available via vLLM backend."""
     try:
-        with open(VLLM_MODELS_PATH, "r", encoding="utf-8") as f:
-            models_json = json.load(f)
-        vllm_models = set(models_json.get("models", []))
+        models_data = _load_config_file(VLLM_MODELS_PATH)
+        vllm_models = set(models_data.get("models", []))
         return model_name in vllm_models
     except FileNotFoundError:
         return False

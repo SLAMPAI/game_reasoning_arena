@@ -10,3 +10,4 @@ __pycache__/
 # Ingore TensorFlow event files
 *.event
 *.tfevents.*
+results/

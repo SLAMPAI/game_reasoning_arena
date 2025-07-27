@@ -1,0 +1,23 @@
+# Available LiteLLM models from various providers
+# These models are accessible via API-based inference
+
+models:
+  # OpenAI models
+  - litellm_gpt-3.5-turbo
+  - litellm_gpt-4
+  - litellm_gpt-4-turbo
+
+  # Groq models (fast inference)
+  - litellm_groq/llama3-8b-8192
+  - litellm_groq/llama3-70b-8192
+  - litellm_groq/gemma-7b-it
+  - litellm_groq/gemma2-9b-it
+
+  # Together AI models
+  - litellm_together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
+  - litellm_together_ai/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo
+  - litellm_together_ai/mistralai/Mixtral-8x7B-Instruct-v0.1
+
+  # Fireworks AI models
+  - litellm_fireworks_ai/accounts/fireworks/models/llama-v3-8b-instruct
+  - litellm_fireworks_ai/accounts/fireworks/models/llama-v3-70b-instruct

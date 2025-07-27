@@ -1,6 +1,6 @@
 # Board Game Arena
 
-A framework for evaluating Large Language Models (LLMs) through strategic game-playing using Google's OpenSpiel. Test LLM decision-making capabilities in games like Tic-Tac-Toe, Connect Four, Poker, and more.
+A framework for evaluating Large Language Models (LLMs) through strategic game-playing using Google's OpenSpiel game library. Allows to test LLM decision-making capabilities in games like Tic-Tac-Toe, Connect Four, Poker, and more.
 
 
 ### Key Features
@@ -56,43 +56,28 @@ cd ..
 
 ### Test the Installation
 ```bash
-# Run a quick random vs random test
-python3 scripts/runner.py --config test_config.json
+# Run a quick test
+python3 scripts/runner.py --config test_config.yaml
 ```
 
 ___
 ### Game Examples
 ```bash
 # Different games
-python3 scripts/runner.py --config test_config.json --override env_config.game_name=connect_four
-python3 scripts/runner.py --config test_config.json --override env_config.game_name=kuhn_poker
+python3 scripts/runner.py --config test_config.yaml --override env_config.game_name=connect_four
+python3 scripts/runner.py --config test_config.yaml --override env_config.game_name=kuhn_poker
 
-# LLM vs Random (requires API key)
-python3 scripts/runner.py --config test_config.json --override \
+# LLM vs Random in a multi-episode tournament
+python3 scripts/runner.py --config test_config.yaml --override \
   agents.player_0.type=llm \
-  agents.player_0.model=litellm_groq/llama3-8b-8192
+  agents.player_0.model=litellm_groq/llama3-8b-8192 \
+  num_episodes=10
 
-# LLM vs LLM
-python3 scripts/runner.py --config test_config.json --override \
-  mode=llm_vs_llm \
-  agents.player_0.type=llm \
-  agents.player_0.model=litellm_groq/gemma-7b-it \
-  agents.player_1.type=llm \
-  agents.player_1.model=litellm_groq/llama3-70b-8192
-
-# Mixed backends (liteLLM vs vLLM)
-python3 scripts/runner.py --config test_config.json --override \
+# LLM vs LLM with mixed backends (liteLLM vs vLLM)
+python3 scripts/runner.py --config test_config.yaml --override \
   mode=llm_vs_llm \
   agents.player_0.model=litellm_groq/llama3-8b-8192 \
   agents.player_1.model=vllm_Qwen2-7B-Instruct
-
-# Multi-episode tournament
-python3 scripts/runner.py --config test_config.json --override \
-  env_config.game_name=connect_four \
-  mode=llm_vs_llm \
-  agents.player_0.model=litellm_groq/llama3-8b-8192 \
-  agents.player_1.model=litellm_groq/llama3-70b-8192 \
-  num_episodes=10
 ```
 
 ___
@@ -100,15 +85,15 @@ ___
 
 
 ### Model Naming Convention
-Models use backend prefixes for clarity:
+Models use backend prefixes:
 - **LiteLLM models**: `litellm_<provider>/<model>` (e.g., `litellm_groq/llama3-8b-8192`)
 - **vLLM models**: `vllm_<model>` (e.g., `vllm_Qwen2-7B-Instruct`)
 
 ### Backend Configuration
 
 The system loads models from configuration files:
-- `src/configs/litellm_models.json` - API-based models
-- `src/configs/vllm_models.json` - Local GPU models
+- `src/configs/litellm_models.yaml` - API-based models
+- `src/configs/vllm_models.yaml` - Local GPU models
 
 **Important**: Models must be listed in these files to be available for use.
 
@@ -124,13 +109,118 @@ ___
 
 ---
 
+## Ray Integration for Parallel Execution
+
+The Board Game Arena supports **Ray** for distributed and parallel execution, allowing you to:
+
+- **Run multiple games in parallel** across different cores/machines
+- **Parallelize episodes within games** for faster data collection
+- **Distribute LLM inference** for batch processing
+- **Scale experiments** on SLURM clusters or multi-GPU setups
+
+## Configuration System
+
+
+**Option 1: Combined Configuration File (YAML)**
+```yaml
+# Combined config with all settings in one file
+env_config:
+  game_name: tic_tac_toe
+num_episodes: 5
+agents:
+  player_0:
+    type: llm
+    model: litellm_groq/llama3-8b-8192
+  player_1:
+    type: random
+use_ray: true
+parallel_episodes: true
+ray_config:
+  num_cpus: 8
+  include_dashboard: false
+```
+
+**Option 2: Separate Ray Configuration (Recommended)**
+
+```bash
+# Use any existing config + separate Ray settings
+python3 scripts/runner.py \
+  --base-config src/board_game_arena/configs/multi_game_base.yaml \
+  --ray-config src/board_game_arena/configs/ray_config.yaml \
+  --override num_episodes=10 \
+  --override agents.player_0.model=litellm_groq/llama3-70b-8192
+```
+
+**Option 3: Command-Line Override**
+```bash
+# Enable Ray with any existing configuration
+  python3 scripts/runner.py --config test_config.yaml \
+ --override use_ray=true parallel_episodes=true
+```
+
+### Ray Configuration Options
+
+The `ray_config.yaml` file contains only Ray-specific settings:
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `use_ray` | Enable/disable Ray | `false` |
+| `parallel_episodes` | Parallelize episodes within games | `false` |
+| `ray_config.num_cpus` | Number of CPUs for Ray | Auto-detect |
+| `ray_config.num_gpus` | Number of GPUs for Ray | Auto-detect |
+| `ray_config.include_dashboard` | Enable Ray dashboard | `false` |
+| `ray_config.dashboard_port` | Dashboard port | `8265` |
+| `ray_config.object_store_memory` | Object store memory limit | Auto |
+
+
+
+**Configuration Merging Order:**
+The system merges configurations in this order (later overrides earlier):
+1. Default configuration
+2. Base config (`--base-config`)
+3. Main config (`--config`)
+4. Ray config (`--ray-config`)
+5. CLI overrides (`--override`)
+```
+
+
+
+### SLURM Integration
+
+For cluster environments, Ray automatically detects SLURM allocation:
+
+```bash
+# SLURM job with Ray
+sbatch --nodes=2 --cpus-per-task=48 --gres=gpu:4 slurm_jobs/run_simulation.sh
+```
+
+The SLURM script (`slurm_jobs/run_simulation.sh`) handles:
+- Multi-node Ray cluster setup
+- Head node and worker initialization
+- GPU allocation across nodes
+- Environment variable configuration
+
+
+**Debug Commands:**
+```bash
+# Check Ray status
+ray status
+
+# Monitor Ray dashboard (if enabled)
+# Navigate to: http://localhost:8265
+
+```
+
+---
+
 ## Usage Guide
 
 ### Command-Line Interface
 
-**Basic Syntax:**
 ```bash
+# Basic syntax
 python3 scripts/runner.py --config <config_file> [--override key=value ...]
+
 ```
 
 **Common Commands:**
@@ -142,84 +232,47 @@ python3 -c "from board_game_arena.arena.games.registry import registry; print('A
 
 ### Configuration Files
 
-Create custom JSON configuration files for different scenarios:
+Create custom YAML configuration files for different scenarios:
 
-**Simple Random vs Random:**
-```json
-{
-  "env_config": {"game_name": "tic_tac_toe"},
-  "num_episodes": 5,
-  "seed": 42,
-  "agents": {
-    "player_0": {"type": "random"},
-    "player_1": {"type": "random"}
-  }
-}
+**Simple Random vs Random (YAML):**
+```yaml
+env_config:
+  game_name: tic_tac_toe
+num_episodes: 5
+seed: 42
+agents:
+  player_0:
+    type: random
+  player_1:
+    type: random
 ```
 
-**LLM vs Random:**
-```json
-{
-  "env_config": {"game_name": "connect_four"},
-  "num_episodes": 3,
-  "seed": 123,
-  "agents": {
-    "player_0": {
-      "type": "llm",
-      "model": "litellm_groq/llama3-8b-8192"
-    },
-    "player_1": {"type": "random"}
-  },
-  "llm_backend": {
-    "max_tokens": 250,
-    "temperature": 0.1
-  }
-}
-```
-
-**LLM vs LLM (Cross-Provider):**
-```json
-{
-  "env_config": {"game_name": "kuhn_poker"},
-  "num_episodes": 10,
-  "agents": {
-    "player_0": {
-      "type": "llm",
-      "model": "litellm_groq/llama3-8b-8192"
-    },
-    "player_1": {
-      "type": "llm",
-      "model": "litellm_together_ai/meta-llama/Llama-2-7b-chat-hf"
-    }
-  }
-}
-```
 
 ### Game-Specific Examples
 ```bash
 # Tic-Tac-Toe: Quick strategy game
-python3 scripts/runner.py --config test_config.json --override \
+python3 scripts/runner.py --config test_config.yaml --override \
   env_config.game_name=tic_tac_toe \
   agents.player_0.type=llm \
   agents.player_0.model=litellm_groq/llama3-8b-8192 \
   num_episodes=5
 
 # Connect Four: Longer strategic game
-python3 scripts/runner.py --config test_config.json --override \
+python3 scripts/runner.py --config test_config.yaml --override \
   env_config.game_name=connect_four \
   agents.player_0.type=llm \
   agents.player_0.model=litellm_together_ai/meta-llama/Llama-2-7b-chat-hf \
   num_episodes=3
 
 # Kuhn Poker: Game with hidden information
-python3 scripts/runner.py --config test_config.json --override \
+python3 scripts/runner.py --config test_config.yaml --override \
   env_config.game_name=kuhn_poker \
   agents.player_0.type=llm \
   agents.player_1.type=llm \
   num_episodes=10
 
 # Prisoner's Dilemma: Multi-round cooperation
-python3 scripts/runner.py --config test_config.json --override \
+python3 scripts/runner.py --config test_config.yaml --override \
   env_config.game_name=prisoners_dilemma \
   agents.player_0.type=llm \
   agents.player_1.type=random \
@@ -245,10 +298,12 @@ board_game_arena/
 │   │   ├── envs/          # Game environments
 │   │   ├── agents/        # Agent implementations
 │   │   └── utils/         # Utilities & helpers
-│   └── configs/           # Configuration files
-│       ├── litellm_models.json
-│       ├── vllm_models.json
-│       └── example_config.json
+│   └── configs/           # Configuration files (YAML)
+│       ├── litellm_models.yaml
+│       ├── vllm_models.yaml
+│       ├── ray_config.yaml
+│       ├── kuhn_poker_llm_vs_llm.yaml
+│       └── example_config.yaml
 ├── scripts/
 │   ├── runner.py          # Main entry point
 │   └── simulate.py        # Core simulation logic
@@ -256,7 +311,7 @@ board_game_arena/
 ├── results/               # Output data (CSV, JSON)
 ├── analysis/              # Post-processing scripts
 ├── plots/                 # Generated visualizations
-├── test_config.json       # Quick test config
+├── test_config.yaml       # Quick test config
 ├── environment.yaml       # Dependencies
 ├── pyproject.toml         # Package configuration
 └── .env                   # API keys (create manually)
@@ -304,7 +359,7 @@ class MyNewGameLoader(GameLoader):
 python3 -c "from board_game_arena.arena.games.registry import registry; print(list(registry._registry.keys()))"
 
 # Test the game
-python3 scripts/runner.py --config test_config.json --override env_config.game_name=my_new_game
+python3 scripts/runner.py --config test_config.yaml --override env_config.game_name=my_new_game
 ```
 
 ### Adding a New Agent
@@ -334,20 +389,16 @@ register_agent("my_agent", MyAgent)
 ```
 
 **Step 3: Use in Configuration**
-```json
-{
-  "agents": {
-    "player_0": {
-      "type": "my_agent",
-      "model": "optional_model_parameter"
-    }
-  }
-}
+```yaml
+agents:
+  player_0:
+    type: my_agent
+    model: optional_model_parameter
 ```
 
 **Step 4: Test**
 ```bash
-python3 scripts/runner.py --config test_config.json --override \
+python3 scripts/runner.py --config test_config.yaml --override \
   agents.player_0.type=my_agent \
   agents.player_0.model=my_model
 ```
@@ -371,29 +422,6 @@ x.o
 .o.
 Winner: Player 0 (LLM)
 Scores: {'LLM_llama3-8b': 1.0, 'Random_Bot': -1.0}
-```
-
-### Connect Four Game
-```
-Current state of Connect Four:
-......
-......
-......
-...o..
-..xo..
-.xxo..
-
-LLM (groq/llama3-70b) chooses action: 3
-...
-Final state of Connect Four:
-......
-......
-..x...
-..xo..
-..xo..
-.xxo..
-Winner: Player 0 (LLM)
-Game completed in 12 moves
 ```
 
 ### Tournament Results

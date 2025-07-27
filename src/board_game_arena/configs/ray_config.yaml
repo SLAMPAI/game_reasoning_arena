@@ -1,0 +1,12 @@
+# Ray configuration for distributed and parallel execution
+# This file contains only Ray-specific settings
+
+use_ray: true
+parallel_episodes: true
+
+ray_config:
+  num_cpus: 8
+  num_gpus: 2
+  include_dashboard: false
+  dashboard_port: 8265
+  object_store_memory: null  # Auto-detect

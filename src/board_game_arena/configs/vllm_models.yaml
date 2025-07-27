@@ -1,0 +1,14 @@
+# Available vLLM models for local GPU inference
+# These models require local setup and GPU resources
+#
+# All model paths must be ABSOLUTE PATHS to the model directories
+
+models:
+  - name: vllm_Qwen2-7B-Instruct
+    model_path: /path/to/models/Qwen/Qwen2-7B-Instruct
+    tokenizer_path: /path/to/models/Qwen/Qwen2-7B-Instruct  # Optional, defaults to model_path
+    description: Qwen2 7B Instruct model for local inference
+
+  - name: vllm_Llama-2-7b-chat-hf
+    model_path: /path/to/models/meta-llama/Llama-2-7b-chat-hf
+    description: Llama2 7B Chat model

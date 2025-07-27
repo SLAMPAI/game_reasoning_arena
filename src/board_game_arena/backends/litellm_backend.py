@@ -75,11 +75,13 @@ class LiteLLMBackend(BaseLLMBackend):
         """Set API key for a specific provider."""
         try:
             api_key = self.backend_config.get_api_key(provider)
-            env_var = f"{provider.upper()}_API_KEY"
+            env_var = self.backend_config.get_api_key_env_var(provider)
             os.environ[env_var] = api_key
-        except ValueError:
+        except ValueError as e:
             # API key not found for this provider
-            pass
+            print(f"Error: {e}")
+            print(f"Skipping provider '{provider}' - models from this "
+                  f"provider will not be available")
 
     def is_model_available(self, model_name: str) -> bool:
         """Check if model is available by querying LiteLLM's validation."""
@@ -95,12 +97,15 @@ class LiteLLMBackend(BaseLLMBackend):
                 # Ensure the API key is set in environment for LiteLLM
                 self._set_api_key_for_provider(provider)
                 return True
-            except ValueError:
+            except ValueError as e:
                 # No API key for this provider
+                print(f"Error: Model '{model_name}' not available - {e}")
                 return False
 
-        except Exception:
+        except Exception as e:
             # If any error occurs, assume model is not available
+            print(f"ERROR: Error checking availability of model "
+                  f"'{model_name}': {e}")
             return False
 
     def load_model(self, model_name: str) -> Any:
@@ -118,9 +123,17 @@ class LiteLLMBackend(BaseLLMBackend):
                 messages=[
                     {"role": "user", "content": prompt}
                 ],
-                max_tokens=kwargs.get("max_tokens", inference_params["max_tokens"]),
-                temperature=kwargs.get("temperature", inference_params["temperature"])
+                max_tokens=kwargs.get(
+                    "max_tokens", inference_params["max_tokens"]
+                ),
+                temperature=kwargs.get(
+                    "temperature", inference_params["temperature"]
+            raise RuntimeError(
+                f"LiteLLM inference failed for {model_name}: {e}"
+            ) from e
             )
             return response.choices[0].message.content
         except Exception as e:
-            raise RuntimeError(f"LiteLLM inference failed for {model_name}: {e}") from e
+            raise RuntimeError(
+                f"LiteLLM inference failed for {model_name}: {e}"
+                ) from e

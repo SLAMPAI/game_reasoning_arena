@@ -18,11 +18,6 @@ from board_game_arena.arena.agents.policy_manager import initialize_policies, po
 from board_game_arena.arena.utils.loggers import SQLiteLogger
 from torch.utils.tensorboard import SummaryWriter
 
-#TODO: count the illegal moves and log them
-# from here: /Users/lucia/Desktop/LLM_research/open_spiel_arena/src/arena/envs/open_spiel_env.py
-
-# TODO: randomize the initial player order for each game instead of always starting with player 0
-
 
 logger = logging.getLogger(__name__)
 

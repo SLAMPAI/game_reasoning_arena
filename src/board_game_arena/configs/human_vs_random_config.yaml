@@ -1,0 +1,22 @@
+# Human vs Random configuration
+# Allows interactive play against a random bot
+
+env_config:
+  game_name: tic_tac_toe
+  max_game_rounds: null
+
+num_episodes: 1
+seed: 42
+use_ray: false
+mode: human_vs_random
+
+agents:
+  player_0:
+    type: human
+  player_1:
+    type: random
+
+llm_backend:
+  max_tokens: 250
+  temperature: 0.1
+  default_model: litellm_groq/llama3-8b-8192

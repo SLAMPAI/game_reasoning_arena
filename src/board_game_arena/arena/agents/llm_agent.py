@@ -9,7 +9,7 @@ import os
 import re
 import ray
 from typing import Any, Dict
-from ...backends import LLM_REGISTRY, generate_response
+from ...backends import generate_response
 from .base_agent import BaseAgent
 
 MAX_TOKENS = int(os.getenv("MAX_TOKENS", 250))
@@ -54,12 +54,22 @@ class LLMAgent(BaseAgent):
         prompt = observation.get("prompt", None)
 
         # Call batch function (use Ray if initialized, otherwise direct)
-        if ray.is_initialized():
-            action_dict = ray.get(batch_llm_decide_moves_ray.remote(
-                {0: self.model_name},
-                {0: prompt}
-            ))
-        else:
+        try:
+            if ray.is_initialized():
+                action_dict = ray.get(batch_llm_decide_moves_ray.remote(
+                    {0: self.model_name},
+                    {0: prompt}
+                ))
+            else:
+                action_dict = batch_llm_decide_moves(
+                    {0: self.model_name},
+                    {0: prompt}
+                )
+        except Exception as e:
+            logging.warning(
+                f"Error in LLM inference (Ray: {ray.is_initialized()}): {e}"
+            )
+            # Fallback to direct call if Ray fails
             action_dict = batch_llm_decide_moves(
                 {0: self.model_name},
                 {0: prompt}
@@ -128,30 +138,3 @@ def extract_reasoning(response_text: str) -> str:
     """Fixes the issue that the LLM outputs a string instead of a dictionary"""
     match = re.search(r"'reasoning'\s*:\s*'(.*?)'", response_text, re.DOTALL)
     return match.group(1) if match else "None"
-
-
-def batch_llm_decide_moves_vllm(
-    model_names: Dict[int, str],
-    prompts: Dict[int, str]
-) -> Dict[int, int]:
-    """
-    Original vLLM batch inference function.
-    Queries vLLM in batch mode to decide moves for multiple players.
-    """
-    # Load all models in use
-    llm_instances = {
-        player_id: LLM_REGISTRY[model_name]["model_loader"]()
-        for player_id, model_name in model_names.items()
-    }
-    sampling_params = SamplingParams(max_tokens=MAX_TOKENS, temperature=TEMPERATURE)
-
-    # Run batch inference for each LLM model separately
-    actions_dict = {}
-    for player_id, llm in llm_instances.items():
-        response = llm.generate([prompts[player_id]], sampling_params)[0]
-        response_text = response.outputs[0].text
-        actions_dict[player_id] = {
-            'action': extract_action(response_text),
-            'reasoning': extract_reasoning(response_text)
-        }
-    return actions_dict

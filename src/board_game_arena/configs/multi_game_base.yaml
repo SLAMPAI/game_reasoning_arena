@@ -1,0 +1,26 @@
+# Multi-game base configuration
+# Runs multiple games in sequence with the same agent setup
+
+env_configs:
+  - game_name: tic_tac_toe
+    max_game_rounds: null
+  - game_name: connect_four
+    max_game_rounds: null
+
+num_episodes: 2
+seed: 42
+mode: llm_vs_random
+
+agents:
+  player_0:
+    type: llm
+    model: litellm_groq/llama3-8b-8192
+  player_1:
+    type: random
+
+llm_backend:
+  max_tokens: 250
+  temperature: 0.1
+  default_model: litellm_groq/llama3-8b-8192
+
+log_level: INFO

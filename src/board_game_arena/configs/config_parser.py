@@ -1,12 +1,12 @@
 """
-Simple configuration system with JSON and key-value CLI overrides.
+Simple configuration system with YAML and key-value CLI overrides.
 """
 
 import os
 import argparse
-import json
+import yaml
 from typing import Any, Dict
-from ..arena.games.registry import registry # Initilizes an empty registry dictionary
+from ..arena.games.registry import registry
 
 
 def default_simulation_config() -> Dict[str, Any]:
@@ -23,23 +23,23 @@ def default_simulation_config() -> Dict[str, Any]:
         "agents": {
             "player_0": {
                 "type": "llm",
-                "model": "litellm_groq/llama-3.1-8b-instant"  # LLM player needs model
+                "model": "litellm_groq/llama-3.1-8b-instant"
             },
             "player_1": {
-                "type": "random"  # Random player doesn't need model
+                "type": "random"
             }
         },
         "llm_backend": {
             "max_tokens": 250,
             "temperature": 0.1,
-            "default_model": "litellm_groq/gemma-7b-it",  # Fallback model
+            "default_model": "litellm_groq/gemma-7b-it",
         },
         "log_level": "INFO",
     }
 
 
 def build_cli_parser() -> argparse.ArgumentParser:
-    """Creates a simple CLI parser for key-value overrides and JSON config."""
+    """Creates a simple CLI parser for key-value overrides and YAML config."""
     parser = argparse.ArgumentParser(
         description="Game Simulation Configuration",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -47,7 +47,19 @@ def build_cli_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--config",
         type=str,
-        help="Path to a JSON config file or raw JSON string.",
+        help="Path to a YAML config file.",
+    )
+
+    parser.add_argument(
+        "--ray-config",
+        type=str,
+        help="Path to a Ray-specific YAML config file to merge.",
+    )
+
+    parser.add_argument(
+        "--base-config",
+        type=str,
+        help="Path to a base YAML config file (merged first).",
     )
 
     # LLM Backend Configuration
@@ -80,45 +92,57 @@ def build_cli_parser() -> argparse.ArgumentParser:
         "--override",
         nargs="*",
         metavar="KEY=VALUE",
-        help="Key-value overrides for configuration (e.g., game_name=tic_tac_toe).",
+        help="Key-value overrides for configuration.",
     )
     return parser
 
 
 def parse_config(args: argparse.Namespace) -> Dict[str, Any]:
-    """Parses the configuration, merging JSON config and CLI overrides.
-
-       Validates the configuration against the game requirements.
     """
-    # Default config
+    Parses the configuration, merging multiple YAML configs and CLI overrides.
+
+    Order of precedence (later overrides earlier):
+    1. Default config
+    2. Base config file (--base-config)
+    3. Main config file (--config)
+    4. Ray config file (--ray-config)
+    5. CLI overrides (--override)
+
+    Validates the configuration against the game requirements.
+    """
+    # Start with default config
     config = default_simulation_config()
 
-    # Update with JSON config (if provided)
+    # Merge base config first (if provided)
+    if hasattr(args, 'base_config') and args.base_config:
+        base_config = load_config(args.base_config)
+        config = deep_merge_dicts(config, base_config)
+
+    # Merge main config (if provided)
     if args.config:
-        if args.config.strip().startswith("{"):
-            # Raw JSON string
-            json_config = json.loads(args.config)
-        else:
-            # JSON file
-            with open(args.config, "r") as f:
-                json_config = json.load(f)
-        config.update(json_config)
+        main_config = load_config(args.config)
+        config = deep_merge_dicts(config, main_config)
+
+    # Merge Ray config (if provided)
+    if hasattr(args, 'ray_config') and args.ray_config:
+        ray_config = load_config(args.ray_config)
+        config = deep_merge_dicts(config, ray_config)
 
     # Apply specific CLI arguments for LLM backend
-    if args.backend:
+    if hasattr(args, 'backend') and args.backend:
         config["llm_backend"]["inference_backend"] = args.backend
 
-    if args.model:
+    if hasattr(args, 'model') and args.model:
         config["llm_backend"]["default_model"] = args.model
 
-    if args.max_tokens:
+    if hasattr(args, 'max_tokens') and args.max_tokens:
         config["llm_backend"]["max_tokens"] = args.max_tokens
 
-    if args.temperature is not None:
+    if hasattr(args, 'temperature') and args.temperature is not None:
         config["llm_backend"]["temperature"] = args.temperature
 
     # Apply CLI key-value overrides (if provided)
-    if args.override:
+    if hasattr(args, 'override') and args.override:
         for override in args.override:
             key, value = override.split("=", 1)
             config = apply_override(config, key, value)
@@ -130,95 +154,170 @@ def parse_config(args: argparse.Namespace) -> Dict[str, Any]:
     return config
 
 
-def apply_backend_config(llm_config: Dict[str, Any]) -> None:
-    """Apply LLM backend configuration to environment variables."""
-    # Set environment variables for the backend system
-    # Note: INFERENCE_BACKEND is no longer needed - automatic detection based on model prefixes
-    os.environ["MAX_TOKENS"] = str(llm_config["max_tokens"])
-    os.environ["TEMPERATURE"] = str(llm_config["temperature"])
+def load_config(config_path: str) -> Dict[str, Any]:
+    """
+    Load configuration from YAML file.
 
+    Args:
+        config_path: Path to YAML file
 
-def get_available_models() -> list:
-    """Get list of available models from the backend system."""
+    Returns:
+        Dictionary containing the configuration
+
+    Raises:
+        ValueError: If file format is not supported or parsing fails
+    """
     try:
-        from ..backends import (initialize_llm_registry,
-                               get_available_models as get_models
-                               )
-        # Initialize the LLM registry to load models
-        initialize_llm_registry()
-        return get_models()
-    except ImportError:
-        print("Warning: Backend system not available")
-        return []
+        with open(config_path, "r", encoding="utf-8") as f:
+            return yaml.safe_load(f)
+    except yaml.YAMLError as e:
+        raise ValueError(f"Invalid YAML file {config_path}: {e}")
+    except FileNotFoundError:
+        raise ValueError(f"Config file not found: {config_path}")
 
 
-def apply_override(config: Dict[str, Any], key: str, value: str) -> Dict[str, Any]:
-    """Applies a key-value override to the configuration."""
+def deep_merge_dicts(
+    base: Dict[str, Any],
+    override: Dict[str, Any]
+) -> Dict[str, Any]:
+    """
+    Recursively merge two dictionaries, with override taking precedence.
+
+    Args:
+        base: Base dictionary
+        override: Dictionary to merge into base (takes precedence)
+
+    Returns:
+        Merged dictionary
+    """
+    result = base.copy()
+
+    for key, value in override.items():
+        if (key in result and
+                isinstance(result[key], dict) and
+                isinstance(value, dict)):
+            # Recursively merge nested dictionaries
+            result[key] = deep_merge_dicts(result[key], value)
+        else:
+            # Override or add the value
+            result[key] = value
+
+    return result
+
+
+def apply_override(
+        config: Dict[str, Any],
+        key: str, value: str
+        ) -> Dict[str, Any]:
+    """
+    Apply a single key-value override to the configuration.
+
+    Supports nested keys using dot notation (e.g., "env_config.game_name").
+
+    Args:
+        config: Configuration dictionary to modify
+        key: Key path (supports dot notation)
+        value: String value to set
+
+    Returns:
+        Modified configuration dictionary
+    """
+    # Parse nested keys (e.g., "env_config.game_name")
     keys = key.split(".")
+
+    # Navigate to the parent dictionary
     current = config
+    for k in keys[:-1]:
+        if k not in current:
+            current[k] = {}
+        current = current[k]
 
-    for i, k in enumerate(keys[:-1]):
-        # Handle dictionary keys
-        if k.isdigit():
-            k = int(k)  # Convert index to integer
-            if not isinstance(current, dict) or k not in current:
-                raise ValueError(f"Invalid key '{k}' in override '{key}'")
-        current = current.setdefault(k, {}) # type: ignore
-
-    # Handle the final key
+    # Set the final value with type conversion
     final_key = keys[-1]
-    if final_key.isdigit():
-        final_key = int(final_key)
-        if not isinstance(current, dict) or final_key not in current:
-            raise ValueError(f"Invalid key '{final_key}' in override '{key}'")
-    current[final_key] = parse_value(value)  # type: ignore
+    current[final_key] = convert_value_type(value)
 
     return config
 
 
-def parse_value(value: str) -> Any:
-    """Converts a string value to the appropriate type (int, float, bool, etc.)."""
+def convert_value_type(value: str) -> Any:
+    """
+    Convert string value to appropriate Python type.
+
+    Args:
+        value: String representation of the value
+
+    Returns:
+        Converted value (bool, int, float, or str)
+    """
+    # Handle boolean values
+    if value.lower() in ["true", "yes", "1"]:
+        return True
+    elif value.lower() in ["false", "no", "0"]:
+        return False
+    elif value.lower() in ["none", "null"]:
+        return None
+
+    # Try numeric conversion
     try:
-        return json.loads(value)  # Automatically parses JSON types
-    except json.JSONDecodeError:
-        return value  # Leave as string if parsing fails
+        # Try integer first
+        if "." not in value:
+            return int(value)
+        else:
+            return float(value)
+    except ValueError:
+        # Return as string if conversion fails
+        return value
+
+
+def apply_backend_config(llm_config: Dict[str, Any]) -> None:
+    """
+    Apply LLM backend configuration to environment variables.
+
+    Args:
+        llm_config: LLM backend configuration dictionary
+    """
+    # Set environment variables for backend configuration
+    if "inference_backend" in llm_config:
+        os.environ["LLM_BACKEND"] = llm_config["inference_backend"]
+
+    if "default_model" in llm_config:
+        os.environ["DEFAULT_MODEL"] = llm_config["default_model"]
 
 
 def validate_config(config: Dict[str, Any]) -> None:
-    """Validates the configuration dict."""
-    # Get the single game configuration
-    env_config = config.get("env_config", {})
-    if not env_config.get("game_name"):
-        raise ValueError("Missing 'game_name' in env_config")
+    """
+    Validate the configuration for common issues.
 
-    game_name = env_config["game_name"]
-    num_players = registry.get_game_loader(game_name)().num_players()
+    Args:
+        config: Configuration dictionary to validate
 
-    # Check for agents key
-    if "agents" not in config:
-        raise ValueError("Missing 'agents' configuration")
+    Raises:
+        ValueError: If configuration is invalid
+    """
+    # Validate game name
+    game_name = config.get("env_config", {}).get("game_name")
+    if not game_name:
+        raise ValueError("Game name is required in env_config.game_name")
 
-    # Check if the number of agents matches the number of players
-    if len(config["agents"]) != num_players:
+    # Check if game is registered
+    if game_name not in registry._registry:
+        available_games = list(registry._registry.keys())
         raise ValueError(
-            f"Game '{game_name}' requires {num_players} players, "
-            f"but {len(config['agents'])} agents were provided."
+            f"Game '{game_name}' not found. "
+            f"Available games: {available_games}"
         )
 
-    # Validate agent configs and types
-    valid_agent_types = {"human", "random", "llm"}
-    for i in range(num_players):
-        player_key = f"player_{i}"
-        agent_config = config["agents"].get(player_key)
-        if agent_config is None:
-            raise ValueError(f"Missing agent configuration for {player_key}")
-        agent_type = agent_config["type"].lower()
-        if agent_type not in valid_agent_types:
-            raise ValueError(f"Unsupported agent type: '{agent_type}'")
-        if agent_type == "llm" and not agent_config.get("model"):
-            # Use default model if not specified
-            default_model = config.get("llm_backend", {}).get("default_model")
-            if default_model:
-                agent_config["model"] = default_model
-            else:
-                raise ValueError(f"LLM agent '{player_key}' must specify a model")
+    # Validate agent configurations
+    agents = config.get("agents", {})
+    for player_id, agent_config in agents.items():
+        if "type" not in agent_config:
+            raise ValueError(f"Agent {player_id} missing 'type' field")
+
+        agent_type = agent_config["type"]
+        if agent_type == "llm" and "model" not in agent_config:
+            raise ValueError(f"LLM agent {player_id} missing 'model' field")
+
+    # Validate episode count
+    num_episodes = config.get("num_episodes", 1)
+    if not isinstance(num_episodes, int) or num_episodes < 1:
+        raise ValueError("num_episodes must be a positive integer")

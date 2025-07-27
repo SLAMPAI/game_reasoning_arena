@@ -2,9 +2,9 @@
 vLLM backend for local GPU LLM inference.
 """
 
-import json
 import os
-from typing import List, Any, Optional
+from typing import Any, List, Optional
+import yaml
 from .base_backend import BaseLLMBackend
 
 
@@ -32,8 +32,8 @@ class VLLMBackend(BaseLLMBackend):
         """Load available models from vLLM configuration."""
         if self._models is None:
             try:
-                with open(self.config_file, 'r') as f:
-                    config_data = json.load(f)
+                with open(self.config_file, 'r', encoding='utf-8') as f:
+                    config_data = yaml.safe_load(f)
 
                 self._models = []
 
@@ -141,12 +141,14 @@ class VLLMBackend(BaseLLMBackend):
             print(f"Successfully loaded vLLM model: {model_name}")
             return model
 
-        except ImportError:
+        except ImportError as exc:
             raise ImportError(
-                "vLLM is not installed. Please install it to use local inference."
-            )
+                "vLLM is not installed. Please install it to use local "
+                "inference."
+            ) from exc
         except Exception as e:
-            raise RuntimeError(f"Failed to load vLLM model {model_name}: {e}")
+            raise RuntimeError(
+                f"Failed to load vLLM model {model_name}: {e}") from e
 
     def generate_response(self, model_name: str, prompt: str, **kwargs) -> str:
         """Generate response using vLLM."""
@@ -173,7 +175,7 @@ class VLLMBackend(BaseLLMBackend):
                 return ""
 
         except Exception as e:
-            raise RuntimeError(f"vLLM generation failed: {e}")
+            raise RuntimeError(f"vLLM generation failed: {e}") from e
 
     def cleanup(self):
         """Clean up loaded models."""

@@ -1,0 +1,25 @@
+# LLM vs LLM configuration for Kuhn Poker
+# This config sets up a game between two different LLM models
+
+env_config:
+  game_name: kuhn_poker
+  max_game_rounds: null
+
+num_episodes: 3
+seed: 123
+mode: llm_vs_llm
+
+agents:
+  player_0:
+    type: llm
+    model: litellm_groq/llama3-8b-8192
+  player_1:
+    type: llm
+    model: litellm_groq/gemma-7b-it
+
+llm_backend:
+  max_tokens: 300
+  temperature: 0.2
+  default_model: litellm_groq/llama3-8b-8192
+
+log_level: INFO

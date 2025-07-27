@@ -99,30 +99,24 @@ pip install vllm
 ```
 
 ### Configuration
-Models are configured in `src/configs/vllm_models.json` with explicit model and tokenizer paths:
-```json
-{
-  "models": [
-    {
-      "name": "vllm_Qwen2-7B-Instruct",
-      "model_path": "/path/to/models/Qwen/Qwen2-7B-Instruct",
-      "tokenizer_path": "/path/to/models/Qwen/Qwen2-7B-Instruct",
-      "description": "Qwen2 7B Instruct model for local inference"
-    },
-    {
-      "name": "vllm_llama2-7b-chat",
-      "model_path": "/path/to/models/llama2-7b-chat",
-      "tokenizer_path": "/path/to/models/llama2-7b-chat",
-      "description": "Llama2 7B Chat model"
-    }
-  ]
-}
+Models are configured in `src/configs/vllm_models.yaml` with absolute paths to model directories:
+
+```yaml
+models:
+  - name: vllm_Qwen2-7B-Instruct
+    model_path: /path/to/models/Qwen/Qwen2-7B-Instruct
+    tokenizer_path: /path/to/models/Qwen/Qwen2-7B-Instruct  # Optional
+    description: Qwen2 7B Instruct model for local inference
+
+  - name: vllm_custom-model
+    model_path: /absolute/path/to/custom-model
+    description: Custom model
 ```
 
 **Configuration fields:**
 - `name`: Model identifier with `vllm_` prefix for automatic backend detection
-- `model_path`: Absolute path to the model files (required)
-- `tokenizer_path`: Path to tokenizer files (optional, defaults to model_path)
+- `model_path`: **Absolute path** to model files (required)
+- `tokenizer_path`: **Absolute path** to tokenizer files (optional, defaults to model_path)
 - `description`: Human-readable description (optional)
 
 ### Usage
@@ -145,26 +139,172 @@ The system automatically uses both backends based on model prefixes:
 
 This allows you to mix multiple inference providers in the same configuration.
 
+## Adding New Providers and Models
+
+### Adding a New API Provider
+You can add new API providers in two ways:
+
+#### Method 1: Configuration File (Recommended)
+Edit `src/board_game_arena/configs/api_providers.yaml`:
+
+```yaml
+providers:
+  # Existing providers...
+
+  # Add your new provider
+  my_custom_ai:
+    api_key_env: "MY_CUSTOM_AI_API_KEY"
+    description: "My Custom AI Provider"
+```
+
+Then set the environment variable:
+```bash
+export MY_CUSTOM_AI_API_KEY="your_api_key_here"
+```
+
+#### Method 2: Runtime Registration
+Add providers programmatically in your code:
+
+```python
+from board_game_arena.backends.backend_config import config
+
+# Add a new provider at runtime
+config.add_provider(
+    provider_name="custom_ai",
+    api_key_env="CUSTOM_AI_API_KEY",
+    description="Custom AI Provider"
+)
+
+# Now you can use it
+api_key = config.get_api_key("custom_ai")
+```
+
+### Adding Models to LiteLLM Backend
+
+To add new LiteLLM models, edit `src/board_game_arena/configs/litellm_models.yaml`:
+
+```yaml
+models:
+  # Add new models with the litellm_ prefix
+  - litellm_my_custom_ai/my-model-v1
+```
+
+### Adding Models to vLLM Backend
+
+To add new vLLM models, edit `src/board_game_arena/configs/vllm_models.yaml`:
+
+```yaml
+models:
+  # Existing models...
+
+  # Add new models with absolute paths
+  - name: vllm_custom-model-7b
+    model_path: /home/user/models/custom-models/my-model-7b
+    description: My custom 7B model
+
+  - name: vllm_Llama-2-13b-chat-hf
+    model_path: /home/user/models/meta-llama/Llama-2-13b-chat-hf
+    description: Llama2 13B Chat model
+```
+
+**Important for vLLM models**: Unlike API-based models, vLLM requires the actual model files to be downloaded and stored locally on your machine.
+
+#### Setting up Local Models
+
+1. **Choose a directory** for storing your models:
+```bash
+mkdir -p /home/user/models
+cd /home/user/models
+```
+
+2. **Download models using huggingface-hub**:
+```bash
+pip install huggingface-hub
+
+# Example: Download Llama-2-7b-chat-hf
+python -c "from huggingface_hub import snapshot_download; snapshot_download('meta-llama/Llama-2-7b-chat-hf', local_dir='./meta-llama/Llama-2-7b-chat-hf')"
+```
+
+3. **Update your configuration with the absolute paths**:
+```yaml
+models:
+  - name: vllm_Llama-2-7b-chat-hf
+    model_path: /home/user/models/meta-llama/Llama-2-7b-chat-hf
+    description: Llama2 7B Chat model
+```### Environment Variables for New Providers
+
+4. After adding a provider, set the corresponding environment variable:
+
+```bash
+# In your .env file
+CUSTOM_AI_API_KEY="your_key_here""
+```
+
+### Verifying New Providers
+You can check what providers are supported:
+
+```python
+from board_game_arena.backends.backend_config import config
+
+# List all supported providers
+providers = config.get_supported_providers()
+print(f"Supported providers: {providers}")
+```
+
+### Model Naming Best Practices
+
+- **LiteLLM models**: Always prefix with `litellm_`
+  - Format: `litellm_<provider>/<model_name>`
+  - Examples: `litellm_openai/gpt-4`, `litellm_groq/llama3-8b-8192`
+
+- **vLLM models**: Always prefix with `vllm_`
+  - Format: `vllm_<model_name>`
+  - Examples: `vllm_Llama-2-7b-chat-hf`, `vllm_Qwen2-7B-Instruct`
+
+### Complete Example: Adding a New Provider
+
+1. **Add to configuration** (`configs/api_providers.yaml`):
+```yaml
+providers:
+  perplexity:
+    api_key_env: "PERPLEXITY_API_KEY"
+    description: "Perplexity AI API"
+```
+
+2. **Add models** (`configs/litellm_models.yaml`):
+```yaml
+models:
+  - litellm_perplexity/llama-3.1-sonar-small-128k-online
+  - litellm_perplexity/llama-3.1-sonar-large-128k-online
+```
+
+3. **Set environment variable**:
+```bash
+export PERPLEXITY_API_KEY="pplx-your-api-key"
+```
+
+4. **Use in your configuration**:
+```yaml
+agents:
+  player_0:
+    type: "llm"
+    model: "litellm_perplexity/llama-3.1-sonar-small-128k-online"
+```
+
+### Configuration Files
+- `configs/api_providers.yaml` - API provider settings
+- `configs/litellm_models.yaml` - Available LiteLLM models
+- `configs/vllm_models.yaml` - Available vLLM models
+
+
 ## Troubleshooting
 
 ### LiteLLM Issues
 - Ensure API keys are set (OPENAI_API_KEY, ANTHROPIC_API_KEY, etc.)
 - Check model names match provider documentation
-- Verify network connectivity
 
 ### vLLM Issues
 - Ensure CUDA is properly installed
 - Check GPU memory availability
-- Verify model files exist in `MODELS_DIR`
+- Verify model files exist at the specified absolute paths
 - Try reducing `gpu_memory_utilization` in config
-
-## Performance Comparison
-
-| Aspect | LiteLLM | vLLM |
-|--------|---------|------|
-| Setup Time | Minutes | Hours |
-| First Request | Fast | Slow (model loading) |
-| Subsequent Requests | Fast | Very Fast |
-| GPU Memory | None | High |
-| Cost | Pay per token | Hardware cost |
-| Model Variety | High | Limited to downloaded |
