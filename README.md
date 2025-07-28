@@ -10,6 +10,16 @@ A framework for evaluating Large Language Models (LLMs) through strategic game-p
 - **Extensible**: Easy to add new games and agents
 
 ___
+### Available Games
+- `tic_tac_toe` - Classic 3x3 grid game
+- `connect_four` - Drop pieces to connect four
+- `kuhn_poker` - Simple poker with hidden information
+- `prisoners_dilemma` - Cooperation vs defection (matrix form)
+- `matrix_pd` - Matrix form prisoner's dilemma
+- `matching_pennies` - Zero-sum matching game
+- `matrix_rps` - Rock-paper-scissors matrix game
+
+___
 
 ## Installation
 
@@ -268,16 +278,6 @@ agents:
 ```
 
 ___
-### Available Games
-- `tic_tac_toe` - Classic 3x3 grid game
-- `connect_four` - Drop pieces to connect four
-- `kuhn_poker` - Simple poker with hidden information
-- `prisoners_dilemma` - Cooperation vs defection (matrix form)
-- `matrix_pd` - Matrix form prisoner's dilemma
-- `matching_pennies` - Zero-sum matching game
-- `matrix_rps` - Rock-paper-scissors matrix game
-
----
 
 ## Project Structure
 
