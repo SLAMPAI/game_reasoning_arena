@@ -2,7 +2,6 @@
 
 A framework for evaluating Large Language Models (LLMs) through strategic game-playing using Google's OpenSpiel game library. Allows to test LLM decision-making capabilities in games like Tic-Tac-Toe, Connect Four, Poker, and more.
 
-
 ### Key Features
 - **Multi-Agent Testing**: LLMs vs Random, LLM vs LLM, Self-play
 - **Multiple Game Types**: Strategy, poker, cooperation, zero-sum games
@@ -80,9 +79,41 @@ agents.player_0.model=litellm_groq/llama3-8b-8192 \
 agents.player_1.model=vllm_Qwen2-7B-Instruct
 ```
 
-___
-## Configuration
+#### Game-Specific Examples
+```bash
+# Tic-Tac-Toe: Quick strategy game
+python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+  env_config.game_name=tic_tac_toe \
+  agents.player_0.type=llm \
+  agents.player_0.model=litellm_groq/llama3-8b-8192 \
+  num_episodes=5
 
+# Connect Four: Longer strategic game
+python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+  env_config.game_name=connect_four \
+  agents.player_0.type=llm \
+  agents.player_0.model=litellm_together_ai/meta-llama/Llama-2-7b-chat-hf \
+  num_episodes=3
+
+# Kuhn Poker: Game with hidden information
+python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+  env_config.game_name=kuhn_poker \
+  agents.player_0.type=llm \
+  agents.player_0.model=litellm_groq/llama3-8b-8192 \
+  agents.player_1.type=llm \
+  agents.player_1.model=litellm_groq/llama3-8b-8192 \
+  num_episodes=10
+
+# Tic-Tac-Toe LLM vs Random: Classic strategy game
+python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+  env_config.game_name=tic_tac_toe \
+  agents.player_0.type=llm \
+  agents.player_1.type=random \
+  num_episodes=5
+```
+___
+
+## Configuration
 
 ### Model Naming Convention
 Models use backend prefixes:
@@ -97,19 +128,7 @@ The system loads models from configuration files:
 
 **Important**: Models must be listed in these files to be available for use.
 
-___
-### Available Games
-- `tic_tac_toe` - Classic 3x3 grid game
-- `connect_four` - Drop pieces to connect four
-- `kuhn_poker` - Simple poker with hidden information
-- `prisoners_dilemma` - Cooperation vs defection (matrix form)
-- `matrix_pd` - Matrix form prisoner's dilemma
-- `matching_pennies` - Zero-sum matching game
-- `matrix_rps` - Rock-paper-scissors matrix game 
 
-*Note: Matrix games are currently experiencing configuration issues and may not work properly.
-
----
 
 ## Ray Integration for Parallel Execution
 
@@ -183,7 +202,6 @@ The system merges configurations in this order (later overrides earlier):
 3. Main config (`--config`)
 4. Ray config (`--ray-config`)
 5. CLI overrides (`--override`)
-```
 
 
 
@@ -249,39 +267,15 @@ agents:
     type: random
 ```
 
-
-### Game-Specific Examples
-```bash
-# Tic-Tac-Toe: Quick strategy game
-python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
-  env_config.game_name=tic_tac_toe \
-  agents.player_0.type=llm \
-  agents.player_0.model=litellm_groq/llama3-8b-8192 \
-  num_episodes=5
-
-# Connect Four: Longer strategic game
-python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
-  env_config.game_name=connect_four \
-  agents.player_0.type=llm \
-  agents.player_0.model=litellm_together_ai/meta-llama/Llama-2-7b-chat-hf \
-  num_episodes=3
-
-# Kuhn Poker: Game with hidden information
-python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
-  env_config.game_name=kuhn_poker \
-  agents.player_0.type=llm \
-  agents.player_0.model=litellm_groq/llama3-8b-8192 \
-  agents.player_1.type=llm \
-  agents.player_1.model=litellm_groq/llama3-8b-8192 \
-  num_episodes=10
-
-# Tic-Tac-Toe LLM vs Random: Classic strategy game
-python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
-  env_config.game_name=tic_tac_toe \
-  agents.player_0.type=llm \
-  agents.player_1.type=random \
-  num_episodes=5
-```
+___
+### Available Games
+- `tic_tac_toe` - Classic 3x3 grid game
+- `connect_four` - Drop pieces to connect four
+- `kuhn_poker` - Simple poker with hidden information
+- `prisoners_dilemma` - Cooperation vs defection (matrix form)
+- `matrix_pd` - Matrix form prisoner's dilemma
+- `matching_pennies` - Zero-sum matching game
+- `matrix_rps` - Rock-paper-scissors matrix game
 
 ---
 
@@ -306,7 +300,6 @@ board_game_arena/
 │       ├── litellm_models.yaml
 │       ├── vllm_models.yaml
 │       ├── ray_config.yaml
-│       ├── kuhn_poker_llm_vs_llm.yaml
 │       └── example_config.yaml
 ├── scripts/
 │   ├── runner.py          # Main entry point
@@ -461,11 +454,9 @@ We welcome contributions! Here's how to get started:
 5. Submit a pull request with a detailed explanation of your changes.
 
 
-
 ### Code Guidelines
 - Follow PEP 8 for Python code style
 - Add docstrings to new functions and classes
-- Include type hints where appropriate
 - Write unit tests for new features
 - Update documentation as needed
 
