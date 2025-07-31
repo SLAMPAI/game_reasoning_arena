@@ -11,7 +11,9 @@ dependencies:
   - pytorch
   - torchvision
   - numpy
-  - pyyaml  
+  - pyyaml
+  - sphinx
+  - sphinx-rtd-theme
   - pip:
       - ray
       - open-spiel
