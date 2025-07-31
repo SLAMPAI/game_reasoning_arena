@@ -1,6 +1,10 @@
 # Configuration file for the Sphinx documentation builder.
 
 import os
+import sys
+
+# Add the src directory to the Python path for autodoc
+sys.path.insert(0, os.path.abspath('../src'))
 
 # -- Project information -----------------------------------------------------
 project = 'Board Game Arena'
@@ -10,8 +14,10 @@ release = '1.0.0'
 
 # -- General configuration ---------------------------------------------------
 extensions = [
+    'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
+    'sphinx.ext.intersphinx',
 ]
 
 templates_path = ['_templates']

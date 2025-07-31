@@ -9,7 +9,7 @@ import gymnasium as gym
 
 from typing import Dict, Any
 from .open_spiel_env import OpenSpielEnv
-from games.registry import registry # Initilizes an empty registry dict for the games
+from ..games.registry import registry # Initializes an empty registry dict for the games
 import logging
 
 # Configure logger
