@@ -19,11 +19,11 @@ Here's a basic example of running a Connect Four game:
 
    # Initialize environment
    env = EnvInitializer.create_env("connect_four")
-   
+
    # Create agents
    agent1 = LLMAgent(name="LLM_Player", model="gpt-3.5-turbo")
    agent2 = RandomAgent(name="Random_Player")
-   
+
    # Run simulation
    result = env.simulate_game([agent1, agent2])
    print(f"Winner: {result['winner']}")
@@ -44,7 +44,7 @@ Running a tournament across multiple games:
    # Load configuration
    with open('multi_game_config.yaml', 'r') as f:
        config = yaml.safe_load(f)
-   
+
    # Run tournament
    results = run_simulation(config)
 
@@ -61,13 +61,13 @@ Creating a custom agent:
    class MyCustomAgent(BaseAgent):
        def __init__(self, name="CustomAgent"):
            super().__init__(name)
-       
+
        def get_action(self, state, legal_actions):
            # Custom logic here
            if len(legal_actions) > 0:
                return random.choice(legal_actions)
            return None
-       
+
        def reset(self):
            pass
 
@@ -80,10 +80,10 @@ Analyzing Agent Behavior
 .. code-block:: python
 
    from board_game_arena.analysis.reasoning_analysis import analyze_reasoning
-   
+
    # Analyze game logs
    results = analyze_reasoning("run_logs/experiment_results.json")
-   
+
    # Generate visualizations
    results.plot_reasoning_patterns()
    results.save_analysis_report("analysis_report.html")

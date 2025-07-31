@@ -128,16 +128,16 @@ Example:
 .. code-block:: python
 
    from .base_env import BaseEnv
-   
+
    class NewGameEnv(BaseEnv):
        def __init__(self, config):
            super().__init__(config)
            # Game-specific initialization
-       
+
        def reset(self):
            # Reset game state
            pass
-       
+
        def step(self, action):
            # Execute action and return new state
            pass
