@@ -1,11 +1,10 @@
-'''
-policy_manager.py
+"""
+Policy Manager
 
 Policy assignment, initialization, and mapping.
-A policy is a class (human, llm, random)
-that receives an observation (board state) and returns an action (move).
-'''
-
+A policy is a class (human, llm, random) that receives an observation 
+(board state) and returns an action (move).
+"""
 
 import logging
 from typing import Dict, Any

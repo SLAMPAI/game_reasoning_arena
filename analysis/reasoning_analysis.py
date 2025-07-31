@@ -1,3 +1,11 @@
+"""
+Reasoning Analysis Module
+
+This module analyzes LLM reasoning patterns in game play data.
+It categorizes reasoning types, generates visualizations, and creates
+word clouds and statistical summaries of agent behavior patterns.
+"""
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns

@@ -1,4 +1,9 @@
-''' Base class for simulating games.'''
+"""
+Base Game Simulator (Legacy)
+
+Legacy base class for simulating games. Contains core simulation logic
+and player management functionality for OpenSpiel-based games.
+"""
 
 import os
 import json

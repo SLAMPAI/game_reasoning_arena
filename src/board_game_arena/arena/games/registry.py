@@ -1,8 +1,10 @@
-# In registry.py
-'''Game registry for OpenSpiel Arena.
+"""
+Game Registry
+
+Game registry for OpenSpiel Arena.
 This module provides a registry for game loaders and environments.
 Games can be loaded and instantiated based on their configuration.
-'''
+"""
 
 from typing import Dict, Any, Callable, Type, Optional, List
 from importlib import import_module

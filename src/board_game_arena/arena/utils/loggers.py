@@ -1,7 +1,10 @@
-'''
+"""
+SQLite Logger
+
 SQLiteLogger class for logging agent decisions and game results into a SQLite database.
-This class provides methods to log moves, rewards, and game results, as well as retrieve this data for analysis.
-'''
+This class provides methods to log moves, rewards, and game results, 
+as well as retrieve this data for analysis.
+"""
 
 import sqlite3
 import os

@@ -1,7 +1,12 @@
+"""
+vLLM Test Script
+
+Test script for validating vLLM integration and GPU-based inference.
+Requires GPU access and won't run on login nodes - only interactive or SLURM.
+"""
+
 from vllm import LLM, SamplingParams
 
-
-'''Requires GPU (won't run on a login mode - only interactive or SLURM)'''
 
 def generate_text(model_name: str, prompt: str, max_tokens: int = 100) -> str:
     """Generate text using vLLM.

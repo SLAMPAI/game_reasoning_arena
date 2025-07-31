@@ -1,3 +1,10 @@
+"""
+LiteLLM Test Script
+
+Test script for validating LiteLLM integration with various API providers.
+Tests compatibility with Together AI, Fireworks AI, and Groq API endpoints.
+"""
+
 import os
 import litellm
 

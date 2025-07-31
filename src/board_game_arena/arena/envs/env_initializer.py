@@ -1,3 +1,10 @@
+"""
+Environment Initializer
+
+Factory functions for creating and initializing OpenSpiel environments
+based on configuration parameters.
+"""
+
 import gymnasium as gym
 
 from typing import Dict, Any

@@ -1,3 +1,11 @@
+"""
+Resource Cleanup Utilities
+
+Provides functions for cleaning up various resources including LLMs, GPU memory,
+Ray clusters, and multiprocessing resources to prevent memory leaks and 
+ensure proper shutdown.
+"""
+
 import atexit
 import multiprocessing
 import contextlib
