@@ -6,7 +6,7 @@ version: 2
 
 # Set the OS, Python version, and other tools you might need
 build:
-  os: ubuntu-24.04
+  os: ubuntu-22.04
   tools:
     python: "3.10"
 
@@ -14,6 +14,6 @@ build:
 sphinx:
    configuration: docs/conf.py
 
-# Use conda environment for dependencies
+# Try conda again (but this was causing your original issue)
 conda:
   environment: environment.yaml

@@ -1,45 +1,48 @@
-Board Game Arena Documentation
-==============================
+Board Game Arena
+================
 
-Welcome to the Board Game Arena documentation. This project provides a comprehensive framework for training and evaluating AI agents in various board games using state-of-the-art language models and reinforcement learning techniques.
+Welcome to Board Game Arena - a research platform for training and evaluating AI agents in board games.
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-   installation
-   quickstart
-   api_reference
-   examples
-   contributing
-
-Overview
---------
-
-Board Game Arena is a research platform that enables:
-
-* Training AI agents using Large Language Models (LLMs)
-* Evaluating agent performance across multiple board games
-* Comparing different agent strategies and architectures
-* Analyzing game-playing behavior and decision-making patterns
-
-Key Features
+Installation
 ------------
 
-* **Multi-Game Support**: Supports various games including Connect Four, Tic-Tac-Toe, Kuhn Poker, and more
-* **LLM Integration**: Seamless integration with various language models via LiteLLM and vLLM backends
-* **Flexible Agent Framework**: Easy-to-extend agent architecture for custom implementations
-* **Comprehensive Analysis**: Built-in tools for analyzing agent behavior and game outcomes
-* **Scalable Execution**: Ray-based distributed computing for large-scale experiments
+.. code-block:: bash
 
-Getting Started
----------------
+   git clone https://github.com/lcipolina/board_game_arena.git
+   cd board_game_arena
+   conda env create -f environment.yaml
+   conda activate board_game_arena
+   pip install -e .
 
-To get started with Board Game Arena, see the :doc:`installation` guide and then check out the :doc:`quickstart` tutorial.
+Quick Start
+-----------
 
-Indices and tables
-==================
+.. code-block:: python
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   from board_game_arena.arena.envs.env_initializer import EnvInitializer
+   from board_game_arena.arena.agents.random_agent import RandomAgent
+   
+   # Create a Connect Four environment
+   env = EnvInitializer.create_env("connect_four")
+   
+   # Create random agents
+   agent1 = RandomAgent(name="Player1")
+   agent2 = RandomAgent(name="Player2")
+   
+   # Run a game
+   result = env.simulate_game([agent1, agent2])
+   print(f"Winner: {result['winner']}")
+
+Features
+--------
+
+* Multi-game support (Connect Four, Tic-Tac-Toe, Kuhn Poker, etc.)
+* LLM agent integration via LiteLLM and vLLM
+* Flexible agent framework
+* Comprehensive analysis tools
+* Ray-based distributed computing
+
+Repository
+----------
+
+* GitHub: https://github.com/lcipolina/board_game_arena
