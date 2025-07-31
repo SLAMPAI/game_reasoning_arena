@@ -1,48 +1,47 @@
-Board Game Arena
-================
+Welcome to Board Game Arena's documentation!
+============================================
 
-Welcome to Board Game Arena - a research platform for training and evaluating AI agents in board games.
+Board Game Arena is a research platform for training and evaluating AI agents in board games using Large Language Models and reinforcement learning techniques.
 
-Installation
-------------
+.. toctree::
+   :caption: Getting Started
+   :maxdepth: 2
 
-.. code-block:: bash
+   installation
+   quickstart
 
-   git clone https://github.com/lcipolina/board_game_arena.git
-   cd board_game_arena
-   conda env create -f environment.yaml
-   conda activate board_game_arena
-   pip install -e .
+.. toctree::
+   :caption: Core Framework
+   :maxdepth: 2
 
-Quick Start
------------
+   api_reference
+   games
+   agents
 
-.. code-block:: python
+.. toctree::
+   :caption: Analysis & Evaluation
+   :maxdepth: 2
 
-   from board_game_arena.arena.envs.env_initializer import EnvInitializer
-   from board_game_arena.arena.agents.random_agent import RandomAgent
+   analysis
+   experiments
 
-   # Create a Connect Four environment
-   env = EnvInitializer.create_env("connect_four")
+.. toctree::
+   :caption: Examples & Tutorials
+   :maxdepth: 2
 
-   # Create random agents
-   agent1 = RandomAgent(name="Player1")
-   agent2 = RandomAgent(name="Player2")
+   examples
+   tutorials
 
-   # Run a game
-   result = env.simulate_game([agent1, agent2])
-   print(f"Winner: {result['winner']}")
+.. toctree::
+   :caption: Developer Guide
+   :maxdepth: 2
 
-Features
---------
+   contributing
+   extending
 
-* Multi-game support (Connect Four, Tic-Tac-Toe, Kuhn Poker, etc.)
-* LLM agent integration via LiteLLM and vLLM
-* Flexible agent framework
-* Comprehensive analysis tools
-* Ray-based distributed computing
+.. toctree::
+   :caption: Extra Information
+   :maxdepth: 2
 
-Repository
-----------
-
-* GitHub: https://github.com/lcipolina/board_game_arena
+   changelog
+   license

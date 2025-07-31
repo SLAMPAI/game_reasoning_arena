@@ -1,91 +1,60 @@
-Quickstart
-==========
+Quick Start
+===========
 
-This guide will help you run your first experiment with Board Game Arena.
+Get up and running with Board Game Arena in minutes.
 
-Basic Usage
------------
-
-1. **Configure your experiment**
-
-   Create a configuration file or use one of the provided examples:
-
-   .. code-block:: bash
-
-      cp src/board_game_arena/configs/example_config.yaml my_experiment.yaml
-
-2. **Run a simple simulation**
-
-   .. code-block:: bash
-
-      python scripts/simulate.py --config my_experiment.yaml
-
-3. **Analyze results**
-
-   Results will be saved in the `run_logs/` directory. You can use the analysis tools:
-
-   .. code-block:: bash
-
-      python analysis/reasoning_analysis.py
-
-Example: Human vs Random Agent
--------------------------------
-
-Run a quick test with a human player against a random agent:
+Installation
+------------
 
 .. code-block:: bash
 
-   python scripts/simulate.py --config src/board_game_arena/configs/human_vs_random_config.yaml
+   git clone https://github.com/lcipolina/board_game_arena.git
+   cd board_game_arena
+   conda env create -f environment.yaml
+   conda activate board_game_arena
+   pip install -e .
 
-Example: LLM vs LLM
--------------------
-
-To run an experiment with two LLM agents:
-
-.. code-block:: bash
-
-   python scripts/simulate.py --config src/board_game_arena/configs/kuhn_poker_llm_vs_llm.yaml
-
-Configuration Files
--------------------
-
-Configuration files define:
-
-* **Game settings**: Which game to play, number of rounds
-* **Agent configuration**: Types of agents and their parameters
-* **Backend settings**: LLM providers and model configurations
-* **Logging**: Output directories and analysis options
-
-Example configuration:
-
-.. code-block:: yaml
-
-   game:
-     name: "connect_four"
-     num_episodes: 10
-
-   agents:
-     - type: "llm"
-       model: "gpt-3.5-turbo"
-       name: "Player1"
-     - type: "random"
-       name: "Player2"
-
-   backend:
-     provider: "litellm"
-
-Available Games
+Your First Game
 ---------------
 
-* Connect Four
-* Tic-Tac-Toe
-* Kuhn Poker
-* Chess (basic support)
-* Hex
+Run a simple game using the command-line interface:
 
-Next Steps
-----------
+.. code-block:: bash
 
-* Explore the :doc:`api_reference` for detailed API documentation
-* Check out :doc:`examples` for more complex use cases
-* Learn about :doc:`contributing` to the project
+   # Run a Tic-Tac-Toe game with random agents
+   python scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+     env_configs.0.game_name=tic_tac_toe \
+     agents.player_0.type=random \
+     agents.player_1.type=random \
+     num_episodes=1
+
+.. code-block:: bash
+
+   # Run a Connect Four game
+   python scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+     env_configs.0.game_name=connect_four \
+     agents.player_0.type=random \
+     agents.player_1.type=random \
+     num_episodes=1
+
+LLM vs Random Agent
+-------------------
+
+Try an LLM agent against a random player:
+
+.. code-block:: bash
+
+   python scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+     env_configs.0.game_name=kuhn_poker \
+     agents.player_0.type=llm \
+     agents.player_0.model=litellm_groq/llama3-8b-8192 \
+     agents.player_1.type=random \
+     num_episodes=5
+
+What's Next?
+------------
+
+* Learn about :doc:`games` supported by the platform
+* Explore different :doc:`agents` types
+* Check out detailed :doc:`examples`
+* Read the full :doc:`api_reference`

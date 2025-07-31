@@ -473,8 +473,8 @@ If you found this work useful, please consider citing:
 
 ```
 @article{cipolina-kun2025board_game_arena,
-    title={},
-    author={},
+    title={Board Game Arena: A Framework and Benchmark for Assessing Large Language Models},
+    author={Lucia Cipolina-Kun and  Marianna Nezhurina and Jenia Jitsev},
     year={2025},
     journal={arXiv},
     url={https://arxiv.org/abs/2}

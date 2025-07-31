@@ -21,6 +21,15 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 
+# RTD theme options to keep navigation expanded
+html_theme_options = {
+    'collapse_navigation': False,
+    'sticky_navigation': True,
+    'navigation_depth': 4,
+    'includehidden': True,
+    'titles_only': False
+}
+
 # Create _static directory if it doesn't exist
 if not os.path.exists('_static'):
     os.makedirs('_static')
