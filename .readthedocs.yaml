@@ -1,19 +1,13 @@
-# Read the Docs configuration file
-# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
-
-# Required
 version: 2
 
-# Set the OS, Python version, and other tools you might need
 build:
   os: ubuntu-22.04
   tools:
     python: "3.10"
 
-# Build documentation in the "docs/" directory with Sphinx
 sphinx:
-   configuration: docs/conf.py
+  configuration: docs/conf.py
 
-# Try conda again (but this was causing your original issue)
-conda:
-  environment: environment.yaml
+python:
+  install:
+    - requirements: docs/requirements.txt
