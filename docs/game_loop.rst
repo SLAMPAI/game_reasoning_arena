@@ -3,7 +3,8 @@ Game Loop & Environment Design
 
 Board Game Arena follows a **multi-agent reinforcement learning paradigm** built on top of OpenSpiel, providing a Gymnasium-like interface for board game interactions. This design enables seamless integration with RL frameworks while supporting diverse agent types including LLMs, random agents, and human players.
 
-## Reinforcement Learning Paradigm
+Reinforcement Learning Paradigm
+--------------------------------
 
 The framework implements the standard **agent-environment interaction loop** from reinforcement learning:
 
@@ -19,7 +20,8 @@ The framework implements the standard **agent-environment interaction loop** fro
                                        reward +
                                     next observation
 
-### Key Components
+Key Components
+~~~~~~~~~~~~~~
 
 **Environment (OpenSpielEnv)**
   - Wraps OpenSpiel games in a Gymnasium-compatible interface
@@ -48,11 +50,13 @@ The framework implements the standard **agent-environment interaction loop** fro
   - Computed using OpenSpiel's built-in reward functions
   - Available at each step (sparse) or episode termination (dense)
 
-## Gymnasium Compatibility
+Gymnasium Compatibility
+------------------------
 
 Board Game Arena closely follows the **Gymnasium API standard**:
 
-### Environment Interface
+Environment Interface
+~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -63,7 +67,8 @@ Board Game Arena closely follows the **Gymnasium API standard**:
        action_dict = {current_player: agent.compute_action(observation)}
        observation, reward, terminated, truncated, info = env.step(action_dict)
 
-### Key Similarities
+Key Similarities
+~~~~~~~~~~~~~~~~
 
 ==================== ===================== ================================
 **Gymnasium**        **Board Game Arena**  **Description**
@@ -77,7 +82,8 @@ Action space         Legal actions list    Valid moves for current state
 Reward signal        Reward dictionary     Per-player reward values
 ==================== ===================== ================================
 
-### Multi-Agent Extensions
+Multi-Agent Extensions
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Board Game Arena extends Gymnasium for **multi-agent scenarios**:
 
@@ -89,11 +95,13 @@ Board Game Arena extends Gymnasium for **multi-agent scenarios**:
    # Simultaneous games (like Rock-Paper-Scissors)
    action_dict = {0: action_0, 1: action_1}
 
-## RLLib Multi-Agent Compatibility
+RLLib Multi-Agent Compatibility
+--------------------------------
 
 The framework is designed with **RLLib multi-agent training** in mind:
 
-### Policy Mapping
+Policy Mapping
+~~~~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -107,7 +115,8 @@ The framework is designed with **RLLib multi-agent training** in mind:
        1: RandomAgent()
    }
 
-### Action Computation
+Action Computation
+~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
@@ -119,7 +128,8 @@ The framework is designed with **RLLib multi-agent training** in mind:
    actions = {player: agent(observations[player])
              for player in active_players}
 
-### Episode Management
+Episode Management
+~~~~~~~~~~~~~~~~~~
 
 The simulation loop mirrors RLLib's training workflow:
 
@@ -146,9 +156,11 @@ The simulation loop mirrors RLLib's training workflow:
 
        return episode_rewards
 
-## Game Loop Architecture
+Game Loop Architecture
+----------------------
 
-### Turn-Based Games
+Turn-Based Games
+~~~~~~~~~~~~~~~~
 
 For sequential games like Chess or Tic-Tac-Toe:
 
@@ -171,7 +183,8 @@ For sequential games like Chess or Tic-Tac-Toe:
            # Handle illegal action (terminate episode)
            break
 
-### Simultaneous Games
+Simultaneous Games
+~~~~~~~~~~~~~~~~~~
 
 For concurrent games like Rock-Paper-Scissors:
 
@@ -189,7 +202,8 @@ For concurrent games like Rock-Paper-Scissors:
        # 3. Apply all actions together
        obs, rewards, terminated, truncated, info = env.step(action_dict)
 
-### Chance Node Handling
+Chance Node Handling
+~~~~~~~~~~~~~~~~~~~~
 
 OpenSpiel games often include chance events (card dealing, dice rolls):
 
@@ -202,7 +216,8 @@ OpenSpiel games often include chance events (card dealing, dice rolls):
            action = random.choices(outcomes, probabilities)[0]
            self.state.apply_action(action)
 
-## Observation Structure
+Observation Structure
+---------------------
 
 Observations follow a **rich dictionary format** providing comprehensive game information:
 
@@ -214,7 +229,8 @@ Observations follow a **rich dictionary format** providing comprehensive game in
        "prompt": "You are playing Tic-Tac-Toe\\n..."  # Formatted for LLMs
    }
 
-### Per-Agent Observations
+Per-Agent Observations
+~~~~~~~~~~~~~~~~~~~~~~
 
 Each agent receives **player-specific information**:
 
@@ -223,7 +239,8 @@ Each agent receives **player-specific information**:
 - **Legal actions**: Only moves valid for that specific player
 - **Context prompts**: Tailored natural language descriptions for LLM agents
 
-## Action Space Design
+Action Space Design
+-------------------
 
 Actions are represented as **integer indices** corresponding to OpenSpiel's action encoding:
 
@@ -236,9 +253,10 @@ Actions are represented as **integer indices** corresponding to OpenSpiel's acti
 
    # Connect Four: columns 0-6
    # Kuhn Poker: 0=Pass, 1=Bet
-   # Chess: encoded move indices
 
-### Action Validation
+
+Action Validation
+~~~~~~~~~~~~~~~~~
 
 The framework provides **automatic legal action checking**:
 
@@ -251,19 +269,23 @@ The framework provides **automatic legal action checking**:
        logger.error(f"Illegal action {chosen_action} by player {current_player}")
        env.truncated = True
 
-## Reward Structure
+Reward Structure
+----------------
 
 Rewards follow **OpenSpiel's game-theoretic conventions**:
 
-### Zero-Sum Games
+Zero-Sum Games
+~~~~~~~~~~~~~~
 - Winner: +1, Loser: -1, Draw: 0
 - Total rewards sum to zero across all players
 
-### Cooperative Games
+Cooperative Games
+~~~~~~~~~~~~~~~~~
 - Shared objectives with aligned reward signals
 - All players receive same reward for joint success
 
-### Reward Timing
+Reward Timing
+~~~~~~~~~~~~~
 .. code-block:: python
 
    # Sparse rewards (typical)
@@ -273,31 +295,9 @@ Rewards follow **OpenSpiel's game-theoretic conventions**:
    # Dense rewards (optional)
    rewards = {0: step_reward, 1: step_reward}  # Each step
 
-## Integration Benefits
 
-This design enables seamless integration with:
-
-**RL Training Frameworks**
-  - RLLib, Stable-Baselines3, OpenAI Gym
-  - Multi-agent policy optimization (MAPPO, MADDPG)
-  - Self-play and population-based training
-
-**LLM Research**
-  - Chain-of-thought reasoning analysis
-  - Few-shot learning in strategic contexts
-  - Human-AI collaboration studies
-
-**Evaluation Metrics**
-  - ELO rating systems for agent ranking
-  - Strategic diversity analysis
-  - Sample efficiency comparisons
-
-**Reproducibility**
-  - Deterministic seeding across all components
-  - Comprehensive logging of decisions and reasoning
-  - Standardized benchmarking protocols
-
-## See Also
+See Also
+--------
 
 - :doc:`agents` - Detailed agent implementation guide
 - :doc:`games` - Available game environments
