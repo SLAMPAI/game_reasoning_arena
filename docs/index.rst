@@ -48,6 +48,7 @@ Available Games
    :maxdepth: 2
 
    game_loop
+   backends
    api_reference
    games
    agents
