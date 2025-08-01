@@ -204,6 +204,15 @@ The `ray_config.yaml` file contains only Ray-specific settings:
 | `ray_config.object_store_memory` | Object store memory limit | Auto |
 
 
+**Debug Commands:**
+```bash
+# Check Ray status
+ray status
+
+# Monitor Ray dashboard (if enabled)
+# Navigate to: http://localhost:8265
+
+```
 
 **Configuration Merging Order:**
 The system merges configurations in this order (later overrides earlier):
@@ -212,8 +221,6 @@ The system merges configurations in this order (later overrides earlier):
 3. Main config (`--config`)
 4. Ray config (`--ray-config`)
 5. CLI overrides (`--override`)
-
-
 
 ### SLURM Integration
 
@@ -229,17 +236,6 @@ The SLURM script (`slurm_jobs/run_simulation.sh`) handles:
 - Head node and worker initialization
 - GPU allocation across nodes
 - Environment variable configuration
-
-
-**Debug Commands:**
-```bash
-# Check Ray status
-ray status
-
-# Monitor Ray dashboard (if enabled)
-# Navigate to: http://localhost:8265
-
-```
 
 ---
 

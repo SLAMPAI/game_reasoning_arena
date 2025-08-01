@@ -87,6 +87,7 @@ The codebase is organized as follows:
    :caption: Core Framework
    :maxdepth: 2
 
+   game_loop
    api_reference
    games
    agents
