@@ -254,6 +254,8 @@ Actions are represented as **integer indices** corresponding to OpenSpiel's acti
    # Connect Four: columns 0-6
    # Kuhn Poker: 0=Pass, 1=Bet
 
+.. note::
+   All action indices are validated against OpenSpiel's legal action constraints to ensure game rule compliance.
 
 Action Validation
 ~~~~~~~~~~~~~~~~~
