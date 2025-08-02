@@ -7,27 +7,30 @@ and stores results in 'results/'.
 """
 
 import sqlite3
-import glob
-import os
 import json
+from pathlib import Path
 import pandas as pd
 from datetime import datetime
 
+
 def merge_sqlite_logs(log_dir: str = "results/") -> pd.DataFrame:
     """
-    Merges all SQLite log files in the specified directory into a single DataFrame.
+    Merges all SQLite log files in the specified directory into a
+    single DataFrame.
 
     Args:
         log_dir (str): Directory where agent-specific SQLite logs are stored.
 
     Returns:
-        pd.DataFrame: Merged DataFrame containing all moves, rewards, and game outcomes.
+        pd.DataFrame: Merged DataFrame containing all moves, rewards,
+        and game outcomes.
     """
     all_moves = []
     all_results = []
 
     # Find all SQLite files in the specified directory
-    sqlite_files = glob.glob(os.path.join(log_dir, "*.db"))
+    log_path = Path(log_dir)
+    sqlite_files = list(log_path.glob("*.db"))
     if not sqlite_files:
         print(f"No SQLite files found in {log_dir}")
         return pd.DataFrame()
@@ -35,7 +38,7 @@ def merge_sqlite_logs(log_dir: str = "results/") -> pd.DataFrame:
     for db_file in sqlite_files:
 
         # Extract agent name from the SQLite file name
-        agent_name = os.path.basename(db_file).replace(".db", "")
+        agent_name = db_file.stem
 
         # Connect to the SQLite database
         conn = sqlite3.connect(db_file)
@@ -87,6 +90,7 @@ def merge_sqlite_logs(log_dir: str = "results/") -> pd.DataFrame:
 
     return df_full
 
+
 def compute_summary_statistics(df: pd.DataFrame) -> dict:
     """
     Computes summary statistics from the merged results DataFrame.
@@ -125,13 +129,14 @@ def save_summary(summary: dict, output_dir: str = "results/") -> str:
     Returns:
         str: The path to the saved JSON file.
     """
-    os.makedirs(output_dir, exist_ok=True)
+    Path(output_dir).mkdir(parents=True, exist_ok=True)
     timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
-    file_path = os.path.join(output_dir, f"merged_game_results_{timestamp}.json")
+    file_path = Path(output_dir) / f"merged_game_results_{timestamp}.json"
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=4)
     print(f"Summary saved to {file_path}")
-    return file_path
+    return str(file_path)
+
 
 ###########################################################
 # Main entry point
@@ -153,8 +158,9 @@ def main():
     merged_df = merged_df[column_order]
 
     # Save logs for review - saves the reasoning behind each move !
-    os.makedirs("results", exist_ok=True)
-    merged_csv = os.path.join("results", f"merged_logs_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.csv")
+    Path("results").mkdir(exist_ok=True)
+    timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
+    merged_csv = Path("results") / f"merged_logs_{timestamp}.csv"
     merged_df = merged_df.drop(columns=["result_timestamp"], errors="ignore")     # Drop verbose or unnecessary fields
     merged_df.to_csv(merged_csv, index=False)
     print(f"Merged logs saved as CSV to {merged_csv}")

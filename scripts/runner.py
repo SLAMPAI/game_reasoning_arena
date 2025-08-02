@@ -7,29 +7,30 @@ Entry point for game simulations.
 Handles Ray initialization, SLURM environment variables, and orchestration.
 """
 
-import os
-import sys
-
-# Ensure the src directory is in the Python path
-current_dir = os.path.dirname(os.path.abspath(__file__))
-src_dir = os.path.join(current_dir, "..", "src")
-sys.path.insert(0, os.path.abspath(src_dir))
-
-
 import logging
+import resource
 import subprocess
-import ray
+import sys
+from pathlib import Path
 from typing import Any, Dict, List, Tuple
+
+import ray
 from dotenv import load_dotenv
 
 from simulate import simulate_game
 from board_game_arena.arena.utils.cleanup import full_cleanup
 from board_game_arena.arena.utils.seeding import set_seed
-from board_game_arena.configs.config_parser import build_cli_parser, parse_config
+from board_game_arena.configs.config_parser import (
+    build_cli_parser,
+    parse_config
+)
 
+# Ensure the src directory is in the Python path
+current_dir = Path(__file__).parent
+src_dir = current_dir / ".." / "src"
+sys.path.insert(0, str(src_dir.resolve()))
 
 # Set the soft and hard core file size limits to 0 (disable core dumps)
-import resource
 resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
 
 # Load environment variables from .env file
@@ -236,11 +237,11 @@ def main():
         run_simulation(config)
 
         print("Running post-game processing...")
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        script_path = os.path.join(
-            current_dir, "..", "analysis", "post_game_processing.py"
+        current_dir = Path(__file__).parent
+        script_path = (
+            current_dir / ".." / "analysis" / "post_game_processing.py"
         )
-        subprocess.run(["python3", script_path], check=True)
+        subprocess.run(["python3", str(script_path)], check=True)
 
         print("Simulation completed.")
 

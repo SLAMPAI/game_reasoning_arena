@@ -2,7 +2,7 @@
 Resource Cleanup Utilities
 
 Provides functions for cleaning up various resources including LLMs, GPU memory,
-Ray clusters, and multiprocessing resources to prevent memory leaks and 
+Ray clusters, and multiprocessing resources to prevent memory leaks and
 ensure proper shutdown.
 """
 
@@ -10,11 +10,11 @@ import atexit
 import multiprocessing
 import contextlib
 import gc
+from pathlib import Path
 import torch
 import ray
-import os
-import glob
 from torch.utils.tensorboard import SummaryWriter
+
 
 def full_cleanup(backend_type: str = "litellm"):
     """Cleans up all resources: LLMs, GPUs, Ray, and multiprocessing."""
@@ -66,8 +66,8 @@ def full_cleanup(backend_type: str = "litellm"):
 atexit.register(full_cleanup)
 
 
-def cleanup_tensorboard_logs(log_dir: str = "runs/kuhn_poker",
-                             keep_last: int = 5):
+def cleanup_old_tensorboard_logs(log_dir: str = "runs/",
+                                 keep_last: int = 5):
     """
     Deletes older TensorBoard logs to save disk space.
 
@@ -75,21 +75,20 @@ def cleanup_tensorboard_logs(log_dir: str = "runs/kuhn_poker",
         log_dir (str): The directory where TensorBoard logs are stored.
         keep_last (int): Number of most recent logs to keep.
     """
-    if not os.path.exists(log_dir):
+    log_path = Path(log_dir)
+    if not log_path.exists():
         return  # No logs to delete
 
-    files = sorted(
-        glob.glob(os.path.join(log_dir, "events.out.tfevents.*")),
-        key=os.path.getmtime
-    )
+    log_files = list(log_path.glob("events.out.tfevents.*"))
+    files = sorted(log_files, key=lambda f: f.stat().st_mtime)
 
     # Delete all but the most recent 'keep_last' logs
     for file in files[:-keep_last]:
         try:
-            os.remove(file)
+            file.unlink()
             print(f"Deleted old TensorBoard log: {file}")
         except OSError as e:
-            print(f"Failed to delete {file}: {e}")
+            print(f"Error deleting {file}: {e}")
 
 
 # Call cleanup before initializing TensorBoard logging

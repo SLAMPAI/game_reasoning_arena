@@ -3,6 +3,7 @@ Configuration management for LLM backends.
 """
 
 import os
+from pathlib import Path
 from typing import Dict, Any
 
 
@@ -11,16 +12,16 @@ class BackendConfig:
 
     def __init__(self):
         # Default paths - can be overridden by environment variables
+        config_dir = Path(__file__).parent / ".." / "configs"
+
         self.litellm_config = os.getenv(
             "LITELLM_CONFIG_FILE",
-            os.path.join(os.path.dirname(__file__), "..", "configs",
-                        "litellm_models.yaml")
+            str(config_dir / "litellm_models.yaml")
         )
 
         self.vllm_config = os.getenv(
             "VLLM_CONFIG_FILE",
-            os.path.join(os.path.dirname(__file__), "..", "configs",
-                         "vllm_models.yaml")
+            str(config_dir / "vllm_models.yaml")
         )
 
         # Backend selection

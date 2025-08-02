@@ -5,9 +5,8 @@ This module provides shared utility functions for logging, configuration,
 and other cross-cutting concerns.
 """
 
-import os
 import json
-import logging
+from pathlib import Path
 from tabulate import tabulate
 from games.registry import registry
 from typing import Dict, Any, List
@@ -23,6 +22,7 @@ def save_results(game_name: str, final_scores: List[float], state: Any):
         json.dump(results, f, indent=4)
     print(f"Results saved to {filename}")
 
+
 def prepare_results(game_name: str, final_scores: List[float], state: Any) -> Dict[str, Any]:
     return {
         "game_name": game_name,
@@ -31,10 +31,12 @@ def prepare_results(game_name: str, final_scores: List[float], state: Any) -> Di
         "history": state.history_str(),
     }
 
+
 def get_results_filename(game_name: str) -> str:
-    results_dir = "results"
-    os.makedirs(results_dir, exist_ok=True)
-    return os.path.join(results_dir, f"{game_name.lower().replace(' ', '_')}_results.json")
+    results_dir = Path("results")
+    results_dir.mkdir(exist_ok=True)
+    filename = f"{game_name.lower().replace(' ', '_')}_results.json"
+    return str(results_dir / filename)
 
 
 def print_total_scores(game_name: str, summary: Dict[str, Any]):
@@ -70,7 +72,6 @@ def get_win_rate(db_conn, llm_name):  #TODO: use this!
 
     win_rate = (total_wins / total_games) * 100 if total_games > 0 else 0
     return win_rate
-
 
 
 def plot_action_distribution(db_conn, llm_name): #TODO: use this!

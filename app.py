@@ -1,36 +1,42 @@
-import os
-import json
+
+''' Used by the Gradio app to display game results, leaderboards,
+and performance metrics for LLM agents.
+'''
+
 import sqlite3
-import glob
 import pandas as pd
 import gradio as gr
-from datetime import datetime
-from typing import Dict, List
+from pathlib import Path
+from typing import List
 
 # Directory to store SQLite results
-db_dir = "results/"
+db_dir = Path("results")
+
 
 def find_or_download_db():
     """Check if SQLite .db files exist; if not, attempt to download from cloud storage."""
-    if not os.path.exists(db_dir):
-        os.makedirs(db_dir)
-    db_files = glob.glob(os.path.join(db_dir, "*.db"))
+    if not db_dir.exists():
+        db_dir.mkdir(parents=True, exist_ok=True)
+    db_files = list(db_dir.glob("*.db"))
 
     # Ensure the random bot database exists
-    if "results/random_None.db" not in db_files:
+    random_db_path = db_dir / "random_None.db"
+    if random_db_path not in db_files:
         raise FileNotFoundError("Please upload results for the random agent in a file named 'random_None.db'.")
 
-    return db_files
+    return [str(f) for f in db_files]
+
 
 def extract_agent_info(filename: str):
     """Extract agent type and model name from the filename."""
-    base_name = os.path.basename(filename).replace(".db", "")
+    base_name = Path(filename).stem
     parts = base_name.split("_", 1)
     if len(parts) == 2:
         agent_type, model_name = parts
     else:
         agent_type, model_name = parts[0], "Unknown"
     return agent_type, model_name
+
 
 def get_available_games(include_aggregated=True) -> List[str]:
     """Extracts all unique game names from all SQLite databases. Includes 'Aggregated Performance' only when required."""
@@ -52,6 +58,7 @@ def get_available_games(include_aggregated=True) -> List[str]:
     if include_aggregated:
         game_list.insert(0, "Aggregated Performance")  # Ensure 'Aggregated Performance' is always first
     return game_list
+
 
 def extract_illegal_moves_summary()-> pd.DataFrame:
     """Extracts the number of illegal moves made by each LLM agent.
@@ -75,6 +82,7 @@ def extract_illegal_moves_summary()-> pd.DataFrame:
         summary.append({"agent_name": model_name, "illegal_moves": count})
         conn.close()
     return pd.DataFrame(summary)
+
 
 def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
     """Extract and aggregate leaderboard stats from all SQLite databases."""

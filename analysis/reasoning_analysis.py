@@ -14,7 +14,6 @@ import numpy as np
 import re
 import os
 from typing import List, Optional
-import glob
 from transformers import pipeline
 from pathlib import Path
 
@@ -64,10 +63,10 @@ class LLMReasoningAnalyzer:
         Returns:
             Path to the most recent CSV file.
         """
-        files = glob.glob(os.path.join(folder, "merged_logs_*.csv"))
+        files = list(Path(folder).glob("merged_logs_*.csv"))
         if not files:
-            raise FileNotFoundError("No log files found in folder")
-        files.sort(key=lambda f: os.path.basename(f).split("_")[2], reverse=True)
+            return None
+        files.sort(key=lambda f: f.name.split("_")[2], reverse=True)
         return files[0]
 
     def _preprocess(self) -> None:
@@ -146,7 +145,7 @@ class LLMReasoningAnalyzer:
     def compute_metrics(self, output_csv: str = "agent_metrics_summary.csv", plot_dir: str = "plots") -> None:
         """Compute metrics for each agent and game."""
 
-        os.makedirs(plot_dir, exist_ok=True)
+        Path(plot_dir).mkdir(parents=True, exist_ok=True)
         game_summary = self.summarize_games()
         rows = []
         for (game, agent), group_df in self.df.groupby(["game_name", "agent_name"]):
@@ -176,7 +175,7 @@ class LLMReasoningAnalyzer:
             plt.title(f"Reasoning Type Distribution - {agent}\n(Game: {game})")
             plt.ylabel("")
             plt.tight_layout()
-            plt.savefig(os.path.join(plot_dir, f"pie_reasoning_type_{agent}_{game}.png"))
+            plt.savefig(Path(plot_dir) / f"pie_reasoning_type_{agent}_{game}.png")
             plt.close()
 
     # Aggregate heatmap for each agent across all games
@@ -228,7 +227,7 @@ class LLMReasoningAnalyzer:
         a general heatmap per agent showing all turns merged across all games.
         Useful for seeing broad reasoning type patterns.
         """
-        os.makedirs(output_dir, exist_ok=True)
+        Path(output_dir).mkdir(parents=True, exist_ok=True)
         for (agent, game), df_agent in self.df.groupby(["agent_name", "game_name"]):
             if agent.startswith("random"):
                 continue
@@ -253,7 +252,7 @@ class LLMReasoningAnalyzer:
         over all games. The full version helps summarize LLM behavior globally.
         """
 
-        os.makedirs(output_dir, exist_ok=True)
+        Path(output_dir).mkdir(parents=True, exist_ok=True)
         for (agent, game), agent_df in self.df.groupby(["agent_name", "game_name"]):
             if agent.startswith("random"):
                 continue
@@ -276,7 +275,7 @@ class LLMReasoningAnalyzer:
         throughout the game, based on Shannon entropy of reasoning types.
         Higher entropy means more varied reasoning types.
         """
-        os.makedirs(output_dir, exist_ok=True)
+        Path(output_dir).mkdir(parents=True, exist_ok=True)
         for (agent, game), df_group in self.df.groupby(["agent_name", "game_name"]):
             if agent.startswith("random"):
                 continue
@@ -302,7 +301,7 @@ class LLMReasoningAnalyzer:
         highlighting agents that adapt their reasoning more flexibly.
         Useful to detect which models generalize or explore more.
         """
-        os.makedirs(output_dir, exist_ok=True)
+        Path(output_dir).mkdir(parents=True, exist_ok=True)
         for game, df_game in self.df.groupby("game_name"):
             plt.figure()
             for agent, df_agent in df_game.groupby("agent_name"):
@@ -330,7 +329,7 @@ class LLMReasoningAnalyzer:
         evolves globally across gameplay.
         """
 
-        os.makedirs(output_dir, exist_ok=True)
+        Path(output_dir).mkdir(parents=True, exist_ok=True)
         plt.figure()
         df_all = self.df[~self.df['agent_name'].str.startswith("random")]
         avg_entropy = (

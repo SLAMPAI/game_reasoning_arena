@@ -5,8 +5,8 @@ Legacy base class for simulating games. Contains core simulation logic
 and player management functionality for OpenSpiel-based games.
 """
 
-import os
 import json
+from pathlib import Path
 from typing import Dict, Any, List
 from abc import ABC
 import random
@@ -255,9 +255,10 @@ class GameSimulator(ABC):
 
     def _get_results_filename(self) -> str:
         """Generates the filename for saving results."""
-        results_dir = "results"
-        os.makedirs(results_dir, exist_ok=True)
-        return os.path.join(results_dir, f"{self.game_name.lower().replace(' ', '_')}_results.json")
+        results_dir = Path("results")
+        results_dir.mkdir(exist_ok=True)
+        filename = f"{self.game_name.lower().replace(' ', '_')}_results.json"
+        return str(results_dir / filename)
 
     def log_progress(self, state: Any) -> None:
         """Log the current game state."""

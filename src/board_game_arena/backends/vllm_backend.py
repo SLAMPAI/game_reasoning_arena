@@ -2,7 +2,7 @@
 vLLM backend for local GPU LLM inference.
 """
 
-import os
+from pathlib import Path
 from typing import Any, List, Optional
 import yaml
 from .base_backend import BaseLLMBackend
@@ -113,12 +113,15 @@ class VLLMBackend(BaseLLMBackend):
             tokenizer_path = paths["tokenizer_path"]
 
             # Verify the paths exist
-            if not os.path.exists(model_path):
+            model_path_obj = Path(model_path)
+            tokenizer_path_obj = Path(tokenizer_path)
+
+            if not model_path_obj.exists():
                 raise FileNotFoundError(
                     f"Model path does not exist: {model_path}"
                 )
 
-            if not os.path.exists(tokenizer_path):
+            if not tokenizer_path_obj.exists():
                 raise FileNotFoundError(
                     f"Tokenizer path does not exist: {tokenizer_path}"
                 )

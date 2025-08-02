@@ -11,13 +11,14 @@ This file provides:
 
 import os
 import yaml
+from pathlib import Path
 from typing import Dict, Any, List
 from .litellm_backend import LiteLLMBackend
 from .vllm_backend import VLLMBackend
 
 # Get the directory of this file to construct relative paths
-_current_dir = os.path.dirname(os.path.abspath(__file__))
-_configs_dir = os.path.join(os.path.dirname(_current_dir), "configs")
+_current_dir = Path(__file__).parent
+_configs_dir = _current_dir.parent / "configs"
 
 
 def _load_config_file(file_path: str) -> Dict[str, Any]:
@@ -34,11 +35,11 @@ def _load_config_file(file_path: str) -> Dict[str, Any]:
 # Model configuration paths from environment with package-relative defaults
 LITELLM_MODELS_PATH = os.getenv(
     "LITELLM_MODELS_PATH",
-    os.path.join(_configs_dir, "litellm_models.yaml")
+    str(_configs_dir / "litellm_models.yaml")
 )
 VLLM_MODELS_PATH = os.getenv(
     "VLLM_MODELS_PATH",
-    os.path.join(_configs_dir, "vllm_models.yaml")
+    str(_configs_dir / "vllm_models.yaml")
 )
 
 # Global registry for loaded models

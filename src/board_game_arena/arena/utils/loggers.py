@@ -2,13 +2,13 @@
 SQLite Logger
 
 SQLiteLogger class for logging agent decisions and game results into a SQLite database.
-This class provides methods to log moves, rewards, and game results, 
+This class provides methods to log moves, rewards, and game results,
 as well as retrieve this data for analysis.
 """
 
 import sqlite3
-import os
 from datetime import datetime
+from pathlib import Path
 import pandas as pd
 
 class SQLiteLogger:
@@ -26,7 +26,7 @@ class SQLiteLogger:
         sanitized_model_name = model_name.replace('-', '_').replace('/', '_').replace('\\', '_')
         self.db_path = f"results/{agent_type}_{sanitized_model_name}.db"
         self.run_id = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
-        os.makedirs("results", exist_ok=True)
+        Path("results").mkdir(exist_ok=True)
         self._create_database()
 
     def _create_database(self):
