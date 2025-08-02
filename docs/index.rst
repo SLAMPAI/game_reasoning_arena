@@ -50,6 +50,7 @@ Available Games
    game_loop
    backends
    api_reference
+   code_flow
    games
    agents
 

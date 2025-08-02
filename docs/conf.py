@@ -20,6 +20,12 @@ extensions = [
     'sphinx.ext.intersphinx',
 ]
 
+# Add Mermaid.js support via HTML templates
+html_js_files = [
+    'https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js',
+    'mermaid-init.js',
+]
+
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
