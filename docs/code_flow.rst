@@ -345,9 +345,9 @@ The framework handles both game types differently:
 This comprehensive flow analysis shows how matrix games are handled as simultaneous-move games where all players act at once, contrasting with turn-based games where only the current player acts each step.
 
 .. note::
-   
+
    For more detailed technical implementation, see the source files:
-   
+
    - ``method_call_flow.md`` - Complete method call documentation
    - ``code_flow_analysis.md`` - Detailed architectural analysis
    - ``flow_visualization.html`` - Interactive flow visualization
