@@ -178,34 +178,34 @@ The main class relationships and interactions follow this hierarchy:
 .. code-block:: text
 
    ┌─────────────────────────────────────────────────────────────────┐
-   │                     RUNNER & SIMULATION                        │
+   │                     RUNNER & SIMULATION                         │
    │                                                                 │
    │  ┌─────────────────┐         ┌─────────────────────────────────┐│
    │  │    runner.py    │────────▶│        simulate.py              ││
    │  │                 │         │                                 ││
-   │  │ + main()        │         │ + simulate_game()              ││
-   │  │ + run_simulation│         │ + compute_actions()            ││
-   │  │ + initialize_ray│         │ + log_llm_action()             ││
+   │  │ + main()        │         │ + simulate_game()               ││
+   │  │ + run_simulation│         │ + compute_actions()             ││
+   │  │ + initialize_ray│         │ + log_llm_action()              ││
    │  └─────────────────┘         └─────────────────────────────────┘│
    └─────────────────────────────────────────────────────────────────┘
               │                               │
               ▼                               ▼
    ┌─────────────────────────────────────────────────────────────────┐
-   │                 REGISTRY & POLICY MANAGEMENT                   │
+   │                 REGISTRY & POLICY MANAGEMENT                    │
    │                                                                 │
    │  ┌─────────────────┐         ┌─────────────────────────────────┐│
    │  │  GameRegistry   │         │      PolicyManager              ││
    │  │                 │         │                                 ││
-   │  │ + register()    │         │ + initialize_policies()        ││
-   │  │ + get_game_     │         │ + policy_mapping_fn()          ││
-   │  │   loader()      │         │                                ││
-   │  │ + make_env()    │         │                                ││
+   │  │ + register()    │         │ + initialize_policies()         ││
+   │  │ + get_game_     │         │ + policy_mapping_fn()           ││
+   │  │   loader()      │         │                                 ││
+   │  │ + make_env()    │         │                                 ││
    │  └─────────────────┘         └─────────────────────────────────┘│
    └─────────────────────────────────────────────────────────────────┘
               │                               │
               ▼                               ▼
    ┌─────────────────────────────────────────────────────────────────┐
-   │                ENVIRONMENTS & AGENTS                           │
+   │                ENVIRONMENTS & AGENTS                            │
    │                                                                 │
    │  ┌─────────────────┐         ┌─────────────────────────────────┐│
    │  │ MatrixGameEnv   │         │          AGENTS                 ││
