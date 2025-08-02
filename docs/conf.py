@@ -18,19 +18,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
     'sphinx.ext.intersphinx',
-    'sphinxext.opengraph',
 ]
-
-# Add Mermaid.js support via HTML templates
-html_js_files = [
-    'https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js',
-    'mermaid-init.js',
-]
-
-# Custom HTML templates for better Mermaid support
-html_context = {
-    'mermaid_version': '10.6.1'
-}
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
@@ -51,12 +39,6 @@ html_theme_options = {
 # Create _static directory if it doesn't exist
 if not os.path.exists('_static'):
     os.makedirs('_static')
-
-# -- Options for HTML output -------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
-
-html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
 
 # -- Extension configuration -------------------------------------------------
 
@@ -88,12 +70,3 @@ intersphinx_mapping = {
     'numpy': ('https://numpy.org/doc/stable/', None),
     'torch': ('https://pytorch.org/docs/stable/', None),
 }
-
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
-
-# Create _static directory if it doesn't exist
-if not os.path.exists('_static'):
-    os.makedirs('_static')
