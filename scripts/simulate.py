@@ -5,16 +5,16 @@ simulate.py
 Core simulation logic for a single game simulation.
 Handles environment creation, policy initialization, and the simulation loop.
 """
-import os
-import sys
-import time
+
 import logging
-from typing import Dict, Any, List, Tuple
+from typing import Dict, Any
 from board_game_arena.arena.utils.seeding import set_seed
 from board_game_arena.arena.games.registry import registry  # Games registry
 from board_game_arena.backends import initialize_llm_registry
 
-from board_game_arena.arena.agents.policy_manager import initialize_policies, policy_mapping_fn
+from board_game_arena.arena.agents.policy_manager import (
+    initialize_policies, policy_mapping_fn
+)
 from board_game_arena.arena.utils.loggers import SQLiteLogger
 from torch.utils.tensorboard import SummaryWriter
 
@@ -31,7 +31,10 @@ def log_llm_action(agent_id: int,
     """Logs the LLM agent's decision."""
     logger.info("Board state: \n%s", observation['state_string'])
     logger.info(f"Legal actions: {observation['legal_actions']}")
-    logger.info(f"Agent {agent_id} ({agent_model}) chose action: {chosen_action} with reasoning: {reasoning}")
+    logger.info(
+        f"Agent {agent_id} ({agent_model}) chose action: {chosen_action} "
+        f"with reasoning: {reasoning}"
+    )
     if flag == True:
        logger.error(f"Terminated due to illegal move: {chosen_action}.")
 
@@ -46,10 +49,12 @@ def compute_actions(
     Args:
         env: The game environment.
         player_to_agent (Dict[int, Any]): Mapping from player index to agent.
-        observations (Dict[int, Any]): Dictionary mapping player IDs to observations.
+        observations (Dict[int, Any]): Dictionary mapping player IDs to
+            observations.
 
     Returns:
-        Dict[int, int]: A dictionary mapping player indices to selected actions.
+        Dict[int, int]: A dictionary mapping player indices to selected
+            actions.
     """
     def extract_action(agent_response):
         """Extract action from agent response (handle both int and dict)."""
@@ -82,6 +87,9 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
     Returns:
         str: Confirmation that the simulation is complete.
     """
+
+    # Set global seed for reproducibility across all random number generators
+    set_seed(seed)
 
     # Initialize LLM registry
     initialize_llm_registry(config)
@@ -121,16 +129,21 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
         episode_seed = seed + episode
         observation_dict, _ = env.reset(seed=episode_seed)
         terminated = truncated = False
+        rewards_dict = {}  # Initialize rewards_dict
 
-        logger.info(f"Episode {episode + 1} started with seed {episode_seed}.")
+        logger.info(
+            "Episode %d started with seed %d.", episode + 1, episode_seed
+            )
         turn = 0
 
         while not (terminated or truncated):
             # Use RLLib-style action computation
             try:
-                action_dict = compute_actions(env, player_to_agent, observation_dict)
+                action_dict = compute_actions(
+                    env, player_to_agent, observation_dict
+                )
             except Exception as e:
-                logger.error(f"Error computing actions: {e}")
+                logger.error("Error computing actions: %s", e)
                 truncated = True
                 break
 
@@ -144,33 +157,46 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
                 agent_type = None
                 agent_model = "None"
                 for key, value in config["agents"].items():
-                    if key.startswith("player_") and int(key.split("_")[1]) == agent_id:
+                    if (key.startswith("player_") and
+                            int(key.split("_")[1]) == agent_id):
                         agent_type = value["type"]
                         agent_model = value.get("model", "None")
                         break
 
                 # Check if the chosen action is legal
-                if chosen_action is None or chosen_action not in observation["legal_actions"]:
+                if (chosen_action is None or
+                        chosen_action not in observation["legal_actions"]):
                     if agent_type == "llm":
-                        log_llm_action(agent_id, agent_model, observation, chosen_action, "Illegal action", flag=True)
+                        log_llm_action(
+                            agent_id, agent_model, observation,
+                            chosen_action, "Illegal action", flag=True
+                        )
                     agent_logger.log_illegal_move(
                         game_name=game_name, episode=episode + 1, turn=turn,
                         agent_id=agent_id, illegal_action=chosen_action,
-                        reason="Illegal action", board_state=observation["state_string"]
+                        reason="Illegal action",
+                        board_state=observation["state_string"]
                     )
                     truncated = True
                     break
 
                 # Get reasoning if available (for LLM agents)
                 reasoning = "None"
-                if agent_type == "llm" and hasattr(player_to_agent[agent_id], 'last_reasoning'):
-                    reasoning = getattr(player_to_agent[agent_id], 'last_reasoning', "None")
+                if (agent_type == "llm" and
+                        hasattr(player_to_agent[agent_id], 'last_reasoning')):
+                    reasoning = getattr(
+                        player_to_agent[agent_id], 'last_reasoning', "None"
+                    )
 
                 # Logging
-                opponents = ", ".join(
-                    f"{config['agents'][a_id]['type']}_{config['agents'][a_id].get('model', 'None').replace('-', '_')}"
-                    for a_id in config["agents"] if a_id != f"player_{agent_id}"
-                )
+                opponents_list = []
+                for a_id in config["agents"]:
+                    if a_id != f"player_{agent_id}":
+                        agent_type = config['agents'][a_id]['type']
+                        model = config['agents'][a_id].get('model', 'None')
+                        model_clean = model.replace('-', '_')
+                        opponents_list.append(f"{agent_type}_{model_clean}")
+                opponents = ", ".join(opponents_list)
 
                 agent_logger.log_move(
                     game_name=game_name,
@@ -186,16 +212,22 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
                 )
 
                 if agent_type == "llm":
-                    log_llm_action(agent_id, agent_model, observation, chosen_action, reasoning)
+                    log_llm_action(
+                        agent_id, agent_model, observation,
+                        chosen_action, reasoning
+                    )
 
             # Step forward in the environment
             if not truncated:
-                observation_dict, rewards_dict, terminated, truncated, _ = env.step(action_dict)
+                (observation_dict, rewards_dict,
+                 terminated, truncated, _) = env.step(action_dict)
                 turn += 1
 
         # Logging
         game_status = "truncated" if truncated else "terminated"
-        logger.info(f"Game status: {game_status} with rewards dict: {rewards_dict}")
+        logger.info(
+            "Game status: %s with rewards dict: %s", game_status, rewards_dict
+        )
 
         for agent_id, reward in rewards_dict.items():
             policy_key = policy_mapping_fn(agent_id)
@@ -212,7 +244,8 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
 
             # Find the agent config by index - handle both string and int keys
             for key, value in config["agents"].items():
-                if key.startswith("player_") and int(key.split("_")[1]) == agent_id:
+                if (key.startswith("player_") and
+                        int(key.split("_")[1]) == agent_id):
                     agent_type = value["type"]
                     agent_model = value.get("model", "None")
                     break
@@ -222,9 +255,14 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
                     break
 
             tensorboard_key = f"{agent_type}_{agent_model.replace('-', '_')}"
-            writer.add_scalar(f"Rewards/{tensorboard_key}", reward, episode + 1)
+            writer.add_scalar(
+                f"Rewards/{tensorboard_key}", reward, episode + 1
+            )
 
-        logger.info(f"Simulation for game {game_name}, Episode {episode + 1} completed.")
+        logger.info(
+            "Simulation for game %s, Episode %d completed.",
+            game_name, episode + 1
+        )
     writer.close()
     return "Simulation Completed"
 
