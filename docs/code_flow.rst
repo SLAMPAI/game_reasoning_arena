@@ -15,107 +15,76 @@ The Board Game Arena framework follows a structured execution flow that handles 
 Method Call Flow for Matrix Games
 ----------------------------------
 
-The following Mermaid diagram illustrates the complete method call flow, with special focus on matrix games (simultaneous-move games like Rock-Paper-Scissors):
+The following diagram illustrates the complete method call flow, with special focus on matrix games (simultaneous-move games like Rock-Paper-Scissors):
 
-.. raw:: html
+.. note::
 
-   <div class="mermaid">
-   graph TD
-       %% Entry Point
-       A[runner.py::main] --> B[parse_config]
-       A --> C[run_simulation]
+   For interactive Mermaid diagrams, see the source files ``method_call_flow.md`` or ``flow_visualization.html`` in the project root.
 
-       %% Ray Initialization
-       C --> D[initialize_ray]
+**High-Level Flow Overview:**
 
-       %% Simulation Orchestration
-       C --> E[simulate_game]
+.. code-block:: text
 
-       %% Core Simulation Setup
-       E --> F[initialize_llm_registry]
-       E --> G[initialize_policies]
-       E --> H[registry.make_env]
+   ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+   │  runner.py      │───▶│ simulate_game   │───▶│ compute_actions │
+   │  ::main()       │    │                 │    │                 │
+   └─────────────────┘    └─────────────────┘    └─────────────────┘
+            │                       │                       │
+            ▼                       ▼                       ▼
+   ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+   │ parse_config    │    │ initialize_     │    │ env.step        │
+   │ run_simulation  │    │ policies        │    │ apply_actions   │
+   └─────────────────┘    └─────────────────┘    └─────────────────┘
 
-       %% Policy Management
-       G --> I[AGENT_REGISTRY lookup]
-       G --> J[LLMAgent.__init__]
-       G --> K[RandomAgent.__init__]
-       G --> L[HumanAgent.__init__]
+**Detailed Method Call Flow:**
 
-       %% Environment Creation
-       H --> M[registry.get_game_loader]
-       H --> N[MatrixGameEnv.__init__]
-       N --> O[OpenSpielEnv.__init__]
+.. code-block:: text
 
-       %% Episode Loop
-       E --> P[env.reset]
-       P --> Q[game.new_initial_state]
-       P --> R[_solve_chance_nodes]
-       P --> S[_state_to_observation]
+   runner.py::main()
+   ├── parse_config()
+   ├── run_simulation()
+   │   ├── initialize_ray() [if enabled]
+   │   └── simulate_game()
+   │       ├── initialize_llm_registry()
+   │       ├── initialize_policies()
+   │       │   ├── AGENT_REGISTRY[agent_type]
+   │       │   ├── LLMAgent.__init__(model_name, game_name)
+   │       │   └── RandomAgent.__init__(seed)
+   │       ├── registry.make_env()
+   │       │   ├── registry.get_game_loader()
+   │       │   └── MatrixGameEnv.__init__()
+   │       │       └── OpenSpielEnv.__init__()
+   │       │
+   │       └── Episode Loop:
+   │           ├── env.reset(seed)
+   │           │   ├── game.new_initial_state()
+   │           │   ├── _solve_chance_nodes()
+   │           │   └── _state_to_observation()
+   │           │       └── _generate_prompt(agent_id)
+   │           │
+   │           └── while not terminated:
+   │               ├── compute_actions()
+   │               │   ├── is_simultaneous_node() → True [matrix games]
+   │               │   ├── LLMAgent.compute_action()
+   │               │   │   └── generate_response()
+   │               │   └── RandomAgent.compute_action()
+   │               │       └── random.choice(legal_actions)
+   │               │
+   │               ├── env.step(action_dict)
+   │               │   ├── state.apply_actions([action_0, action_1])
+   │               │   ├── _compute_reward()
+   │               │   └── state.is_terminal()
+   │               │
+   │               └── Logging:
+   │                   ├── log_llm_action()
+   │                   ├── SQLiteLogger.log_move()
+   │                   └── TensorBoard metrics
 
-       %% Matrix Game Observation
-       S --> T[_generate_prompt]
-       T --> U[state.legal_actions]
-       T --> V[state.action_to_string]
+**Key Decision Points:**
 
-       %% Action Computation Loop
-       E --> W[compute_actions]
-       W --> X{is_simultaneous_node?}
-
-       %% Simultaneous Actions (Matrix Games)
-       X -->|Yes| Y[All players act]
-       Y --> Z[player_to_agent[0]]
-       Y --> AA[player_to_agent[1]]
-
-       %% Agent Decision Making
-       Z --> BB[LLMAgent.compute_action]
-       AA --> CC[RandomAgent.compute_action]
-
-       %% LLM Processing
-       BB --> DD[generate_response]
-       DD --> EE[Ray batch processing]
-       DD --> FF[Direct LLM call]
-
-       %% Random Agent
-       CC --> GG[random.choice]
-
-       %% Environment Step
-       W --> HH[env.step]
-       HH --> II[state.apply_actions]
-       II --> JJ[OpenSpiel game logic]
-
-       %% Reward and State Update
-       HH --> KK[_compute_reward]
-       HH --> LL[state.is_terminal]
-       HH --> MM[_state_to_observation]
-
-       %% Logging
-       E --> NN[log_llm_action]
-       E --> OO[SQLiteLogger.log_move]
-       E --> PP[TensorBoard logging]
-
-       %% Turn-based Alternative
-       X -->|No| QQ[Current player only]
-       QQ --> RR[state.current_player]
-       QQ --> Z
-
-       %% Cleanup and Results
-       E --> SS[Post-game processing]
-       A --> TT[full_cleanup]
-
-       %% Styling
-       classDef entryPoint fill:#e1f5fe
-       classDef simulation fill:#f3e5f5
-       classDef environment fill:#e8f5e8
-       classDef agent fill:#fff3e0
-       classDef matrix fill:#ffebee
-
-       class A,B,C entryPoint
-       class E,F,G,W,HH simulation
-       class H,N,O,P,S environment
-       class I,J,K,L,BB,CC agent
-       class T,U,V,Y,Z,AA,II matrix
-   </div>
+* **Simultaneous vs Turn-based**: ``is_simultaneous_node()`` determines whether all players act (matrix games) or only current player (turn-based games)
+* **LLM vs Local**: ``generate_response()`` uses Ray batch processing for remote LLMs or direct calls for local models
+* **Game Termination**: ``state.is_terminal()`` controls episode completion
 
 Initialization Chain
 ---------------------
@@ -204,69 +173,74 @@ For matrix games like **Rock-Paper-Scissors** between an LLM and Random agent:
 Key Class Interactions
 ----------------------
 
-The following diagram shows the main class relationships and interactions:
+The main class relationships and interactions follow this hierarchy:
 
-.. raw:: html
+.. code-block:: text
 
-   <div class="mermaid">
-   classDiagram
-       class runner {
-           +main()
-           +run_simulation()
-           +initialize_ray()
-       }
+   ┌─────────────────────────────────────────────────────────────────┐
+   │                     RUNNER & SIMULATION                        │
+   │                                                                 │
+   │  ┌─────────────────┐         ┌─────────────────────────────────┐│
+   │  │    runner.py    │────────▶│        simulate.py              ││
+   │  │                 │         │                                 ││
+   │  │ + main()        │         │ + simulate_game()              ││
+   │  │ + run_simulation│         │ + compute_actions()            ││
+   │  │ + initialize_ray│         │ + log_llm_action()             ││
+   │  └─────────────────┘         └─────────────────────────────────┘│
+   └─────────────────────────────────────────────────────────────────┘
+              │                               │
+              ▼                               ▼
+   ┌─────────────────────────────────────────────────────────────────┐
+   │                 REGISTRY & POLICY MANAGEMENT                   │
+   │                                                                 │
+   │  ┌─────────────────┐         ┌─────────────────────────────────┐│
+   │  │  GameRegistry   │         │      PolicyManager              ││
+   │  │                 │         │                                 ││
+   │  │ + register()    │         │ + initialize_policies()        ││
+   │  │ + get_game_     │         │ + policy_mapping_fn()          ││
+   │  │   loader()      │         │                                ││
+   │  │ + make_env()    │         │                                ││
+   │  └─────────────────┘         └─────────────────────────────────┘│
+   └─────────────────────────────────────────────────────────────────┘
+              │                               │
+              ▼                               ▼
+   ┌─────────────────────────────────────────────────────────────────┐
+   │                ENVIRONMENTS & AGENTS                           │
+   │                                                                 │
+   │  ┌─────────────────┐         ┌─────────────────────────────────┐│
+   │  │ MatrixGameEnv   │         │          AGENTS                 ││
+   │  │                 │         │                                 ││
+   │  │ + __init__()    │         │  ┌─────────────┐ ┌─────────────┐││
+   │  │ + _state_to_    │         │  │  LLMAgent   │ │ RandomAgent │││
+   │  │   observation() │◄────────┤  │             │ │             │││
+   │  │ + _generate_    │         │  │+ compute_   │ │+ compute_   │││
+   │  │   prompt()      │         │  │  action()   │ │  action()   │││
+   │  │                 │         │  │+ __call__() │ │+ __call__() │││
+   │  │      ▲          │         │  └─────────────┘ └─────────────┘││
+   │  │      │          │         │                                 ││
+   │  │ ┌─────────────────┐       │                                 ││
+   │  │ │ OpenSpielEnv    │       │                                 ││
+   │  │ │                 │       │                                 ││
+   │  │ │ + reset()       │       │                                 ││
+   │  │ │ + step()        │       │                                 ││
+   │  │ │ + _solve_chance_│       │                                 ││
+   │  │ │   nodes()       │       │                                 ││
+   │  │ │ + _compute_     │       │                                 ││
+   │  │ │   reward()      │       │                                 ││
+   │  │ └─────────────────┘       │                                 ││
+   │  └─────────────────────────────────────────────────────────────┘│
+   └─────────────────────────────────────────────────────────────────┘
 
-       class simulate {
-           +simulate_game()
-           +compute_actions()
-           +log_llm_action()
-       }
+**Class Responsibilities:**
 
-       class GameRegistry {
-           +register()
-           +get_game_loader()
-           +make_env()
-       }
-
-       class PolicyManager {
-           +initialize_policies()
-           +policy_mapping_fn()
-       }
-
-       class MatrixGameEnv {
-           +__init__()
-           +_state_to_observation()
-           +_generate_prompt()
-           +apply_action()
-       }
-
-       class OpenSpielEnv {
-           +reset()
-           +step()
-           +_solve_chance_nodes()
-           +_compute_reward()
-       }
-
-       class LLMAgent {
-           +compute_action()
-           +__call__()
-       }
-
-       class RandomAgent {
-           +compute_action()
-           +__call__()
-       }
-
-       runner --> simulate
-       simulate --> GameRegistry
-       simulate --> PolicyManager
-       GameRegistry --> MatrixGameEnv
-       MatrixGameEnv --> OpenSpielEnv
-       PolicyManager --> LLMAgent
-       PolicyManager --> RandomAgent
-       simulate --> LLMAgent
-       simulate --> RandomAgent
-   </div>
+* **runner.py**: Main entry point, configuration parsing, simulation orchestration
+* **simulate.py**: Core game loop, action coordination, logging management
+* **GameRegistry**: Game discovery, environment factory, loader management
+* **PolicyManager**: Agent instantiation, policy mapping, multi-agent coordination
+* **MatrixGameEnv**: Game-specific observation generation, prompt formatting
+* **OpenSpielEnv**: Base environment interface, state management, reward computation
+* **LLMAgent**: Language model interaction, response parsing, reasoning extraction
+* **RandomAgent**: Baseline random policy, action sampling
 
 Data Flow Overview
 ------------------

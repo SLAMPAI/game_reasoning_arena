@@ -18,6 +18,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
     'sphinx.ext.intersphinx',
+    'sphinxext.opengraph',
 ]
 
 # Add Mermaid.js support via HTML templates
@@ -25,6 +26,11 @@ html_js_files = [
     'https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js',
     'mermaid-init.js',
 ]
+
+# Custom HTML templates for better Mermaid support
+html_context = {
+    'mermaid_version': '10.6.1'
+}
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
