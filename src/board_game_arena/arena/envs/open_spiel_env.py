@@ -60,7 +60,7 @@ class OpenSpielEnv(ABC):
         if seed is not None:
             self.set_seed(seed)
         if hasattr(self.game, "set_seed"):
-            self.game.set_seed(seed) #TODO: see how we can set the seed for the OpenSpiel game
+            self.game.set_seed(seed)
 
         self.state = self.game.new_initial_state() # Instantiates the pyspiel game state
         self.terminated = False

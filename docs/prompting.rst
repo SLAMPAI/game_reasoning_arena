@@ -40,7 +40,7 @@ At the foundation of the system, each game environment implements its own ``_gen
 
 **Base OpenSpiel Environment**
 
-The base environment (``open_spiel_env.py``) provides a generic template that works well for most traditional board games. It creates prompts containing:
+The base environment class ``OpenSpielEnv`` (in ``open_spiel_env.py``) provides a generic template that works well for most traditional board games. It creates prompts containing:
 
 - The name of the game being played
 - The player's symbol or identifier (like 'X' or 'O' in tic-tac-toe)
@@ -69,7 +69,7 @@ Here's what a base prompt might look like for a tic-tac-toe game:
 
 **Specialized Game Environments**
 
-Games with unique mechanics often need more sophisticated prompts. The Kuhn Poker environment (``kuhn_poker_env.py``) demonstrates this by including game-specific information.
+Games with unique mechanics often need more sophisticated prompts. The Kuhn Poker environment class ``KuhnPokerEnv`` (in ``kuhn_poker_env.py``) demonstrates this by including game-specific information.
 
 For Kuhn Poker, the prompt includes:
 
@@ -101,7 +101,7 @@ Here's what a real Kuhn Poker prompt looks like in practice:
 The Prompt Formatting Layer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Once each environment creates its game-specific prompt, the system applies standardized formatting through the ``format_prompt()`` function in ``llm_utils.py``. This layer adds two crucial elements that ensure consistent, high-quality responses from LLMs.
+Once each environment creates its game-specific prompt, the system applies standardized formatting through the ``format_prompt()`` function (in ``llm_utils.py``). This layer adds two crucial elements that ensure consistent, high-quality responses from LLMs.
 
 **Reasoning Request**
 
@@ -157,7 +157,7 @@ Here's how our Kuhn Poker prompt looks after formatting:
 Backend-Specific Chat Templates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Modern LLMs often work best with conversational formats rather than raw text prompts. The vLLM backend (``vllm_backend.py``) handles this automatically by applying chat templates when appropriate.
+Modern LLMs often work best with conversational formats rather than raw text prompts. The vLLM backend class ``VLLMBackend`` (in ``vllm_backend.py``) handles this automatically by applying chat templates when appropriate.
 
 **Chat Template Detection**
 
@@ -189,7 +189,7 @@ This conversion from plain text to conversation format helps models understand t
 Agent Integration and Response Processing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The final piece of the puzzle is how LLM agents (``llm_agent.py``) coordinate the entire process and handle the responses.
+The final piece of the puzzle is how LLM agents (``LLMAgent`` class in ``llm_agent.py``) coordinate the entire process and handle the responses.
 
 **Receiving the Formatted Prompt**
 
