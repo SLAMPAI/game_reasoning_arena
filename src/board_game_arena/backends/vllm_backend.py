@@ -74,7 +74,7 @@ class VLLMBackend(BaseLLMBackend):
         # Check if any available model (with vllm_ prefix) matches
         for available_model in self.load_models():
             if (available_model.startswith("vllm_") and
-                available_model[5:] == model_name):
+                    available_model[5:] == model_name):
                 return True
         return False
 
@@ -88,7 +88,9 @@ class VLLMBackend(BaseLLMBackend):
             ValueError: If model is not available
         """
         if not self.is_model_available(model_name):
-            raise ValueError(f"Model {model_name} not available in vLLM backend")
+            raise ValueError(
+                f"Model {model_name} not available in vLLM backend"
+            )
 
         # Return cached model if already loaded
         if model_name in self._loaded_models:
@@ -160,6 +162,11 @@ class VLLMBackend(BaseLLMBackend):
 
             model = self.load_model(model_name)
 
+            # Apply chat template formatting if the model supports it
+            formatted_prompt = self._apply_chat_template_if_needed(
+                model_name, prompt
+            )
+
             # Set up sampling parameters
             sampling_params = SamplingParams(
                 temperature=kwargs.get("temperature", 0.7),
@@ -169,7 +176,7 @@ class VLLMBackend(BaseLLMBackend):
             )
 
             # Generate response
-            outputs = model.generate([prompt], sampling_params)
+            outputs = model.generate([formatted_prompt], sampling_params)
 
             # Extract the generated text
             if outputs and len(outputs) > 0:
@@ -179,6 +186,138 @@ class VLLMBackend(BaseLLMBackend):
 
         except Exception as e:
             raise RuntimeError(f"vLLM generation failed: {e}") from e
+
+    def get_model_path(self, model_name: str) -> str:
+        """Get the model path for a specific model.
+
+        Args:
+            model_name: Model name without the backend prefix
+
+        Returns:
+            str: The model path
+
+        Raises:
+            ValueError: If model is not available
+        """
+        if not self.is_model_available(model_name):
+            raise ValueError(
+                f"Model {model_name} not available in vLLM backend"
+            )
+
+        # Ensure models are loaded
+        self.load_models()
+
+        # Get the full model name with prefix to look up the path
+        full_model_name = f"vllm_{model_name}"
+
+        if full_model_name not in self._model_paths:
+            raise ValueError(
+                f"Model path not found for {full_model_name}. "
+                f"Make sure it's configured in {self.config_file}"
+            )
+
+        return self._model_paths[full_model_name]["model_path"]
+
+    def get_tokenizer_path(self, model_name: str) -> str:
+        """Get the tokenizer path for a specific model.
+
+        Args:
+            model_name: Model name without the backend prefix
+
+        Returns:
+            str: The tokenizer path
+
+        Raises:
+            ValueError: If model is not available
+        """
+        if not self.is_model_available(model_name):
+            raise ValueError(
+                f"Model {model_name} not available in vLLM backend"
+            )
+
+        # Ensure models are loaded
+        self.load_models()
+
+        # Get the full model name with prefix to look up the path
+        full_model_name = f"vllm_{model_name}"
+
+        if full_model_name not in self._model_paths:
+            raise ValueError(
+                f"Model path not found for {full_model_name}. "
+                f"Make sure it's configured in {self.config_file}"
+            )
+
+        return self._model_paths[full_model_name]["tokenizer_path"]
+
+    def _apply_chat_template_if_needed(self, model_name: str,
+                                       prompt: str) -> str:
+        """Apply chat template formatting for models that need it.
+
+        Args:
+            model_name: Model name without the backend prefix
+            prompt: The input prompt text
+
+        Returns:
+            str: Formatted prompt (with chat template if needed)
+        """
+        try:
+            # Get tokenizer path
+            tokenizer_path = self.get_tokenizer_path(model_name)
+
+            # Import here to avoid circular imports and optional dependency
+            from transformers import AutoTokenizer
+
+            # Load tokenizer
+            tokenizer = AutoTokenizer.from_pretrained(tokenizer_path)
+
+            # Create messages for chat template
+            messages = [{"role": "user", "content": prompt}]
+
+            # Check if model has a chat template
+            if hasattr(tokenizer, "chat_template") and tokenizer.chat_template:
+                # Use existing chat template
+                formatted_prompt = tokenizer.apply_chat_template(
+                    messages, tokenize=False, add_generation_prompt=True
+                )
+                print(f"Applied chat template for vLLM model: {model_name}")
+                return formatted_prompt
+            else:
+                # Check if this is likely a chat/instruct model
+                model_path = self.get_model_path(model_name)
+                if ("chat" in model_path.lower() or
+                        "instruct" in model_path.lower() or
+                        "assistant" in model_path.lower()):
+
+                    # Apply a generic chat template for instruct models
+                    tokenizer.chat_template = (
+                        "{% for message in messages %}"
+                        "{{ '<|user|>\\n' + message['content'] + '<|end|>\\n' "
+                        "if message['role'] == 'user' "
+                        "else '<|assistant|>\\n' + message['content'] + "
+                        "'<|end|>\\n' }}"
+                        "{% endfor %}"
+                        "{% if add_generation_prompt %}"
+                        "{{ '<|assistant|>\\n' }}"
+                        "{% endif %}"
+                    )
+
+                    formatted_prompt = tokenizer.apply_chat_template(
+                        messages, tokenize=False, add_generation_prompt=True
+                    )
+                    print(f"Applied generic chat template for vLLM model: "
+                          f"{model_name}")
+                    return formatted_prompt
+                else:
+                    # Not a chat model, return original prompt
+                    print(f"No chat template needed for vLLM model: "
+                          f"{model_name}")
+                    return prompt
+
+        except Exception as e:
+            print(f"Warning: Failed to apply chat template for "
+                  f"{model_name}: {e}")
+            print("Falling back to original prompt formatting")
+            return prompt
 
     def cleanup(self):
         """Clean up loaded models."""
