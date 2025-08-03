@@ -95,6 +95,12 @@ class OpenSpielEnv(ABC):
             self._solve_chance_nodes()
             return self._state_to_observation(), {}, False, False, {}
 
+        # Validate actions and track illegal moves for metrics
+        illegal_move_count = self.detect_illegal_moves(action_dict)
+        if illegal_move_count > 0:
+            self.info['illegal_moves_detected'] = illegal_move_count
+            # Note: The simulation layer handles termination for illegal moves
+
         # Move environment to the next state
         if self.state.is_simultaneous_node():
             actions = [action_dict[player] for player in sorted(action_dict.keys())]
@@ -145,13 +151,11 @@ class OpenSpielEnv(ABC):
 
         self.seed_value = seed  # Store the seed for tracking
 
-    # TODO: use this somewhere!
     def detect_illegal_moves(self, actions_dict: Dict[int, int]) -> int:
         """
         Detects illegal moves by comparing chosen actions with OpenSpiel's legal actions.
 
         Args:
-            env: The game environment.
             actions_dict: Dictionary mapping player IDs to chosen actions.
 
         Returns:
@@ -159,7 +163,7 @@ class OpenSpielEnv(ABC):
         """
         return sum(
             1 for player, action in actions_dict.items()
-            if action not in self.env.state.legal_actions(player)
+            if action not in self.state.legal_actions(player)
         )
 
 
@@ -237,55 +241,36 @@ class OpenSpielEnv(ABC):
         if self.state.is_chance_node():
             return ""
 
-        # TODO: later review and delete this if needed
-        # Generate prompt based on model type
-        #model_path = "/p/data1/mmlaion/marianna/models/google/codegemma-7b-it"
-        # tokenizer = AutoTokenizer.from_pretrained(model_path)
-        # is_chat_model = "chat" in model_path.lower() or "instruct" in model_path.lower()
-
-        # if is_chat_model:
-        #     # Use Hugging Face's chat formatting for chat models
-        #     messages = [
-        #         {"role": "system", "content": "You are an AI trained to play Kuhn Poker."},
-        #         {"role": "user", "content": f"""
-        #             Here is the current game state:
-        #             {json.dumps(kuhn_state, indent=2)}
-
-        #             Available actions:
-        #             {json.dumps(actions_with_desc, indent=2)}
-
-        #             What action do you choose?
-        #             Reply only with a JSON object in this format: {{'action': X}}
-        #             where X must be one of {legal_actions}.
-        #         """}
-        #     ]
-        #     return tokenizer.apply_chat_template(messages, return_tensors=None)
-        # else:
-        #     # Use plain-text formatting for non-chat models
-
         prompt_string = (
-        f"You are playing the game: {self.game_name}\n"
-       # f"You are player: {agent_id}\n"   # This confuses the player ID with the checker ID
-        f"and you are playing with the: {self.get_player_symbol(agent_id)}.\n\n"
-        f"the current move number is: {self.state.move_number()}\n"
-        f"Board state:\n{self.render_board(agent_id)}\n"
-        f"Available actions:{self.describe_legal_actions(agent_id)}\n\n"
-        "What action do you choose? Reply only with the available action number."
-    )
+            f"You are playing the game: {self.game_name}\n"
+            # f"You are player: {agent_id}\n"   # Confuses player ID
+            f"and you are playing with the: "
+            f"{self.get_player_symbol(agent_id)}.\n\n"
+            f"the current move number is: {self.state.move_number()}\n"
+            f"Board state:\n{self.render_board(agent_id)}\n"
+            f"Available actions:{self.describe_legal_actions(agent_id)}\n\n"
+            "What action do you choose? Reply only with the available "
+            "action number."
+        )
         return format_prompt(prompt_string)
 
     def _solve_chance_nodes(self) -> None:
-        """Automatically plays chance nodes by selecting outcomes based on probabilities.
+        """Automatically plays chance nodes by selecting outcomes.
 
         Many OpenSpiel games involve chance nodes (e.g., dealing cards).
-        This method ensures that chance nodes are resolved before player actions.
+        This method ensures that chance nodes are resolved before player
+        actions.
         """
         while self.state.is_chance_node():
-            outcomes, probs = zip(*self.state.chance_outcomes())  # List of (outcome, probability)
-            action = random.choices(outcomes, probs)[0]  # Pick a random outcome
+            # List of (outcome, probability)
+            outcomes, probs = zip(*self.state.chance_outcomes())
+            # Pick a random outcome
+            action = random.choices(outcomes, probs)[0]
             self.state.apply_action(action)  # Apply the chosen chance action
-
 
     def _compute_reward(self) -> Dict[int, float]:
         """Returns rewards indexed by OpenSpiel player indices (0, 1, ...)."""
-        return {player: self.state.player_reward(player) for player in range(self.state.num_players())}
+        return {
+            player: self.state.player_reward(player)
+            for player in range(self.state.num_players())
+        }
