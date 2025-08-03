@@ -40,42 +40,48 @@ def log_llm_action(agent_id: int,
         logger.error("Terminated due to illegal move: %s.", chosen_action)
 
 
-def compute_actions(
-    env, player_to_agent: Dict[int, Any], observations: Dict[int, Any]
-) -> Dict[int, int]:
+def compute_actions(env, player_to_agent, observations):
     """
-    Computes actions for all players using the RLLib-style approach.
-    Handles both turn-based and simultaneous games consistently.
+    Computes actions for all agents in the current state.
 
     Args:
-        env: The game environment.
-        player_to_agent (Dict[int, Any]): Mapping from player index to agent.
-        observations (Dict[int, Any]): Dictionary mapping player IDs to
-            observations.
+        env: The environment (OpenSpiel env).
+        player_to_agent: Dictionary mapping player IDs to agent instances.
+        observations: Dictionary of observations for each player.
 
     Returns:
-        Dict[int, int]: A dictionary mapping player indices to selected
-            actions.
+        Dictionary mapping player IDs to their chosen actions.
+        Also stores reasoning in agent objects for later retrieval.
     """
-    def extract_action(agent_response):
-        """Extract action from agent response (handle both int and dict)."""
-        if isinstance(agent_response, int):
-            return agent_response
-        elif isinstance(agent_response, dict):
+
+    def extract_action_and_store_reasoning(player_id, agent_response):
+        agent = player_to_agent[player_id]
+        if isinstance(agent_response, dict) and "action" in agent_response:
+            # Store reasoning in the agent object for later retrieval
+            if "reasoning" in agent_response:
+                agent.last_reasoning = agent_response["reasoning"]
+            else:
+                agent.last_reasoning = "None"
             return agent_response.get("action", -1)
         else:
+            agent.last_reasoning = "None"
             return -1
 
     if env.state.is_simultaneous_node():
         # Simultaneous-move game: All players act at once
-        return {player: extract_action(player_to_agent[player](
-            observations[player])) for player in player_to_agent}
+        actions = {}
+        for player in player_to_agent:
+            agent_response = player_to_agent[player](observations[player])
+            actions[player] = extract_action_and_store_reasoning(
+                player, agent_response)
+        return actions
     else:
         # Turn-based game: Only the current player acts
         current_player = env.state.current_player()
-        return {current_player: extract_action(
-            player_to_agent[current_player](observations[current_player])
-        )}
+        agent_response = player_to_agent[current_player](
+            observations[current_player])
+        return {current_player: extract_action_and_store_reasoning(
+            current_player, agent_response)}
 
 
 def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
@@ -157,15 +163,19 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
                 agent_logger = agent_loggers_dict[policy_key]
                 observation = observation_dict[agent_id]
 
-                # Get agent config for logging
+                # Get agent config for logging - ensure we get the right
+                # agent's config
                 agent_type = None
                 agent_model = "None"
-                for key, value in config["agents"].items():
-                    if (key.startswith("player_") and
-                            int(key.split("_")[1]) == agent_id):
-                        agent_type = value["type"]
-                        agent_model = value.get("model", "None")
-                        break
+                player_key = f"player_{agent_id}"
+                if player_key in config["agents"]:
+                    agent_config = config["agents"][player_key]
+                    agent_type = agent_config["type"]
+                    # Only set model for LLM agents
+                    if agent_type == "llm":
+                        agent_model = agent_config.get("model", "None")
+                    else:
+                        agent_model = "None"
 
                 # Check if the chosen action is legal
                 if (chosen_action is None or
@@ -196,10 +206,10 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
                 opponents_list = []
                 for a_id in config["agents"]:
                     if a_id != f"player_{agent_id}":
-                        agent_type = config['agents'][a_id]['type']
+                        opp_agent_type = config['agents'][a_id]['type']
                         model = config['agents'][a_id].get('model', 'None')
                         model_clean = model.replace('-', '_')
-                        opponents_list.append(f"{agent_type}_{model_clean}")
+                        opponents_list.append(f"{opp_agent_type}_{model_clean}")
                 opponents = ", ".join(opponents_list)
 
                 agent_logger.log_move(
@@ -212,7 +222,8 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
                     generation_time=0.0,  # TODO: Add timing back
                     agent_type=agent_type,
                     agent_model=agent_model,
-                    seed=episode_seed
+                    seed=episode_seed,
+                    board_state=observation["state_string"]
                 )
 
                 if agent_type == "llm":

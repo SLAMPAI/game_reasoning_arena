@@ -1,35 +1,22 @@
-2025-08-03 17:17:31,574 - __main__ - INFO - {'env_config': {'game_name': 'tic_tac_toe', 'max_game_rounds': None}, 'num_episodes': 1, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama3-8b-8192'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama3-8b-8192'}, 'log_level': 'INFO', 'env_configs': [{'game_name': 'kuhn_poker', 'max_game_rounds': None}, {'game_name': 'connect_four', 'max_game_rounds': None}, {'game_name': 'tic_tac_toe', 'max_game_rounds': None}]}
-2025-08-03 17:17:31,582 - __main__ - INFO - Ray disabled - using sequential execution
-2025-08-03 17:17:31,587 - simulate - INFO - Initializing environment for tic_tac_toe.
-2025-08-03 17:17:31,589 - board_game_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for tic_tac_toe
-2025-08-03 17:17:31,589 - board_game_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama3-8b-8192)
-2025-08-03 17:17:31,590 - board_game_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
-2025-08-03 17:17:31,636 - simulate - INFO - Episode 1 started with seed 42.
-2025-08-03 17:17:31,656 - LiteLLM - INFO - 
+2025-08-03 23:33:59,400 - __main__ - INFO - {'env_config': {'game_name': 'tic_tac_toe', 'max_game_rounds': None}, 'num_episodes': 1, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama3-8b-8192'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama3-8b-8192'}, 'log_level': 'INFO', 'env_configs': [{'game_name': 'tic_tac_toe', 'max_game_rounds': None}]}
+2025-08-03 23:33:59,401 - __main__ - INFO - Ray disabled - using sequential execution
+2025-08-03 23:33:59,402 - __main__ - INFO - Using sequential execution (Ray disabled)
+2025-08-03 23:33:59,404 - simulate - INFO - Initializing environment for tic_tac_toe.
+2025-08-03 23:33:59,404 - board_game_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for tic_tac_toe
+2025-08-03 23:33:59,405 - board_game_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama3-8b-8192)
+2025-08-03 23:33:59,405 - board_game_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
+2025-08-03 23:33:59,421 - simulate - INFO - Episode 1 started with seed 42.
+2025-08-03 23:33:59,431 - LiteLLM - INFO - 
 LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-03 17:17:32,191 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-03 17:17:32,194 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-03 17:17:32,210 - simulate - INFO - Board state: 
+2025-08-03 23:33:59,887 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-03 23:33:59,890 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-03 23:33:59,899 - simulate - INFO - Board state: 
 ...
-.x.
 ...
-2025-08-03 17:17:32,210 - simulate - INFO - Legal actions: [0, 1, 2, 3, 5, 6, 7, 8]
-2025-08-03 17:17:32,210 - simulate - INFO - Agent 1 (None) chose action: 1 with reasoning: None
-2025-08-03 17:17:32,211 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-03 17:17:32,702 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-03 17:17:32,704 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-03 17:17:32,713 - simulate - INFO - Board state: 
-.o.
-.xx
 ...
-2025-08-03 17:17:32,713 - simulate - INFO - Legal actions: [0, 2, 3, 6, 7, 8]
-2025-08-03 17:17:32,713 - simulate - INFO - Agent 1 (None) chose action: 0 with reasoning: None
-2025-08-03 17:17:32,714 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-03 17:17:33,109 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-03 17:17:33,111 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-03 17:17:33,117 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
-2025-08-03 17:17:33,123 - simulate - INFO - Simulation for game tic_tac_toe, Episode 1 completed.
-2025-08-03 17:17:33,124 - __main__ - INFO - Sequential simulation results for tic_tac_toe completed
-2025-08-03 17:17:33,124 - __main__ - INFO - All simulations completed. Total results: 1
+2025-08-03 23:33:59,899 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+2025-08-03 23:33:59,900 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: I choose to place my X in the center of the board, as it gives me the most flexibility for my next move and puts pressure on my opponent to respond. This is a common opening strategy in Tic Tac Toe, as it allows for the possibility of creating two possible winning lines.
+2025-08-03 23:33:59,903 - simulate - INFO - Game status: truncated with rewards dict: {0: 0.0, 1: 0.0}
+2025-08-03 23:33:59,910 - simulate - INFO - Simulation for game tic_tac_toe, Episode 1 completed.
+2025-08-03 23:33:59,910 - __main__ - INFO - Sequential simulation results for tic_tac_toe completed
+2025-08-03 23:33:59,910 - __main__ - INFO - All simulations completed. Total results: 1

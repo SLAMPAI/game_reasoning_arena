@@ -47,7 +47,8 @@ def merge_sqlite_logs(log_dir: str = "results/") -> pd.DataFrame:
         try:
             df_moves = pd.read_sql_query(
                 """SELECT game_name, episode, turn, action, reasoning,
-                          generation_time, opponent, timestamp, run_id
+                          generation_time, opponent, timestamp, run_id,
+                          seed, agent_type, agent_model, board_state
                    FROM moves""",
                 conn
             )

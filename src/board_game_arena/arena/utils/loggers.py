@@ -57,7 +57,8 @@ class SQLiteLogger:
                 agent_model TEXT,
                 timestamp TEXT,
                 run_id TEXT,
-                seed INTEGER
+                seed INTEGER,
+                board_state TEXT
             )
         """)
 
@@ -135,7 +136,8 @@ class SQLiteLogger:
 
     def log_move(self, game_name: str, episode: int, turn: int, action: int,
                  reasoning: str, opponent: str, generation_time: float,
-                 agent_type: str, agent_model: str, seed: int):
+                 agent_type: str, agent_model: str, seed: int,
+                 board_state: str = ""):
         """
         Logs an agent's move into the table 'moves'
 
@@ -150,6 +152,7 @@ class SQLiteLogger:
             agent_type (str): Type of agent (e.g., "llm", "random", "human").
             agent_model (str): Specific model name for LLMs.
             seed (int): Random seed used for the episode.
+            board_state (str): The current board state as a string.
         """
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
@@ -157,12 +160,12 @@ class SQLiteLogger:
         cursor.execute("""
             INSERT INTO moves (game_name, episode, turn, action, reasoning,
                             opponent, generation_time, agent_type, agent_model,
-                            timestamp, run_id, seed)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            timestamp, run_id, seed, board_state)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             game_name, episode, turn, action, reasoning,
             opponent, generation_time, agent_type, agent_model,
-            datetime.now().isoformat(), self.run_id, seed
+            datetime.now().isoformat(), self.run_id, seed, board_state
         ))
 
         conn.commit()
@@ -213,14 +216,14 @@ class SQLiteLogger:
 
         Returns:
             List of tuples containing game_name, episode, turn, action,
-            reasoning, opponent, generation_time, and timestamp.
+            reasoning, opponent, generation_time, timestamp, and board_state.
         """
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
 
         cursor.execute("""
             SELECT game_name, episode, turn, action, reasoning, opponent,
-                   generation_time, timestamp, run_id
+                   generation_time, timestamp, run_id, board_state
             FROM moves
             ORDER BY game_name, episode, turn
         """)
