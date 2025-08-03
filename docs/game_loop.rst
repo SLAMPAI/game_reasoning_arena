@@ -11,7 +11,7 @@ The framework implements the standard **agent-environment interaction loop** fro
 .. code-block:: text
 
    ┌─────────────┐    observation    ┌─────────────┐
-   │   Agent     │ ◄──────────────── │ Environment │
+   │  LLM Agent  │ ◄──────────────── │ Environment │
    │             │                   │             │
    │  (Policy)   │ ────────────────► │ (OpenSpiel) │
    └─────────────┘      action       └─────────────┘
