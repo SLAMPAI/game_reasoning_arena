@@ -217,7 +217,7 @@ This robust parsing handles variations in JSON formatting and ensures reliable e
 
 Here's what a complete LLM response might look like for our Kuhn Poker example:
 
-.. code-block:: json
+.. code-block:: python
 
    {
      'reasoning': 'I have a Jack, which is the highest card in Kuhn Poker. My opponent checked, which could mean they have a weak card or are trying to trap me. Since I have the best possible card, I should bet to maximize my expected value. Even if they call, I will win the showdown.',
