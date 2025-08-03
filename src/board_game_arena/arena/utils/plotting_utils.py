@@ -1,42 +1,15 @@
-# utils/common_utils.py
-"""Common utility functions for the OpenSpiel LLM Arena project.
+# utils/plotting_utils.py
+"""Plotting utility functions for the OpenSpiel LLM Arena project.
 
-This module provides shared utility functions for logging, configuration,
-and other cross-cutting concerns.
+This module provides plotting and visualization functions for game analysis.
 """
 
-import json
-from pathlib import Path
-from tabulate import tabulate
-from games.registry import registry
-from typing import Dict, Any, List
+from typing import Dict, Any
 import matplotlib.pyplot as plt
 
 
-#TODO: there 3 functions are not used but useful! it contains the state history!
-
-def save_results(game_name: str, final_scores: List[float], state: Any):
-    results = prepare_results(game_name, final_scores, state)
-    filename = get_results_filename(game_name)
-    with open(filename, "w") as f:
-        json.dump(results, f, indent=4)
-    print(f"Results saved to {filename}")
-
-
-def prepare_results(game_name: str, final_scores: List[float], state: Any) -> Dict[str, Any]:
-    return {
-        "game_name": game_name,
-        "final_state": str(state),
-        "returns": list(final_scores),  # Ensure it's JSON-serializable
-        "history": state.history_str(),
-    }
-
-
-def get_results_filename(game_name: str) -> str:
-    results_dir = Path("results")
-    results_dir.mkdir(exist_ok=True)
-    filename = f"{game_name.lower().replace(' ', '_')}_results.json"
-    return str(results_dir / filename)
+# Note: JSON export functions removed - the project uses SQLite for storage
+# If JSON export is needed, it can be implemented in the analysis module
 
 
 def print_total_scores(game_name: str, summary: Dict[str, Any]):
@@ -58,36 +31,90 @@ def print_total_scores(game_name: str, summary: Dict[str, Any]):
             print(f"Player {player_id}: {stats}")
 
 
-def get_win_rate(db_conn, llm_name):  #TODO: use this!
-    """Calculates the win rate of an LLM from logged games."""
+def get_win_rate(db_conn, agent_model: str) -> float:
+    """Calculates the win rate of an agent from logged game results.
+
+    Args:
+        db_conn: SQLite database connection
+        agent_model: The model name to calculate win rate for
+
+    Returns:
+        float: Win rate as a percentage (0-100)
+    """
     cursor = db_conn.cursor()
 
+    # Get total games and wins from game_results table
     cursor.execute("""
-        SELECT COUNT(*) AS total_games,
-               SUM(CASE WHEN action = 1 THEN 1 ELSE 0 END) AS wins
-        FROM moves WHERE llm_name = %s
-    """, (llm_name,))
+        SELECT
+            COUNT(*) AS total_games,
+            SUM(CASE WHEN reward > 0 THEN 1 ELSE 0 END) AS wins
+        FROM game_results
+        WHERE run_id IN (
+            SELECT DISTINCT run_id FROM moves WHERE agent_model = ?
+        )
+    """, (agent_model,))
 
-    total_games, total_wins = cursor.fetchone()
+    result = cursor.fetchone()
+    total_games, wins = result if result else (0, 0)
 
-    win_rate = (total_wins / total_games) * 100 if total_games > 0 else 0
+    win_rate = (wins / total_games) * 100 if total_games > 0 else 0
     return win_rate
 
 
-def plot_action_distribution(db_conn, llm_name): #TODO: use this!
-    """Plots the distribution of LLM's chosen actions."""
+def plot_action_distribution(db_conn, agent_model: str,
+                             game_name: str = None, save_path: str = None):
+    """Plots the distribution of an agent's chosen actions.
+
+    Args:
+        db_conn: SQLite database connection
+        agent_model: The model name to analyze
+        game_name: Optional game name filter
+        save_path: Optional path to save the plot
+    """
     cursor = db_conn.cursor()
 
-    cursor.execute("""
-        SELECT action, COUNT(*) FROM moves WHERE llm_name = %s GROUP BY action
-    """, (llm_name,))
+    # Build query with optional game filter
+    query = """
+        SELECT action, COUNT(*) as count
+        FROM moves
+        WHERE agent_model = ?
+    """
+    params = [agent_model]
 
+    if game_name:
+        query += " AND game_name = ?"
+        params.append(game_name)
+
+    query += " GROUP BY action ORDER BY action"
+
+    cursor.execute(query, params)
     results = cursor.fetchall()
-    actions = [r[0] for r in results]
+
+    if not results:
+        print(f"No action data found for {agent_model}")
+        return
+
+    actions = [str(r[0]) for r in results]
     counts = [r[1] for r in results]
 
-    plt.bar(actions, counts, tick_label=["Fold", "Call"])
+    plt.figure(figsize=(10, 6))
+    plt.bar(actions, counts)
     plt.xlabel("Action")
     plt.ylabel("Frequency")
-    plt.title(f"Action Distribution for {llm_name}")
-    plt.show()
+
+    title = f"Action Distribution for {agent_model}"
+    if game_name:
+        title += f" ({game_name})"
+    plt.title(title)
+
+    # Add count labels on bars
+    for i, count in enumerate(counts):
+        plt.text(i, count + max(counts) * 0.01, str(count), ha='center')
+
+    plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        print(f"Plot saved to {save_path}")
+    else:
+        plt.show()
