@@ -27,6 +27,10 @@ Uses Large Language Models to make game decisions through natural language reaso
 * Configurable temperature for exploration
 * Support for multiple LLM providers
 
+.. note::
+
+   To understand how LLM agents receive and process game information, see the detailed :doc:`prompting` system guide.
+
 Random Agent
 ~~~~~~~~~~~~
 

@@ -64,6 +64,10 @@ To add support for a new game:
 
    Create tests in ``tests/`` to verify your game works correctly.
 
+5. **Customize prompts (for LLM games)**
+
+   If your game will be played by LLM agents, you'll want to customize the prompting system to provide game-specific context. See the :doc:`prompting` guide for detailed instructions on creating effective prompts for your game.
+
 Adding New Agent Types
 ----------------------
 

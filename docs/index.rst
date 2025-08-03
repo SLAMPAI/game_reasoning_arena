@@ -49,6 +49,7 @@ Available Games
 
    game_loop
    backends
+   prompting
    api_reference
    code_flow
    games
