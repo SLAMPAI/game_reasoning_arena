@@ -25,10 +25,10 @@ from board_game_arena.configs.config_parser import (
     parse_config
 )
 
-# Ensure the src directory is in the Python path
-current_dir = Path(__file__).parent
-src_dir = current_dir / ".." / "src"
-sys.path.insert(0, str(src_dir.resolve()))
+# Ensure the src directory is in the Python path #TODO: delete this!
+#current_dir = Path(__file__).parent
+#src_dir = current_dir / ".." / "src"
+#sys.path.insert(0, str(src_dir.resolve()))
 
 # Set the soft and hard core file size limits to 0 (disable core dumps)
 resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
@@ -92,6 +92,176 @@ def simulate_game_ray(
     return simulate_game(game_name, config, seed)
 
 
+def create_episode_tasks(
+    game_name: str,
+    game_config: Dict[str, Any],
+    seed: int,
+    num_episodes: int
+) -> List[Any]:
+    """
+    Create Ray tasks for individual episodes of a game.
+
+    Args:
+        game_name: Name of the game
+        game_config: Game-specific configuration
+        seed: Base seed for random number generation
+        num_episodes: Number of episodes to create tasks for
+
+    Returns:
+        List of Ray task futures
+    """
+    episode_tasks = []
+    for episode in range(num_episodes):
+        episode_config = {
+            **game_config,
+            "num_episodes": 1  # Each task handles only 1 episode
+        }
+        episode_seed = seed + episode
+        episode_task = simulate_game_ray.remote(
+            game_name, episode_config, episode_seed
+        )
+        episode_tasks.append(episode_task)
+    return episode_tasks
+
+
+def create_game_tasks(
+    game_configs: List[Dict[str, Any]],
+    base_config: Dict[str, Any],
+    seed: int
+) -> List[Tuple[str, List[Any]]]:
+    """
+    Create Ray tasks for all games, handling episode parallelization strategy.
+
+    Args:
+        game_configs: List of game configurations
+        base_config: Base configuration dictionary
+        seed: Random seed
+
+    Returns:
+        List of (game_name, task_futures) tuples
+    """
+    pending_game_tasks = []
+
+    for game_config in game_configs:
+        game_name = game_config["game_name"]
+        game_specific_config = create_game_config(base_config, game_config)
+
+        # Decide parallelization strategy for episodes
+        num_episodes = base_config.get("num_episodes", 1)
+        parallel_episodes = (
+            base_config.get("parallel_episodes", False) and num_episodes > 1
+        )
+
+        if parallel_episodes:
+            # Strategy 1: Parallelize episodes across multiple Ray tasks
+            episode_tasks = create_episode_tasks(
+                game_name, game_specific_config, seed, num_episodes
+            )
+            pending_game_tasks.append((game_name, episode_tasks))
+        else:
+            # Strategy 2: Sequential episodes within a single Ray task
+            single_game_task = simulate_game_ray.remote(
+                game_name, game_specific_config, seed
+            )
+            pending_game_tasks.append((game_name, [single_game_task]))
+
+    return pending_game_tasks
+
+
+def execute_parallel_simulations(
+    game_configs: List[Dict[str, Any]],
+    config: Dict[str, Any],
+    seed: int
+) -> List[Any]:
+    """
+    Execute simulations using Ray for parallel processing.
+
+    Args:
+        game_configs: List of game configurations
+        config: Base configuration dictionary
+        seed: Random seed
+
+    Returns:
+        List of simulation results
+    """
+    all_results = []
+
+    # Create all Ray tasks
+    pending_game_tasks = create_game_tasks(game_configs, config, seed)
+
+    # Collect results from completed tasks
+    for game_name, task_futures in pending_game_tasks:
+        episode_results = ray.get(task_futures)
+        all_results.extend(episode_results)
+        logger.info(
+            "Parallel simulation results for %s completed (%d episodes)",
+            game_name, len(episode_results)
+        )
+
+    return all_results
+
+
+def execute_sequential_simulations(
+    game_configs: List[Dict[str, Any]],
+    config: Dict[str, Any],
+    seed: int
+) -> List[Any]:
+    """
+    Execute simulations sequentially without Ray.
+
+    Args:
+        game_configs: List of game configurations
+        config: Base configuration dictionary
+        seed: Random seed
+
+    Returns:
+        List of simulation results
+    """
+    all_results = []
+
+    for game_config in game_configs:
+        game_name = game_config["game_name"]
+        game_specific_config = create_game_config(config, game_config)
+
+        result = simulate_game(game_name, game_specific_config, seed)
+        all_results.append(result)
+        logger.info(
+            "Sequential simulation results for %s completed",
+            game_name
+        )
+
+    return all_results
+
+
+def create_game_config(
+    base_config: Dict[str, Any],
+    game_config: Dict[str, Any]
+) -> Dict[str, Any]:
+    """
+    Create a game-specific configuration from the base config.
+
+    Args:
+        base_config: The main configuration dictionary
+        game_config: Game-specific configuration to merge
+
+    Returns:
+        Merged configuration dictionary for the specific game
+    """
+    game_name = game_config["game_name"]
+    output_path = game_config.get(
+        "output_path",
+        f"results/{game_name}_simulation_results.json"
+    )
+    return {
+        **base_config,  # Inherit global settings
+        "env_config": game_config,  # Game configuration
+        "max_game_rounds": game_config.get("max_game_rounds", None),
+        "num_episodes": base_config.get("num_episodes", 1),
+        "agents": base_config.get("agents", {}),
+        "output_path": output_path,
+    }
+
+
 def run_simulation(config):
     """
     Orchestrates simulation runs across multiple games and agent matchups.
@@ -125,94 +295,19 @@ def run_simulation(config):
     # Prepare results collection
     all_results = []
 
-    if use_ray and len(game_configs) > 1:
-        # Use Ray for parallel execution of multiple games
-        ray_futures = []
-        for game_config in game_configs:
-            game_name = game_config["game_name"]
-            output_path = game_config.get(
-                "output_path",
-                f"results/{game_name}_simulation_results.json"
-            )
-            game_specific_config = {
-                **config,  # Inherit global settings
-                "env_config": game_config,  # Game configuration
-                "max_game_rounds": game_config.get("max_game_rounds", None),
-                "num_episodes": config.get("num_episodes", 1),
-                "agents": config.get("agents", {}),
-                "output_path": output_path,
-            }
+    # Choose execution strategy based on configuration
+    use_ray = config.get("use_ray", False)
+    should_use_parallel = use_ray and len(game_configs) > 1
 
-            # Check if we should parallelize episodes too
-            num_episodes = config.get("num_episodes", 1)
-            parallel_episodes = (
-                config.get("parallel_episodes", False) and num_episodes > 1
-            )
-
-            if parallel_episodes:
-                # Parallelize episodes within each game
-                episode_futures = []
-                for episode in range(num_episodes):
-                    episode_config = {
-                        **game_specific_config,
-                        "num_episodes": 1
-                    }
-                    episode_seed = seed + episode
-                    episode_futures.append(
-                        simulate_game_ray.remote(
-                            game_name, episode_config, episode_seed
-                        )
-                    )
-                ray_futures.append((game_name, episode_futures))
-            else:
-                # Run entire game as one Ray task
-                future = simulate_game_ray.remote(
-                    game_name, game_specific_config, seed
-                )
-                ray_futures.append((game_name, [future]))
-
-        # Collect results
-        for game_name, futures in ray_futures:
-            if isinstance(futures, list):
-                # Multiple episode futures
-                episode_results = ray.get(futures)
-                all_results.extend(episode_results)
-                logger.info(
-                    "Parallel simulation results for %s completed "
-                    "(%d episodes)",
-                    game_name, len(episode_results)
-                )
-            else:
-                # Single game future
-                result = ray.get(futures)
-                all_results.append(result)
-                logger.info(
-                    "Parallel simulation results for %s completed",
-                    game_name
-                )
+    if should_use_parallel:
+        logger.info("Using Ray for parallel execution")
+        all_results = execute_parallel_simulations(game_configs, config, seed)
     else:
-        # Sequential execution (Ray disabled or single game)
-        for game_config in game_configs:
-            game_name = game_config["game_name"]
-            output_path = game_config.get(
-                "output_path",
-                f"results/{game_name}_simulation_results.json"
-            )
-            game_specific_config = {
-                **config,  # Inherit global settings
-                "env_config": game_config,  # Game configuration
-                "max_game_rounds": game_config.get("max_game_rounds", None),
-                "num_episodes": config.get("num_episodes", 1),
-                "agents": config.get("agents", {}),
-                "output_path": output_path,
-            }
-
-            result = simulate_game(game_name, game_specific_config, seed)
-            all_results.append(result)
-            logger.info(
-                "Sequential simulation results for %s completed",
-                game_name
-            )
+        execution_mode = "Ray disabled" if not use_ray else "single game"
+        logger.info("Using sequential execution (%s)", execution_mode)
+        all_results = execute_sequential_simulations(
+            game_configs, config, seed
+        )
 
     logger.info(
         "All simulations completed. Total results: %d",
@@ -246,8 +341,7 @@ def main():
         print("Simulation completed.")
 
     finally:
-        # Clean up resources - backend type no longer needed
-        # since it's automatic
+        # Clean up resources after simulation
         full_cleanup("auto")
 
 
@@ -256,10 +350,6 @@ if __name__ == "__main__":
 
 
 # TODO: add HF board in the README file
-
-# TODO: count the illegal moves and log them
-# from here: /Users/lucia/Desktop/LLM_research/open_spiel_arena/src/
-# arena/envs/open_spiel_env.py
 
 # TODO: randomize the initial player order for each game instead of
 # always starting with player 0
