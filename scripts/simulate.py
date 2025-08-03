@@ -21,6 +21,7 @@ from torch.utils.tensorboard import SummaryWriter
 
 logger = logging.getLogger(__name__)
 
+
 def log_llm_action(agent_id: int,
                    agent_model: str,
                    observation: Dict[str, Any],
@@ -30,13 +31,13 @@ def log_llm_action(agent_id: int,
                    ) -> None:
     """Logs the LLM agent's decision."""
     logger.info("Board state: \n%s", observation['state_string'])
-    logger.info(f"Legal actions: {observation['legal_actions']}")
+    logger.info("Legal actions: %s", observation['legal_actions'])
     logger.info(
-        f"Agent {agent_id} ({agent_model}) chose action: {chosen_action} "
-        f"with reasoning: {reasoning}"
+        "Agent %s (%s) chose action: %s with reasoning: %s",
+        agent_id, agent_model, chosen_action, reasoning
     )
-    if flag == True:
-       logger.error(f"Terminated due to illegal move: {chosen_action}.")
+    if flag:
+        logger.error("Terminated due to illegal move: %s.", chosen_action)
 
 
 def compute_actions(
@@ -67,17 +68,20 @@ def compute_actions(
 
     if env.state.is_simultaneous_node():
         # Simultaneous-move game: All players act at once
-        return {player: extract_action(player_to_agent[player](observations[player]))
-                for player in player_to_agent}
+        return {player: extract_action(player_to_agent[player](
+            observations[player])) for player in player_to_agent}
     else:
         # Turn-based game: Only the current player acts
         current_player = env.state.current_player()
-        return {current_player: extract_action(player_to_agent[current_player](observations[current_player]))}
+        return {current_player: extract_action(
+            player_to_agent[current_player](observations[current_player])
+        )}
 
 
 def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
     """
-    Runs a game simulation, logs agent actions and final rewards to TensorBoard.
+    Runs a game simulation, logs agent actions and final rewards to
+    TensorBoard.
 
     Args:
         game_name: The name of the game.
@@ -95,7 +99,7 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
     initialize_llm_registry(config)
 
     # Initialize loggers for all agents
-    logger.info(f"Initializing environment for {game_name}.")
+    logger.info("Initializing environment for %s.", game_name)
 
     # Assign players to their policy classes
     policies_dict = initialize_policies(config, game_name, seed)
@@ -232,11 +236,24 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
         for agent_id, reward in rewards_dict.items():
             policy_key = policy_mapping_fn(agent_id)
             agent_logger = agent_loggers_dict[policy_key]
+
+            # Calculate opponents for this agent
+            opponents_list = []
+            for a_id in config["agents"]:
+                if a_id != f"player_{agent_id}":
+                    opp_agent_type = config['agents'][a_id]['type']
+                    opp_model = config['agents'][a_id].get('model', 'None')
+                    opp_model_clean = opp_model.replace('-', '_')
+                    opponent_str = f"{opp_agent_type}_{opp_model_clean}"
+                    opponents_list.append(opponent_str)
+            opponents = ", ".join(opponents_list)
+
             agent_logger.log_game_result(
                     game_name=game_name,
                     episode=episode + 1,
                     status=game_status,
-                    reward=reward
+                    reward=reward,
+                    opponent=opponents
                 )
             # Tensorboard logging
             agent_type = "unknown"

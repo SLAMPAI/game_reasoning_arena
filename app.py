@@ -14,7 +14,8 @@ db_dir = Path("results")
 
 
 def find_or_download_db():
-    """Check if SQLite .db files exist; if not, attempt to download from cloud storage."""
+    """Check if SQLite .db files exist; if not, attempt to download from
+    cloud storage."""
     if not db_dir.exists():
         db_dir.mkdir(parents=True, exist_ok=True)
     db_files = list(db_dir.glob("*.db"))
@@ -22,7 +23,9 @@ def find_or_download_db():
     # Ensure the random bot database exists
     random_db_path = db_dir / "random_None.db"
     if random_db_path not in db_files:
-        raise FileNotFoundError("Please upload results for the random agent in a file named 'random_None.db'.")
+        raise FileNotFoundError(
+            "Please upload results for the random agent in a file named "
+            "'random_None.db'.")
 
     return [str(f) for f in db_files]
 
@@ -39,7 +42,8 @@ def extract_agent_info(filename: str):
 
 
 def get_available_games(include_aggregated=True) -> List[str]:
-    """Extracts all unique game names from all SQLite databases. Includes 'Aggregated Performance' only when required."""
+    """Extracts all unique game names from all SQLite databases.
+    Includes 'Aggregated Performance' only when required."""
     db_files = find_or_download_db()
     game_names = set()
 
@@ -56,11 +60,12 @@ def get_available_games(include_aggregated=True) -> List[str]:
 
     game_list = sorted(game_names) if game_names else ["No Games Found"]
     if include_aggregated:
-        game_list.insert(0, "Aggregated Performance")  # Ensure 'Aggregated Performance' is always first
+        # Ensure 'Aggregated Performance' is always first
+        game_list.insert(0, "Aggregated Performance")
     return game_list
 
 
-def extract_illegal_moves_summary()-> pd.DataFrame:
+def extract_illegal_moves_summary() -> pd.DataFrame:
     """Extracts the number of illegal moves made by each LLM agent.
 
     Returns:
@@ -71,14 +76,15 @@ def extract_illegal_moves_summary()-> pd.DataFrame:
     for db_file in db_files:
         agent_type, model_name = extract_agent_info(db_file)
         if agent_type == "random":
-            continue # Skip the random agent from this analysis
+            continue  # Skip the random agent from this analysis
         conn = sqlite3.connect(db_file)
         try:
             # Count number of illegal moves from the illegal_moves table
-            df = pd.read_sql_query("SELECT COUNT(*) AS illegal_moves FROM illegal_moves", conn)
+            query = "SELECT COUNT(*) AS illegal_moves FROM illegal_moves"
+            df = pd.read_sql_query(query, conn)
             count = int(df["illegal_moves"].iloc[0]) if not df.empty else 0
         except Exception:
-            count = 0 # If the table does not exist or error occurs
+            count = 0  # If the table does not exist or error occurs
         summary.append({"agent_name": model_name, "illegal_moves": count})
         conn.close()
     return pd.DataFrame(summary)
@@ -105,7 +111,8 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
             df = pd.read_sql_query(query, conn)
 
             # Use avg_generation_time from a specific game (e.g., Kuhn Poker)
-            game_query = "SELECT AVG(generation_time) FROM moves WHERE game_name = 'kuhn_poker'"
+            game_query = ("SELECT AVG(generation_time) FROM moves "
+                          "WHERE game_name = 'kuhn_poker'")
             avg_gen_time = conn.execute(game_query).fetchone()[0] or 0
         else:
             query = "SELECT COUNT(DISTINCT episode) AS games_played, " \
@@ -114,8 +121,10 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
             df = pd.read_sql_query(query, conn, params=(game_name,))
 
             # Fetch average generation time from moves table
-            gen_time_query = "SELECT AVG(generation_time) FROM moves WHERE game_name = ?"
-            avg_gen_time = conn.execute(gen_time_query, (game_name,)).fetchone()[0] or 0
+            gen_time_query = ("SELECT AVG(generation_time) FROM moves "
+                              "WHERE game_name = ?")
+            result = conn.execute(gen_time_query, (game_name,)).fetchone()
+            avg_gen_time = result[0] or 0
 
         # Keep division by 2 for total rewards
         df["total_rewards"] = df["total_rewards"].fillna(0).astype(float) / 2
@@ -123,33 +132,43 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
         # Ensure avg_gen_time has decimals
         avg_gen_time = round(avg_gen_time, 3)
 
-        # Calculate win rate against random bot using moves table
+        # Calculate win rate against random bot using opponent column
         vs_random_query = """
-            SELECT COUNT(DISTINCT gr.episode) FROM game_results gr
-            JOIN moves m ON gr.game_name = m.game_name AND gr.episode = m.episode
-            WHERE m.opponent = 'random_None' AND gr.reward > 0
+            SELECT COUNT(*) FROM game_results
+            WHERE opponent = 'random_None' AND reward > 0
         """
         total_vs_random_query = """
-            SELECT COUNT(DISTINCT gr.episode) FROM game_results gr
-            JOIN moves m ON gr.game_name = m.game_name AND gr.episode = m.episode
-            WHERE m.opponent = 'random_None'
+            SELECT COUNT(*) FROM game_results
+            WHERE opponent = 'random_None'
         """
         wins_vs_random = conn.execute(vs_random_query).fetchone()[0] or 0
-        total_vs_random = conn.execute(total_vs_random_query).fetchone()[0] or 0
-        vs_random_rate = (wins_vs_random / total_vs_random * 100) if total_vs_random > 0 else 0
+        result = conn.execute(total_vs_random_query).fetchone()
+        total_vs_random = result[0] or 0
+        if total_vs_random > 0:
+            vs_random_rate = (wins_vs_random / total_vs_random * 100)
+        else:
+            vs_random_rate = 0
 
-        df.insert(0, "agent_name", model_name)  # Ensure agent_name is the first column
-        df.insert(1, "agent_type", agent_type)  # Ensure agent_type is second column
+        # Ensure agent_name is the first column
+        df.insert(0, "agent_name", model_name)
+        # Ensure agent_type is second column
+        df.insert(1, "agent_type", agent_type)
         df["avg_generation_time (sec)"] = avg_gen_time
         df["win vs_random (%)"] = round(vs_random_rate, 2)
 
         all_stats.append(df)
         conn.close()
 
-    leaderboard_df = pd.concat(all_stats, ignore_index=True) if all_stats else pd.DataFrame()
+    if all_stats:
+        leaderboard_df = pd.concat(all_stats, ignore_index=True)
+    else:
+        leaderboard_df = pd.DataFrame()
 
     if leaderboard_df.empty:
-        leaderboard_df = pd.DataFrame(columns=["agent_name", "agent_type", "# games", "total rewards", "avg_generation_time (sec)", "win-rate", "win vs_random (%)"])
+        columns = ["agent_name", "agent_type", "# games", "total rewards",
+                   "avg_generation_time (sec)", "win-rate",
+                   "win vs_random (%)"]
+        leaderboard_df = pd.DataFrame(columns=columns)
 
     return leaderboard_df
 
@@ -158,32 +177,58 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
 with gr.Blocks() as interface:
     # Tab for playing games against LLMs
     with gr.Tab("Game Arena"):
-        gr.Markdown("# Play Against LLMs\nChoose a game and an opponent to play!")
+        gr.Markdown("# Play Against LLMs\n"
+                    "Choose a game and an opponent to play!")
         # Dropdown to select a game, excluding 'Aggregated Performance'
-        game_dropdown = gr.Dropdown(get_available_games(include_aggregated=False), label="Select a Game")
+        game_dropdown = gr.Dropdown(
+            get_available_games(include_aggregated=False),
+            label="Select a Game"
+        )
         # Dropdown to choose an opponent (Random Bot or LLM)
-        opponent_dropdown = gr.Dropdown(["Random Bot", "LLM"], label="Choose Opponent")
+        opponent_dropdown = gr.Dropdown(
+            ["Random Bot", "LLM"], label="Choose Opponent"
+        )
         # Button to start the game
         play_button = gr.Button("Start Game")
         # Textbox to display the game log
         game_output = gr.Textbox(label="Game Log")
 
         # Event to start the game when the button is clicked
-        play_button.click(lambda game, opponent: f"Game {game} started against {opponent}", inputs=[game_dropdown, opponent_dropdown], outputs=[game_output])
+        play_button.click(
+            lambda game, opponent: f"Game {game} started against {opponent}",
+            inputs=[game_dropdown, opponent_dropdown],
+            outputs=[game_output]
+        )
 
     # Tab for leaderboard and performance tracking
     with gr.Tab("Leaderboard"):
-        gr.Markdown("# LLM Model Leaderboard\nTrack performance across different games!")
+        gr.Markdown("# LLM Model Leaderboard\n"
+                    "Track performance across different games!")
         # Dropdown to select a game, including 'Aggregated Performance'
-        leaderboard_game_dropdown = gr.Dropdown(choices=get_available_games(), label="Select Game", value="Aggregated Performance")
+        leaderboard_game_dropdown = gr.Dropdown(
+            choices=get_available_games(),
+            label="Select Game",
+            value="Aggregated Performance"
+        )
         # Table to display leaderboard statistics
-        leaderboard_table = gr.Dataframe(value=extract_leaderboard_stats("Aggregated Performance"), headers=["agent_name", "agent_type", "# games", "total rewards", "avg_generation_time (sec)", "win-rate", "win vs_random (%)"], every=5)
+        leaderboard_table = gr.Dataframe(
+            value=extract_leaderboard_stats("Aggregated Performance"),
+            headers=["agent_name", "agent_type", "# games", "total rewards",
+                     "avg_generation_time (sec)", "win-rate",
+                     "win vs_random (%)"],
+            every=5
+        )
         # Update the leaderboard when a new game is selected
-        leaderboard_game_dropdown.change(fn=extract_leaderboard_stats, inputs=[leaderboard_game_dropdown], outputs=[leaderboard_table])
+        leaderboard_game_dropdown.change(
+            fn=extract_leaderboard_stats,
+            inputs=[leaderboard_game_dropdown],
+            outputs=[leaderboard_table]
+        )
 
     # Tab for visual insights and performance metrics
     with gr.Tab("Metrics Dashboard"):
-        gr.Markdown("# 📊 Metrics Dashboard\nVisual summaries of LLM performance across games.")
+        gr.Markdown("# 📊 Metrics Dashboard\n"
+                    "Visual summaries of LLM performance across games.")
 
         # Extract data for visualizations
         metrics_df = extract_leaderboard_stats("Aggregated Performance")
@@ -213,7 +258,8 @@ with gr.Blocks() as interface:
 
     # Tab for LLM reasoning and illegal move analysis
     with gr.Tab("Analysis of LLM Reasoning"):
-        gr.Markdown("# 🧠 Analysis of LLM Reasoning\nInsights into move legality and decision behavior.")
+        gr.Markdown("# 🧠 Analysis of LLM Reasoning\n"
+                    "Insights into move legality and decision behavior.")
 
         # Load illegal move stats using global function
         illegal_df = extract_illegal_moves_summary()

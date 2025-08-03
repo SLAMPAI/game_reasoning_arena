@@ -1,7 +1,8 @@
 """
 SQLite Logger
 
-SQLiteLogger class for logging agent decisions and game results into a SQLite database.
+SQLiteLogger class for logging agent decisions and game results
+into a SQLite database.
 This class provides methods to log moves, rewards, and game results,
 as well as retrieve this data for analysis.
 """
@@ -11,19 +12,24 @@ from datetime import datetime
 from pathlib import Path
 import pandas as pd
 
+
 class SQLiteLogger:
     """Handles logging of agent decisions into a structured SQLite database."""
 
     def __init__(self, agent_type: str, model_name: str):
         """
-        Initializes the logger with a unique database file for each agent type and model.
+        Initializes the logger with a unique database file
+         for each agent type and model.
 
         Args:
-            agent_type (str): The type of agent (e.g., "llm", "random", "human").
-            model_name (str): The model name (for LLMs), or "None" for random/human.
+            agent_type (str): The type of agent (e.g., "llm", "random",
+                "human").
+            model_name (str): The model name (for LLMs), or "None" for
+                random/human.
         """
         # Sanitize model name for use in filename
-        sanitized_model_name = model_name.replace('-', '_').replace('/', '_').replace('\\', '_')
+        sanitized_model_name = (model_name.replace('-', '_')
+                                .replace('/', '_').replace('\\', '_'))
         self.db_path = f"results/{agent_type}_{sanitized_model_name}.db"
         self.run_id = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
         Path("results").mkdir(exist_ok=True)
@@ -84,7 +90,6 @@ class SQLiteLogger:
     """)
 
         # Create 'game_results' table (stores final results of games played)
-        # TODO: add opponents to this table !
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS game_results (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -92,6 +97,7 @@ class SQLiteLogger:
                 episode INTEGER,
                 status TEXT,
                 reward REAL,
+                opponent TEXT,
                 timestamp TEXT,
                 run_id TEXT
             )
@@ -100,7 +106,8 @@ class SQLiteLogger:
         conn.commit()
         conn.close()
 
-    def log_game_result(self, game_name: str, episode: int, status: str, reward: float):
+    def log_game_result(self, game_name: str, episode: int, status: str,
+                        reward: float, opponent: str = "unknown"):
         """
         Logs the final result of a game into table 'game_results'.
 
@@ -109,15 +116,18 @@ class SQLiteLogger:
             episode (int): Episode number.
             status (str): 'terminated' or 'truncated'.
             reward (float): Final reward the agent received.
+            opponent (str): Identifier of the opponent(s) in this game.
         """
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
 
         cursor.execute("""
-            INSERT INTO game_results (game_name, episode, status, reward, timestamp, run_id)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO game_results
+            (game_name, episode, status, reward, opponent, timestamp, run_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         """, (
-            game_name, episode, status, reward, datetime.now().isoformat(),self.run_id
+            game_name, episode, status, reward, opponent,
+            datetime.now().isoformat(), self.run_id
         ))
 
         conn.commit()
@@ -146,8 +156,9 @@ class SQLiteLogger:
 
         cursor.execute("""
             INSERT INTO moves (game_name, episode, turn, action, reasoning,
-                            opponent, generation_time, agent_type, agent_model, timestamp, run_id,seed)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
+                            opponent, generation_time, agent_type, agent_model,
+                            timestamp, run_id, seed)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             game_name, episode, turn, action, reasoning,
             opponent, generation_time, agent_type, agent_model,
@@ -179,7 +190,9 @@ class SQLiteLogger:
         conn.commit()
         conn.close()
 
-    def log_illegal_move(self, game_name: str, episode: int, turn: int, agent_id: int, illegal_action: int, reason: str,board_state: str):
+    def log_illegal_move(self, game_name: str, episode: int, turn: int,
+                         agent_id: int, illegal_action: int, reason: str,
+                         board_state: str):
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         cursor.execute("""
@@ -206,7 +219,8 @@ class SQLiteLogger:
         cursor = conn.cursor()
 
         cursor.execute("""
-            SELECT game_name, episode, turn, action, reasoning, opponent, generation_time, timestamp, run_id
+            SELECT game_name, episode, turn, action, reasoning, opponent,
+                   generation_time, timestamp, run_id
             FROM moves
             ORDER BY game_name, episode, turn
         """)
@@ -220,7 +234,8 @@ class SQLiteLogger:
         Retrieves all rewards logged for the agent.
 
         Returns:
-            List of tuples containing game_name, episode, reward, and timestamp.
+            List of tuples containing game_name, episode, reward, and
+            timestamp.
         """
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
@@ -243,13 +258,15 @@ class SQLiteLogger:
             game_name (str): Name of the game to fetch results for.
 
         Returns:
-            List of tuples containing game_name, episode, status, reward, and timestamp.
+            List of tuples containing game_name, episode, status, reward,
+            opponent, and timestamp.
         """
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
 
         cursor.execute("""
-            SELECT game_name, episode, status, reward, timestamp, run_id
+            SELECT game_name, episode, status, reward, opponent,
+                   timestamp, run_id
             FROM game_results
             WHERE game_name = ?
             ORDER BY episode
@@ -264,18 +281,20 @@ class SQLiteLogger:
         Fetches all game results for the agent's database.
 
         Returns:
-            Pandas DataFrame containing game_name, episode, status, reward, and timestamp.
+            Pandas DataFrame containing game_name, episode, status, reward,
+            opponent, and timestamp.
         """
         conn = sqlite3.connect(self.db_path)
         df = pd.read_sql_query("""
-            SELECT game_name, episode, status, reward, timestamp, run_id
+            SELECT game_name, episode, status, reward, opponent,
+                   timestamp, run_id
             FROM game_results
             ORDER BY game_name, episode
         """, conn)
         conn.close()
         return df
 
-def get_run_ids(self) -> list:
+    def get_run_ids(self) -> list:
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         cursor.execute("SELECT DISTINCT run_id FROM moves ORDER BY run_id")
@@ -283,7 +302,7 @@ def get_run_ids(self) -> list:
         conn.close()
         return run_ids
 
-def get_moves_by_run(self, run_id: str) -> pd.DataFrame:
+    def get_moves_by_run(self, run_id: str) -> pd.DataFrame:
         conn = sqlite3.connect(self.db_path)
         df = pd.read_sql_query("""
             SELECT *
@@ -294,39 +313,40 @@ def get_moves_by_run(self, run_id: str) -> pd.DataFrame:
         conn.close()
         return df
 
-def get_game_results_by_run(self, run_id: str) -> pd.DataFrame:
-    """
-    Retrieves all game results for a specific run ID.
+    def get_game_results_by_run(self, run_id: str) -> pd.DataFrame:
+        """
+        Retrieves all game results for a specific run ID.
 
-    Args:
-        run_id (str): Unique run identifier.
+        Args:
+            run_id (str): Unique run identifier.
 
-    Returns:
-        pd.DataFrame: Game results for that run.
-    """
-    conn = sqlite3.connect(self.db_path)
-    df = pd.read_sql_query("""
-        SELECT *
-        FROM game_results
-        WHERE run_id = ?
-        ORDER BY game_name, episode
-    """, conn, params=(run_id,))
-    conn.close()
-    return df
+        Returns:
+            pd.DataFrame: Game results for that run.
+        """
+        conn = sqlite3.connect(self.db_path)
+        df = pd.read_sql_query("""
+            SELECT *
+            FROM game_results
+            WHERE run_id = ?
+            ORDER BY game_name, episode
+        """, conn, params=(run_id,))
+        conn.close()
+        return df
 
-def list_all_runs(self) -> pd.DataFrame:
-    """
-    Lists all runs stored in the DB with metadata.
+    def list_all_runs(self) -> pd.DataFrame:
+        """
+        Lists all runs stored in the DB with metadata.
 
-    Returns:
-        pd.DataFrame: One row per run_id with timestamp and game count.
-    """
-    conn = sqlite3.connect(self.db_path)
-    df = pd.read_sql_query("""
-        SELECT run_id, MIN(timestamp) AS start_time, COUNT(DISTINCT episode) AS games_played
-        FROM game_results
-        GROUP BY run_id
-        ORDER BY start_time
-    """, conn)
-    conn.close()
-    return df
+        Returns:
+            pd.DataFrame: One row per run_id with timestamp and game count.
+        """
+        conn = sqlite3.connect(self.db_path)
+        df = pd.read_sql_query("""
+            SELECT run_id, MIN(timestamp) AS start_time,
+                   COUNT(DISTINCT episode) AS games_played
+            FROM game_results
+            GROUP BY run_id
+            ORDER BY start_time
+        """, conn)
+        conn.close()
+        return df
