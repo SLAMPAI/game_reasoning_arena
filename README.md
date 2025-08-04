@@ -563,14 +563,62 @@ After running analysis, check the `plots/` directory for:
 - **Research**: Study AI decision-making and explainability
 - **Debugging**: Identify why models make specific moves
 
----
+## TensorBoard Integration
 
-## Resources
+The Board Game Arena includes **TensorBoard integration** for real-time monitoring and visualization of agent performance metrics during experiments.
 
-- **OpenSpiel Documentation**: [https://github.com/deepmind/open_spiel](https://github.com/deepmind/open_spiel)
-- **LiteLLM Documentation**: [https://litellm.ai](https://litellm.ai)
-- **Issues & Bug Reports**: Use GitHub Issues for bug reports and feature requests
-- **Discussions**: Use GitHub Discussions for questions and community interaction
+### What is Logged to TensorBoard
+
+- **Agent Rewards**: Final reward scores for each agent per episode
+- **Performance Tracking**: Real-time visualization of win/loss patterns
+- **Multi-Agent Comparison**: Side-by-side performance metrics for different agents
+- **Episode-by-Episode Analysis**: Track performance evolution over multiple games
+
+### Starting TensorBoard
+
+After running experiments, launch TensorBoard to visualize the results:
+
+```bash
+# Start TensorBoard server
+tensorboard --logdir=runs
+
+# Open in browser
+# http://localhost:6006/
+```
+
+### TensorBoard Log Structure
+
+Logs are organized by game type:
+```
+runs/
+├── tic_tac_toe/           # Game-specific logs
+│   └── events.out.tfevents.*
+├── connect_four/
+│   └── events.out.tfevents.*
+└── kuhn_poker/
+    └── events.out.tfevents.*
+```
+
+### Example TensorBoard Metrics
+
+- **`Rewards/llm_litellm_groq_llama3_8b_8192`**: Reward progression for LLM agent
+- **`Rewards/random_None`**: Reward progression for Random agent
+- **`Rewards/llm_gpt_4`**: Reward progression for GPT-4 agent
+
+### Viewing Results
+
+1. **Scalars Tab**: View reward progressions and performance trends
+2. **Compare Agents**: Select multiple metrics to compare agent performance
+3. **Time Series**: Analyze performance over episode sequences
+4. **Distributions**: Examine reward distributions across experiments
+
+### Integration with Analysis
+
+TensorBoard complements other analysis tools:
+- **Real-time monitoring** during experiments
+- **Quick performance overviews** without database queries
+- **Visual comparison** of multiple agent configurations
+- **Export capabilities** for presentations and reports
 
 
 ---
@@ -617,7 +665,7 @@ ___
 
 This work was funded by the [Jülich Supercomputing Centre (JSC)](https://www.fz-juelich.de/en/ias/jsc).
 
-We are grateful for the support by the OpenSpiel developers: Marc Lanctot, John Schultz and Michale Kaisers
+We are grateful for the support by the OpenSpiel developers: Marc Lanctot, John Schultz and Michael Kaisers
 
 ___
 ## License

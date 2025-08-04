@@ -122,6 +122,32 @@ This generates multiple outputs:
 * **Pie Charts**: ``plots/pie_reasoning_type_<model>_<game>.png`` - Reasoning category distributions
 * **Heatmaps**: ``plots/heatmap_<model>_<game>.png`` - Move position preferences
 
+TensorBoard Monitoring
+~~~~~~~~~~~~~~~~~~~~~~
+
+Board Game Arena automatically logs performance metrics to TensorBoard for real-time monitoring:
+
+.. code-block:: bash
+
+   # Start TensorBoard after running experiments
+   tensorboard --logdir=runs
+
+   # Open browser: http://localhost:6006/
+
+**TensorBoard Features:**
+
+* **Real-time Rewards**: Monitor agent performance as games progress
+* **Multi-Agent Comparison**: Compare LLM vs Random agent performance
+* **Episode Tracking**: Visualize performance trends over multiple episodes
+* **Export Capabilities**: Download charts for analysis and presentations
+
+**Example Metrics:**
+
+* ``Rewards/llm_litellm_groq_llama3_8b_8192``: Track LLM agent rewards
+* ``Rewards/random_None``: Track random agent baseline performance
+
+TensorBoard complements reasoning traces by providing quantitative performance metrics alongside qualitative reasoning analysis.
+
 Database Queries
 ~~~~~~~~~~~~~~~~~
 

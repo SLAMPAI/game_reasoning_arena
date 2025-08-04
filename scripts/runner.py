@@ -349,7 +349,4 @@ if __name__ == "__main__":
     main()
 
 
-# TODO: add HF board in the README file
 
-# TODO: randomize the initial player order for each game instead of
-# always starting with player 0

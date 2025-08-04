@@ -137,6 +137,48 @@ Process and visualize game outcomes:
 * Move frequency analysis
 * Performance over time
 
+TensorBoard Integration
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Board Game Arena includes **TensorBoard integration** for real-time monitoring and visualization of agent performance metrics during experiments.
+
+.. note::
+   TensorBoard provides complementary visualization to the built-in analysis tools, focusing on real-time performance monitoring.
+
+**What is Logged:**
+
+* **Agent Rewards**: Final reward scores for each agent per episode
+* **Performance Tracking**: Real-time visualization of win/loss patterns
+* **Multi-Agent Comparison**: Side-by-side performance metrics for different agents
+* **Episode-by-Episode Analysis**: Track performance evolution over multiple games
+
+**Starting TensorBoard:**
+
+.. code-block:: bash
+
+   # After running experiments, launch TensorBoard
+   tensorboard --logdir=runs
+
+   # Open in browser: http://localhost:6006/
+
+**Log Structure:**
+
+.. code-block::
+
+   runs/
+   ├── tic_tac_toe/           # Game-specific TensorBoard logs
+   │   └── events.out.tfevents.*
+   ├── connect_four/
+   │   └── events.out.tfevents.*
+   └── kuhn_poker/
+       └── events.out.tfevents.*
+
+**Example Metrics:**
+
+* ``Rewards/llm_litellm_groq_llama3_8b_8192``: LLM agent reward progression
+* ``Rewards/random_None``: Random agent reward progression
+* ``Rewards/llm_gpt_4``: GPT-4 agent reward progression
+
 Evaluation Metrics
 ------------------
 
@@ -173,10 +215,10 @@ Compare different agents using the Python API:
 
    # Analyze game logs
    analyzer = LLMReasoningAnalyzer("run_logs/experiment_results.csv")
-   
+
    # Categorize reasoning patterns
    analyzer.categorize_reasoning()
-   
+
    # Generate metrics and visualizations for comparison
    analyzer.compute_metrics(output_csv="comparison_metrics.csv", plot_dir="plots/")
 
@@ -206,7 +248,7 @@ All experiments are automatically logged with:
    ├── random_None.db                   # Random agent database
    ├── merged_logs_YYYYMMDD_HHMMSS.csv  # Processed data for analysis
    └── ...
-   
+
    plots/                               # Generated visualizations
    ├── wordcloud_<agent>_<game>.png
    ├── pie_reasoning_type_<agent>_<game>.png
