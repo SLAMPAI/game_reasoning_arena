@@ -2,6 +2,10 @@
 
 A framework for evaluating Large Language Models (LLMs) through strategic game-playing using Google's OpenSpiel game library. Allows to test LLM decision-making capabilities in games like Tic-Tac-Toe, Connect Four, Poker, and more.
 
+## Official Documentation
+
+For a detailed documentation guide, visit the [Board Game Arena Documentation](https://board-game-arena.readthedocs.io/en/latest/index.html).
+
 ### Key Features
 - **Multi-Agent Testing**: LLMs vs Random, LLM vs LLM, Self-play
 - **Multiple Game Types**: Strategy, poker, cooperation, zero-sum games
