@@ -6,6 +6,7 @@ Demonstrate the enhanced reasoning traces with board states
 import sqlite3
 import pandas as pd
 
+
 def display_reasoning_traces():
     """Display the complete reasoning traces with board states"""
 
@@ -39,7 +40,7 @@ def display_reasoning_traces():
         print(f"🤖 Agent: {row['agent_model']}")
         print(f"🎲 Action Chosen: {row['action']}")
 
-        print(f"📋 Board State at Decision Time:")
+        print("📋 Board State at Decision Time:")
         if row['board_state']:
             board_lines = row['board_state'].split('\n')
             for line in board_lines:
@@ -47,7 +48,7 @@ def display_reasoning_traces():
         else:
             print("     [No board state recorded]")
 
-        print(f"🧠 Agent's Reasoning:")
+        print("🧠 Agent's Reasoning:")
         if row['reasoning'] and row['reasoning'] != 'None':
             # Word wrap the reasoning for better display
             reasoning = row['reasoning']
@@ -74,19 +75,19 @@ def display_reasoning_traces():
     # Summary
     print("📊 Summary")
     print("-" * 20)
-    print(f"✅ Board states captured: {(df['board_state'].notna() & (df['board_state'] != '')).sum()}/{len(df)}")
-    print(f"✅ Reasoning captured: {(df['reasoning'].notna() & (df['reasoning'] != 'None') & (df['reasoning'] != '')).sum()}/{len(df)}")
+    board_states_captured = (df['board_state'].notna() &
+                             (df['board_state'] != '')).sum()
+    print(
+        f"✅ Board states captured: "
+        f"{board_states_captured}/{len(df)}"
+    )
+    reasoning_captured = (df['reasoning'].notna() &
+                          (df['reasoning'] != 'None') &
+                          (df['reasoning'] != '')).sum()
+    print(f"✅ Reasoning captured: {reasoning_captured}/{len(df)}")
     print(f"🎮 Games analyzed: {df['game_name'].nunique()}")
     print(f"📈 Episodes analyzed: {df['episode'].nunique()}")
 
-    print()
-    print("🎯 Key Achievement: Complete Reasoning Traces!")
-    print("   - Board state at decision time ✅")
-    print("   - Agent's reasoning process ✅")
-    print("   - Action taken ✅")
-    print("   - Full context and metadata ✅")
-    print()
-    print("💡 This enables deep analysis of LLM decision-making patterns!")
 
 if __name__ == "__main__":
     display_reasoning_traces()
