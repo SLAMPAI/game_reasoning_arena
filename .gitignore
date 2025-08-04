@@ -13,4 +13,4 @@ __pycache__/
 results/
 tests/
 board_game_arena_blog_post.md
-slurm_jobs/run_simulation.sh
+
