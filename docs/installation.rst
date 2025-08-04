@@ -3,24 +3,6 @@ Installation
 
 This guide covers how to install and set up Board Game Arena for your research and development needs.
 
-Requirements
-------------
-
-System Requirements
-~~~~~~~~~~~~~~~~~~~
-
-* **Operating System**: Linux (Ubuntu 22.04+), macOS (10.15+), or Windows (WSL2)
-* **Python**: 3.8 or later (3.9+ recommended)
-* **Memory**: 4GB RAM minimum (8GB+ recommended for multi-agent experiments)
-* **Storage**: 2GB free space
-
-Python Requirements
-~~~~~~~~~~~~~~~~~~~
-
-* Python 3.8+
-* pip (latest version)
-* virtualenv or conda (recommended)
-
 Quick Installation
 ------------------
 
