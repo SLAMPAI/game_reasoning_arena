@@ -12,3 +12,4 @@ __pycache__/
 *.tfevents.*
 results/
 tests/
+board_game_arena_blog_post.md
