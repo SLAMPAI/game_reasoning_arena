@@ -21,7 +21,7 @@
 #SBATCH --gres=gpu:4
 #SBATCH --time=1:00:00
 #SBATCH --mem=0
-#SBATCH --output=/p/project/ccstdl/cipolina-kun1/open_spiel_arena/results/%x_%j.out
+#SBATCH --output=/results/%x_%j.out
 
 module load cuda
 
