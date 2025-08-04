@@ -6,8 +6,78 @@ Board Game Arena provides comprehensive tools for analyzing agent behavior and g
 Analysis Tools
 --------------
 
-Reasoning Analysis
-~~~~~~~~~~~~~~~~~~
+Reasoning Traces Analysis
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Board Game Arena includes reasoning traces functionality that captures LLM decision-making processes during gameplay. This provides deep insights into how LLMs think through game strategies.
+
+.. note::
+   For a comprehensive tutorial on reasoning traces analysis, see :doc:`reasoning_traces`.
+
+Quick Start with Reasoning Traces:
+
+.. code-block:: bash
+
+   # Run a game with LLM agents (traces collected automatically)
+   python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+     env_config.game_name=tic_tac_toe \
+     agents.player_0.type=llm \
+     agents.player_0.model=litellm_groq/llama3-8b-8192 \
+     num_episodes=5
+
+   # View the collected reasoning traces
+   python3 show_reasoning_traces.py
+
+**Example Reasoning Trace Output:**
+
+.. code-block:: text
+
+   🧠 Reasoning Trace #1
+   ----------------------------------------
+   🎯 Game: tic_tac_toe
+   📅 Episode: 1, Turn: 0
+   🤖 Agent: litellm_groq/llama3-8b-8192
+   🎲 Action Chosen: 4
+
+   📋 Board State at Decision Time:
+        ...
+        ...
+        ...
+
+   🧠 Agent's Reasoning:
+        I'll take the center position for strategic advantage.
+        The center square gives me the most control over the
+        board and creates multiple winning opportunities.
+
+   ⏰ Timestamp: 2025-08-04 10:15:23
+
+   🧠 Reasoning Trace #2
+   ----------------------------------------
+   🎯 Game: tic_tac_toe
+   📅 Episode: 1, Turn: 1
+   🤖 Agent: litellm_groq/llama3-8b-8192
+   🎲 Action Chosen: 0
+
+   📋 Board State at Decision Time:
+        ...
+        .x.
+        ...
+
+   🧠 Agent's Reasoning:
+        Opponent took center, I need to take a corner to
+        create diagonal threats and prevent them from
+        controlling too much of the board.
+
+   ⏰ Timestamp: 2025-08-04 10:15:24
+
+**Key Features:**
+* Automatic collection during LLM gameplay
+* Board state capture at decision time
+* Comprehensive reasoning categorization
+* Multi-game support and analysis tools
+
+Reasoning Analysis Module
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Analyze the reasoning patterns of LLM agents using the reasoning analysis module:
 
@@ -78,13 +148,6 @@ Agent Performance
 * **Decision Time**: Time taken per move
 * **Reasoning Quality**: Analysis of LLM explanations
 
-Game Complexity
-~~~~~~~~~~~~~~~
-
-* **Branching Factor**: Average number of legal moves
-* **Game Tree Depth**: Typical game length
-* **State Space Size**: Number of possible positions
-
 Reasoning Categories
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -101,17 +164,27 @@ The analysis tool categorizes LLM reasoning into:
 Comparative Analysis
 ~~~~~~~~~~~~~~~~~~~~
 
-Compare different agents across multiple metrics:
+Compare different agents using the Python API:
 
-.. code-block:: bash
+.. code-block:: python
 
-   python analysis/reasoning_analysis.py --compare --agents llm random
+   # Import the analyzer class
+   from analysis.reasoning_analysis import LLMReasoningAnalyzer
 
-**Comparison Features:**
-* Head-to-head win rates
-* Strategy pattern differences
-* Performance across different games
-* Statistical significance testing
+   # Analyze game logs
+   analyzer = LLMReasoningAnalyzer("run_logs/experiment_results.csv")
+   
+   # Categorize reasoning patterns
+   analyzer.categorize_reasoning()
+   
+   # Generate metrics and visualizations for comparison
+   analyzer.compute_metrics(output_csv="comparison_metrics.csv", plot_dir="plots/")
+
+**Comparison Capabilities:**
+* Agent-specific reasoning pattern analysis
+* Cross-game performance visualizations
+* Reasoning category distributions by agent
+* Word clouds showing agent-specific reasoning terms
 
 Experiment Tracking
 -------------------
@@ -124,16 +197,23 @@ All experiments are automatically logged with:
 * Reasoning traces (for LLM agents)
 * Performance metrics
 
-**Log Structure:**
+**Actual Log Structure:**
 
 .. code-block::
 
-   run_logs/
-   ├── experiment_YYYYMMDD_HHMMSS/
-   │   ├── config.yaml
-   │   ├── games_log.csv
-   │   ├── agent_reasoning.json
-   │   └── summary.json
+   results/
+   ├── llm_<model_name>.db              # SQLite database per LLM agent
+   ├── random_None.db                   # Random agent database
+   ├── merged_logs_YYYYMMDD_HHMMSS.csv  # Processed data for analysis
+   └── ...
+   
+   plots/                               # Generated visualizations
+   ├── wordcloud_<agent>_<game>.png
+   ├── pie_reasoning_type_<agent>_<game>.png
+   └── heatmap_<agent>_<game>.png
+
+   run_logs.txt                         # Raw execution logs
+   run_logs_<game_name>.txt            # Game-specific logs
 
 Generated Visualizations
 ------------------------

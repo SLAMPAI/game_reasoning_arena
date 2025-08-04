@@ -25,3 +25,4 @@ dependencies:
       - argparse
       - tensorboard
       - matplotlib
+      - seaborn

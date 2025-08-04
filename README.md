@@ -426,6 +426,142 @@ Tournament Results (10 episodes):
 └── Results saved to: results/tournament_2025-07-23_14-30-15.json
 ```
 
+---
+
+## Reasoning Traces Analysis
+
+The Board Game Arena includes powerful **reasoning traces** functionality that captures and analyzes LLM decision-making processes during gameplay. This feature provides deep insights into how LLMs think through game strategies.
+
+### Key Features
+
+- **Board State Capture**: Records the exact game state when each decision is made
+- **Reasoning Extraction**: Captures the LLM's thought process for each move
+- **Comprehensive Logging**: Stores moves, timestamps, and full context in SQLite databases
+- **Analysis Tools**: Built-in categorization and visualization of reasoning patterns
+- **Multi-Game Support**: Works across all supported games (Tic-Tac-Toe, Connect Four, Kuhn Poker, etc.)
+
+### How to Obtain Reasoning Traces
+
+Reasoning traces are **automatically collected** during LLM vs LLM or LLM vs Random gameplay. No special configuration is required - just run games with LLM agents
+
+**Results are stored in**: `results/llm_<model_name>.db`
+
+### Viewing Reasoning Traces
+
+Use the built-in display script to view detailed reasoning traces:
+
+```bash
+# Display all reasoning traces from recent games
+python3 show_reasoning_traces.py
+```
+
+### Example Reasoning Trace Output
+
+```
+🧠 Reasoning Trace #1
+----------------------------------------
+🎯 Game: tic_tac_toe
+📅 Episode: 1, Turn: 0
+🤖 Agent: litellm_groq/llama3-8b-8192
+🎲 Action Chosen: 4
+
+📋 Board State at Decision Time:
+     ...
+     ...
+     ...
+
+🧠 Agent's Reasoning:
+     I'll take the center position for strategic advantage.
+     The center square gives me the most control over the
+     board and creates multiple winning opportunities.
+
+⏰ Timestamp: 2025-08-04 10:15:23
+
+🧠 Reasoning Trace #2
+----------------------------------------
+🎯 Game: tic_tac_toe
+📅 Episode: 1, Turn: 1
+🤖 Agent: litellm_groq/llama3-8b-8192
+🎲 Action Chosen: 0
+
+📋 Board State at Decision Time:
+     ...
+     .x.
+     ...
+
+🧠 Agent's Reasoning:
+     Opponent took center, I need to take a corner to
+     create diagonal threats and prevent them from
+     controlling too much of the board.
+
+⏰ Timestamp: 2025-08-04 10:15:24
+```
+
+### Advanced Analysis Tools
+
+#### 1. Extract Specific Traces
+```bash
+# Extract traces for specific games or episodes
+python3 extract_reasoning_traces.py --game tic_tac_toe --episode 1
+```
+
+#### 2. Reasoning Pattern Analysis
+```bash
+# Analyze reasoning patterns and generate visualizations
+python3 -c "
+from analysis.reasoning_analysis import LLMReasoningAnalyzer
+analyzer = LLMReasoningAnalyzer('results/merged_logs.csv')
+analyzer.analyze_all_games()
+"
+```
+
+This generates:
+- **Word clouds** of reasoning patterns
+- **Pie charts** showing reasoning categories (Positional, Blocking, Winning Logic, etc.)
+- **Heatmaps** of move patterns
+- **Statistical summaries** of decision-making behavior
+
+#### 3. Database Queries
+Direct SQL access to reasoning data:
+```python
+import sqlite3
+import pandas as pd
+
+conn = sqlite3.connect('results/llm_litellm_groq_llama3_8b_8192.db')
+df = pd.read_sql_query("""
+    SELECT game_name, turn, action, reasoning, board_state
+    FROM moves
+    WHERE reasoning IS NOT NULL
+    ORDER BY timestamp
+""", conn)
+```
+
+### Reasoning Categories
+
+The system automatically categorizes LLM reasoning into types:
+
+- **Positional**: Center control, corner play, edge positioning
+- **Blocking**: Preventing opponent wins, defensive moves
+- **Opponent Modeling**: Predicting opponent strategy
+- **Winning Logic**: Identifying winning opportunities, creating threats
+- **Heuristic**: General strategic principles
+- **Rule-Based**: Following explicit game rules
+- **Random/Unjustified**: Unclear or random reasoning
+
+### Generated Visualizations
+
+After running analysis, check the `plots/` directory for:
+- `wordcloud_<model>_<game>.png` - Common reasoning terms
+- `pie_reasoning_type_<model>_<game>.png` - Distribution of reasoning categories
+- `heatmap_<model>_<game>.png` - Move position preferences
+
+### Use Cases
+
+- **Model Comparison**: Compare reasoning patterns between different LLMs
+- **Strategy Analysis**: Understand how LLMs approach different games
+- **Improvement Identification**: Find gaps in LLM strategic thinking
+- **Research**: Study AI decision-making and explainability
+- **Debugging**: Identify why models make specific moves
 
 ---
 
@@ -476,7 +612,14 @@ If you found this work useful, please consider citing:
     url={https://arxiv.org/abs/2}
 }
 ```
+___
+## Acknowledgments
 
+This work was funded by the [Jülich Supercomputing Centre (JSC)](https://www.fz-juelich.de/en/ias/jsc).
+
+We are grateful for the support by the OpenSpiel developers: Marc Lanctot, John Schultz and Michale Kaisers
+
+___
 ## License
 
 This code is made available under a [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) license, as found in the [LICENSE](LICENSE) file. Some portions of the project are subject to separate license terms outlined in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).

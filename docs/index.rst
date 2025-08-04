@@ -60,6 +60,7 @@ Available Games
    :maxdepth: 2
 
    analysis
+   reasoning_traces
    experiments
 
 .. toctree::

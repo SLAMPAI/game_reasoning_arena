@@ -194,7 +194,8 @@ Scale up using Ray for parallel execution.
 Next Steps
 ----------
 
-* Explore the :doc:`api_reference` for advanced features
-* Check out :doc:`examples` for more complex scenarios
+* Explore :doc:`reasoning_traces` for in-depth LLM decision analysis
+* Check the :doc:`api_reference` for advanced features
+* Browse :doc:`examples` for more complex scenarios
 * Read :doc:`contributing` to add your own features
 * Join the community discussions
