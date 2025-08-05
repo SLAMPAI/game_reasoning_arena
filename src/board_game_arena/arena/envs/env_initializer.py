@@ -5,11 +5,9 @@ Factory functions for creating and initializing OpenSpiel environments
 based on configuration parameters.
 """
 
-import gymnasium as gym
-
 from typing import Dict, Any
 from .open_spiel_env import OpenSpielEnv
-from ..games.registry import registry # Initializes an empty registry dict for the games
+from ..games.registry import registry  # Initializes an empty registry dict for the games
 import logging
 
 # Configure logger
@@ -51,13 +49,3 @@ def env_creator(game_name:str,config: Dict[str, Any]) -> OpenSpielEnv:
     logger.info(f"Environment initialized: {game_name} with {len(player_types)} players.")
 
     return env
-
-
-def register_env():
-    """
-    Registers the OpenSpiel environment with Gym-like API.
-    """
-    gym.register(
-        id="OpenSpielEnv-v0",
-        entry_point="envs.initializer:env_creator",
-    )

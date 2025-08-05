@@ -1,30 +1,28 @@
+# # !/usr/bin/env python3
+"""
+Board Game Arena - HuggingFace Gradio App
 
-''' Used by the Gradio app to display game results, leaderboards,
-and performance metrics for LLM agents.
-'''
+A Gradio interface for playing board games with LLM agents and analyzing
+their performance. Optimized for deployment on HuggingFace Spaces.
+
+Features:
+- Play games against LLM agents (free HuggingFace models supported)
+- View leaderboards and performance metrics
+- Analyze LLM reasoning and decision-making
+- Interactive visualizations and charts
+"""
 
 import sqlite3
 import pandas as pd
 import gradio as gr
-import os
-import json
-import requests
 from pathlib import Path
-from typing import List, Dict
+from typing import List
 import importlib.util
-import sys
+from transformers import pipeline
 
-# Try to import game-related modules with proper error handling
-GAME_REGISTRY_AVAILABLE = False
-AGENT_REGISTRY_AVAILABLE = False
-ENV_INITIALIZER_AVAILABLE = False
-
-# Define default player types and registries
-class PlayerType:
-    HUMAN = "human"
-    RANDOM = "random_bot"
-    LLM = "llm"
-
+# ============================================================================
+# INITIALIZATION - Try to import game modules if available
+# ============================================================================
 
 # Default game types based on database entries
 GAMES_REGISTRY = {
@@ -33,76 +31,129 @@ GAMES_REGISTRY = {
     "connect_four": "Connect Four"
 }
 
-# Default LLM models with their HuggingFace model IDs
+# Default LLM models with their HuggingFace model IDs (local models only)
 LLM_REGISTRY = {
-    "llama3_8b": "Llama 3 8B",  # External API (costs tokens)
-    "random_None": "Random Bot", # Not an LLM
-    "gpt2": "GPT-2 (free)",      # Free on HuggingFace
-    "bloom-560m": "BLOOM 560M (free)", # Free smaller model
-    "flan-t5-small": "Flan-T5-Small (free)" # Free instruction model
+    "random_None": "Random Bot",  # Baseline
+    "gpt2": "GPT-2 (local)",  # Local HuggingFace model
+    "google/flan-t5-small": "Flan-T5-Small (local)"  # Local instruction model
 }
 
-# Models available for free inference through HuggingFace
-FREE_HUGGINGFACE_MODELS = {
+# Local LLM models using transformers pipeline
+LOCAL_LLM_MODELS = {
     "gpt2": {
         "model_id": "gpt2",
-        "prompt_template": """
-You are playing a game. Here is the current state:
-{game_state}
+        "prompt_template": """You are playing a game. Current state: {game_state}
+You are player {player}. Valid moves: {valid_moves}
 
-You are player {player}.
-Valid moves: {valid_moves}
+Think step by step:
+1. Analyze the current game state
+2. Consider your options
+3. Choose the best move
 
-Choose one valid move from the list above. Just respond with the move number.
-""",
-        "parameters": {
-            "max_new_tokens": 10,
-            "temperature": 0.2,
-            "do_sample": True
-        }
+Reasoning: [Explain your thinking here]
+Move: [Your chosen move number]""",
+        "max_new_tokens": 50
     },
-    "bloom-560m": {
-        "model_id": "bigscience/bloom-560m",
-        "prompt_template": """
-You are playing a game. Current state:
-{game_state}
-
-You are player {player}.
-Valid moves: {valid_moves}
-
-Choose one move from the valid moves. Only respond with the move number.
-""",
-        "parameters": {
-            "max_new_tokens": 10,
-            "temperature": 0.1
-        }
-    },
-    "flan-t5-small": {
+    "google/flan-t5-small": {
         "model_id": "google/flan-t5-small",
-        "prompt_template": """
-Game state: {game_state}
+        "prompt_template": """Game state: {game_state}
 Player: {player}
 Valid moves: {valid_moves}
-Choose move:
-""",
-        "parameters": {
-            "max_new_tokens": 5,
-            "temperature": 0.1,
-            "do_sample": False
-        }
+
+Explain your reasoning and choose a move:
+Reasoning: [Why this move is good]
+Move: [Your move number]""",
+        "max_new_tokens": 30
     }
 }
 
-# Function to create a player class that uses HuggingFace models
-def create_huggingface_player(model_id):
-    """Create a player class that uses HuggingFace Inference API.
 
-    Args:
-        model_id: The Hugging Face model ID
 
-    Returns:
-        A player class that can be instantiated for game playing
-    """
+print("Loading local LLM models...")
+llm_models = ["google/flan-t5-small", "gpt2"]
+
+# Initialize pipelines without device_map for better compatibility
+llms = {}
+for model_name in llm_models:
+    try:
+        print(f"Loading {model_name}...")
+
+        # Use the correct pipeline type for each model
+        if "flan-t5" in model_name.lower():
+            # T5 models use text2text-generation pipeline
+            llms[model_name] = pipeline("text2text-generation", model=model_name)
+        else:
+            # GPT-2 and similar models use text-generation pipeline
+            llms[model_name] = pipeline("text-generation", model=model_name)
+
+        print(f"✓ Successfully loaded {model_name}")
+    except Exception as e:
+        print(f"✗ Failed to load {model_name}: {e}")
+
+print(f"✓ Loaded {len(llms)} local LLM models")
+
+# Try to import board game arena modules
+GAME_REGISTRY_AVAILABLE = False
+AGENT_REGISTRY_AVAILABLE = False
+ENV_INITIALIZER_AVAILABLE = False
+
+def is_package_installed(package_name):
+    """Check if a Python package is installed."""
+    try:
+        importlib.util.find_spec(package_name)
+        return True
+    except ImportError:
+        return False
+
+# Try importing from the board game arena package
+# Prioritize src.board_game_arena path for HuggingFace Spaces deployment
+try:
+    # Add the src directory to Python path
+    import sys
+    src_path = Path(__file__).parent / "src"
+    if str(src_path) not in sys.path:
+        sys.path.insert(0, str(src_path))
+
+    from src.board_game_arena.arena.games.registry import registry as games_registry
+    from src.board_game_arena.arena.agents.agent_registry import AGENT_REGISTRY as agent_registry
+
+    # Update registries if successful
+    GAMES_REGISTRY = {name: cls for name, cls in games_registry._registry.items()}
+    GAME_REGISTRY_AVAILABLE = True
+    AGENT_REGISTRY_AVAILABLE = True
+    ENV_INITIALIZER_AVAILABLE = True
+    print("✅ Successfully imported full board game arena - GAMES ARE PLAYABLE!")
+
+except ImportError as e:
+    # Fallback to installed package import
+    try:
+        from board_game_arena.arena.games.registry import registry as games_registry
+        from board_game_arena.arena.agents.agent_registry import AGENT_REGISTRY as agent_registry
+
+        GAMES_REGISTRY = {name: cls for name, cls in games_registry._registry.items()}
+        GAME_REGISTRY_AVAILABLE = True
+        AGENT_REGISTRY_AVAILABLE = True
+        ENV_INITIALIZER_AVAILABLE = True
+        print("✅ Successfully imported installed board game arena - GAMES ARE PLAYABLE!")
+
+    except ImportError as e2:
+        # Use fallback implementations
+        print(f"⚠️ Could not import board game arena: {e}, {e2}")
+        print("Running in demo mode - games not fully playable")
+        ENV_INITIALIZER_AVAILABLE = False
+
+print(f"Environment initializer available: {ENV_INITIALIZER_AVAILABLE}")
+
+# Directory to store SQLite results
+db_dir = Path("results")
+
+
+# ============================================================================
+# HUGGINGFACE API HELPER FUNCTIONS
+# ============================================================================
+
+def create_local_llm_player(model_id):
+    """Create a player class that uses local transformers pipeline."""
     try:
         from board_game_arena.arena.player import Player
     except ImportError:
@@ -117,14 +168,19 @@ def create_huggingface_player(model_id):
                 def make_move(self, game_state):
                     raise NotImplementedError("Base player can't make moves")
 
-    class HuggingFacePlayer(Player):
+    class LocalLLMPlayer(Player):
         def __init__(self, name=None):
-            name = name or f"HF-{model_id}"
+            name = name or f"Local-{model_id}"
             super().__init__(name=name)
             self.model_id = model_id
-            self.model_info = FREE_HUGGINGFACE_MODELS[model_id]
+            self.model_info = LOCAL_LLM_MODELS[model_id]
+            self.pipeline = llms.get(model_id)
 
         def make_move(self, game_state):
+            if not self.pipeline:
+                # Fallback to random if model not loaded
+                return game_state.legal_actions()[0]
+
             # Create a prompt for the model based on the game state
             prompt = self.model_info["prompt_template"].format(
                 game_state=str(game_state),
@@ -132,238 +188,211 @@ def create_huggingface_player(model_id):
                 player=game_state.current_player(),
             )
 
-            # Query the HuggingFace model
-            response = query_huggingface_model(
-                self.model_info.get("model_id", model_id),
-                prompt,
-                max_length=self.model_info["parameters"].get("max_new_tokens", 10)
-            )
+            try:
+                # Generate response using local pipeline
+                max_tokens = self.model_info.get("max_new_tokens", 10)
 
-            # Parse the response to extract the move
-            valid_moves = game_state.legal_actions()
-            for move in valid_moves:
-                if str(move) in response:
+                # Handle potential tokenizer issues
+                try:
+                    pad_token_id = self.pipeline.tokenizer.eos_token_id
+                except AttributeError:
+                    pad_token_id = None
+
+                # Check if this is a text2text-generation pipeline (like T5)
+                is_text2text = hasattr(self.pipeline, 'task') and self.pipeline.task == 'text2text-generation'
+
+                if is_text2text:
+                    # For T5/Flan-T5 models, use text2text-generation
+                    response = self.pipeline(
+                        prompt,
+                        max_length=len(prompt.split()) + max_tokens,
+                        do_sample=True,
+                        temperature=0.3
+                    )
+                else:
+                    # For GPT-2 and similar models, use text-generation
+                    if pad_token_id is not None:
+                        response = self.pipeline(
+                            prompt,
+                            max_new_tokens=max_tokens,
+                            do_sample=True,
+                            temperature=0.3,
+                            pad_token_id=pad_token_id
+                        )
+                    else:
+                        response = self.pipeline(
+                            prompt,
+                            max_new_tokens=max_tokens,
+                            do_sample=True,
+                            temperature=0.3
+                        )
+
+                # Extract text from response
+                if isinstance(response, list) and len(response) > 0:
+                    generated_text = response[0].get('generated_text', '')
+                    # Remove the original prompt from the response
+                    response_text = generated_text.replace(prompt, '').strip()
+                else:
+                    response_text = str(response)
+
+                # Parse reasoning and move from response
+                reasoning = ""
+                move = None
+
+                # Try to extract reasoning and move
+                lines = response_text.split('\n')
+                for line in lines:
+                    line = line.strip()
+                    if line.startswith("Reasoning:"):
+                        reasoning = line.replace("Reasoning:", "").strip()
+                    elif line.startswith("Move:"):
+                        move_text = line.replace("Move:", "").strip()
+                        # Extract number from move text
+                        import re
+                        move_match = re.search(r'\d+', move_text)
+                        if move_match:
+                            try:
+                                move = int(move_match.group())
+                            except ValueError:
+                                pass
+
+                # Store reasoning for display (this is a hack for demo purposes)
+                if hasattr(self, '_last_reasoning'):
+                    self._last_reasoning = reasoning
+                else:
+                    self._last_reasoning = reasoning
+
+                # Validate move is legal
+                valid_moves = game_state.legal_actions()
+                if move is not None and move in valid_moves:
+                    # Store both action and reasoning for full simulation
+                    self._last_action = move
+                    self._last_reasoning = reasoning
                     return move
 
-            # Fallback: if no valid move found, return the first legal action
-            print(f"No valid move found in response: {response}")
-            print(f"Using fallback move: {valid_moves[0]}")
-            return valid_moves[0]
+                # Fallback: try to find any valid move number in the response
+                for valid_move in valid_moves:
+                    if str(valid_move) in response_text:
+                        self._last_action = valid_move
+                        self._last_reasoning = reasoning
+                        return valid_move
 
-    return HuggingFacePlayer
+                fallback_move = valid_moves[0]
+                self._last_action = fallback_move
+                if reasoning:
+                    self._last_reasoning = reasoning
+                else:
+                    self._last_reasoning = "Using fallback move"
+                return fallback_move
 
+            except Exception as e:
+                print(f"Error generating move: {e}")
+                fallback_move = game_state.legal_actions()[0]
+                self._last_action = fallback_move
+                self._last_reasoning = f"Error occurred: {str(e)}"
+                return fallback_move
 
-# Function to check if HuggingFace API is available
-def check_huggingface_api():
-    """Check if the HuggingFace Inference API is accessible.
-    
-    Returns:
-        bool: True if API is accessible, False otherwise
-    """
-    try:
-        # Use a simple health check endpoint
-        response = requests.get(
-            "https://api-inference.huggingface.co/status",
-            timeout=5
-        )
-        return response.status_code == 200
-    except Exception as e:
-        print(f"Error checking HuggingFace API: {e}")
-        return False
-
-# Function to query HuggingFace's inference API for free models
-def query_huggingface_model(model_id, prompt, max_length=100):
-    """
-    Query a model through HuggingFace's inference API.
-
-    Args:
-        model_id: ID of the model on HuggingFace Hub
-        prompt: Text prompt to send to the model
-        max_length: Maximum response length
-
-    Returns:
-        str: Model's response text
-    """
-    try:
-        # HuggingFace Inference API endpoint
-        api_url = f"https://api-inference.huggingface.co/models/{model_id}"
-
-        # Headers with API token if provided
-        headers = {}
-        hf_token = os.environ.get("HUGGINGFACE_TOKEN")
-        if hf_token:
-            headers["Authorization"] = f"Bearer {hf_token}"
-
-        # Parameters vary by model type
-        if "t5" in model_id.lower():
-            # T5 models expect direct input without specific formatting
-            payload = {"inputs": prompt}
-        else:
-            # For generative models like GPT-2, BLOOM
-            payload = {
-                "inputs": prompt,
-                "parameters": {
-                    "max_new_tokens": max_length,
-                    "temperature": 0.7,
-                    "top_p": 0.9,
-                    "do_sample": True,
-                    "return_full_text": False
-                }
+        def compute_action(self, observation):
+            """Compute action for full game simulation."""
+            action = self.make_move(observation)
+            reasoning = getattr(self, '_last_reasoning',
+                                'No reasoning available')
+            return {
+                "action": action,
+                "reasoning": reasoning
             }
 
-        # Make the request to the API
-        response = requests.post(api_url, headers=headers, json=payload)
+    return LocalLLMPlayer
 
-        if response.status_code == 200:
-            result = response.json()
 
-            # Handle different response formats
-            if isinstance(result, list) and len(result) > 0:
-                if "generated_text" in result[0]:
-                    return result[0]["generated_text"]
-                else:
-                    return str(result[0])
-            else:
-                return str(result)
+def query_local_llm(model_id, prompt, max_length=10):
+    """Query a local LLM using transformers pipeline."""
+    if model_id not in llms:
+        return {"response": f"Model {model_id} not available", "reasoning": ""}
+
+    try:
+        pipeline_obj = llms[model_id]
+
+        # Handle potential tokenizer issues
+        try:
+            pad_token_id = pipeline_obj.tokenizer.eos_token_id
+        except AttributeError:
+            pad_token_id = None
+
+        # Check if this is a text2text-generation pipeline (like T5)
+        is_text2text = hasattr(pipeline_obj, 'task') and pipeline_obj.task == 'text2text-generation'
+
+        if is_text2text:
+            # For T5/Flan-T5 models, use text2text-generation
+            response = pipeline_obj(
+                prompt,
+                max_length=len(prompt.split()) + max_length,
+                do_sample=True,
+                temperature=0.3
+            )
         else:
-            return f"Error: {response.status_code}, {response.text}"
+            # For GPT-2 and similar models, use text-generation
+            if pad_token_id is not None:
+                response = pipeline_obj(
+                    prompt,
+                    max_new_tokens=max_length,
+                    do_sample=True,
+                    temperature=0.3,
+                    pad_token_id=pad_token_id
+                )
+            else:
+                response = pipeline_obj(
+                    prompt,
+                    max_new_tokens=max_length,
+                    do_sample=True,
+                    temperature=0.3
+                )
+
+        if isinstance(response, list) and len(response) > 0:
+            generated_text = response[0].get('generated_text', '')
+            # Remove the original prompt from the response
+            response_text = generated_text.replace(prompt, '').strip()
+        else:
+            response_text = str(response)
+
+        # Parse reasoning and move from response
+        reasoning = ""
+        move = ""
+
+        lines = response_text.split('\n')
+        for line in lines:
+            line = line.strip()
+            if line.startswith("Reasoning:"):
+                reasoning = line.replace("Reasoning:", "").strip()
+            elif line.startswith("Move:"):
+                move = line.replace("Move:", "").strip()
+
+        return {
+            "response": response_text,
+            "reasoning": reasoning or "No reasoning provided",
+            "move": move or "No move specified"
+        }
 
     except Exception as e:
-        return f"Failed to query model: {str(e)}"
-
-# Function to check if a package is installed
-def is_package_installed(package_name):
-    """Check if a Python package is installed.
-    
-    Args:
-        package_name: Name of the package to check
-        
-    Returns:
-        bool: True if installed, False otherwise
-    """
-    try:
-        importlib.util.find_spec(package_name)
-        return True
-    except ImportError:
-        return False
-
-# Try to import from the proper package structure
-print("\n--- Initializing Board Game Arena Modules ---")
-print("Checking required packages:")
-for pkg in ["numpy", "pyspiel", "openspiel"]:
-    installed = is_package_installed(pkg)
-    print(f"  - {pkg}: {'✓ Installed' if installed else '✗ Not found'}")
-
-try:
-    # First try importing from board_game_arena package (installed case)
-    print("\nAttempting to import from board_game_arena package...")
-    from board_game_arena.arena.games.registry import registry as games_registry
-    from board_game_arena.arena.agents.agent_registry import registry as agent_registry
-    from board_game_arena.arena.envs.env_initializer import get_environment
-
-    # If successful, update our registry dictionaries
-    GAMES_REGISTRY = {name: cls for name, cls in games_registry._registry.items()}
-    GAME_REGISTRY_AVAILABLE = True
-    AGENT_REGISTRY_AVAILABLE = True
-    ENV_INITIALIZER_AVAILABLE = True
-    print("✓ Successfully imported board_game_arena modules")
-    print(f"Available games: {list(GAMES_REGISTRY.keys())}")
-
-    # Verify get_environment works
-    try:
-        print("Testing environment initialization with a basic game setup...")
-        test_env = get_environment(
-            game_name="tic_tac_toe",
-            player_configs={0: {"type": "random"}, 1: {"type": "random"}}
-        )
-        print("✓ Environment initialization test successful")
-        
-        # Verify the created environment has expected attributes
-        if hasattr(test_env, 'simulate'):
-            print("✓ Environment has simulate method")
-        else:
-            print("✗ Environment missing simulate method")
-            ENV_INITIALIZER_AVAILABLE = False
-            
-        # Try to create a custom player to verify player creation works
-        try:
-            from board_game_arena.arena.player import Player
-            class TestPlayer(Player):
-                def __init__(self): 
-                    super().__init__(name="TestPlayer")
-                def make_move(self, state): 
-                    return state.legal_actions()[0]
-                    
-            print("✓ Successfully created test player class")
-        except Exception as player_error:
-            print(f"✗ Failed to create player class: {player_error}")
-            
-    except Exception as test_error:
-        print(f"✗ Environment test failed: {test_error}")
-        print("  This suggests the board_game_arena package is not correctly installed")
-        ENV_INITIALIZER_AVAILABLE = False
-
-except ImportError as e:
-    # Then try from src.board_game_arena (development case)
-    print(f"✗ Failed to import from board_game_arena: {e}")
-    print("Attempting to import from src.board_game_arena...")
-    try:
-        from src.board_game_arena.arena.games.registry import registry as games_registry
-        from src.board_game_arena.arena.agents.agent_registry import registry as agent_registry
-        from src.board_game_arena.arena.envs.env_initializer import get_environment
-
-        # If successful, update our registry dictionaries
-        GAMES_REGISTRY = {name: cls for name, cls in games_registry._registry.items()}
-        GAME_REGISTRY_AVAILABLE = True
-        AGENT_REGISTRY_AVAILABLE = True
-        ENV_INITIALIZER_AVAILABLE = True
-        print("✓ Successfully imported src.board_game_arena modules")
-        print(f"Available games: {list(GAMES_REGISTRY.keys())}")
-
-        # Verify get_environment works
-        try:
-            test_env = get_environment(
-                game_name="tic_tac_toe",
-                player_configs={0: {"type": "random"}, 1: {"type": "random"}}
-            )
-            print("✓ Environment initialization test successful")
-        except Exception as test_error:
-            print(f"✗ Environment test failed: {test_error}")
-            ENV_INITIALIZER_AVAILABLE = False
-
-    except ImportError as e2:
-        print(f"✗ Failed to import from src.board_game_arena: {e2}")
-        print("Using placeholder implementations")
-        GAME_REGISTRY_AVAILABLE = False
-        AGENT_REGISTRY_AVAILABLE = False
-        ENV_INITIALIZER_AVAILABLE = False
-
-print(f"Environment initializer available: {ENV_INITIALIZER_AVAILABLE}")
-print("--- Initialization Complete ---\n")
-
-# Directory to store SQLite results
-db_dir = Path("results")
+        return {"response": f"Error querying model: {str(e)}", "reasoning": ""}
+# ============================================================================
+# DATABASE HELPER FUNCTIONS
+# ============================================================================
 
 
 def find_or_download_db():
     """Check if SQLite .db files exist; if not, attempt to download from
     cloud storage."""
-    print(f"DEBUG: Looking for DB files in {db_dir}")
     if not db_dir.exists():
-        print("DEBUG: Results directory doesn't exist, creating it")
         db_dir.mkdir(parents=True, exist_ok=True)
 
     db_files = list(db_dir.glob("*.db"))
-    print(f"DEBUG: Found {len(db_files)} DB files: {[f.name for f in db_files]}")
 
     # Ensure the random bot database exists
     random_db_path = db_dir / "random_None.db"
     if not random_db_path.exists():
-        print(f"DEBUG: Required file {random_db_path} does not exist")
         try:
             # Create an empty SQLite database if it doesn't exist
-            print("DEBUG: Attempting to create a placeholder random_None.db file")
-            import sqlite3
             conn = sqlite3.connect(str(random_db_path))
             conn.execute('''
                 CREATE TABLE IF NOT EXISTS games (
@@ -377,9 +406,7 @@ def find_or_download_db():
             ''')
             conn.commit()
             conn.close()
-            print("DEBUG: Created placeholder database")
         except Exception as e:
-            print(f"DEBUG: Error creating placeholder database: {e}")
             raise FileNotFoundError(
                 "Please upload results for the random agent in a file named "
                 "'random_None.db'.")
@@ -405,6 +432,7 @@ def get_available_games(include_aggregated=True) -> List[str]:
     db_files = find_or_download_db()
     game_names = set()
 
+    # First, add games from database files
     for db_file in db_files:
         conn = sqlite3.connect(db_file)
         try:
@@ -415,6 +443,9 @@ def get_available_games(include_aggregated=True) -> List[str]:
             pass  # Ignore errors if table doesn't exist
         finally:
             conn.close()
+
+    # Always include the default games from GAMES_REGISTRY
+    game_names.update(GAMES_REGISTRY.keys())
 
     game_list = sorted(game_names) if game_names else ["No Games Found"]
     if include_aggregated:
@@ -448,6 +479,228 @@ def extract_illegal_moves_summary() -> pd.DataFrame:
     return pd.DataFrame(summary)
 
 
+# ============================================================================
+# HELPER FUNCTIONS FOR PLAYER CONFIGURATION
+# ============================================================================
+
+def setup_player_config(player_type: str, player_model: str,
+                       player_id: str) -> dict:
+    """Configure a single player for the game environment."""
+    if player_type == "random_bot":
+        return {"type": "random"}
+    elif player_type.startswith("llm_"):
+        # Extract model ID from the player type (format: llm_model_id)
+        model_id = player_type[4:]  # Remove 'llm_' prefix
+        if model_id in LOCAL_LLM_MODELS:
+            return {
+                "type": "custom",
+                "name": f"Local-{model_id}",
+                "player_class": create_local_llm_player(model_id)
+            }
+    elif player_type == "llm" and player_model in LOCAL_LLM_MODELS:
+        return {
+            "type": "custom",
+            "name": f"Local-{player_model}",
+            "player_class": create_local_llm_player(player_model)
+        }
+
+    return {"type": "random"}  # Fallback
+
+
+def run_full_game_simulation(game_name: str, config: dict) -> str:
+    """Run a complete game simulation using the board game arena."""
+    try:
+        # Try multiple import paths
+        try:
+            from src.board_game_arena.arena.games.registry import registry
+            from src.board_game_arena.arena.agents.policy_manager import initialize_policies
+            from src.board_game_arena.arena.utils.seeding import set_seed
+        except ImportError:
+            raise ImportError("Board game arena modules not available")
+
+        # Set seed for reproducibility
+        set_seed(config["seed"])
+
+        # Create environment
+        env_config_full = {
+            "env_config": config["env_configs"][0],
+            **config
+        }
+        env = registry.make_env(game_name, env_config_full)
+
+        # Initialize agent policies
+        policies_dict = initialize_policies(config, game_name, config["seed"])
+        player_to_agent = {0: policies_dict["policy_0"], 1: policies_dict["policy_1"]}
+
+        game_states = []
+
+        # Run episodes
+        for episode in range(config["num_episodes"]):
+            game_states.append(f"\n🎯 Episode {episode + 1}")
+            game_states.append("=" * 30)
+
+            observation_dict, _ = env.reset(seed=config["seed"] + episode)
+            episode_rewards = {0: 0, 1: 0}
+            terminated = truncated = False
+            step_count = 0
+
+            while not (terminated or truncated):
+                step_count += 1
+                game_states.append(f"\n📋 Step {step_count}")
+
+                # Show board state
+                board = env.render_board(0)
+                game_states.append("Current board:")
+                game_states.append(board)
+
+                # Determine active players
+                if env.state.is_simultaneous_node():
+                    active_players = list(player_to_agent.keys())
+                else:
+                    current_player = env.state.current_player()
+                    active_players = [current_player]
+                    game_states.append(f"Player {current_player}'s turn")
+
+                # Get actions
+                action_dict = {}
+                for player_id in active_players:
+                    agent = player_to_agent[player_id]
+                    observation = observation_dict[player_id]
+                    action_result = agent.compute_action(observation)
+
+                    if isinstance(action_result, dict):
+                        action = action_result.get("action")
+                        reasoning = action_result.get("reasoning", "No reasoning provided")
+                    else:
+                        action = action_result
+                        reasoning = "Random choice"
+
+                    action_dict[player_id] = action
+                    game_states.append(f"  Player {player_id} chooses action {action}")
+
+                    if reasoning:
+                        reasoning_preview = reasoning[:100] + ("..." if len(reasoning) > 100 else "")
+                        game_states.append(f"  Reasoning: {reasoning_preview}")
+
+                # Take step
+                observation_dict, rewards, terminated, truncated, info = env.step(action_dict)
+                for player_id, reward in rewards.items():
+                    episode_rewards[player_id] += reward
+
+            # Episode results
+            game_states.append(f"\n🏁 Episode {episode + 1} Complete!")
+            game_states.append("Final board:")
+            game_states.append(env.render_board(0))
+
+            if episode_rewards[0] > episode_rewards[1]:
+                winner = "Player 0"
+            elif episode_rewards[1] > episode_rewards[0]:
+                winner = "Player 1"
+            else:
+                winner = "Draw"
+
+            game_states.append(f"🏆 Winner: {winner}")
+            game_states.append(f"📊 Scores: Player 0={episode_rewards[0]}, Player 1={episode_rewards[1]}")
+
+        return "\n".join(game_states)
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return f"Error during game simulation: {str(e)}"
+
+
+def run_fallback_demo(game_name: str, player1_type: str, player2_type: str,
+                     player1_model: str, player2_model: str, rounds: int) -> str:
+    """Fallback demo when full game engine isn't available."""
+    game_log = [f"Initializing {game_name} game in simplified mode..."]
+
+    # Format player info
+    player1_info = f"Player 1: {player1_type}"
+    if player1_type.startswith("llm_"):
+        player1_info += f" ({player1_type[4:]})"  # Remove llm_ prefix
+    elif player1_model:
+        player1_info += f" ({player1_model})"
+    game_log.append(player1_info)
+
+    player2_info = f"Player 2: {player2_type}"
+    if player2_type.startswith("llm_"):
+        player2_info += f" ({player2_type[4:]})"  # Remove llm_ prefix
+    elif player2_model:
+        player2_info += f" ({player2_model})"
+    game_log.append(player2_info)
+
+    game_log.append(f"Rounds: {rounds}")
+    game_log.append("")
+
+    # Test local LLMs if applicable
+    local_models = []
+    if player1_type.startswith("llm_"):
+        local_models.append(player1_type[4:])
+    elif player1_model in LOCAL_LLM_MODELS:
+        local_models.append(player1_model)
+    if player2_type.startswith("llm_"):
+        local_models.append(player2_type[4:])
+    elif player2_model in LOCAL_LLM_MODELS:
+        local_models.append(player2_model)
+
+    if local_models:
+        game_log.append("Testing local LLM models:")
+
+        for model_id in set(local_models):  # Remove duplicates
+            if model_id in llms:
+                game_log.append(f"✓ {model_id} - Model loaded successfully")
+
+                try:
+                    test_prompt = f"""You are playing {game_name}.
+Board: Empty
+Valid moves: 0,1,2,3,4,5,6,7,8
+
+Think step by step:
+1. Analyze the current game state
+2. Consider your options
+3. Choose the best move
+
+Reasoning: [Explain your thinking here]
+Move: [Your chosen move number]"""
+
+                    result = query_local_llm(model_id, test_prompt, max_length=30)
+                    game_log.append(f"Model: {model_id}")
+                    game_log.append(f"Response: {result['response']}")
+                    if result['reasoning']:
+                        game_log.append(f"🧠 Reasoning: {result['reasoning']}")
+                    if result['move']:
+                        game_log.append(f"🎯 Move: {result['move']}")
+                    game_log.append("✓ Model test successful!")
+
+                except Exception as e:
+                    game_log.append(f"✗ Model test failed: {str(e)}")
+            else:
+                game_log.append(f"✗ {model_id} - Model not loaded")
+
+    game_log.extend([
+        "",
+        "🎮 DEMO MODE: This shows model testing capabilities.",
+        "✨ For FULL INTERACTIVE GAMEPLAY, the complete board game arena is needed.",
+        "   When deployed to HuggingFace Spaces with the full repo, games become fully playable!",
+        "",
+        "Available database files:"
+    ])
+
+    # Add database info
+    db_files = find_or_download_db()
+    for db in db_files:
+        relevance = (" [RELEVANT]" if game_name in db or
+                    game_name.replace("_", "") in db.lower() else "")
+        game_log.append(f" - {db}{relevance}")
+
+    return "\n".join(game_log)
+
+
+# ============================================================================
+# MAIN GAME FUNCTION (CLEANED UP)
+# ============================================================================
+
 def play_game(game_name: str, player1_type: str, player2_type: str,
               player1_model: str = None, player2_model: str = None,
               rounds: int = 1) -> str:
@@ -455,8 +708,8 @@ def play_game(game_name: str, player1_type: str, player2_type: str,
 
     Args:
         game_name: Name of the game to play
-        player1_type: Type of player 1 (human, random_bot, llm)
-        player2_type: Type of player 2 (human, random_bot, llm)
+        player1_type: Type of player 1 (human, random_bot, llm_*)
+        player2_type: Type of player 2 (human, random_bot, llm_*)
         player1_model: LLM model for player 1 (if applicable)
         player2_model: LLM model for player 2 (if applicable)
         rounds: Number of rounds to play
@@ -467,143 +720,21 @@ def play_game(game_name: str, player1_type: str, player2_type: str,
     if game_name == "No Games Found":
         return "No games available. Please add game databases."
 
-    # Track token usage to prevent excessive costs (especially on HuggingFace)
-    # This counter would ideally be persisted between sessions
-    token_usage_path = Path("token_usage.txt")
-    max_daily_tokens = 50000  # Set a reasonable limit
-
-    # Check if using paid LLM APIs (free HF models don't count toward token limit)
-    using_paid_llm = (
-        (player1_type == "llm" and player1_model and
-         player1_model not in FREE_HUGGINGFACE_MODELS) or
-        (player2_type == "llm" and player2_model and
-         player2_model not in FREE_HUGGINGFACE_MODELS)
-    )
-
-    if using_paid_llm:
-        # Simple token tracking
-        try:
-            # Read current token count if file exists
-            if token_usage_path.exists():
-                with open(token_usage_path, "r") as f:
-                    try:
-                        last_reset, tokens_used = f.read().strip().split(",")
-                        # Reset daily if needed
-                        if last_reset != str(pd.Timestamp.now().date()):
-                            last_reset = str(pd.Timestamp.now().date())
-                            tokens_used = 0
-                        else:
-                            tokens_used = int(tokens_used)
-                    except (ValueError, IndexError):
-                        # Invalid format, reset
-                        last_reset = str(pd.Timestamp.now().date())
-                        tokens_used = 0
-            else:
-                # Initialize token tracking
-                last_reset = str(pd.Timestamp.now().date())
-                tokens_used = 0
-
-            # Estimate token usage for this game
-            # Very rough estimate: ~100 tokens per move, 10 moves per round
-            estimated_new_tokens = rounds * 10 * 100
-
-            # Check if we're over the limit
-            if tokens_used + estimated_new_tokens > max_daily_tokens:
-                return (
-                    "⚠️ Daily token limit reached. Please try again tomorrow, "
-                    "use the random bot opponent, or select a free HuggingFace model."
-                )
-
-            # Otherwise, update the projected usage
-            tokens_used += estimated_new_tokens
-            with open(token_usage_path, "w") as f:
-                f.write(f"{last_reset},{tokens_used}")
-
-        except Exception as e:
-            # Log error but continue (token tracking is optional)
-            print(f"Token tracking error: {e}")
-            # Don't prevent gameplay if token tracking fails
-
-    # If we have the environment initializer available, use it
+    # Try full game simulation if environment is available
     if ENV_INITIALIZER_AVAILABLE:
         try:
-            # Print debug info
-            print(f"Game initialization started: {game_name}")
-            print(f"Player 1: {player1_type}, Model: {player1_model}")
-            print(f"Player 2: {player2_type}, Model: {player2_model}")
+            # Configure players
+            agents = {
+                "player_0": setup_player_config(player1_type, player1_model,
+                                               "player_0"),
+                "player_1": setup_player_config(player2_type, player2_model,
+                                               "player_1")
+            }
 
-            # Configure agents for the game config
-            agents = {}
-
-            # Set up player 1
-            if player1_type == "human":
-                agents["player_0"] = {"type": "human"}
-                print("Player 1 configured as human")
-            elif player1_type == "random_bot":
-                agents["player_0"] = {"type": "random"}
-                print("Player 1 configured as random bot")
-            elif player1_type.startswith("hf_"):
-                # Extract model ID from the player type (format: hf_model_id)
-                hf_model_id = player1_type[3:]  # Remove 'hf_' prefix
-                print(f"Setting up Player 1 as HuggingFace model: {hf_model_id}")
-                # Instead of custom player class, set up config correctly for initialize_policies
-                agents["player_0"] = {
-                    "type": "custom",
-                    "name": f"HF-{hf_model_id}",
-                    "player_class": create_huggingface_player(hf_model_id)
-                }
-            elif player1_type == "llm" and player1_model:
-                if player1_model in FREE_HUGGINGFACE_MODELS:
-                    # Special handling for free HuggingFace models
-                    print(f"Setting up Player 1 as HuggingFace model: {player1_model}")
-                    agents["player_0"] = {
-                        "type": "custom",
-                        "name": f"HF-{player1_model}",
-                        "player_class": create_huggingface_player(player1_model)
-                    }
-                else:
-                    # Regular LLM player using paid APIs
-                    print(f"Setting up Player 1 as LLM: {player1_model}")
-                    agents["player_0"] = {"type": "llm", "model": player1_model}
-
-            # Set up player 2
-            if player2_type == "human":
-                agents["player_1"] = {"type": "human"}
-                print("Player 2 configured as human")
-            elif player2_type == "random_bot":
-                agents["player_1"] = {"type": "random"}
-                print("Player 2 configured as random bot")
-            elif player2_type.startswith("hf_"):
-                # Extract model ID from the player type (format: hf_model_id)
-                hf_model_id = player2_type[3:]  # Remove 'hf_' prefix
-                print(f"Setting up Player 2 as HuggingFace model: {hf_model_id}")
-                agents["player_1"] = {
-                    "type": "custom",
-                    "name": f"HF-{hf_model_id}",
-                    "player_class": create_huggingface_player(hf_model_id)
-                }
-            elif player2_type == "llm" and player2_model:
-                if player2_model in FREE_HUGGINGFACE_MODELS:
-                    # Special handling for free HuggingFace models
-                    print(f"Setting up Player 2 as HuggingFace model: {player2_model}")
-                    agents["player_1"] = {
-                        "type": "custom",
-                        "name": f"HF-{player2_model}",
-                        "player_class": create_huggingface_player(player2_model)
-                    }
-                else:
-                    # Regular LLM player using paid APIs
-                    print(f"Setting up Player 2 as LLM: {player2_model}")
-                    agents["player_1"] = {"type": "llm", "model": player2_model}
-
-            # Create configuration similar to what works in simple_game_demo.py
+            # Create game configuration
             config = {
-                "env_configs": [
-                    {
-                        "game_name": game_name,
-                        "max_game_rounds": None
-                    }
-                ],
+                "env_configs": [{"game_name": game_name,
+                               "max_game_rounds": None}],
                 "num_episodes": int(rounds),
                 "seed": 42,
                 "use_ray": False,
@@ -612,290 +743,15 @@ def play_game(game_name: str, player1_type: str, player2_type: str,
                 "log_level": "INFO"
             }
 
-            print(f"Creating game environment for: {game_name}")
-            print(f"Config: {config}")
-            print(f"DEBUG: Environment variables:")
-            print(f"DEBUG: PATH: {os.environ.get('PATH', 'Not set')}")
-            print(f"DEBUG: PYTHONPATH: {os.environ.get('PYTHONPATH', 'Not set')}")
-            print(f"DEBUG: Working directory: {os.getcwd()}")
-
-            try:
-                from board_game_arena.arena.games.registry import registry
-                from board_game_arena.arena.agents.policy_manager import initialize_policies
-                from board_game_arena.arena.utils.seeding import set_seed
-
-                # Set seed for reproducibility
-                set_seed(config["seed"])
-                
-                # Get the game configuration
-                env_config = config["env_configs"][0]
-                game_name = env_config["game_name"]
-                
-                # Create environment with the correct config structure
-                env_config_full = {
-                    "env_config": config["env_configs"][0],  # Make it available as env_config
-                    **config  # Include all other config parameters
-                }
-                
-                # Create environment
-                env = registry.make_env(game_name, env_config_full)
-                
-                # Initialize agent policies
-                policies_dict = initialize_policies(config, game_name, config["seed"])
-                
-                print("Game environment created successfully")
-            except Exception as env_error:
-                print(f"ERROR creating game environment: {env_error}")
-                print(f"DEBUG: ENV_INITIALIZER_AVAILABLE = {ENV_INITIALIZER_AVAILABLE}")
-                import traceback
-                traceback.print_exc()
-                return (f"Failed to create game environment: {str(env_error)}\n\n"
-                        "Detailed error information has been printed to the console.")
-
-            # Track game states
-            game_states = []
-            
-            # Mapping from player IDs to agents (using policies_dict from before)
-            player_to_agent = {
-                0: policies_dict["policy_0"], 
-                1: policies_dict["policy_1"]
-            }
-            
-            # Run the game simulation
-            try:
-                print(f"Starting game simulation with {rounds} rounds")
-                
-                # Run episodes (same approach as simple_game_demo.py)
-                for episode in range(int(rounds)):
-                    game_states.append(f"\n🎯 Episode {episode + 1}")
-                    game_states.append("=" * 30)
-                    
-                    # Reset environment
-                    observation_dict, _ = env.reset(seed=config["seed"] + episode)
-                    
-                    # Game variables
-                    episode_rewards = {0: 0, 1: 0}
-                    terminated = False
-                    truncated = False
-                    step_count = 0
-                    
-                    while not (terminated or truncated):
-                        step_count += 1
-                        game_states.append(f"\n📋 Step {step_count}")
-                        
-                        # Show current board state
-                        board = env.render_board(0)
-                        game_states.append("Current board:")
-                        game_states.append(board)
-                        
-                        # Determine which player(s) should act
-                        if env.state.is_simultaneous_node():
-                            # All players act simultaneously (not typical for tic-tac-toe)
-                            active_players = list(player_to_agent.keys())
-                        else:
-                            # Turn-based: only current player acts
-                            current_player = env.state.current_player()
-                            active_players = [current_player]
-                            game_states.append(f"Player {current_player}'s turn")
-                        
-                        # Compute actions for active players
-                        action_dict = {}
-                        for player_id in active_players:
-                            agent = player_to_agent[player_id]
-                            observation = observation_dict[player_id]
-                            
-                            # Get action from agent
-                            action_result = agent.compute_action(observation)
-                            
-                            if isinstance(action_result, dict):
-                                action = action_result.get("action")
-                                reasoning = action_result.get("reasoning", "No reasoning provided")
-                            else:
-                                action = action_result
-                                reasoning = "Random choice"
-                                
-                            action_dict[player_id] = action
-                            
-                            # Log the action and reasoning
-                            game_states.append(f"  Player {player_id} chooses action {action}")
-                            if reasoning:
-                                # Show the first 100 chars of reasoning
-                                reasoning_preview = reasoning[:100]
-                                if len(reasoning) > 100:
-                                    reasoning_preview += "..."
-                                game_states.append(f"  Reasoning: {reasoning_preview}")
-                        
-                        # Take environment step
-                        observation_dict, rewards, terminated, truncated, info = env.step(action_dict)
-                        
-                        # Update episode rewards
-                        for player_id, reward in rewards.items():
-                            episode_rewards[player_id] += reward
-                    
-                    # Episode finished
-                    game_states.append(f"\n🏁 Episode {episode + 1} Complete!")
-                    game_states.append("Final board:")
-                    game_states.append(env.render_board(0))
-                    
-                    # Determine winner
-                    if episode_rewards[0] > episode_rewards[1]:
-                        winner = "Player 0"
-                    elif episode_rewards[1] > episode_rewards[0]:
-                        winner = "Player 1"
-                    else:
-                        winner = "Draw"
-                    
-                    game_states.append(f"🏆 Winner: {winner}")
-                    game_states.append(f"📊 Scores: Player 0={episode_rewards[0]}, Player 1={episode_rewards[1]}")
-                
-                print("Game simulation completed")
-                return "\n".join(game_states)
-            except Exception as sim_error:
-                print(f"ERROR during game simulation: {sim_error}")
-                import traceback
-                traceback.print_exc()
-                return f"Error during game simulation: {str(sim_error)}"
+            return run_full_game_simulation(game_name, config)
 
         except Exception as e:
-            # If anything fails, provide error details
-            print(f"ERROR in game setup: {e}")
-            import traceback
-            traceback.print_exc()
-            return (f"Error setting up game: {str(e)}\n\n"
-                    "Make sure the board_game_arena package is properly installed.")
+            print(f"Full game simulation failed: {e}")
+            # Fall through to demo mode
 
-    # Fallback implementation when game engine isn't available
-    print("DEBUG: Fallback mode activated - game engine not available")
-    print("DEBUG: Checking if board_game_arena module exists:")
-    try:
-        import importlib
-        bga_spec = importlib.util.find_spec("board_game_arena")
-        print(f"DEBUG: board_game_arena module found: {bga_spec}")
-        if bga_spec:
-            print(f"DEBUG: Module location: {bga_spec.origin}")
-            print(f"DEBUG: Submodule locations: "
-                  f"{bga_spec.submodule_search_locations}")
-            # Try importing some key components
-            print("DEBUG: Trying to import key components:")
-            try:
-                print("DEBUG: Import board_game_arena.arena")
-                import board_game_arena.arena
-                print("DEBUG: Successfully imported arena module")
-            except Exception as e:
-                print(f"DEBUG: Failed to import arena: {e}")
-    except Exception as import_error:
-        print(f"DEBUG: Error importing board_game_arena: {import_error}")
-        import traceback
-        traceback.print_exc()
-
-    # Connect to database to get game rules and possible moves
-    print("DEBUG: Checking for database files in results/")
-    db_files_direct = list(db_dir.glob("*.db"))
-    print(f"DEBUG: Found DB files directly: {db_files_direct}")
-
-    db_files = find_or_download_db()
-    print(f"DEBUG: DB files from find_or_download_db: {db_files}")
-    
-    # Simple fallback mode that at least attempts to use the HuggingFace API
-    # for direct HF models
-    game_log = []
-    game_log.append(f"Initializing {game_name} game in simplified mode...")
-    
-    # Determine if we have any HuggingFace models
-    has_hf_model = False
-    
-    # Format player info and check for HuggingFace models
-    player1_info = f"Player 1: {player1_type}"
-    if player1_type.startswith("hf_"):
-        hf_model_id = player1_type[3:]  # Remove 'hf_' prefix
-        player1_info += f" ({hf_model_id})"
-        has_hf_model = True
-    elif player1_model:
-        player1_info += f" ({player1_model})"
-        if player1_model in FREE_HUGGINGFACE_MODELS:
-            has_hf_model = True
-    game_log.append(player1_info)
-    
-    player2_info = f"Player 2: {player2_type}"
-    if player2_type.startswith("hf_"):
-        hf_model_id = player2_type[3:]  # Remove 'hf_' prefix
-        player2_info += f" ({hf_model_id})"
-        has_hf_model = True
-    elif player2_model:
-        player2_info += f" ({player2_model})"
-        if player2_model in FREE_HUGGINGFACE_MODELS:
-            has_hf_model = True
-    game_log.append(player2_info)
-    
-    game_log.append(f"Rounds: {rounds}")
-    game_log.append("")
-    
-    # If we have a HuggingFace model, try to demonstrate it
-    if has_hf_model:
-        game_log.append("Making API call to HuggingFace Inference Endpoint:")
-        
-        # First check if HuggingFace API is accessible
-        if check_huggingface_api():
-            game_log.append("✓ HuggingFace API is accessible")
-            
-            try:
-                # Determine which model to query
-                model_to_query = None
-                if player1_type.startswith("hf_"):
-                    model_to_query = player1_type[3:]
-                elif player1_model in FREE_HUGGINGFACE_MODELS:
-                    model_to_query = player1_model
-                elif player2_type.startswith("hf_"):
-                    model_to_query = player2_type[3:]
-                elif player2_model in FREE_HUGGINGFACE_MODELS:
-                    model_to_query = player2_model
-                    
-                if model_to_query:
-                    # Create a simple test prompt
-                    test_prompt = f"""
-You are playing a game of {game_name}.
-Board state:
-Empty board
-Valid moves: 0, 1, 2, 3, 4, 5, 6, 7, 8
-Choose one move from the valid moves. Only respond with the move number.
-"""
-                    game_log.append(f"Model: {model_to_query}")
-                    game_log.append(f"Prompt: {test_prompt}")
-                    
-                    # Call the API
-                    response = query_huggingface_model(
-                        model_to_query,
-                        test_prompt,
-                        max_length=10
-                    )
-                    
-                    game_log.append(f"Response: {response}")
-                    game_log.append("")
-                    game_log.append("✓ API call successful! HuggingFace model working.")
-                else:
-                    game_log.append("✗ Could not determine which model to query.")
-                    
-            except Exception as e:
-                game_log.append(f"✗ Error making API call: {str(e)}")
-                game_log.append("Check your internet connection and API tokens.")
-        else:
-            game_log.append("✗ HuggingFace API is not accessible")
-            game_log.append("Please check your internet connection.")
-    
-    game_log.append("")
-    game_log.append("Note: Running in simplified demonstration mode.")
-    game_log.append("For full gameplay with the game engine, ensure the board_game_arena package")
-    game_log.append("is properly installed and configured.")
-
-    # Add database information
-    game_log.append("\nAvailable database files:")
-    for db in db_files:
-        if game_name in db or game_name.replace("_", "") in db.lower():
-            game_log.append(f" - {db} [RELEVANT]")
-        else:
-            game_log.append(f" - {db}")
-
-    return "\n".join(game_log)
+    # Fallback to demonstration mode
+    return run_fallback_demo(game_name, player1_type, player2_type,
+                           player1_model, player2_model, rounds)
 
 
 def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
@@ -981,154 +837,140 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
     return leaderboard_df
 
 
-##########################################################
-with gr.Blocks() as interface:
-    # Tab for playing games against LLMs
-    with gr.Tab("Game Arena"):
-        gr.Markdown("# LLM Game Arena\n"
-                    "Play games against LLMs or watch LLMs play against each other!")
+# ============================================================================
+# GRADIO INTERFACE SETUP
+# ============================================================================
 
-        # Get available games
-        available_games = get_available_games(include_aggregated=False)
+def create_player_config():
+    """Create player configuration for the interface."""
+    # Get available games and models
+    available_games = get_available_games(include_aggregated=False)
 
-        # Get available LLM models from database files
-        db_files = find_or_download_db()
-        database_models = []
-        for db_file in db_files:
-            if "random" not in db_file.lower():  # Exclude random bot
-                agent_type, model_name = extract_agent_info(db_file)
-                database_models.append(model_name)
+    db_files = find_or_download_db()
+    database_models = []
+    for db_file in db_files:
+        if "random" not in db_file.lower():
+            agent_type, model_name = extract_agent_info(db_file)
+            database_models.append(model_name)
 
-        # Check if running on HuggingFace
-        is_huggingface = os.environ.get("SPACE_ID") is not None
+    # Setup player types
+    base_player_types = ["random_bot"]
 
-        # Create player types including specific free models
-        base_player_types = ["human", "random_bot"]
+    # Add local LLM models as player types
+    llm_player_types = [f"llm_{key}" for key in LOCAL_LLM_MODELS.keys()]
 
-        # Add free HuggingFace models as player types
-        hf_model_player_types = [f"hf_{key}" for key in FREE_HUGGINGFACE_MODELS.keys()]
+    # Display names for dropdowns
+    player_type_display = {
+        "random_bot": "Random Bot",
+    }
 
-        # Display names for the player types in the dropdown
-        player_type_display = {
-            "human": "Human Player",
-            "random_bot": "Random Bot",
-            # Removed "llm" option as requested
-        }
+    # Add display names for local LLM models
+    for key in LOCAL_LLM_MODELS.keys():
+        model_name = key.split('/')[-1] if '/' in key else key
+        player_type_display[f"llm_{key}"] = f"Local LLM: {model_name}"
 
-        # Add display names for HuggingFace models
-        for key in FREE_HUGGINGFACE_MODELS.keys():
-            model_name = key.split('/')[-1] if '/' in key else key
-            player_type_display[f"hf_{key}"] = f"HF: {model_name} (free)"
+    # Configure available options
+    allowed_player_types = base_player_types + llm_player_types
+    available_models = list(LOCAL_LLM_MODELS.keys()) + database_models
+    model_info = "Local transformer models are available as player types."
 
-        # Determine which player types to offer
-        if is_huggingface:
-            # When on HuggingFace, offer human, random_bot and free models
-            allowed_player_types = base_player_types + hf_model_player_types
-            available_models = list(FREE_HUGGINGFACE_MODELS.keys())
-            model_info = "Free HuggingFace models are available directly as player types."
-        else:
-            # When running locally, offer all options (removed "llm" option)
-            allowed_player_types = base_player_types + hf_model_player_types
-            available_models = list(FREE_HUGGINGFACE_MODELS.keys()) + database_models
-            model_info = "Free HuggingFace models are available as player types."
+    return {
+        'available_games': available_games,
+        'allowed_player_types': allowed_player_types,
+        'player_type_display': player_type_display,
+        'available_models': available_models,
+        'model_info': model_info
+    }
 
-        # Display appropriate message about model usage
-        gr.Markdown(f"""
-        > **🤖 Available AI Players**: {model_info}
-        >
-        > Free HuggingFace models (GPT-2, BLOOM, etc.) are now available as
-        > direct player options. These models run on HuggingFace's servers
-        > without using your API tokens.
-        """)
 
-        with gr.Row():
-            # Game selection
-            game_dropdown = gr.Dropdown(
-                choices=available_games,
-                label="Select a Game",
-                value=(available_games[0] if available_games
-                       else "No Games Found")
-            )
+def create_game_arena_tab():
+    """Create the Game Arena tab interface."""
+    config = create_player_config()
 
-            # Number of rounds
-            rounds_slider = gr.Slider(
-                minimum=1,
-                maximum=10,
-                value=1,
-                step=1,
-                label="Number of Rounds"
-            )
+    gr.Markdown("# LLM Game Arena\n"
+                "Play games against LLMs or watch LLMs play against each other!")
 
-        with gr.Row():
-            with gr.Column():
-                # Player 1 configuration
-                gr.Markdown("### Player 1")
-                # Create choices with nice display names
-                p1_choices = [(key, player_type_display[key])
-                             for key in allowed_player_types]
-                player1_type = gr.Dropdown(
-                    choices=p1_choices,
-                    label="Player 1 Type",
-                    value="human"
-                )
-                player1_model = gr.Dropdown(
-                    choices=available_models,
-                    label="Player 1 Model (if LLM API)",
-                    visible=False
-                )
+    # Model availability info
+    gr.Markdown(f"""
+    > **🤖 Available AI Players**: {config['model_info']}
+    >
+    > Local transformer models (GPT-2, Flan-T5) run directly in this space
+    > using HuggingFace transformers library. No API tokens required!
+    """)
 
-                # Show model dropdown only when generic LLM is selected
-                def update_p1_model_visibility(player_type):
-                    return gr.Dropdown.update(visible=player_type == "llm")
-
-                player1_type.change(
-                    update_p1_model_visibility,
-                    inputs=player1_type,
-                    outputs=player1_model
-                )
-
-            with gr.Column():
-                # Player 2 configuration
-                gr.Markdown("### Player 2")
-                # Create choices with nice display names
-                p2_choices = [(key, player_type_display[key])
-                             for key in allowed_player_types]
-                player2_type = gr.Dropdown(
-                    choices=p2_choices,
-                    label="Player 2 Type",
-                    value="random_bot"
-                )
-                player2_model = gr.Dropdown(
-                    choices=available_models,
-                    label="Player 2 Model (if LLM API)",
-                    visible=False
-                )
-
-                # Show model dropdown only when generic LLM is selected
-                def update_p2_model_visibility(player_type):
-                    return gr.Dropdown.update(visible=player_type == "llm")
-
-                player2_type.change(
-                    update_p2_model_visibility,
-                    inputs=player2_type,
-                    outputs=player2_model
-                )        # Button to start the game and output area
-        play_button = gr.Button("Start Game", variant="primary")
-        game_output = gr.Textbox(label="Game Log", lines=20)
-
-        # Event to start the game when the button is clicked
-        play_button.click(
-            play_game,
-            inputs=[
-                game_dropdown,
-                player1_type,
-                player2_type,
-                player1_model,
-                player2_model,
-                rounds_slider
-            ],
-            outputs=[game_output]
+    # Game selection and rounds
+    with gr.Row():
+        game_dropdown = gr.Dropdown(
+            choices=config['available_games'],
+            label="Select a Game",
+            value=(config['available_games'][0] if config['available_games']
+                   else "No Games Found")
         )
+
+        rounds_slider = gr.Slider(
+            minimum=1, maximum=10, value=1, step=1,
+            label="Number of Rounds"
+        )
+
+    # Player configuration
+    with gr.Row():
+        with gr.Column():
+            gr.Markdown("### Player 1")
+            p1_choices = [(key, config['player_type_display'][key])
+                         for key in config['allowed_player_types']]
+            player1_type = gr.Dropdown(
+                choices=p1_choices,
+                label="Player 1 Type",
+                value=p1_choices[0][0] if p1_choices else "random_bot"
+            )
+            player1_model = gr.Dropdown(
+                choices=config['available_models'],
+                label="Player 1 Model (if LLM API)",
+                visible=False
+            )
+
+        with gr.Column():
+            gr.Markdown("### Player 2")
+            p2_choices = [(key, config['player_type_display'][key])
+                         for key in config['allowed_player_types']]
+            player2_type = gr.Dropdown(
+                choices=p2_choices,
+                label="Player 2 Type",
+                value=p2_choices[0][0] if p2_choices else "random_bot"
+            )
+            player2_model = gr.Dropdown(
+                choices=config['available_models'],
+                label="Player 2 Model (if LLM API)",
+                visible=False
+            )
+
+    # Game controls and output
+    play_button = gr.Button("Start Game", variant="primary")
+    game_output = gr.Textbox(label="Game Log", lines=20)
+
+    # Event handlers
+    def update_model_visibility(player_type):
+        return gr.update(visible=player_type == "llm")
+
+    player1_type.change(update_model_visibility, inputs=player1_type, outputs=player1_model)
+    player2_type.change(update_model_visibility, inputs=player2_type, outputs=player2_model)
+
+    play_button.click(
+        play_game,
+        inputs=[game_dropdown, player1_type, player2_type,
+               player1_model, player2_model, rounds_slider],
+        outputs=[game_output]
+    )
+
+
+# ============================================================================
+# MAIN GRADIO INTERFACE
+# ============================================================================
+
+with gr.Blocks() as interface:
+    # Game Arena Tab
+    with gr.Tab("Game Arena"):
+        create_game_arena_tab()
 
     # Tab for leaderboard and performance tracking
     with gr.Tab("Leaderboard"):
@@ -1236,10 +1078,15 @@ with gr.Blocks() as interface:
     interface.launch(
         share=False,  # Do not create a public link
         server_name="0.0.0.0",  # Listen on all interfaces
-        server_port=7860,  # Default Gradio port
+        server_port=None,  # Let Gradio find an available port
         show_api=False,  # Hide API docs
         favicon_path=None,  # Use default favicon
         auth=None,  # No authentication required
         # Allow uploads of .db files for database analysis
         allowed_paths=["*.db"]
     )
+
+
+if __name__ == "__main__":
+    # This ensures the interface only launches when run directly
+    pass
