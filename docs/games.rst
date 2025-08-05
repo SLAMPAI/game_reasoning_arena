@@ -48,33 +48,34 @@ A simplified poker variant that's perfect for AI research.
 
    env = EnvInitializer.create_env("kuhn_poker")
 
-Chess
+Iterated Prisoners Dilemma
 ~~~~~
 
-Basic chess support for more complex strategic gameplay.
+Cooperation versus competition dynamics
 
 * **Players**: 2
-* **State space**: Extremely large
-* **Action space**: Variable (legal moves)
+* **Action space**: 2
 * **Game length**: Variable (can be very long)
 
 .. code-block:: python
 
-   env = EnvInitializer.create_env("chess")
+   env = EnvInitializer.create_env("iterated_prisoners_dilemma")
 
-Hex
-~~~
 
-A connection game played on a hexagonal grid.
+Matrix Rock-Paper-Scissors
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A strategic variant of rock-paper-scissors with a matrix representation.
 
 * **Players**: 2
-* **State space**: Large
-* **Action space**: Variable board sizes
-* **Game length**: Variable
+* **State space**: 3x3 matrix
+* **Action space**: 3 (Rock, Paper, Scissors)
+* **Game length**: 1 round
 
 .. code-block:: python
 
-   env = EnvInitializer.create_env("hex")
+   env = EnvInitializer.create_env("matrix_rps")
+
 
 Game Properties
 ---------------
