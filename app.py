@@ -20,6 +20,18 @@ from typing import List
 import importlib.util
 from transformers import pipeline
 
+# Add the src directory to Python path
+import sys
+src_path = Path(__file__).parent / "src"
+if str(src_path) not in sys.path:
+    sys.path.insert(0, str(src_path))
+
+# Try importing from the board game arena package
+# Prioritize src.board_game_arena path for HuggingFace Spaces deployment
+
+from src.board_game_arena.arena.games.registry import registry as games_registry
+
+
 # ============================================================================
 # INITIALIZATION - Try to import game modules if available
 # ============================================================================
@@ -29,13 +41,6 @@ GAMES_REGISTRY = {
     "tic_tac_toe": "Tic Tac Toe",
     "kuhn_poker": "Kuhn Poker",
     "connect_four": "Connect Four"
-}
-
-# Default LLM models with their HuggingFace model IDs (local models only)
-LLM_REGISTRY = {
-    "random_None": "Random Bot",  # Baseline
-    "gpt2": "GPT-2 (local)",  # Local HuggingFace model
-    "google/flan-t5-small": "Flan-T5-Small (local)"  # Local instruction model
 }
 
 # Local LLM models using transformers pipeline
@@ -68,13 +73,11 @@ Move: [Your move number]""",
 }
 
 
-
 print("Loading local LLM models...")
-llm_models = ["google/flan-t5-small", "gpt2"]
 
 # Initialize pipelines without device_map for better compatibility
 llms = {}
-for model_name in llm_models:
+for model_name in LOCAL_LLM_MODELS.keys():
     try:
         print(f"Loading {model_name}...")
 
@@ -94,7 +97,6 @@ print(f"✓ Loaded {len(llms)} local LLM models")
 
 # Try to import board game arena modules
 GAME_REGISTRY_AVAILABLE = False
-AGENT_REGISTRY_AVAILABLE = False
 ENV_INITIALIZER_AVAILABLE = False
 
 def is_package_installed(package_name):
@@ -105,42 +107,12 @@ def is_package_installed(package_name):
     except ImportError:
         return False
 
-# Try importing from the board game arena package
-# Prioritize src.board_game_arena path for HuggingFace Spaces deployment
-try:
-    # Add the src directory to Python path
-    import sys
-    src_path = Path(__file__).parent / "src"
-    if str(src_path) not in sys.path:
-        sys.path.insert(0, str(src_path))
 
-    from src.board_game_arena.arena.games.registry import registry as games_registry
-    from src.board_game_arena.arena.agents.agent_registry import AGENT_REGISTRY as agent_registry
-
-    # Update registries if successful
-    GAMES_REGISTRY = {name: cls for name, cls in games_registry._registry.items()}
-    GAME_REGISTRY_AVAILABLE = True
-    AGENT_REGISTRY_AVAILABLE = True
-    ENV_INITIALIZER_AVAILABLE = True
-    print("✅ Successfully imported full board game arena - GAMES ARE PLAYABLE!")
-
-except ImportError as e:
-    # Fallback to installed package import
-    try:
-        from board_game_arena.arena.games.registry import registry as games_registry
-        from board_game_arena.arena.agents.agent_registry import AGENT_REGISTRY as agent_registry
-
-        GAMES_REGISTRY = {name: cls for name, cls in games_registry._registry.items()}
-        GAME_REGISTRY_AVAILABLE = True
-        AGENT_REGISTRY_AVAILABLE = True
-        ENV_INITIALIZER_AVAILABLE = True
-        print("✅ Successfully imported installed board game arena - GAMES ARE PLAYABLE!")
-
-    except ImportError as e2:
-        # Use fallback implementations
-        print(f"⚠️ Could not import board game arena: {e}, {e2}")
-        print("Running in demo mode - games not fully playable")
-        ENV_INITIALIZER_AVAILABLE = False
+# Update registries if successful
+GAMES_REGISTRY = {name: cls for name, cls in games_registry._registry.items()}
+GAME_REGISTRY_AVAILABLE = True
+ENV_INITIALIZER_AVAILABLE = True
+print("✅ Successfully imported full board game arena - GAMES ARE PLAYABLE!")
 
 print(f"Environment initializer available: {ENV_INITIALIZER_AVAILABLE}")
 
@@ -610,93 +582,6 @@ def run_full_game_simulation(game_name: str, config: dict) -> str:
         return f"Error during game simulation: {str(e)}"
 
 
-def run_fallback_demo(game_name: str, player1_type: str, player2_type: str,
-                     player1_model: str, player2_model: str, rounds: int) -> str:
-    """Fallback demo when full game engine isn't available."""
-    game_log = [f"Initializing {game_name} game in simplified mode..."]
-
-    # Format player info
-    player1_info = f"Player 1: {player1_type}"
-    if player1_type.startswith("llm_"):
-        player1_info += f" ({player1_type[4:]})"  # Remove llm_ prefix
-    elif player1_model:
-        player1_info += f" ({player1_model})"
-    game_log.append(player1_info)
-
-    player2_info = f"Player 2: {player2_type}"
-    if player2_type.startswith("llm_"):
-        player2_info += f" ({player2_type[4:]})"  # Remove llm_ prefix
-    elif player2_model:
-        player2_info += f" ({player2_model})"
-    game_log.append(player2_info)
-
-    game_log.append(f"Rounds: {rounds}")
-    game_log.append("")
-
-    # Test local LLMs if applicable
-    local_models = []
-    if player1_type.startswith("llm_"):
-        local_models.append(player1_type[4:])
-    elif player1_model in LOCAL_LLM_MODELS:
-        local_models.append(player1_model)
-    if player2_type.startswith("llm_"):
-        local_models.append(player2_type[4:])
-    elif player2_model in LOCAL_LLM_MODELS:
-        local_models.append(player2_model)
-
-    if local_models:
-        game_log.append("Testing local LLM models:")
-
-        for model_id in set(local_models):  # Remove duplicates
-            if model_id in llms:
-                game_log.append(f"✓ {model_id} - Model loaded successfully")
-
-                try:
-                    test_prompt = f"""You are playing {game_name}.
-Board: Empty
-Valid moves: 0,1,2,3,4,5,6,7,8
-
-Think step by step:
-1. Analyze the current game state
-2. Consider your options
-3. Choose the best move
-
-Reasoning: [Explain your thinking here]
-Move: [Your chosen move number]"""
-
-                    result = query_local_llm(model_id, test_prompt, max_length=30)
-                    game_log.append(f"Model: {model_id}")
-                    game_log.append(f"Response: {result['response']}")
-                    if result['reasoning']:
-                        game_log.append(f"🧠 Reasoning: {result['reasoning']}")
-                    if result['move']:
-                        game_log.append(f"🎯 Move: {result['move']}")
-                    game_log.append("✓ Model test successful!")
-
-                except Exception as e:
-                    game_log.append(f"✗ Model test failed: {str(e)}")
-            else:
-                game_log.append(f"✗ {model_id} - Model not loaded")
-
-    game_log.extend([
-        "",
-        "🎮 DEMO MODE: This shows model testing capabilities.",
-        "✨ For FULL INTERACTIVE GAMEPLAY, the complete board game arena is needed.",
-        "   When deployed to HuggingFace Spaces with the full repo, games become fully playable!",
-        "",
-        "Available database files:"
-    ])
-
-    # Add database info
-    db_files = find_or_download_db()
-    for db in db_files:
-        relevance = (" [RELEVANT]" if game_name in db or
-                    game_name.replace("_", "") in db.lower() else "")
-        game_log.append(f" - {db}{relevance}")
-
-    return "\n".join(game_log)
-
-
 # ============================================================================
 # MAIN GAME FUNCTION (CLEANED UP)
 # ============================================================================
@@ -746,12 +631,10 @@ def play_game(game_name: str, player1_type: str, player2_type: str,
             return run_full_game_simulation(game_name, config)
 
         except Exception as e:
-            print(f"Full game simulation failed: {e}")
-            # Fall through to demo mode
-
-    # Fallback to demonstration mode
-    return run_fallback_demo(game_name, player1_type, player2_type,
-                           player1_model, player2_model, rounds)
+            return f"Error during game simulation: {str(e)}"
+    else:
+        return ("Board game arena modules not available. "
+                "Please ensure the full repository is properly set up.")
 
 
 def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
