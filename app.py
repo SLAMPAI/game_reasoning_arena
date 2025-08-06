@@ -43,7 +43,7 @@ src_path = Path(__file__).parent / "src"
 if str(src_path) not in sys.path:
     sys.path.insert(0, str(src_path))
 
-# Try importing from the board game arena package
+# Try importing from the game reasoning arena package
 # Prioritize src.game_reasoning_arena path for HuggingFace Spaces deployment
 
 from src.game_reasoning_arena.arena.games.registry import registry as games_registry
@@ -124,7 +124,7 @@ if BACKEND_SYSTEM_AVAILABLE:
 # Initialize games registry from the imported registry
 try:
     GAMES_REGISTRY = {name: cls for name, cls in games_registry._registry.items()}
-    print("✅ Successfully imported full board game arena - GAMES ARE PLAYABLE!")
+    print("✅ Successfully imported full game reasoning arena - GAMES ARE PLAYABLE!")
 except Exception as e:
     print(f"⚠️ Failed to load games registry: {e}")
     GAMES_REGISTRY = {}
@@ -713,10 +713,10 @@ with gr.Blocks() as interface:
     # Add an "About" tab with information about the project
     with gr.Tab("About"):
         gr.Markdown("""
-        # About Board Game Arena
+        # About Game Reasoning Arena
 
         This application provides analysis and visualization of LLM performance
-        playing various board games. It includes:
+        playing various games. It includes:
 
         - **Game Arena**: Play games against LLMs or watch LLMs compete
         - **Leaderboard**: View performance statistics across different games

@@ -1,7 +1,7 @@
-# Board Game Arena Code Flow Analysis
+# Board Reasoning Arena Code Flow Analysis
 
 ## Overview
-This document provides a comprehensive analysis of the information flow in the Board Game Arena codebase, with special focus on **matrix games** (like Rock-Paper-Scissors, Prisoner's Dilemma, etc.).
+This document provides a comprehensive analysis of the information flow in the Board Reasoning Arena codebase, with special focus on **matrix games** (like Rock-Paper-Scissors, Prisoner's Dilemma, etc.).
 
 ## High-Level Architecture
 
