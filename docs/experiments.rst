@@ -42,8 +42,8 @@ Configuration Options
 
    # Use any existing config + separate Ray settings
    python3 scripts/runner.py \
-     --base-config src/board_game_arena/configs/multi_game_base.yaml \
-     --ray-config src/board_game_arena/configs/ray_config.yaml \
+     --base-config src/game_reasoning_arena/configs/multi_game_base.yaml \
+     --ray-config src/game_reasoning_arena/configs/ray_config.yaml \
      --override num_episodes=10 \
      --override agents.player_0.model=litellm_groq/llama3-70b-8192
 
@@ -52,7 +52,7 @@ Configuration Options
 .. code-block:: bash
 
    # Enable Ray with any existing configuration
-   python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml \
+   python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml \
      --override use_ray=true parallel_episodes=true
 
 Ray Configuration Parameters
@@ -202,7 +202,7 @@ Significance Testing
 
 .. code-block:: python
 
-   from board_game_arena.analysis import statistical_tests
+   from game_reasoning_arena.analysis import statistical_tests
 
    # Compare win rates between agents
    p_value = statistical_tests.binomial_test(

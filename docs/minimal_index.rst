@@ -3,7 +3,7 @@ Board Game Arena
 
 Welcome to Board Game Arena - a research platform for training and evaluating AI agents in board games.
 
-.. automodule:: board_game_arena
+.. automodule:: game_reasoning_arena
    :members:
    :undoc-members:
    :show-inheritance:
@@ -14,7 +14,7 @@ Installation
 .. code-block:: bash
 
    conda env create -f environment.yaml
-   conda activate board_game_arena
+   conda activate game_reasoning_arena
    pip install -e .
 
 Usage
@@ -22,5 +22,5 @@ Usage
 
 .. code-block:: python
 
-   from board_game_arena import *
+   from game_reasoning_arena import *
    # Your code here

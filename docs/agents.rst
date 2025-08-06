@@ -13,7 +13,7 @@ Uses Large Language Models to make game decisions through natural language reaso
 
 .. code-block:: python
 
-   from board_game_arena.arena.agents.llm_agent import LLMAgent
+   from game_reasoning_arena.arena.agents.llm_agent import LLMAgent
 
    agent = LLMAgent(
        name="GPT_Player",
@@ -38,7 +38,7 @@ Makes random legal moves - useful as a baseline opponent.
 
 .. code-block:: python
 
-   from board_game_arena.arena.agents.random_agent import RandomAgent
+   from game_reasoning_arena.arena.agents.random_agent import RandomAgent
 
    agent = RandomAgent(name="Random_Player")
 
@@ -54,7 +54,7 @@ Allows human players to participate in games through a user interface.
 
 .. code-block:: python
 
-   from board_game_arena.arena.agents.human_agent import HumanAgent
+   from game_reasoning_arena.arena.agents.human_agent import HumanAgent
 
    agent = HumanAgent(name="Human_Player")
 
@@ -103,7 +103,7 @@ You can create custom agents by inheriting from ``BaseAgent``:
 
 .. code-block:: python
 
-   from board_game_arena.arena.agents.base_agent import BaseAgent
+   from game_reasoning_arena.arena.agents.base_agent import BaseAgent
 
    class MyAgent(BaseAgent):
        def __init__(self, name="MyAgent"):

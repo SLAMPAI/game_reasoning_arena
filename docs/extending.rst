@@ -10,11 +10,11 @@ To add support for a new game:
 
 1. **Create the game environment**
 
-   Create a new file in ``src/board_game_arena/arena/envs/``:
+   Create a new file in ``src/game_reasoning_arena/arena/envs/``:
 
    .. code-block:: python
 
-      # src/board_game_arena/arena/envs/my_game_env.py
+      # src/game_reasoning_arena/arena/envs/my_game_env.py
       from .base_env import BaseEnv
 
       class MyGameEnv(BaseEnv):
@@ -48,7 +48,7 @@ To add support for a new game:
 
    .. code-block:: python
 
-      # In src/board_game_arena/arena/envs/env_initializer.py
+      # In src/game_reasoning_arena/arena/envs/env_initializer.py
       from .my_game_env import MyGameEnv
 
       GAME_REGISTRY = {
@@ -58,7 +58,7 @@ To add support for a new game:
 
 3. **Add configuration support**
 
-   Create a configuration template in ``src/board_game_arena/configs/``.
+   Create a configuration template in ``src/game_reasoning_arena/configs/``.
 
 4. **Add tests**
 
@@ -77,7 +77,7 @@ To create a new agent type:
 
    .. code-block:: python
 
-      # src/board_game_arena/arena/agents/my_agent.py
+      # src/game_reasoning_arena/arena/agents/my_agent.py
       from .base_agent import BaseAgent
 
       class MyAgent(BaseAgent):
@@ -99,7 +99,7 @@ To create a new agent type:
 
    .. code-block:: python
 
-      # In src/board_game_arena/arena/agents/agent_registry.py
+      # In src/game_reasoning_arena/arena/agents/agent_registry.py
       from .my_agent import MyAgent
 
       AGENT_REGISTRY = {
@@ -116,7 +116,7 @@ To add support for a new LLM backend:
 
    .. code-block:: python
 
-      # src/board_game_arena/backends/my_backend.py
+      # src/game_reasoning_arena/backends/my_backend.py
       from .base_backend import BaseBackend
 
       class MyBackend(BaseBackend):

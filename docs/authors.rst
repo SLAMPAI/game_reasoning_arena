@@ -33,7 +33,7 @@ If you use Board Game Arena in your research, please cite:
 
 .. code-block:: bibtex
 
-   @article{cipolina-kun2025board_game_arena,
+   @article{cipolina-kun2025game_reasoning_arena,
        title={Board Game Arena: A Framework and Benchmark for Assessing Large Language Models},
        author={Lucia Cipolina-Kun and Marianna Nezhurina and Jenia Jitsev},
        year={2025},
@@ -50,6 +50,6 @@ Board Game Arena is released under CC BY-NC 4.0 (Creative Commons Attribution-No
 
 For questions about Board Game Arena, please:
 
--   **Open an issue** on GitHub: https://github.com/lcipolina/board_game_arena/issues
--   **Repository**: https://github.com/lcipolina/board_game_arena
+-   **Open an issue** on GitHub: https://github.com/lcipolina/game_reasoning_arena/issues
+-   **Repository**: https://github.com/lcipolina/game_reasoning_arena
 -   **Documentation**: https://board-game-arena.readthedocs.io/

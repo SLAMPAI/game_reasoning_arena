@@ -1,4 +1,4 @@
-name: board_game_arena
+name: game_reasoning_arena
 
 channels:
   - conda-forge

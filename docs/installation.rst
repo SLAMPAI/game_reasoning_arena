@@ -14,12 +14,12 @@ If you have conda installed, this is the fastest way to get started:
 .. code-block:: bash
 
    # Clone the repository
-   git clone https://github.com/lcipolina/board_game_arena.git
-   cd board_game_arena
+   git clone https://github.com/lcipolina/game_reasoning_arena.git
+   cd game_reasoning_arena
 
    # Create and activate conda environment
    conda env create -f environment.yaml
-   conda activate board_game_arena
+   conda activate game_reasoning_arena
 
    # Install the package in development mode
    pip install -e .
@@ -32,8 +32,8 @@ If you prefer pip or don't have conda:
 .. code-block:: bash
 
    # Clone the repository
-   git clone https://github.com/lcipolina/board_game_arena.git
-   cd board_game_arena
+   git clone https://github.com/lcipolina/game_reasoning_arena.git
+   cd game_reasoning_arena
 
    # Create virtual environment
    python3 -m venv venv
@@ -54,12 +54,12 @@ If you plan to contribute or modify the code:
 .. code-block:: bash
 
    # Clone with development tools
-   git clone https://github.com/lcipolina/board_game_arena.git
-   cd board_game_arena
+   git clone https://github.com/lcipolina/game_reasoning_arena.git
+   cd game_reasoning_arena
 
    # Set up conda environment with development dependencies
    conda env create -f environment.yaml
-   conda activate board_game_arena
+   conda activate game_reasoning_arena
 
    # Install in editable mode with development extras
    pip install -e ".[dev]"
@@ -257,7 +257,7 @@ Troubleshooting
 Common Issues
 ~~~~~~~~~~~~~
 
-**ImportError: No module named 'board_game_arena'**
+**ImportError: No module named 'game_reasoning_arena'**
 
 .. code-block:: bash
 
@@ -302,7 +302,7 @@ Getting Help
 
 If you encounter issues:
 
-1. Check the `GitHub Issues <https://github.com/lcipolina/board_game_arena/issues>`_
+1. Check the `GitHub Issues <https://github.com/lcipolina/game_reasoning_arena/issues>`_
 2. Review the troubleshooting section in our documentation
 3. Join our community discussions
 4. Contact the development team

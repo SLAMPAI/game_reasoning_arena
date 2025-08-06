@@ -145,7 +145,7 @@ This allows you to mix multiple inference providers in the same configuration.
 You can add new API providers in two ways:
 
 #### Method 1: Configuration File (Recommended)
-Edit `src/board_game_arena/configs/api_providers.yaml`:
+Edit `src/game_reasoning_arena/configs/api_providers.yaml`:
 
 ```yaml
 providers:
@@ -166,7 +166,7 @@ export MY_CUSTOM_AI_API_KEY="your_api_key_here"
 Add providers programmatically in your code:
 
 ```python
-from board_game_arena.backends.backend_config import config
+from game_reasoning_arena.backends.backend_config import config
 
 # Add a new provider at runtime
 config.add_provider(
@@ -181,7 +181,7 @@ api_key = config.get_api_key("custom_ai")
 
 ### Adding Models to LiteLLM Backend
 
-To add new LiteLLM models, edit `src/board_game_arena/configs/litellm_models.yaml`:
+To add new LiteLLM models, edit `src/game_reasoning_arena/configs/litellm_models.yaml`:
 
 ```yaml
 models:
@@ -191,7 +191,7 @@ models:
 
 ### Adding Models to vLLM Backend
 
-To add new vLLM models, edit `src/board_game_arena/configs/vllm_models.yaml`:
+To add new vLLM models, edit `src/game_reasoning_arena/configs/vllm_models.yaml`:
 
 ```yaml
 models:
@@ -244,7 +244,7 @@ CUSTOM_AI_API_KEY="your_key_here""
 You can check what providers are supported:
 
 ```python
-from board_game_arena.backends.backend_config import config
+from game_reasoning_arena.backends.backend_config import config
 
 # List all supported providers
 providers = config.get_supported_providers()

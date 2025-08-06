@@ -5,8 +5,8 @@ This section contains the complete API reference for Board Game Arena.
 
    The main entry points for using Board Game Arena are:
 
-   * :class:`board_game_arena.arena.agents.base_agent.BaseAgent` - Base class for all agents
-   * :class:`board_game_arena.backends.base_backend.BaseLLMBackend` - Base class for LLM backends
+   * :class:`game_reasoning_arena.arena.agents.base_agent.BaseAgent` - Base class for all agents
+   * :class:`game_reasoning_arena.backends.base_backend.BaseLLMBackend` - Base class for LLM backends
    * :func:`scripts.runner` - Main simulation runner
    * :func:`scripts.simulate` - Core simulation logic
 
@@ -17,8 +17,8 @@ The codebase is organized as follows:
 
 .. code-block:: text
 
-   board_game_arena/
-   ├── src/board_game_arena/      # Core framework
+   game_reasoning_arena/
+   ├── src/game_reasoning_arena/      # Core framework
    │   ├── backends/              # LLM backend management
    │   │   ├── llm_registry.py    # Registry for available models
    │   │   ├── litellm_backend.py # API-based model interface
@@ -68,7 +68,7 @@ The codebase is organized as follows:
 Core Directory Overview
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-**src/board_game_arena/**: Main package containing all framework components
+**src/game_reasoning_arena/**: Main package containing all framework components
 
 * **backends/**: LLM inference backends (LiteLLM, vLLM)
 * **arena/**: Game simulation framework with agents, environments, games, and utilities

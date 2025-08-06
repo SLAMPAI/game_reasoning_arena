@@ -14,7 +14,7 @@ Learn the basics by running a simple Connect Four experiment.
 
 .. code-block:: bash
 
-   conda activate board_game_arena
+   conda activate game_reasoning_arena
 
 **Step 2**: Create a configuration file
 
@@ -87,7 +87,7 @@ Create your own agent type.
 .. code-block:: python
 
    # custom_agents/heuristic_agent.py
-   from board_game_arena.arena.agents.base_agent import BaseAgent
+   from game_reasoning_arena.arena.agents.base_agent import BaseAgent
 
    class HeuristicAgent(BaseAgent):
        def __init__(self, name="HeuristicAgent"):
@@ -109,7 +109,7 @@ Create your own agent type.
 .. code-block:: python
 
    # Add to agent registry
-   from board_game_arena.arena.agents.agent_registry import register_agent
+   from game_reasoning_arena.arena.agents.agent_registry import register_agent
    register_agent("heuristic", HeuristicAgent)
 
 **Step 3**: Use in configuration
@@ -152,7 +152,7 @@ Run experiments with many games and statistical analysis.
 
 .. code-block:: python
 
-   from board_game_arena.analysis import statistical_analysis
+   from game_reasoning_arena.analysis import statistical_analysis
 
    results = statistical_analysis.load_experiment("statistical_study")
 

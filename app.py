@@ -23,7 +23,7 @@ User clicks "Start Game" in Gradio
         ↓
 gradio_config_generator.py (run_game_with_existing_infrastructure)
         ↓
-src/board_game_arena/ (core game infrastructure)
+src/game_reasoning_arena/ (core game infrastructure)
         ↓
     Game results displayed in Gradio
 """
@@ -44,15 +44,15 @@ if str(src_path) not in sys.path:
     sys.path.insert(0, str(src_path))
 
 # Try importing from the board game arena package
-# Prioritize src.board_game_arena path for HuggingFace Spaces deployment
+# Prioritize src.game_reasoning_arena path for HuggingFace Spaces deployment
 
-from src.board_game_arena.arena.games.registry import registry as games_registry
+from src.game_reasoning_arena.arena.games.registry import registry as games_registry
 
 # Import backend system for proper LLM handling
 try:
-    from src.board_game_arena.backends.huggingface_backend import (
+    from src.game_reasoning_arena.backends.huggingface_backend import (
         HuggingFaceBackend)
-    from src.board_game_arena.backends import (
+    from src.game_reasoning_arena.backends import (
         initialize_llm_registry, LLM_REGISTRY)
     BACKEND_SYSTEM_AVAILABLE = True
     print("✅ Backend system available - using proper LLM infrastructure")

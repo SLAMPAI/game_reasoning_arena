@@ -7,7 +7,7 @@ Implements a Gymnasium-like environment on top of an OpenSpiel game.
 from typing import Optional, Tuple, Dict, Any
 import random
 from abc import ABC
-from board_game_arena.arena.agents.llm_utils import format_prompt
+from game_reasoning_arena.arena.agents.llm_utils import format_prompt
 
 
 class OpenSpielEnv(ABC):

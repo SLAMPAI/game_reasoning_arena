@@ -47,7 +47,7 @@ Supported Providers
 Configuration
 ~~~~~~~~~~~~~
 
-Models are configured in ``src/board_game_arena/configs/litellm_models.yaml``:
+Models are configured in ``src/game_reasoning_arena/configs/litellm_models.yaml``:
 
 .. code-block:: yaml
 
@@ -150,7 +150,7 @@ Model Setup
    # Example: Download Qwen2-7B-Instruct
    git lfs clone https://huggingface.co/Qwen/Qwen2-7B-Instruct /path/to/models/Qwen2-7B-Instruct
 
-2. **Configure Model Paths**: Update ``src/board_game_arena/configs/vllm_models.yaml``
+2. **Configure Model Paths**: Update ``src/game_reasoning_arena/configs/vllm_models.yaml``
 
 .. code-block:: yaml
 
@@ -476,7 +476,7 @@ LiteLLM Models
 
 .. code-block:: yaml
 
-   # In src/board_game_arena/configs/litellm_models.yaml
+   # In src/game_reasoning_arena/configs/litellm_models.yaml
    models:
      - litellm_new_provider/new_model_name
 
@@ -499,7 +499,7 @@ vLLM Models
 
 .. code-block:: yaml
 
-   # In src/board_game_arena/configs/vllm_models.yaml
+   # In src/game_reasoning_arena/configs/vllm_models.yaml
    models:
      - name: vllm_new_model_name
        model_path: /absolute/path/to/model

@@ -113,6 +113,6 @@ See our :doc:`contributing` guide for information on how to contribute to Board 
 
 For questions about specific versions or upgrade issues:
 
-- Check the GitHub releases: https://github.com/lcipolina/board_game_arena/releases
-- Open an issue: https://github.com/lcipolina/board_game_arena/issues
+- Check the GitHub releases: https://github.com/lcipolina/game_reasoning_arena/releases
+- Open an issue: https://github.com/lcipolina/game_reasoning_arena/issues
 - Review the documentation: https://board-game-arena.readthedocs.io/

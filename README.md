@@ -1,10 +1,10 @@
-# Board Game Arena
+# Game Reasoning Arena
 
 A framework for evaluating Large Language Models (LLMs) through strategic game-playing using Google's OpenSpiel game library. Allows to test LLM decision-making capabilities in games like Tic-Tac-Toe, Connect Four, Poker, and more.
 
 ## Official Documentation
 
-For a detailed documentation guide, visit the [Board Game Arena Documentation](https://board-game-arena.readthedocs.io/en/latest/index.html).
+For a detailed documentation guide, visit the [Game Reasoning Arena Documentation](https://game-reasoning-arena.readthedocs.io/en/latest/index.html).
 
 ### Key Features
 - **Multi-Agent Testing**: LLMs vs Random, LLM vs LLM, Self-play
@@ -35,14 +35,14 @@ ___
 ### Setup
 ```bash
 # Clone the repository
-git clone https://github.com/SLAMPAI/board_game_arena.git
-cd board_game_arena
+git clone https://github.com/SLAMPAI/game_reasoning_arena.git
+cd game_reasoning_arena
 
 # Install dependencies
 conda env create -f environment.yaml
 
 # Install the package in development mode
-conda activate board_game_arena
+conda activate game_reasoning_arena
 pip install -e .
 
 # Create a .env file for the environment variables
@@ -70,24 +70,24 @@ cd ..
 ### Test the Installation
 ```bash
 # Run a quick test
-python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml
 ```
 
 ___
 ### Game Examples
 ```bash
 # Different games
-python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override env_config.game_name=connect_four
-python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override env_config.game_name=kuhn_poker
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override env_config.game_name=connect_four
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override env_config.game_name=kuhn_poker
 
 # LLM vs Random in a multi-episode tournament
-python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override \
   agents.player_0.type=llm \
   agents.player_0.model=litellm_groq/llama3-8b-8192 \
   num_episodes=10
 
 # LLM vs LLM with mixed backends (liteLLM vs vLLM)
-python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override \
 mode=llm_vs_llm \
 agents.player_0.model=litellm_groq/llama3-8b-8192 \
 agents.player_1.model=vllm_Qwen2-7B-Instruct
@@ -96,21 +96,21 @@ agents.player_1.model=vllm_Qwen2-7B-Instruct
 #### Game-Specific Examples
 ```bash
 # Tic-Tac-Toe: Quick strategy game
-python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override \
   env_config.game_name=tic_tac_toe \
   agents.player_0.type=llm \
   agents.player_0.model=litellm_groq/llama3-8b-8192 \
   num_episodes=5
 
 # Connect Four: Longer strategic game
-python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override \
   env_config.game_name=connect_four \
   agents.player_0.type=llm \
   agents.player_0.model=litellm_together_ai/meta-llama/Llama-2-7b-chat-hf \
   num_episodes=3
 
 # Kuhn Poker: Game with hidden information
-python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override \
   env_config.game_name=kuhn_poker \
   agents.player_0.type=llm \
   agents.player_0.model=litellm_groq/llama3-8b-8192 \
@@ -119,7 +119,7 @@ python3 scripts/runner.py --config src/board_game_arena/configs/example_config.y
   num_episodes=10
 
 # Tic-Tac-Toe LLM vs Random: Classic strategy game
-python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override \
   env_config.game_name=tic_tac_toe \
   agents.player_0.type=llm \
   agents.player_1.type=random \
@@ -188,8 +188,8 @@ ray_config:
 ```bash
 # Use any existing config + separate Ray settings
 python3 scripts/runner.py \
-  --base-config src/board_game_arena/configs/multi_game_base.yaml \
-  --ray-config src/board_game_arena/configs/ray_config.yaml \
+  --base-config src/game_reasoning_arena/configs/multi_game_base.yaml \
+  --ray-config src/game_reasoning_arena/configs/ray_config.yaml \
   --override num_episodes=10 \
   --override agents.player_0.model=litellm_groq/llama3-70b-8192
 ```
@@ -197,7 +197,7 @@ python3 scripts/runner.py \
 **Option 3: Command-Line Override**
 ```bash
 # Enable Ray with any existing configuration
-  python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml \
+  python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml \
  --override use_ray=true parallel_episodes=true
 ```
 
@@ -265,7 +265,7 @@ python3 scripts/runner.py --config <config_file> [--override key=value ...]
 ```bash
 
 # Verify available games
-python3 -c "from src.board_game_arena.arena.games.registry import registry; print('Available games:', list(registry._registry.keys()))"
+python3 -c "from src.game_reasoning_arena.arena.games.registry import registry; print('Available games:', list(registry._registry.keys()))"
 ```
 
 ### Configuration Files
@@ -290,7 +290,7 @@ ___
 ## Project Structure
 
 ```
-board_game_arena/
+game_reasoning_arena/
 ├── src/
 │   ├── backends/          # LLM backend management
 │   │   ├── llm_registry.py
@@ -361,10 +361,10 @@ class MyNewGameLoader(GameLoader):
 **Step 3: Test**
 ```bash
 # Verify registration
-python3 -c "from src.board_game_arena.arena.games.registry import registry; print(list(registry._registry.keys()))"
+python3 -c "from src.game_reasoning_arena.arena.games.registry import registry; print(list(registry._registry.keys()))"
 
 # Test the game
-python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override env_config.game_name=my_new_game
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override env_config.game_name=my_new_game
 ```
 
 ### Adding a New Agent
@@ -403,7 +403,7 @@ agents:
 
 **Step 4: Test**
 ```bash
-python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override \
   agents.player_0.type=my_agent \
   agents.player_0.model=my_model
 ```
@@ -665,7 +665,7 @@ ___
 If you found this work useful, please consider citing:
 
 ```
-@article{cipolina-kun2025board_game_arena,
+@article{cipolina-kun2025game_reasoning_arena,
     title={Board Game Arena: A Framework and Benchmark for Assessing Large Language Models},
     author={Lucia Cipolina-Kun and  Marianna Nezhurina and Jenia Jitsev},
     year={2025},

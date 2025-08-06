@@ -213,10 +213,10 @@ def run_game_with_existing_infrastructure(
     """
     try:
         # Import the existing infrastructure
-        from src.board_game_arena.arena.utils.seeding import set_seed
-        from src.board_game_arena.backends import initialize_llm_registry
-        from src.board_game_arena.arena.games.registry import registry
-        from src.board_game_arena.arena.agents.policy_manager import (
+        from src.game_reasoning_arena.arena.utils.seeding import set_seed
+        from src.game_reasoning_arena.backends import initialize_llm_registry
+        from src.game_reasoning_arena.arena.games.registry import registry
+        from src.game_reasoning_arena.arena.agents.policy_manager import (
             initialize_policies, policy_mapping_fn
         )
 
@@ -259,8 +259,8 @@ def _run_game_with_detailed_logging(
     This reuses the existing infrastructure components but captures
     detailed game state information for user display.
     """
-    from src.board_game_arena.arena.games.registry import registry
-    from src.board_game_arena.arena.agents.policy_manager import (
+    from src.game_reasoning_arena.arena.games.registry import registry
+    from src.game_reasoning_arena.arena.agents.policy_manager import (
         initialize_policies, policy_mapping_fn
     )
 

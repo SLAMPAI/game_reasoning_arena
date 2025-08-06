@@ -34,7 +34,7 @@ Reasoning traces are automatically collected whenever LLM agents play games. No 
 .. code-block:: bash
 
    # Basic LLM vs Random game - traces will be automatically collected
-   python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+   python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override \
      env_config.game_name=tic_tac_toe \
      agents.player_0.type=llm \
      agents.player_0.model=litellm_groq/llama3-8b-8192 \
@@ -43,7 +43,7 @@ Reasoning traces are automatically collected whenever LLM agents play games. No 
 .. code-block:: bash
 
    # LLM vs LLM - both agents' reasoning will be captured
-   python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+   python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override \
      env_config.game_name=connect_four \
      agents.player_0.type=llm \
      agents.player_0.model=litellm_groq/llama3-8b-8192 \

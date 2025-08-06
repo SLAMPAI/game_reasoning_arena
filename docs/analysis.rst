@@ -19,7 +19,7 @@ Quick Start with Reasoning Traces:
 .. code-block:: bash
 
    # Run a game with LLM agents (traces collected automatically)
-   python3 scripts/runner.py --config src/board_game_arena/configs/example_config.yaml --override \
+   python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override \
      env_config.game_name=tic_tac_toe \
      agents.player_0.type=llm \
      agents.player_0.model=litellm_groq/llama3-8b-8192 \

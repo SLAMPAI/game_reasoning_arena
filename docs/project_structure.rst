@@ -8,8 +8,8 @@ Directory Layout
 
 .. code-block:: text
 
-   board_game_arena/
-   ├── src/board_game_arena/      # Core framework
+   game_reasoning_arena/
+   ├── src/game_reasoning_arena/      # Core framework
    │   ├── backends/              # LLM backend management
    │   │   ├── llm_registry.py    # Registry for available models
    │   │   ├── litellm_backend.py # API-based model interface
@@ -59,7 +59,7 @@ Directory Layout
 Core Components
 ---------------
 
-Source Code (``src/board_game_arena/``)
+Source Code (``src/game_reasoning_arena/``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Backends** (``backends/``)

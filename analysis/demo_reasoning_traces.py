@@ -12,7 +12,7 @@ import pandas as pd
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-from board_game_arena.arena.utils.loggers import SQLiteLogger
+from game_reasoning_arena.arena.utils.loggers import SQLiteLogger
 
 
 def create_sample_reasoning_traces():

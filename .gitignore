@@ -12,7 +12,7 @@ __pycache__/
 *.tfevents.*
 results/
 tests/
-board_game_arena_blog_post.md
+game_reasoning_arena_blog_post.md
 slurm_jobs/run_simulation.sh
 tests/vLLM_test.py
 tests/litellm_test.py

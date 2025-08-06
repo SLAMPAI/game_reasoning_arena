@@ -18,9 +18,9 @@ import ray
 from dotenv import load_dotenv
 
 from simulate import simulate_game
-from board_game_arena.arena.utils.cleanup import full_cleanup
-from board_game_arena.arena.utils.seeding import set_seed
-from board_game_arena.configs.config_parser import (
+from game_reasoning_arena.arena.utils.cleanup import full_cleanup
+from game_reasoning_arena.arena.utils.seeding import set_seed
+from game_reasoning_arena.configs.config_parser import (
     build_cli_parser,
     parse_config
 )

@@ -11,15 +11,15 @@ Development Setup
 
 .. code-block:: bash
 
-   git clone https://github.com/YOUR_USERNAME/board_game_arena.git
-   cd board_game_arena
+   git clone https://github.com/YOUR_USERNAME/game_reasoning_arena.git
+   cd game_reasoning_arena
 
 3. Create a development environment:
 
 .. code-block:: bash
 
    conda env create -f environment.yaml
-   conda activate board_game_arena
+   conda activate game_reasoning_arena
    pip install -e .
 
 4. Install development dependencies:
@@ -59,7 +59,7 @@ Add tests for new functionality:
 
    # tests/test_new_feature.py
    import pytest
-   from board_game_arena.your_module import YourClass
+   from game_reasoning_arena.your_module import YourClass
 
    def test_your_function():
        # Test implementation
@@ -117,7 +117,7 @@ Adding New Games
 
 To add support for a new game:
 
-1. Create a new environment class in `src/board_game_arena/arena/envs/`
+1. Create a new environment class in `src/game_reasoning_arena/arena/envs/`
 2. Inherit from the base environment class
 3. Implement required methods: `reset()`, `step()`, `get_legal_actions()`
 4. Add configuration support
@@ -147,7 +147,7 @@ Adding New Agents
 
 To add a new agent type:
 
-1. Create a new agent class in `src/board_game_arena/arena/agents/`
+1. Create a new agent class in `src/game_reasoning_arena/arena/agents/`
 2. Inherit from `BaseAgent`
 3. Implement `get_action()` and `reset()` methods
 4. Add to agent registry if needed

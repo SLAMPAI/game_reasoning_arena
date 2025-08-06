@@ -13,9 +13,9 @@ Here's a basic example of running a Connect Four game:
 
 .. code-block:: python
 
-   from board_game_arena.arena.envs.env_initializer import EnvInitializer
-   from board_game_arena.arena.agents.random_agent import RandomAgent
-   from board_game_arena.arena.agents.llm_agent import LLMAgent
+   from game_reasoning_arena.arena.envs.env_initializer import EnvInitializer
+   from game_reasoning_arena.arena.agents.random_agent import RandomAgent
+   from game_reasoning_arena.arena.agents.llm_agent import LLMAgent
 
    # Initialize environment
    env = EnvInitializer.create_env("connect_four")
@@ -39,7 +39,7 @@ Running a tournament across multiple games:
 .. code-block:: python
 
    import yaml
-   from board_game_arena.scripts.simulate import run_simulation
+   from game_reasoning_arena.scripts.simulate import run_simulation
 
    # Load configuration
    with open('multi_game_config.yaml', 'r') as f:
@@ -55,7 +55,7 @@ Creating a custom agent:
 
 .. code-block:: python
 
-   from board_game_arena.arena.agents.base_agent import BaseAgent
+   from game_reasoning_arena.arena.agents.base_agent import BaseAgent
    import random
 
    class MyCustomAgent(BaseAgent):
@@ -79,7 +79,7 @@ Analyzing Agent Behavior
 
 .. code-block:: python
 
-   from board_game_arena.analysis.reasoning_analysis import analyze_reasoning
+   from game_reasoning_arena.analysis.reasoning_analysis import analyze_reasoning
 
    # Analyze game logs
    results = analyze_reasoning("run_logs/experiment_results.json")
