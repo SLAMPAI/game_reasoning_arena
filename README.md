@@ -9,7 +9,7 @@ For a detailed documentation guide, visit the [Board Game Arena Documentation](h
 ### Key Features
 - **Multi-Agent Testing**: LLMs vs Random, LLM vs LLM, Self-play
 - **Multiple Game Types**: Strategy, poker, cooperation, zero-sum games
-- **Flexible Backends**: Support for API-based (LiteLLM) and local (vLLM) inference
+- **Flexible Backends**: Support for API-based (LiteLLM), local GPU (vLLM), and local CPU (HuggingFace) inference
 - **Cross-Provider**: Mix different LLM providers in the same game
 - **Extensible**: Easy to add new games and agents
 
@@ -133,14 +133,22 @@ ___
 Models use backend prefixes:
 - **LiteLLM models**: `litellm_<provider>/<model>` (e.g., `litellm_groq/llama3-8b-8192`)
 - **vLLM models**: `vllm_<model>` (e.g., `vllm_Qwen2-7B-Instruct`)
+- **HuggingFace models**: `hf_<model>` (e.g., `hf_gpt2`, `hf_distilgpt2`)
 
 ### Backend Configuration
 
-The system loads models from configuration files:
+The system supports three inference backends:
+
+1. **LiteLLM Backend**: API-based inference supporting 100+ providers (OpenAI, Groq, Together AI, etc.)
+2. **vLLM Backend**: Local GPU inference for self-hosted models
+3. **HuggingFace Backend**: Local CPU inference using transformers pipeline
+
+Configuration files:
 - `src/configs/litellm_models.yaml` - API-based models
 - `src/configs/vllm_models.yaml` - Local GPU models
+- HuggingFace models are auto-configured (gpt2, distilgpt2, google/flan-t5-small, etc.)
 
-**Important**: Models must be listed in these files to be available for use.
+**Important**: LiteLLM and vLLM models must be listed in their respective config files to be available for use. HuggingFace models are automatically available without additional configuration.
 
 
 
@@ -288,6 +296,7 @@ board_game_arena/
 │   │   ├── llm_registry.py
 │   │   ├── litellm_backend.py
 │   │   ├── vllm_backend.py
+│   │   ├── huggingface_backend.py
 │   │   └── config.py
 │   ├── arena/
 │   │   ├── games/         # Game registration system

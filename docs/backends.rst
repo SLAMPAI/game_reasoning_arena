@@ -6,12 +6,13 @@ Board Game Arena supports multiple LLM inference backends, allowing you to use b
 Overview
 --------
 
-The framework provides two main backend types:
+The framework provides three main backend types:
 
 * **LiteLLM Backend**: API-based inference supporting 100+ providers
 * **vLLM Backend**: Local GPU inference for self-hosted models
+* **HuggingFace Backend**: Local CPU inference using transformers pipeline
 
-Both backends implement the same interface, making them interchangeable in experiments and allowing for easy comparison between different models and deployment strategies.
+All backends implement the same interface, making them interchangeable in experiments and allowing for easy comparison between different models and deployment strategies.
 
 LiteLLM Backend
 ---------------
@@ -206,6 +207,68 @@ Install vLLM package for local inference:
    # For specific CUDA versions, see vLLM documentation
    pip install vllm-nightly  # Latest features
 
+HuggingFace Backend
+-------------------
+
+The HuggingFace backend enables **local CPU inference** using the transformers library, providing a lightweight option for running smaller models without GPU requirements.
+
+Key Features
+~~~~~~~~~~~~
+
+* **No GPU required**: CPU-only inference for accessibility
+* **No API costs**: Completely free local inference
+
+Supported Models
+~~~~~~~~~~~~~~~~
+
+The HuggingFace backend comes pre-configured with several popular models:
+
+.. code-block:: text
+
+   ✓ gpt2 - OpenAI's GPT-2 base model
+   ✓ distilgpt2 - Distilled version of GPT-2 (faster)
+   ✓ google/flan-t5-small - Google's T5 model fine-tuned for instructions
+   ✓ EleutherAI/gpt-neo-125M - EleutherAI's lightweight GPT model
+
+Configuration
+~~~~~~~~~~~~~
+
+HuggingFace models are **automatically configured** and require no additional setup. The backend uses the transformers pipeline for text generation.
+
+Model Naming Convention
+~~~~~~~~~~~~~~~~~~~~~~~
+
+HuggingFace models use the prefix ``hf_`` followed by the model identifier:
+
+.. code-block:: text
+
+   Format: hf_<model_name>
+
+   Examples:
+   - hf_gpt2
+   - hf_distilgpt2
+   - hf_google/flan-t5-small
+   - hf_EleutherAI/gpt-neo-125M
+
+Usage Example
+~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+   # Use GPT-2 with HuggingFace backend
+   python scripts/runner.py --config configs/example_config.yaml --override \\
+     agents.player_0.model=hf_gpt2
+
+   # Use DistilGPT-2 for faster inference
+   python scripts/runner.py --config configs/example_config.yaml --override \\
+     agents.player_0.model=hf_distilgpt2
+
+Performance Notes
+~~~~~~~~~~~~~~~~~
+
+.. note::
+   Small transformer models may produce less coherent responses compared to larger API models. The backend includes intelligent fallback mechanisms to ensure valid game actions.
+
 Mixed Backend Usage
 -------------------
 
@@ -240,6 +303,19 @@ Cross-Provider Experiments
      agents.player_0.model=litellm_together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct \\
      agents.player_1.model=vllm_Llama-2-7b-chat-hf
 
+   # Test HuggingFace vs API models
+   python scripts/runner.py --config configs/example_config.yaml --override \\
+     mode=llm_vs_llm \\
+     agents.player_0.model=hf_gpt2 \\
+     agents.player_1.model=litellm_groq/llama3-8b-8192
+
+   # Compare all three backends
+   python scripts/runner.py --config configs/three_way_comparison.yaml --override \\
+     mode=multi_agent \\
+     agents.player_0.model=litellm_gpt-4-turbo \\
+     agents.player_1.model=vllm_Qwen2-7B-Instruct \\
+     agents.player_2.model=hf_distilgpt2
+
 Backend Selection Guide
 -----------------------
 
@@ -264,6 +340,14 @@ vLLM When:
 * **Offline environments** without internet access
 * **Full control** over inference parameters and optimization
 * **Research on model behavior** requiring deterministic setups
+
+HuggingFace When:
+~~~~~~~~~~~~~~~~~
+
+* **CPU-only environments** without GPU access
+* **Development and testing** without external dependencies
+* **Experimentation with small models** for proof of concept
+
 
 Performance Considerations
 --------------------------
@@ -291,6 +375,10 @@ Inference Speed
      - 100-1000ms
      - Variable
      - Privacy, control
+   * - HuggingFace (CPU)
+     - 2000-10000ms
+     - Low
+     - Education, testing
 
 Cost Comparison
 ~~~~~~~~~~~~~~~
@@ -311,6 +399,14 @@ Cost Comparison
      - GPU hardware
      - Electricity only
      - > 1M tokens
+   * - HuggingFace CPU
+     - $0
+     - $0 (CPU time)
+     - Always free
+   * - HuggingFace CPU
+     - $0
+     - $0 (CPU time)
+     - Always free
 
 Troubleshooting
 ---------------
@@ -417,6 +513,28 @@ vLLM Models
      agents.player_0.model=vllm_new_model_name \\
      num_episodes=1
 
+HuggingFace Models
+~~~~~~~~~~~~~~~~~~
+
+HuggingFace models are **automatically available** without additional configuration. The framework comes pre-configured with several popular models:
+
+* **gpt2** - OpenAI's GPT-2 base model
+* **distilgpt2** - Distilled version of GPT-2 (faster inference)
+* **google/flan-t5-small** - Google's T5 model fine-tuned for instructions
+* **EleutherAI/gpt-neo-125M** - EleutherAI's lightweight GPT model
+
+To use additional HuggingFace models, simply use the ``hf_`` prefix with any model from the HuggingFace Hub:
+
+.. code-block:: bash
+
+   # Test with any HuggingFace model
+   python scripts/runner.py --config configs/example_config.yaml --override \\
+     agents.player_0.model=hf_microsoft/DialoGPT-small \\
+     num_episodes=1
+
+.. note::
+   Models will be automatically downloaded on first use and cached locally. Ensure you have sufficient disk space and internet connectivity for the initial download.
+
 See Also
 --------
 
@@ -426,3 +544,4 @@ See Also
 * :doc:`examples` - Backend usage examples
 * `LiteLLM Documentation <https://docs.litellm.ai/>`_
 * `vLLM Documentation <https://docs.vllm.ai/>`_
+* `HuggingFace Transformers Documentation <https://huggingface.co/docs/transformers>`_
