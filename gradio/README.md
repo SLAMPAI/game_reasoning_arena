@@ -25,12 +25,12 @@ python app.py
 app.py (Gradio UI - in root directory for HF Spaces)
     ↓
 gradio/gradio_config_generator.py (Game configuration bridge)
-    ↓  
+    ↓
 src/board_game_arena/ (Core game library)
 ```
 
 The Gradio app provides:
 - Interactive game interface
-- Performance leaderboards  
+- Performance leaderboards
 - Metrics dashboards
 - LLM reasoning analysis

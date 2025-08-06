@@ -104,7 +104,7 @@ def detect_model_backend(model_name: str) -> str:
 
     Models must be named with prefixes:
     - litellm_<model_name> for LiteLLM backend
-    - vllm_<model_name> for vLLM backend 
+    - vllm_<model_name> for vLLM backend
     - hf_<model_name> for HuggingFace backend
     """
     # Check for explicit backend prefix in model name

@@ -143,11 +143,11 @@ def extract_action(response_text: str, legal_actions: List[int]) -> int:
     """
     Extracts action from LLM response with intelligent fallback to random
     valid action.
-    
+
     Args:
         response_text: The raw text response from the LLM
         legal_actions: List of valid actions the agent can take
-    
+
     Returns:
         int: A valid action from the legal_actions list
     """
@@ -157,21 +157,21 @@ def extract_action(response_text: str, legal_actions: List[int]) -> int:
         action = int(match.group(1))
         if action in legal_actions:
             return action
-    
+
     # Try alternative patterns for different model outputs
     match = re.search(r'"action"\s*:\s*(\d+)', response_text)
     if match:
         action = int(match.group(1))
         if action in legal_actions:
             return action
-    
+
     # Try to find any number that might be a valid action
     matches = re.findall(r'\b(\d+)\b', response_text)
     for match in matches:
         action = int(match)
         if action in legal_actions:
             return action
-    
+
     # If no valid action found in response, fall back to random valid action
     if legal_actions:
         fallback_action = random.choice(legal_actions)
@@ -180,7 +180,7 @@ def extract_action(response_text: str, legal_actions: List[int]) -> int:
             f"Using random fallback: {fallback_action}"
         )
         return fallback_action
-    
+
     # Ultimate fallback if somehow no legal actions provided
     logging.error(
         f"No legal actions provided! Response: {response_text[:100]}..."
@@ -194,12 +194,12 @@ def extract_reasoning(response_text: str) -> str:
     match = re.search(r"'reasoning'\s*:\s*'(.*?)'", response_text, re.DOTALL)
     if match:
         return match.group(1)
-    
+
     # Try alternative patterns
     match = re.search(r'"reasoning"\s*:\s*"(.*?)"', response_text, re.DOTALL)
     if match:
         return match.group(1)
-    
+
     # If no structured reasoning found, return the first part of the response
     if response_text.strip():
         # Take first 200 characters as reasoning
@@ -207,5 +207,5 @@ def extract_reasoning(response_text: str) -> str:
         if len(reasoning) > 200:
             return reasoning[:200] + "..."
         return reasoning
-    
+
     return "No reasoning provided"
