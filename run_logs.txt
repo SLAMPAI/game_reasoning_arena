@@ -1,0 +1,20 @@
+2025-08-06 23:09:12,296 - __main__ - INFO - {'env_config': {'game_name': 'matrix_rps', 'max_game_rounds': None}, 'num_episodes': 1, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama3-70b-8192'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 200, 'temperature': 0.1, 'default_model': 'litellm_groq/llama3-70b-8192'}, 'log_level': 'INFO'}
+2025-08-06 23:09:12,299 - __main__ - INFO - Ray disabled - using sequential execution
+2025-08-06 23:09:12,299 - __main__ - INFO - Using sequential execution (Ray disabled)
+2025-08-06 23:09:12,305 - simulate - INFO - Initializing environment for matrix_rps.
+2025-08-06 23:09:12,305 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for matrix_rps
+2025-08-06 23:09:12,306 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama3-70b-8192)
+2025-08-06 23:09:12,306 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
+2025-08-06 23:09:12,314 - simulate - INFO - Episode 1 started with seed 42.
+2025-08-06 23:09:12,326 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-70b-8192; provider = groq
+2025-08-06 23:09:12,905 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-06 23:09:12,906 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-06 23:09:12,910 - simulate - INFO - Board state: 
+Matrix game - Player 0
+2025-08-06 23:09:12,911 - simulate - INFO - Legal actions: [0, 1, 2]
+2025-08-06 23:09:12,911 - simulate - INFO - Agent 0 (litellm_groq/llama3-70b-8192) chose action: 0 with reasoning: Since this is the first move, I have no information about the opponent\
+2025-08-06 23:09:12,912 - simulate - INFO - Game status: truncated with rewards dict: {}
+2025-08-06 23:09:12,913 - simulate - INFO - Simulation for game matrix_rps, Episode 1 completed.
+2025-08-06 23:09:12,913 - __main__ - INFO - Sequential simulation results for matrix_rps completed
+2025-08-06 23:09:12,913 - __main__ - INFO - All simulations completed. Total results: 1

@@ -351,7 +351,7 @@ class LLMReasoningAnalyzer:
 
 
 if __name__ == "__main__":
-    output_dir = '/p/project/ccstdl/cipolina-kun1/open_spiel_arena/results'
+    # Use relative paths for the current workspace
     latest_csv = LLMReasoningAnalyzer.find_latest_log("results")
     analyzer = LLMReasoningAnalyzer(latest_csv)
 
@@ -359,14 +359,15 @@ if __name__ == "__main__":
     analyzer.categorize_reasoning()
     #analyzer.categorize_with_llm(max_samples=50)  # or remove limit for full analysis
 
-    analyzer.compute_metrics()
-    analyzer.plot_heatmaps_by_agent()
-    analyzer.plot_wordclouds_by_agent()
+    analyzer.compute_metrics(plot_dir="plots")
+    analyzer.plot_heatmaps_by_agent(output_dir="plots")
+    analyzer.plot_wordclouds_by_agent(output_dir="plots")
    # analyzer.plot_entropy_trendlines()
    # analyzer.plot_entropy_by_turn_across_agents()
-    analyzer.plot_avg_entropy_across_games()
-   # output_path = Path(__file__).resolve().parent.parent.parent / 'results'
-    output_path = '/p/project/ccstdl/cipolina-kun1/open_spiel_arena/results/' #TODO: change this!
-    #output_path.parent.mkdir(parents=True, exist_ok=True)
-    analyzer.save_output(output_path + 'augmented_reasoning_output.csv')
+    analyzer.plot_avg_entropy_across_games(output_dir="plots")
+
+    # Save augmented output to results directory
+    output_path = Path(__file__).resolve().parent.parent / 'results' / 'augmented_reasoning_output.csv'
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    analyzer.save_output(str(output_path))
     print("Analysis completed successfully!.")
