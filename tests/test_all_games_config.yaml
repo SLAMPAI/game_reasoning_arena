@@ -1,0 +1,25 @@
+# Test configuration for all available games
+# Uses a small, fast LLM model for quick testing
+
+env_config:
+  game_name: tic_tac_toe  # Will be overridden for each test
+  max_game_rounds: null
+
+num_episodes: 2  # Small number for quick testing
+seed: 42
+use_ray: false
+mode: llm_vs_random
+
+agents:
+  player_0:
+    type: llm
+    model: litellm_groq/llama3-8b-8192  # Working model from example
+  player_1:
+    type: random
+
+llm_backend:
+  max_tokens: 100
+  temperature: 0.1
+  default_model: litellm_groq/llama3-8b-8192
+
+log_level: INFO
