@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Dict, Any, List
 from .litellm_backend import LiteLLMBackend
 from .vllm_backend import VLLMBackend
+from .huggingface_backend import HuggingFaceBackend
 
 # Get the directory of this file to construct relative paths
 _current_dir = Path(__file__).parent
@@ -48,6 +49,7 @@ LLM_REGISTRY: Dict[str, Dict[str, Any]] = {}
 # Backend instances
 _litellm_backend = None
 _vllm_backend = None
+_huggingface_backend = None
 
 
 def get_litellm_backend() -> LiteLLMBackend:
@@ -56,6 +58,14 @@ def get_litellm_backend() -> LiteLLMBackend:
     if _litellm_backend is None:
         _litellm_backend = LiteLLMBackend()  # Uses config automatically
     return _litellm_backend
+
+
+def get_huggingface_backend() -> HuggingFaceBackend:
+    """Get or create HuggingFace backend instance."""
+    global _huggingface_backend
+    if _huggingface_backend is None:
+        _huggingface_backend = HuggingFaceBackend()
+    return _huggingface_backend
 
 
 def get_vllm_backend() -> VLLMBackend:
@@ -79,29 +89,35 @@ def extract_model_name(full_model_name: str) -> str:
         return full_model_name[8:]  # Remove "litellm_" prefix
     elif full_model_name.startswith("vllm_"):
         return full_model_name[5:]  # Remove "vllm_" prefix
+    elif full_model_name.startswith("hf_"):
+        return full_model_name[3:]  # Remove "hf_" prefix
     else:
         raise ValueError(
-            f"Model name '{full_model_name}' must start with 'litellm_' or 'vllm_' prefix. "
-            f"Examples: 'litellm_gpt-4', 'vllm_Qwen2-7B-Instruct'"
+            f"Model name '{full_model_name}' must start with 'litellm_', "
+            f"'vllm_', or 'hf_' prefix. "
+            f"Examples: 'litellm_gpt-4', 'vllm_Qwen2-7B-Instruct', 'hf_gpt2'"
         )
 
 
 def detect_model_backend(model_name: str) -> str:
-    """Detect which backend should handle a given model based on naming convention.
+    """Detect which backend should handle a given model based on naming.
 
     Models must be named with prefixes:
     - litellm_<model_name> for LiteLLM backend
-    - vllm_<model_name> for vLLM backend
+    - vllm_<model_name> for vLLM backend 
+    - hf_<model_name> for HuggingFace backend
     """
     # Check for explicit backend prefix in model name
     if model_name.startswith("litellm_"):
         return "litellm"
     elif model_name.startswith("vllm_"):
         return "vllm"
+    elif model_name.startswith("hf_"):
+        return "huggingface"
     else:
         raise ValueError(
-            f"Model name '{model_name}' must start with 'litellm_' or 'vllm_' prefix. "
-            f"Examples: 'litellm_gpt-4', 'vllm_Qwen2-7B-Instruct'"
+            f"Model name '{model_name}' must start with 'litellm_', "
+            f"'vllm_', or 'hf_' prefix."
         )
 
 
@@ -128,6 +144,9 @@ def generate_response(model_name: str, prompt: str, **kwargs) -> str:
         return backend.generate_response(actual_model_name, prompt, **kwargs)
     elif backend_name == "vllm":
         backend = get_vllm_backend()
+        return backend.generate_response(actual_model_name, prompt, **kwargs)
+    elif backend_name == "huggingface":
+        backend = get_huggingface_backend()
         return backend.generate_response(actual_model_name, prompt, **kwargs)
     else:
         raise ValueError(f"Unknown backend: {backend_name}")

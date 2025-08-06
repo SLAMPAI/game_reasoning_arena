@@ -18,6 +18,7 @@ from .llm_registry import (
 )
 from .litellm_backend import LiteLLMBackend
 from .vllm_backend import VLLMBackend
+from .huggingface_backend import HuggingFaceBackend
 from .base_backend import BaseLLMBackend
 
 __all__ = [
@@ -31,5 +32,6 @@ __all__ = [
     "list_models",
     "LiteLLMBackend",
     "VLLMBackend",
+    "HuggingFaceBackend",
     "BaseLLMBackend"
 ]
