@@ -1,7 +1,7 @@
 Quick Start
 ===========
 
-Get up and running with Board Game Arena in minutes.
+Get up and running with Game Reasoning Arena in minutes.
 
 Installation
 ------------

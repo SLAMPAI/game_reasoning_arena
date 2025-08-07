@@ -1,7 +1,7 @@
 Contributing
 ============
 
-We welcome contributions to Board Game Arena! This guide will help you get started.
+We welcome contributions to Game Reasoning Arena! This guide will help you get started.
 
 Development Setup
 -----------------
@@ -171,11 +171,5 @@ For feature requests:
 * Provide examples of how the feature would be used
 * Consider implementation complexity
 
-Community
----------
 
-* Join our discussions on GitHub Issues
-* Follow our coding standards and be respectful
-* Help review other contributors' pull requests
-
-Thank you for contributing to Board Game Arena!
+Thank you for contributing to Game Reasoning Arena!

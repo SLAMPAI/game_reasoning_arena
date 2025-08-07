@@ -1,7 +1,7 @@
 Installation
 ============
 
-This guide covers how to install and set up Board Game Arena for your research and development needs.
+This guide covers how to install and set up Game Reasoning Arena for your research and development needs.
 
 Quick Installation
 ------------------
@@ -209,7 +209,7 @@ You should see output similar to:
 
 .. code-block:: text
 
-   2024-08-01 10:30:15 [INFO] Initializing Board Game Arena...
+   2024-08-01 10:30:15 [INFO] Initializing Game Reasoning Arena...
    2024-08-01 10:30:15 [INFO] Loading configuration: configs/example_config.yaml
    2024-08-01 10:30:16 [INFO] Backend: litellm initialized successfully
    2024-08-01 10:30:16 [INFO] Game: tic_tac_toe loaded

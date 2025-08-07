@@ -1,7 +1,7 @@
-Extending Board Game Arena
+Extending Game Reasoning Arena
 =========================
 
-This guide covers how to extend Board Game Arena with new features.
+This guide covers how to extend Game Reasoning Arena with new features.
 
 Adding New Games
 ----------------

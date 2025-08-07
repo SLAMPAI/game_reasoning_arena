@@ -1,7 +1,7 @@
 Prompting System
 ===============
 
-Board Game Arena uses a sophisticated prompting system.
+Game Reasoning Arena uses a scalable prompting system.
 
 Understanding the Observation Flow
 ----------------------------------
@@ -31,7 +31,7 @@ Finally, the agent extracts the chosen action and reasoning from the LLM's struc
 The Hierarchical Prompt Creation System
 ---------------------------------------
 
-Board Game Arena's prompt creation follows a layered architecture that allows for both consistency and customization. Let's explore each layer:
+Game Reasoning Arena's prompt creation follows a layered architecture that allows for both consistency and customization. Let's explore each layer:
 
 Environment-Level Prompt Generation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -229,7 +229,7 @@ The system extracts ``action: 1`` (meaning "Bet") and stores the reasoning for l
 Customizing Prompts for New Games
 ----------------------------------
 
-When adding a new game to Board Game Arena, you'll likely want to customize the prompting to fit your game's unique characteristics. Here's how to do it effectively:
+When adding a new game to Game Reasoning Arena, you'll likely want to customize the prompting to fit your game's unique characteristics. Here's how to do it effectively:
 
 **Override the _generate_prompt Method**
 

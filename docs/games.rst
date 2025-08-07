@@ -1,7 +1,7 @@
 Games
 =====
 
-Board Game Arena supports multiple classic board games for AI agent training and evaluation.
+Game Reasoning Arena supports multiple classic games for AI agent training and evaluation.
 
 Supported Games
 ---------------

@@ -1,7 +1,7 @@
 Reasoning Traces Analysis
 =========================
 
-Board Game Arena provides powerful **reasoning traces** functionality that captures and analyzes LLM decision-making processes during gameplay. This tutorial will guide you through obtaining, viewing, and analyzing reasoning traces to gain deep insights into how LLMs think through game strategies.
+Game Reasoning Arena provides powerful **reasoning traces** functionality that captures and analyzes LLM decision-making processes during gameplay. This tutorial will guide you through obtaining, viewing, and analyzing reasoning traces to gain deep insights into how LLMs think through game strategies.
 
 What are Reasoning Traces?
 --------------------------
@@ -128,7 +128,7 @@ This generates multiple outputs:
 TensorBoard Monitoring
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Board Game Arena automatically logs performance metrics to TensorBoard for real-time monitoring:
+Game Reasoning Arena automatically logs performance metrics to TensorBoard for real-time monitoring:
 
 .. code-block:: bash
 

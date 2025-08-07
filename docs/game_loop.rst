@@ -1,7 +1,7 @@
 Game Loop & Environment Design
 ==============================
 
-Board Game Arena follows a **multi-agent reinforcement learning paradigm** built on top of OpenSpiel, providing a Gymnasium-like interface for board game interactions. This design enables seamless integration with RL frameworks while supporting diverse agent types including LLMs, random agents, and human players.
+Game Reasoning Arena follows a **multi-agent reinforcement learning paradigm** built on top of OpenSpiel, providing a Gymnasium-like interface for game interactions. This design enables seamless integration with RL frameworks while supporting diverse agent types including LLMs, random agents, and human players.
 
 Reinforcement Learning Paradigm
 --------------------------------
@@ -53,7 +53,7 @@ Key Components
 Gymnasium Compatibility
 ------------------------
 
-Board Game Arena closely follows the **Gymnasium API standard**:
+Game Reasoning Arena closely follows the **Gymnasium API standard**:
 
 Environment Interface
 ~~~~~~~~~~~~~~~~~~~~~
@@ -71,7 +71,7 @@ Key Similarities
 ~~~~~~~~~~~~~~~~
 
 ==================== ===================== ================================
-**Gymnasium**        **Board Game Arena**  **Description**
+**Gymnasium**        **Game Reasoning Arena**  **Description**
 ==================== ===================== ================================
 ``env.reset()``      ``env.reset()``       Initialize episode, return observation
 ``env.step(action)`` ``env.step(actions)`` Apply action(s), return transition
@@ -85,7 +85,7 @@ Reward signal        Reward dictionary     Per-player reward values
 Multi-Agent Extensions
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Board Game Arena extends Gymnasium for **multi-agent scenarios**:
+Game Reasoning Arena extends Gymnasium for **multi-agent scenarios**:
 
 .. code-block:: python
 
@@ -109,7 +109,7 @@ Policy Mapping
    def policy_mapping_fn(agent_id, episode, worker, **kwargs):
        return f"policy_{agent_id}"
 
-   # Board Game Arena equivalent
+   # Game Reasoning Arena equivalent
    player_to_agent = {
        0: LLMAgent(model="gpt-4"),
        1: RandomAgent()
@@ -124,7 +124,7 @@ Action Computation
    actions = {agent_id: policy.compute_action(obs)
              for agent_id, obs in observations.items()}
 
-   # Board Game Arena implementation
+   # Game Reasoning Arena implementation
    actions = {player: agent(observations[player])
              for player in active_players}
 

@@ -1,12 +1,12 @@
 Experiments
 ===========
 
-This section covers how to design and run experiments with Board Game Arena, including distributed execution capabilities.
+This section covers how to design and run experiments with Game Reasoning Arena, including distributed execution capabilities.
 
 Ray Integration for Parallel Execution
 ---------------------------------------
 
-Board Game Arena supports **Ray** for distributed and parallel execution, allowing you to:
+Game Reasoning Arena supports **Ray** for distributed and parallel execution, allowing you to:
 
 - **Run multiple games in parallel** across different cores/machines
 - **Parallelize episodes within games** for faster data collection

@@ -1,7 +1,7 @@
 Project Structure
 =================
 
-The Board Game Arena codebase is organized as follows:
+The Game Reasoning Arena codebase is organized as follows:
 
 Directory Layout
 ----------------

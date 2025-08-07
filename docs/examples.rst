@@ -1,7 +1,7 @@
 Examples
 ========
 
-This section provides detailed examples of using Board Game Arena for various scenarios.
+This section provides detailed examples of using Game Reasoning Arena for various scenarios.
 
 Basic Examples
 --------------

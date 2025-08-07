@@ -6,7 +6,7 @@ This section provides a comprehensive analysis of the code execution flow in Boa
 Overview
 --------
 
-The Board Game Arena framework follows a structured execution flow that handles multiple game types, agent configurations, and backend systems. The code flow analysis covers three main perspectives:
+The Game Reasoning Arena framework follows a structured execution flow that handles multiple game types, agent configurations, and backend systems. The code flow analysis covers three main perspectives:
 
 1. **High-level Architecture Flow** - Overall system organization
 2. **Method Call Hierarchy** - Detailed function call sequences

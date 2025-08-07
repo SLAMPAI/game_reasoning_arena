@@ -1,9 +1,9 @@
 API Reference
 =============
 
-This section contains the complete API reference for Board Game Arena.
+This section contains the complete API reference for Game Reasoning Arena.
 
-   The main entry points for using Board Game Arena are:
+   The main entry points for using Game Reasoning Arena are:
 
    * :class:`game_reasoning_arena.arena.agents.base_agent.BaseAgent` - Base class for all agents
    * :class:`game_reasoning_arena.backends.base_backend.BaseLLMBackend` - Base class for LLM backends

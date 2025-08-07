@@ -1,7 +1,7 @@
-Board Game Arena
+ Game Reasoning Arena
 ================
 
-Welcome to Board Game Arena - a research platform for training and evaluating AI agents in board games.
+Welcome to Game Reasoning Arena - a research platform for training and evaluating AI agents in games.
 
 .. automodule:: game_reasoning_arena
    :members:

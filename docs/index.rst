@@ -1,12 +1,12 @@
-Welcome to Board Game Arena's documentation!
+Welcome to Game Reasoning Arena's documentation!
 ============================================
 
-Board Game Arena is a research platform for training and evaluating AI agents in board games using Large Language Models and reinforcement learning techniques.
+Game Reasoning Arena is a research platform for training and evaluating AI agents in games using Large Language Models and reinforcement learning techniques.
 
 Project Overview
 ----------------
 
-Board Game Arena provides a comprehensive framework for:
+Game Reasoning Arena provides a comprehensive framework for:
 
 * **Multi-Agent Testing**: Compare LLMs vs Random, LLM vs LLM, and Self-play scenarios
 * **Multiple Game Types**: Strategy games, poker variants, cooperation games, and zero-sum games
@@ -19,7 +19,7 @@ Quick Start
 
 The framework is designed around a few key concepts:
 
-* **Environments**: Board game simulations built on OpenSpiel
+* **Environments**: Game simulations built on OpenSpiel
 * **Agents**: AI players including LLMs, random agents, and human players
 * **Backends**: Flexible LLM inference systems (local and API-based)
 * **Analysis Tools**: Post-game reasoning analysis and visualization

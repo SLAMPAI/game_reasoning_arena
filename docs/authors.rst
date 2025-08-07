@@ -3,11 +3,8 @@ Authors
 
 Names are ordered lexicographically.
 
-## Board Game Arena Contributors
-
--   Jenia Jitsev
+## Game ReasoningArena Contributors
 -   Lucia Cipolina-Kun
--   Marianna Nezhurina
 
 ## Funding and Support
 
@@ -34,7 +31,7 @@ If you use Board Game Arena in your research, please cite:
 .. code-block:: bibtex
 
    @article{cipolina-kun2025game_reasoning_arena,
-       title={Board Game Arena: A Framework and Benchmark for Assessing Large Language Models},
+       title={Game Reasoning Arena: A Framework and Benchmark for Assessing Reasoning Capabilities ofLarge Language Models via Game Play},
        author={Lucia Cipolina-Kun and Marianna Nezhurina and Jenia Jitsev},
        year={2025},
        journal={arXiv},
@@ -44,12 +41,11 @@ If you use Board Game Arena in your research, please cite:
 
 ## License
 
-Board Game Arena is released under CC BY-NC 4.0 (Creative Commons Attribution-NonCommercial 4.0 International). See :doc:`license` for details.
+Game Reasoning Arena is released under CC BY-NC 4.0 (Creative Commons Attribution-NonCommercial 4.0 International). See :doc:`license` for details.
 
 ## Contact
 
-For questions about Board Game Arena, please:
+For questions about Game Reasoning Arena, please:
 
--   **Open an issue** on GitHub: https://github.com/lcipolina/game_reasoning_arena/issues
--   **Repository**: https://github.com/lcipolina/game_reasoning_arena
--   **Documentation**: https://board-game-arena.readthedocs.io/
+-   **Repository**: https://https://github.com/SLAMPAI/game_reasoning_arena
+-   **Documentation**: https://app.readthedocs.org/projects/game-reasoning-arena

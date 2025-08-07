@@ -12,6 +12,7 @@ __pycache__/
 *.tfevents.*
 results/
 plots/
+tests/
 game_reasoning_arena_blog_post.md
 slurm_jobs/run_simulation.sh
 board_game_arena_blog_post.md

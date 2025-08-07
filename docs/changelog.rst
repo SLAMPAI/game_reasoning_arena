@@ -1,7 +1,7 @@
 Changelog
 =========
 
-All notable changes to Board Game Arena will be documented in this file.
+All notable changes to Game Reasoning Arena will be documented in this file.
 
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_,
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
@@ -25,7 +25,7 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2025-XX-XX
 
 ### Added
-- Initial release of Board Game Arena
+- Initial release of Game Reasoning Arena
 - Support for multiple board games (Connect Four, Tic-Tac-Toe, Kuhn Poker, Chess, Hex)
 - LLM agent integration via LiteLLM and vLLM backends
 - Random and human agent implementations
@@ -107,12 +107,4 @@ and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0
 
 ## Contributing
 
-See our :doc:`contributing` guide for information on how to contribute to Board Game Arena.
-
-## Support
-
-For questions about specific versions or upgrade issues:
-
-- Check the GitHub releases: https://github.com/lcipolina/game_reasoning_arena/releases
-- Open an issue: https://github.com/lcipolina/game_reasoning_arena/issues
-- Review the documentation: https://board-game-arena.readthedocs.io/
+See our :doc:`contributing` guide for information on how to contribute to Game Reasoning Arena.

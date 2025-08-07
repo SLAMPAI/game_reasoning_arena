@@ -1,7 +1,7 @@
 LLM Backends
 ============
 
-Board Game Arena supports multiple LLM inference backends, allowing you to use both API-based and locally-hosted models seamlessly. This flexibility enables mixing different providers in the same experiment and choosing the most appropriate backend for your research needs.
+Game Reasoning Arena supports multiple LLM inference backends, allowing you to use both API-based and locally-hosted models seamlessly. This flexibility enables mixing different providers in the same experiment and choosing the most appropriate backend for your research needs.
 
 Overview
 --------
@@ -272,7 +272,7 @@ Performance Notes
 Mixed Backend Usage
 -------------------
 
-One of the powerful features of Board Game Arena is the ability to **mix different backends** in the same experiment, enabling direct comparison between API-based and local models.
+One of the powerful features of Game Reasoning Arena is the ability to **mix different backends** in the same experiment, enabling direct comparison between API-based and local models.
 
 LiteLLM vs vLLM Comparison
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -26,8 +26,4 @@ https://creativecommons.org/licenses/by-nc/4.0/
 
 ## Third-Party Licenses
 
-Board Game Arena includes or depends on several open-source projects. Complete third-party license information is available in `THIRD_PARTY_LICENSES.md`.
-
-
-
-
+Game Reasoning Arena includes or depends on several open-source projects. Complete third-party license information is available in `THIRD_PARTY_LICENSES.md`.
