@@ -7,9 +7,9 @@ import sys
 sys.path.insert(0, os.path.abspath('../src'))
 
 # -- Project information -----------------------------------------------------
-project = 'Board Game Arena'
-copyright = '2025, Board Game Arena Team'  # noqa: A001
-author = 'Board Game Arena Team'
+project = 'Game Reasoning Arena'
+copyright = '2025, Game Reasoning Arena Team'  # noqa: A001
+author = 'Lucia Cipolina-Kun'
 release = '1.0.0'
 
 # -- General configuration ---------------------------------------------------
