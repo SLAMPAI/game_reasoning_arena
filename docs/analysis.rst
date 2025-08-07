@@ -103,11 +103,12 @@ Analyze the reasoning patterns of LLM agents using the reasoning analysis module
    # Generate reasoning heatmaps
    analyzer.plot_heatmaps_by_agent(output_dir="plots/")
 
-Alternatively, run as a command-line script:
+Alternatively, run as a script:
 
 .. code-block:: bash
 
-   python analysis/reasoning_analysis.py --input run_logs/ --output plots/
+   cd analysis/
+   python reasoning_analysis.py
 
 **Features:**
 * Categorizes reasoning types (strategic, tactical, random)
@@ -285,7 +286,7 @@ Example Analysis Workflow
    analyzer.categorize_reasoning()
 
    # Step 2: Generate summary metrics
-   game_summary = analyzer.summarize_games("game_summary.csv")
+   game_summary = analyzer.summarize_games("results/game_summary.csv")
 
    # Step 3: Create all visualizations
    analyzer.compute_metrics(plot_dir="analysis_plots/")

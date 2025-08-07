@@ -112,8 +112,11 @@ Generate comprehensive analysis and visualizations:
    # Analyze reasoning patterns and generate visualizations
    python3 -c "
    from analysis.reasoning_analysis import LLMReasoningAnalyzer
-   analyzer = LLMReasoningAnalyzer('results/merged_logs.csv')
-   analyzer.analyze_all_games()
+   analyzer = LLMReasoningAnalyzer('results/merged_logs_<time_stamp>.csv')
+   analyzer.categorize_reasoning()
+   analyzer.compute_metrics(plot_dir='plots')
+   analyzer.plot_heatmaps_by_agent(output_dir='plots')
+   analyzer.plot_wordclouds_by_agent(output_dir='plots')
    "
 
 This generates multiple outputs:

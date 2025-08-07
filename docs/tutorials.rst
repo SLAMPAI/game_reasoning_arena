@@ -46,7 +46,8 @@ Learn the basics by running a simple Connect Four experiment.
 
 .. code-block:: bash
 
-   python analysis/reasoning_analysis.py --input tutorial_results/
+   cd analysis/
+   python reasoning_analysis.py
 
 Tutorial 2: Multi-Game Analysis
 --------------------------------

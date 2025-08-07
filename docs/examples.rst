@@ -79,14 +79,18 @@ Analyzing Agent Behavior
 
 .. code-block:: python
 
-   from game_reasoning_arena.analysis.reasoning_analysis import analyze_reasoning
+   from analysis.reasoning_analysis import LLMReasoningAnalyzer
 
    # Analyze game logs
-   results = analyze_reasoning("run_logs/experiment_results.json")
+   analyzer = LLMReasoningAnalyzer("results/merged_logs.csv")
+
+   # Categorize reasoning patterns
+   analyzer.categorize_reasoning()
 
    # Generate visualizations
-   results.plot_reasoning_patterns()
-   results.save_analysis_report("analysis_report.html")
+   analyzer.compute_metrics(plot_dir="plots")
+   analyzer.plot_heatmaps_by_agent(output_dir="plots")
+   analyzer.plot_wordclouds_by_agent(output_dir="plots")
 
 Batch Experiments
 ~~~~~~~~~~~~~~~~~

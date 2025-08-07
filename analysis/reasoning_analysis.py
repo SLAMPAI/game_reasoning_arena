@@ -13,34 +13,71 @@ from wordcloud import WordCloud
 import numpy as np
 import re
 import os
-from typing import List, Optional
+from typing import Optional
 from transformers import pipeline
 from pathlib import Path
 
 
 REASONING_RULES = {
-    "Positional": [re.compile(r"\bcenter column\b"), re.compile(r"\bcenter square\b"), re.compile(r"\bcorner\b"), re.compile(r"\bedge\b")],
-    "Blocking": [re.compile(r"\bblock\b"), re.compile(r"\bblocking\b"), re.compile(r"\bprevent\b"),
-                 re.compile(r"\bstop opponent\b"), re.compile(r"\bavoid opponent\b"), re.compile(r"\bcounter\b")],
-    "Opponent Modeling": [re.compile(r"\bopponent\b"), re.compile(r"\bthey are trying\b"),
-                          re.compile(r"\btheir strategy\b"), re.compile(r"\btheir move\b")],
-    "Winning Logic": [re.compile(r"\bwin\b"), re.compile(r"\bwinning move\b"), re.compile(r"\bconnect\b"),
-                      re.compile(r"\bfork\b"), re.compile(r"\bthreat\b"), re.compile(r"\bchance of winning\b")],
-    "Heuristic": [re.compile(r"\bbest move\b"), re.compile(r"\bmost likely\b"), re.compile(r"\badvantageous\b"),
-                  re.compile(r"\bbetter chance\b")],
-    "Rule-Based": [re.compile(r"\baccording to\b"), re.compile(r"\brule\b"), re.compile(r"\bstrategy\b")],
-    "Random/Unjustified": [re.compile(r"\brandom\b"), re.compile(r"\bguess\b")]
+    "Positional": [
+        re.compile(r"\bcenter column\b"),
+        re.compile(r"\bcenter square\b"),
+        re.compile(r"\bcorner\b"),
+        re.compile(r"\bedge\b")
+    ],
+    "Blocking": [
+        re.compile(r"\bblock\b"),
+        re.compile(r"\bblocking\b"),
+        re.compile(r"\bprevent\b"),
+        re.compile(r"\bstop opponent\b"),
+        re.compile(r"\bavoid opponent\b"),
+        re.compile(r"\bcounter\b")
+    ],
+    "Opponent Modeling": [
+        re.compile(r"\bopponent\b"),
+        re.compile(r"\bthey are trying\b"),
+        re.compile(r"\btheir strategy\b"),
+        re.compile(r"\btheir move\b")
+    ],
+    "Winning Logic": [
+        re.compile(r"\bwin\b"),
+        re.compile(r"\bwinning move\b"),
+        re.compile(r"\bconnect\b"),
+        re.compile(r"\bfork\b"),
+        re.compile(r"\bthreat\b"),
+        re.compile(r"\bchance of winning\b")
+    ],
+    "Heuristic": [
+        re.compile(r"\bbest move\b"),
+        re.compile(r"\bmost likely\b"),
+        re.compile(r"\badvantageous\b"),
+        re.compile(r"\bbetter chance\b")
+    ],
+    "Rule-Based": [
+        re.compile(r"\baccording to\b"),
+        re.compile(r"\brule\b"),
+        re.compile(r"\bstrategy\b")
+    ],
+    "Random/Unjustified": [
+        re.compile(r"\brandom\b"),
+        re.compile(r"\bguess\b")
+    ]
 }
 
 LLM_PROMPT_TEMPLATE = (
-    "You are a reasoning classifier. Your job is to categorize a move explanation into one of the following types:\n"
-    "- Positional\n- Blocking\n- Opponent Modeling\n- Winning Logic\n- Heuristic\n- Rule-Based\n- Random/Unjustified\n\n"
+    "You are a reasoning classifier. Your job is to categorize a move "
+    "explanation into one of the following types:\n"
+    "- Positional\n- Blocking\n- Opponent Modeling\n- Winning Logic\n"
+    "- Heuristic\n- Rule-Based\n- Random/Unjustified\n\n"
     "Examples:\n"
-    "REASONING: I placed in the center square to prevent the opponent from winning.\nCATEGORY: Blocking\n\n"
-    "REASONING: The center square gives me the best control.\nCATEGORY: Positional\n\n"
+    "REASONING: I placed in the center square to prevent the opponent "
+    "from winning.\nCATEGORY: Blocking\n\n"
+    "REASONING: The center square gives me the best control.\n"
+    "CATEGORY: Positional\n\n"
     "Now classify this:\n"
     "REASONING: {reasoning}\nCATEGORY:"
 )
+
 
 class LLMReasoningAnalyzer:
     def __init__(self, csv_path: str):
@@ -51,7 +88,9 @@ class LLMReasoningAnalyzer:
         """
         self.df = pd.read_csv(csv_path)
         self._preprocess()
-        self.llm_pipe = pipeline("text2text-generation", model="google/flan-t5-small")
+        self.llm_pipe = pipeline(
+            "text2text-generation", model="google/flan-t5-small"
+        )
 
     @staticmethod
     def find_latest_log(folder: str) -> str:
@@ -75,7 +114,8 @@ class LLMReasoningAnalyzer:
         self.df['reasoning'] = self.df['reasoning'].str.strip()
 
     def categorize_reasoning(self) -> None:
-        """Assign a reasoning category to each reasoning entry using scoring and precompiled regexes.
+        """Assign a reasoning category to each reasoning entry using scoring
+        and precompiled regexes.
 
         This version scores each reasoning type by the number of matching
         patterns and assigns the category with the highest score.
@@ -88,36 +128,40 @@ class LLMReasoningAnalyzer:
             scores = {}
 
             for label, patterns in REASONING_RULES.items():
-                match_count = sum(1 for pattern in patterns if pattern.search(text))
+                match_count = sum(
+                    1 for pattern in patterns if pattern.search(text)
+                )
                 if match_count > 0:
                     scores[label] = match_count
 
-            return max(scores.items(), key=lambda x: x[1])[0] if scores else "Uncategorized"
+            return (
+                max(scores.items(), key=lambda x: x[1])[0]
+                if scores else "Uncategorized"
+            )
 
         self.df['reasoning_type'] = self.df.apply(
             lambda row: classify(row['reasoning'], row['agent_name']), axis=1
         )
 
     def categorize_with_llm(self, max_samples: Optional[int] = None) -> None:
-            """Use a Hugging Face model to categorize reasoning types using natural language.
+        """Use a Hugging Face model to categorize reasoning types.
 
-            Args:
-                max_samples: Optional limit for debugging or testing with a subset.
-            """
-            if max_samples:
-                df_subset = self.df.head(max_samples).copy()
-            else:
-                df_subset = self.df.copy()
+        Args:
+            max_samples: Optional limit for debugging or testing with a subset.
+        """
+        def classify_llm(reasoning: str) -> str:
+            prompt = LLM_PROMPT_TEMPLATE.format(reasoning=reasoning)
+            response = self.llm_pipe(prompt, max_new_tokens=10)[0][
+                'generated_text']
+            return response.strip().split("\n")[0].replace(
+                "CATEGORY:", "").strip()
 
-            def classify_llm(reasoning: str) -> str:
-                prompt = LLM_PROMPT_TEMPLATE.format(reasoning=reasoning)
-                response = self.llm_pipe(prompt, max_new_tokens=10)[0]['generated_text']
-                return response.strip().split("\n")[0].replace("CATEGORY:", "").strip()
-
-            self.df['reasoning_type_llm'] = self.df.apply(
-                lambda row: classify_llm(row['reasoning']) if row['reasoning'] and not row['agent_name'].startswith("random") else "Uncategorized",
-                axis=1
-            )
+        self.df['reasoning_type_llm'] = self.df.apply(
+            lambda row: classify_llm(row['reasoning'])
+            if row['reasoning'] and not row['agent_name'].startswith("random")
+            else "Uncategorized",
+            axis=1
+        )
 
     def summarize_reasoning(self) -> None:
         """Generate a short summary for each reasoning entry (simple heuristic).
@@ -133,8 +177,11 @@ class LLMReasoningAnalyzer:
 
         self.df['summary'] = self.df['reasoning'].apply(summarize)
 
-    def summarize_games(self, output_csv: str = "game_summary.csv") -> pd.DataFrame:
+    def summarize_games(self, output_csv: str = "results/game_summary.csv") -> pd.DataFrame:
         """Summarize the reasoning data by game and agent."""
+        # Ensure the results directory exists
+        Path(output_csv).parent.mkdir(parents=True, exist_ok=True)
+
         summary = self.df.groupby(["game_name", "agent_name"]).agg(
             episodes=('episode', 'nunique'),
             turns=('turn', 'count')
@@ -146,17 +193,26 @@ class LLMReasoningAnalyzer:
         """Compute metrics for each agent and game."""
 
         Path(plot_dir).mkdir(parents=True, exist_ok=True)
-        game_summary = self.summarize_games()
         rows = []
-        for (game, agent), group_df in self.df.groupby(["game_name", "agent_name"]):
+        for (game, agent), group_df in self.df.groupby(
+            ["game_name", "agent_name"]
+        ):
             if agent.startswith("random"):
                 continue
             total = len(group_df)
-            opponent_mentions = group_df['reasoning'].str.lower().str.contains("opponent").sum()
-            reasoning_len_avg = group_df['reasoning'].apply(lambda r: len(r.split())).mean()
+            opponent_mentions = group_df['reasoning'].str.lower().str.contains(
+                "opponent"
+            ).sum()
+            reasoning_len_avg = group_df['reasoning'].apply(
+                lambda r: len(r.split())
+            ).mean()
             unique_types = group_df['reasoning_type'].nunique()
-            type_counts = group_df['reasoning_type'].value_counts(normalize=True).to_dict()
-            entropy = -sum(p * np.log2(p) for p in type_counts.values() if p > 0)
+            type_counts = group_df['reasoning_type'].value_counts(
+                normalize=True
+            ).to_dict()
+            entropy = -sum(
+                p * np.log2(p) for p in type_counts.values() if p > 0
+            )
 
             rows.append({
                 "agent_name": agent,
@@ -175,7 +231,9 @@ class LLMReasoningAnalyzer:
             plt.title(f"Reasoning Type Distribution - {agent}\n(Game: {game})")
             plt.ylabel("")
             plt.tight_layout()
-            plt.savefig(Path(plot_dir) / f"pie_reasoning_type_{agent}_{game}.png")
+            plt.savefig(
+                Path(plot_dir) / f"pie_reasoning_type_{agent}_{game}.png"
+            )
             plt.close()
 
     # Aggregate heatmap for each agent across all games
@@ -218,7 +276,9 @@ class LLMReasoningAnalyzer:
             plt.savefig(out_path)
             plt.close()
 
-      #  pd.DataFrame(rows).to_csv(output_csv, index=False) # Uncomment to save the metrics to a CSV
+        # pd.DataFrame(rows).to_csv(
+        #     output_csv, index=False
+        # )  # Uncomment to save the metrics to a CSV
 
     def plot_heatmaps_by_agent(self, output_dir: str = "plots") -> None:
         """Plot per-agent heatmaps and one aggregated heatmap across all games.
@@ -228,7 +288,9 @@ class LLMReasoningAnalyzer:
         Useful for seeing broad reasoning type patterns.
         """
         Path(output_dir).mkdir(parents=True, exist_ok=True)
-        for (agent, game), df_agent in self.df.groupby(["agent_name", "game_name"]):
+        for (agent, game), df_agent in self.df.groupby(
+            ["agent_name", "game_name"]
+        ):
             if agent.startswith("random"):
                 continue
             pivot = df_agent.pivot_table(
@@ -276,12 +338,18 @@ class LLMReasoningAnalyzer:
         Higher entropy means more varied reasoning types.
         """
         Path(output_dir).mkdir(parents=True, exist_ok=True)
-        for (agent, game), df_group in self.df.groupby(["agent_name", "game_name"]):
+        for (agent, game), df_group in self.df.groupby(
+                ["agent_name", "game_name"]
+        ):
             if agent.startswith("random"):
                 continue
             entropy_by_turn = (
                 df_group.groupby("turn")["reasoning_type"]
-                .apply(lambda s: -sum((v := s.value_counts(normalize=True)).apply(lambda p: p * np.log2(p))))
+                .apply(lambda s: -sum(
+                    s.value_counts(normalize=True).apply(
+                        lambda p: p * np.log2(p)
+                    )
+                ))
             )
             plt.figure()
             entropy_by_turn.plot(marker='o')
@@ -290,11 +358,15 @@ class LLMReasoningAnalyzer:
             plt.ylabel("Entropy")
             plt.grid(True)
             plt.tight_layout()
-            out_path = os.path.join(output_dir, f"entropy_trend_{agent}_{game}.png")
+            out_path = os.path.join(
+                output_dir, f"entropy_trend_{agent}_{game}.png"
+            )
             plt.savefig(out_path)
             plt.close()
 
-    def plot_entropy_by_turn_across_agents(self, output_dir: str = "plots") -> None:
+    def plot_entropy_by_turn_across_agents(self,
+                                           output_dir: str = "plots"
+                                           ) -> None:
         """Plot entropy over turns across all agents per game.
 
         This compares how different LLM agents behave during the same game,
@@ -309,7 +381,11 @@ class LLMReasoningAnalyzer:
                     continue
                 entropy_by_turn = (
                     df_agent.groupby("turn")["reasoning_type"]
-                    .apply(lambda s: -sum((v := s.value_counts(normalize=True)).apply(lambda p: p * np.log2(p))))
+                    .apply(lambda s: -sum(
+                        s.value_counts(normalize=True).apply(
+                            lambda p: p * np.log2(p)
+                        )
+                    ))
                 )
                 entropy_by_turn.plot(label=agent)
             plt.title(f"Entropy by Turn Across Agents - {game}")
@@ -318,15 +394,18 @@ class LLMReasoningAnalyzer:
             plt.legend()
             plt.grid(True)
             plt.tight_layout()
-            out_path = os.path.join(output_dir, f"entropy_by_turn_all_agents_{game}.png")
+            out_path = os.path.join(
+                output_dir, f"entropy_by_turn_all_agents_{game}.png"
+            )
             plt.savefig(out_path)
             plt.close()
 
     def plot_avg_entropy_across_games(self, output_dir: str = "plots") -> None:
         """Plot average reasoning entropy over time across all games and agents.
-        This reveals the general trend of reasoning diversity (entropy) per turn
-        for all agents collectively, helping to understand how LLM reasoning
-        evolves globally across gameplay.
+
+        This reveals the general trend of reasoning diversity (entropy) per
+        turn for all agents collectively, helping to understand how LLM
+        reasoning evolves globally across gameplay.
         """
 
         Path(output_dir).mkdir(parents=True, exist_ok=True)
@@ -334,7 +413,9 @@ class LLMReasoningAnalyzer:
         df_all = self.df[~self.df['agent_name'].str.startswith("random")]
         avg_entropy = (
             df_all.groupby("turn")["reasoning_type"]
-            .apply(lambda s: -sum((v := s.value_counts(normalize=True)).apply(lambda p: p * np.log2(p))))
+            .apply(lambda s: -sum(
+                s.value_counts(normalize=True).apply(lambda p: p * np.log2(p))
+            ))
         )
         avg_entropy.plot(marker='o')
         plt.title("Average Reasoning Entropy Across All Games and Agents")
@@ -357,17 +438,21 @@ if __name__ == "__main__":
 
     # Choose one of the methods below to analyze the reasoning data
     analyzer.categorize_reasoning()
-    #analyzer.categorize_with_llm(max_samples=50)  # or remove limit for full analysis
+    # analyzer.categorize_with_llm(max_samples=50)
+    # Remove limit for full analysis
 
     analyzer.compute_metrics(plot_dir="plots")
     analyzer.plot_heatmaps_by_agent(output_dir="plots")
     analyzer.plot_wordclouds_by_agent(output_dir="plots")
-   # analyzer.plot_entropy_trendlines()
-   # analyzer.plot_entropy_by_turn_across_agents()
+    # analyzer.plot_entropy_trendlines()
+    # analyzer.plot_entropy_by_turn_across_agents()
     analyzer.plot_avg_entropy_across_games(output_dir="plots")
 
     # Save augmented output to results directory
-    output_path = Path(__file__).resolve().parent.parent / 'results' / 'augmented_reasoning_output.csv'
+    output_path = (
+        Path(__file__).resolve().parent.parent / 'results' /
+        'augmented_reasoning_output.csv'
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     analyzer.save_output(str(output_path))
     print("Analysis completed successfully!.")
