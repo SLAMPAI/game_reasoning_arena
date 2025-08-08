@@ -31,10 +31,10 @@ class SQLiteLogger:
         sanitized_model_name = (model_name.replace('-', '_')
                                 .replace('/', '_').replace('\\', '_'))
 
-        # Use absolute path to scripts/results directory
+        # Use absolute path to results directory (project root level)
         project_root = (Path(__file__).resolve().parent.parent.parent
                         .parent.parent)
-        results_dir = project_root / "scripts" / "results"
+        results_dir = project_root / "results"
         db_filename = f"{agent_type}_{sanitized_model_name}.db"
         self.db_path = str(results_dir / db_filename)
         self.run_id = datetime.utcnow().strftime("%Y%m%d_%H%M%S")

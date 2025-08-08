@@ -176,7 +176,6 @@ def initialize_llm_registry(user_config: Dict[str, Any] = None) -> None:
         models_data = _load_config_file(LITELLM_MODELS_PATH)
         litellm_models = models_data.get("models", [])
         available_models.extend(litellm_models)
-        print(f"Loaded {len(litellm_models)} LiteLLM models")
     except FileNotFoundError:
         raise FileNotFoundError(f"Error: LiteLLM models config not found at {LITELLM_MODELS_PATH}")
 
@@ -194,7 +193,6 @@ def initialize_llm_registry(user_config: Dict[str, Any] = None) -> None:
                     vllm_models.append(model_name)
 
         available_models.extend(vllm_models)
-        print(f"Loaded {len(vllm_models)} vLLM models")
     except FileNotFoundError:
         raise FileNotFoundError(f"Error: vLLM models config not found at {VLLM_MODELS_PATH}")
 

@@ -248,10 +248,10 @@ def create_game_config(
         Merged configuration dictionary for the specific game
     """
     game_name = game_config["game_name"]
-    # Use absolute path to scripts/results directory
+    # Use absolute path to results directory (project root level)
     if "output_path" not in game_config:
         project_root = Path(__file__).resolve().parent.parent
-        results_dir = project_root / "scripts" / "results"
+        results_dir = project_root / "results"
         filename = f"{game_name}_simulation_results.json"
         default_output_path = str(results_dir / filename)
     else:

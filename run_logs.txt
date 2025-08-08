@@ -1,240 +1,42 @@
-2025-08-08 09:44:26,981 - __main__ - INFO - {'env_config': {'game_name': 'tic_tac_toe', 'max_game_rounds': None}, 'num_episodes': 5, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama3-8b-8192'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama3-8b-8192'}, 'log_level': 'INFO', 'env_configs': [{'game_name': 'tic_tac_toe', 'max_game_rounds': None}]}
-2025-08-08 09:44:26,991 - __main__ - INFO - Ray disabled - using sequential execution
-2025-08-08 09:44:26,991 - __main__ - INFO - Using sequential execution (Ray disabled)
-2025-08-08 09:44:26,995 - simulate - INFO - Initializing environment for tic_tac_toe.
-2025-08-08 09:44:26,997 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for tic_tac_toe
-2025-08-08 09:44:26,998 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama3-8b-8192)
-2025-08-08 09:44:26,998 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
-2025-08-08 09:44:27,020 - simulate - INFO - Episode 1 started with seed 42.
-2025-08-08 09:44:27,035 - LiteLLM - INFO - 
+2025-08-08 16:30:23,076 - __main__ - INFO - {'env_config': {'game_name': 'tic_tac_toe', 'max_game_rounds': None}, 'num_episodes': 1, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama3-8b-8192'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama3-8b-8192'}, 'log_level': 'INFO', 'env_configs': [{'game_name': 'kuhn_poker', 'max_game_rounds': None}, {'game_name': 'connect_four', 'max_game_rounds': None}, {'game_name': 'tic_tac_toe', 'max_game_rounds': None}]}
+2025-08-08 16:30:23,083 - __main__ - INFO - Ray disabled - using sequential execution
+2025-08-08 16:30:23,083 - __main__ - INFO - Using sequential execution (Ray disabled)
+2025-08-08 16:30:23,088 - simulate - INFO - Initializing environment for tic_tac_toe.
+2025-08-08 16:30:23,088 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for tic_tac_toe
+2025-08-08 16:30:23,088 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama3-8b-8192)
+2025-08-08 16:30:23,088 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
+2025-08-08 16:30:23,108 - simulate - INFO - Episode 1 started with seed 42.
+2025-08-08 16:30:23,119 - LiteLLM - INFO - 
 LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:27,525 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:27,529 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:27,541 - simulate - INFO - Board state: 
+2025-08-08 16:30:23,746 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 16:30:23,749 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 16:30:23,758 - simulate - INFO - Board state: 
 ...
 ...
 ...
-2025-08-08 09:44:27,541 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-2025-08-08 09:44:27,541 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: I choose to place my X in the center of the board, which is the most strategic location. This allows me to have the most options for my next move and puts pressure on my opponent to respond. Additionally, placing my X in the center gives me a good chance of winning the game if my opponent makes a mistake.
-2025-08-08 09:44:27,545 - LiteLLM - INFO - 
+2025-08-08 16:30:23,758 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+2025-08-08 16:30:23,758 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: I choose to place my X in the center of the board, which is the most strategic position. This allows me to have the most options for my next move and puts pressure on my opponent to respond. Additionally, placing my X in the center gives me a good chance of winning the game if my opponent makes a mistake.
+2025-08-08 16:30:23,763 - LiteLLM - INFO - 
 LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:28,278 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:28,279 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:28,283 - simulate - INFO - Board state: 
+2025-08-08 16:30:24,063 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 16:30:24,065 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 16:30:24,072 - simulate - INFO - Board state: 
 .o.
 .x.
 ...
-2025-08-08 09:44:28,284 - simulate - INFO - Legal actions: [0, 2, 3, 5, 6, 7, 8]
-2025-08-08 09:44:28,284 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 5 with reasoning: I want to place my X in a position that will give me the highest chance of winning. Since the opponent has already placed their O in the top-left corner, I will place my X in the center of the board to put pressure on their position and limit their options. This will also give me the opportunity to potentially create a winning line in the future.
-2025-08-08 09:44:28,286 - LiteLLM - INFO - 
+2025-08-08 16:30:24,072 - simulate - INFO - Legal actions: [0, 2, 3, 5, 6, 7, 8]
+2025-08-08 16:30:24,072 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 5 with reasoning: I want to place my X in a position that will give me the highest chance of winning. Since the opponent has already placed their O in the top-left corner, I will place my X in the center of the board to put pressure on their position and limit their options. This will also give me the opportunity to create a potential winning line in the future.
+2025-08-08 16:30:24,077 - LiteLLM - INFO - 
 LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:28,693 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:28,696 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:28,702 - simulate - INFO - Board state: 
+2025-08-08 16:30:24,374 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 16:30:24,376 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 16:30:24,379 - simulate - INFO - Board state: 
 oo.
 .xx
 ...
-2025-08-08 09:44:28,703 - simulate - INFO - Legal actions: [2, 3, 6, 7, 8]
-2025-08-08 09:44:28,703 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 3 with reasoning: I want to block the potential two-in-a-row for O and also create a possibility for a future win. By playing in position 3, I can block the potential win for O and also set up a potential win for myself. Additionally, playing in position 3 will give me more options for my next move.
-2025-08-08 09:44:28,703 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
-2025-08-08 09:44:28,711 - simulate - INFO - Simulation for game tic_tac_toe, Episode 1 completed.
-2025-08-08 09:44:28,711 - simulate - INFO - Episode 2 started with seed 43.
-2025-08-08 09:44:28,713 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:29,100 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:29,101 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:29,104 - simulate - INFO - Board state: 
-...
-...
-...
-2025-08-08 09:44:29,104 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-2025-08-08 09:44:29,104 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: I choose to place my X in the center of the board, as it gives me the most flexibility for my next move and puts pressure on my opponent to respond. This is a common opening strategy in Tic Tac Toe, as it allows me to control the board and limit my opponent\
-2025-08-08 09:44:29,106 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:29,426 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:29,427 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:29,433 - simulate - INFO - Board state: 
-...
-.xo
-...
-2025-08-08 09:44:29,433 - simulate - INFO - Legal actions: [0, 1, 2, 3, 6, 7, 8]
-2025-08-08 09:44:29,433 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 0 with reasoning: I want to place my X in a position that blocks the potential two-in-a-row for O. Since O has already placed their mark in the second row, I will place my X in the top row to block their potential win. Additionally, this move gives me the opportunity to create a potential two-in-a-row for myself in the future.
-2025-08-08 09:44:29,438 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:29,816 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:29,818 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:29,823 - simulate - INFO - Board state: 
-x.o
-.xo
-...
-2025-08-08 09:44:29,823 - simulate - INFO - Legal actions: [1, 3, 6, 7, 8]
-2025-08-08 09:44:29,823 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 6 with reasoning: I want to place my X in a position that will give me the highest chance of winning. Since the current state of the board is not yet decisive, I will focus on controlling the center of the board. The available actions are all on the edges, but action 6 is the closest to the center. Additionally, placing my X in position 6 will give me the opportunity to create a potential winning line in the next move. Therefore, I choose action 6.
-2025-08-08 09:44:29,827 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:30,092 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:30,093 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:30,096 - simulate - INFO - Board state: 
-x.o
-oxo
-x..
-2025-08-08 09:44:30,096 - simulate - INFO - Legal actions: [1, 7, 8]
-2025-08-08 09:44:30,096 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 1 with reasoning: I choose to place my X in position 1 to block the potential two O
-2025-08-08 09:44:30,098 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:30,395 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:30,396 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:30,397 - root - WARNING - No valid action found in response: '{
-  'reasoning': 'I want to block the potential win for O and also create a possibility for a win fo...' Using random fallback: 8
-2025-08-08 09:44:30,399 - simulate - INFO - Board state: 
-xxo
-oxo
-xo.
-2025-08-08 09:44:30,400 - simulate - INFO - Legal actions: [8]
-2025-08-08 09:44:30,400 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 8 with reasoning: I want to block the potential win for O and also create a possibility for a win for myself. The best way to do this is to place my next X in position 2, which will block O\
-2025-08-08 09:44:30,400 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
-2025-08-08 09:44:30,403 - simulate - INFO - Simulation for game tic_tac_toe, Episode 2 completed.
-2025-08-08 09:44:30,404 - simulate - INFO - Episode 3 started with seed 44.
-2025-08-08 09:44:30,404 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:30,830 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:30,831 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:30,835 - simulate - INFO - Board state: 
-...
-...
-...
-2025-08-08 09:44:30,835 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-2025-08-08 09:44:30,835 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: I choose to place my X in the center of the board, as it gives me the most flexibility for my next move and puts pressure on my opponent to respond. This is a common opening strategy in Tic Tac Toe, as it allows me to control the board and limit my opponent\
-2025-08-08 09:44:30,837 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:31,158 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:31,159 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:31,160 - root - WARNING - No valid action found in response: '{
-  'reasoning': 'I want to place my X in a position that blocks the potential winning line of O, wh...' Using random fallback: 0
-2025-08-08 09:44:31,163 - simulate - INFO - Board state: 
-.o.
-.x.
-...
-2025-08-08 09:44:31,163 - simulate - INFO - Legal actions: [0, 2, 3, 5, 6, 7, 8]
-2025-08-08 09:44:31,163 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 0 with reasoning: I want to place my X in a position that blocks the potential winning line of O, while also setting up a potential winning line for myself. The current board state shows O in the top-left corner, so I will place my X in the center to block their potential winning line. This also gives me a chance to create a winning line in the future.
-2025-08-08 09:44:31,167 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:31,483 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:31,486 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:31,493 - simulate - INFO - Board state: 
-xo.
-.x.
-..o
-2025-08-08 09:44:31,493 - simulate - INFO - Legal actions: [2, 3, 5, 6, 7]
-2025-08-08 09:44:31,493 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 3 with reasoning: I want to block the potential two-in-a-row for O and also create a possibility for a future win. By playing in cell 3, I can block O\
-2025-08-08 09:44:31,498 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:31,747 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:31,750 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:31,756 - simulate - INFO - Board state: 
-xoo
-xx.
-..o
-2025-08-08 09:44:31,756 - simulate - INFO - Legal actions: [5, 6, 7]
-2025-08-08 09:44:31,756 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 5 with reasoning: I want to block the potential two-in-a-row for O and also create a possibility for a future win. By playing in position 5, I can block the potential win for O and also set up a potential win for myself.
-2025-08-08 09:44:31,756 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
-2025-08-08 09:44:31,763 - simulate - INFO - Simulation for game tic_tac_toe, Episode 3 completed.
-2025-08-08 09:44:31,764 - simulate - INFO - Episode 4 started with seed 45.
-2025-08-08 09:44:31,765 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:32,067 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:32,068 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:32,071 - simulate - INFO - Board state: 
-...
-...
-...
-2025-08-08 09:44:32,071 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-2025-08-08 09:44:32,072 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: I choose to place my X in the center of the board, as it gives me the most flexibility for my next move and puts pressure on my opponent to respond. This is a common opening strategy in Tic Tac Toe, as it allows for the most possibilities for the next move.
-2025-08-08 09:44:32,075 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:32,477 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:32,478 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:32,481 - simulate - INFO - Board state: 
-...
-.x.
-.o.
-2025-08-08 09:44:32,481 - simulate - INFO - Legal actions: [0, 1, 2, 3, 5, 6, 8]
-2025-08-08 09:44:32,481 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 3 with reasoning: I want to block the potential two-in-a-row for O and also create a possibility for a future win. By placing my X in position 3, I can block O\
-2025-08-08 09:44:32,484 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:32,888 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:32,890 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:32,897 - simulate - INFO - Board state: 
-o..
-xx.
-.o.
-2025-08-08 09:44:32,897 - simulate - INFO - Legal actions: [1, 2, 5, 6, 8]
-2025-08-08 09:44:32,898 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 6 with reasoning: I want to block the potential three in a row for O, while also setting up a potential win for myself. I can do this by placing my X in position 6, which would block O\
-2025-08-08 09:44:32,902 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:33,300 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:33,303 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:33,309 - simulate - INFO - Board state: 
-oo.
-xx.
-xo.
-2025-08-08 09:44:33,310 - simulate - INFO - Legal actions: [2, 5, 8]
-2025-08-08 09:44:33,310 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 5 with reasoning: I want to block the potential win for O and also create a possibility for X to win. The best option is to place X in cell 5, which would be a strong move to control the center of the board and limit O\
-2025-08-08 09:44:33,310 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
-2025-08-08 09:44:33,317 - simulate - INFO - Simulation for game tic_tac_toe, Episode 4 completed.
-2025-08-08 09:44:33,318 - simulate - INFO - Episode 5 started with seed 46.
-2025-08-08 09:44:33,319 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:33,913 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:33,915 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:33,922 - simulate - INFO - Board state: 
-...
-...
-...
-2025-08-08 09:44:33,922 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-2025-08-08 09:44:33,922 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: I choose to place my X in the center of the board, as it gives me the most flexibility for my next move and puts pressure on my opponent to respond. This is a common opening strategy in Tic Tac Toe, as it allows for the possibility of creating two possible winning lines.
-2025-08-08 09:44:33,927 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:34,320 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:34,321 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:34,324 - simulate - INFO - Board state: 
-.o.
-.x.
-...
-2025-08-08 09:44:34,324 - simulate - INFO - Legal actions: [0, 2, 3, 5, 6, 7, 8]
-2025-08-08 09:44:34,324 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 5 with reasoning: I want to place my X in a position that will give me the highest chance of winning. Since the opponent has already placed their O in the top-left corner, I will place my X in the center of the board to put pressure on their position and limit their options. This will also give me the opportunity to potentially create a winning line in the future.
-2025-08-08 09:44:34,326 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:34,627 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:34,628 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:34,632 - simulate - INFO - Board state: 
-.oo
-.xx
-...
-2025-08-08 09:44:34,632 - simulate - INFO - Legal actions: [0, 3, 6, 7, 8]
-2025-08-08 09:44:34,632 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 7 with reasoning: I want to block the potential two-in-a-row for O and also create a possibility for a future win. By placing my X in position 7, I can block O\
-2025-08-08 09:44:34,634 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:34,953 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:34,955 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:34,962 - simulate - INFO - Board state: 
-.oo
-oxx
-.x.
-2025-08-08 09:44:34,963 - simulate - INFO - Legal actions: [0, 6, 8]
-2025-08-08 09:44:34,963 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 0 with reasoning: I want to block the potential two-in-a-row for O and also create a possibility for a future win. By placing my X in position 0, I can block the potential win for O and also set up a potential win for myself. Additionally, this move will also put pressure on O to respond in a way that blocks my potential win.
-2025-08-08 09:44:34,967 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:44:35,226 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:44:35,229 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:44:35,231 - root - WARNING - No valid action found in response: '{
-  'reasoning': 'I want to block the potential three in a row for O and also create a possibility f...' Using random fallback: 8
-2025-08-08 09:44:35,235 - simulate - INFO - Board state: 
-xoo
-oxx
-ox.
-2025-08-08 09:44:35,236 - simulate - INFO - Legal actions: [8]
-2025-08-08 09:44:35,236 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 8 with reasoning: I want to block the potential three in a row for O and also create a possibility for a future win. The best way to do this is to place my X in position 2, which would be the center of the board. This would give me the highest chance of winning and also limit O\
-2025-08-08 09:44:35,236 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
-2025-08-08 09:44:35,242 - simulate - INFO - Simulation for game tic_tac_toe, Episode 5 completed.
-2025-08-08 09:44:35,242 - __main__ - INFO - Sequential simulation results for tic_tac_toe completed
-2025-08-08 09:44:35,242 - __main__ - INFO - All simulations completed. Total results: 1
+2025-08-08 16:30:24,379 - simulate - INFO - Legal actions: [2, 3, 6, 7, 8]
+2025-08-08 16:30:24,380 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 3 with reasoning: I want to block the potential two O\
+2025-08-08 16:30:24,380 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
+2025-08-08 16:30:24,386 - simulate - INFO - Simulation for game tic_tac_toe, Episode 1 completed.
+2025-08-08 16:30:24,386 - __main__ - INFO - Sequential simulation results for tic_tac_toe completed
+2025-08-08 16:30:24,386 - __main__ - INFO - All simulations completed. Total results: 1

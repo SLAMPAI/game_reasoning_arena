@@ -2,8 +2,9 @@
 """
 Reasoning Traces Extractor
 
-Utility to extract and analyze reasoning traces with board states from game logs.
-This script can be used to analyze LLM decision-making patterns across games.
+Utility to extract and analyze reasoning traces with board states from
+game logs. This script can be used to analyze LLM decision-making patterns
+across games.
 """
 
 import sys
@@ -30,7 +31,9 @@ def list_available_databases():
     return db_files
 
 
-def extract_reasoning_traces(db_path, game_name=None, episode=None, output_format="text"):
+def extract_reasoning_traces(db_path,
+                             game_name=None,
+                             episode=None):
     """Extract reasoning traces from a database file"""
 
     if not os.path.exists(db_path):
@@ -60,7 +63,7 @@ def extract_reasoning_traces(db_path, game_name=None, episode=None, output_forma
 
     try:
         df = pd.read_sql_query(query, conn, params=params)
-    except Exception as e:
+    except (sqlite3.Error, pd.errors.DatabaseError) as e:
         print(f"Error reading from database: {e}")
         return None
     finally:
@@ -81,7 +84,9 @@ def display_traces_text(df):
 
     for _, row in df.iterrows():
         # Print game/episode headers
-        if current_game != row['game_name'] or current_episode != row['episode']:
+        current_game_changed = current_game != row['game_name']
+        current_episode_changed = current_episode != row['episode']
+        if current_game_changed or current_episode_changed:
             print(f"\n{'='*60}")
             print(f"🎮 Game: {row['game_name']} | Episode: {row['episode']}")
             print(f"🤖 Agent: {row['agent_type']} ({row['agent_model']})")
@@ -103,7 +108,10 @@ def display_traces_text(df):
 
         print(f"🎯 Action: {row['action']}")
 
-        if pd.notna(row['reasoning']) and row['reasoning'].strip() and row['reasoning'] != 'None':
+        reasoning_valid = (pd.notna(row['reasoning']) and
+                           row['reasoning'].strip() and
+                           row['reasoning'] != 'None')
+        if reasoning_valid:
             print(f"🧠 Reasoning: {row['reasoning']}")
         else:
             print("🧠 Reasoning: [No reasoning provided]")
@@ -117,7 +125,8 @@ def export_traces_csv(df, output_file):
 
     # Clean up board state formatting for CSV
     df_export = df.copy()
-    df_export['board_state'] = df_export['board_state'].str.replace('\\n', '\n')
+    df_export['board_state'] = (df_export['board_state']
+                                .str.replace('\\n', '\n'))
 
     df_export.to_csv(output_file, index=False)
     print(f"✅ Reasoning traces exported to: {output_file}")
@@ -140,7 +149,8 @@ def export_traces_txt(df, output_file):
             # Print detailed traces
             display_traces_text(df)
 
-            print(f"\n✨ Extraction complete! Found {len(df)} reasoning traces.")
+            print(f"\n✨ Extraction complete! Found {len(df)} reasoning "
+                  f"traces.")
 
     print(f"✅ Formatted traces exported to: {output_file}")
 
@@ -148,7 +158,7 @@ def export_traces_txt(df, output_file):
 def analyze_reasoning_patterns(df):
     """Analyze reasoning patterns in the traces"""
 
-    print(f"\n📊 Reasoning Analysis")
+    print("\n📊 Reasoning Analysis")
     print("=" * 40)
 
     # Basic statistics
@@ -161,28 +171,33 @@ def analyze_reasoning_patterns(df):
     print(f"Episodes: {episodes_analyzed}")
 
     # Reasoning availability
-    has_reasoning = df['reasoning'].notna() & (df['reasoning'] != 'None') & (df['reasoning'].str.strip() != '')
+    has_reasoning = (df['reasoning'].notna() &
+                     (df['reasoning'] != 'None') &
+                     (df['reasoning'].str.strip() != ''))
     reasoning_coverage = has_reasoning.sum() / total_moves * 100
-    print(f"Moves with reasoning: {has_reasoning.sum()}/{total_moves} ({reasoning_coverage:.1f}%)")
+    print(f"Moves with reasoning: {has_reasoning.sum()}/{total_moves} "
+          f"({reasoning_coverage:.1f}%)")
 
     # Board state availability
-    has_board_state = df['board_state'].notna() & (df['board_state'].str.strip() != '')
+    has_board_state = (df['board_state'].notna() &
+                       (df['board_state'].str.strip() != ''))
     board_state_coverage = has_board_state.sum() / total_moves * 100
-    print(f"Moves with board state: {has_board_state.sum()}/{total_moves} ({board_state_coverage:.1f}%)")
+    print(f"Moves with board state: {has_board_state.sum()}/{total_moves} "
+          f"({board_state_coverage:.1f}%)")
 
     # Agent types and models
-    print(f"\nAgent types:")
+    print("\nAgent types:")
     for agent_type, count in df['agent_type'].value_counts().items():
         print(f"  - {agent_type}: {count} moves")
 
     # Specific models used
     if 'agent_model' in df.columns:
-        print(f"\nSpecific models:")
+        print("\nSpecific models:")
         for model, count in df['agent_model'].value_counts().items():
             print(f"  - {model}: {count} moves")
 
     # Games breakdown
-    print(f"\nGames breakdown:")
+    print("\nGames breakdown:")
     game_stats = df.groupby('game_name').agg({
         'episode': 'nunique',
         'turn': 'count'
@@ -194,13 +209,18 @@ def analyze_reasoning_patterns(df):
 def main():
     """Main function with command line interface"""
 
-    parser = argparse.ArgumentParser(description="Extract and analyze reasoning traces from Board Game Arena logs")
-    parser.add_argument("--db", help="Database file path (if not specified, will list available databases)")
+    parser = argparse.ArgumentParser(
+        description="Extract and analyze reasoning traces from Board Game "
+                    "Arena logs")
+    parser.add_argument("--db", help="Database file path (if not specified, "
+                                     "will list available databases)")
     parser.add_argument("--game", help="Filter by game name")
     parser.add_argument("--episode", type=int, help="Filter by episode number")
     parser.add_argument("--export-csv", help="Export to CSV file")
-    parser.add_argument("--export-txt", help="Export formatted traces to text file")
-    parser.add_argument("--analyze-only", action="store_true", help="Only show analysis, not full traces")
+    parser.add_argument("--export-txt",
+                        help="Export formatted traces to text file")
+    parser.add_argument("--analyze-only", action="store_true",
+                        help="Only show analysis, not full traces")
 
     args = parser.parse_args()
 

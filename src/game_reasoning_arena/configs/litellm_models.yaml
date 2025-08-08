@@ -10,7 +10,6 @@ models:
   # Groq models (fast inference)
   - litellm_groq/llama3-8b-8192
   - litellm_groq/llama3-70b-8192
-  - litellm_groq/gemma-7b-it
   - litellm_groq/gemma2-9b-it
 
   # Together AI models
