@@ -2,7 +2,46 @@
 
 This directory contains tools for analyzing LLM reasoning patterns and game performance data collected from the Game Reasoning Arena experiments.
 
-## 📁 Directory Contents
+## � Quick Start
+
+Use these automated solutions:
+
+### Option 1: Simple One-Command Analysis
+```bash
+# From the project root directory:
+./run_analysis.sh
+```
+
+### Option 2: Python Quick Analysis
+```bash
+# From the project root directory:
+python3 analysis/quick_analysis.py
+```
+
+### Option 3: Full Pipeline with Options
+```bash
+# From the project root directory:
+python3 analysis/run_full_analysis.py --help
+
+# Examples:
+python3 analysis/run_full_analysis.py                    # Default settings
+python3 analysis/run_full_analysis.py --quiet            # Less verbose
+python3 analysis/run_full_analysis.py --plots-dir custom_plots  # Custom output
+```
+
+These automated solutions will:
+1. 🔍 **Auto-discover** all SQLite databases in `results/`
+2. 🔄 **Merge databases** into consolidated CSV files
+3. 🧠 **Analyze reasoning patterns** using rule-based categorization
+4. 📊 **Generate visualizations** (plots, charts, heatmaps, word clouds)
+5. 📋 **Create summary reports** with pipeline statistics
+6. ⚡ **Handle errors gracefully** with detailed logging
+
+**Output**: All results saved to `plots/` directory + detailed logs
+
+---
+
+## �📁 Directory Contents
 
 ### Core Analysis Scripts
 
@@ -132,6 +171,46 @@ summary_stats = compute_summary_statistics(merged_df)
 **Dependencies:** sqlite3, pandas, pathlib, datetime
 
 ---
+
+---
+
+## 🔄 Automated Analysis Workflow (RECOMMENDED)
+
+The new automated pipeline replaces the manual multi-step process below. Instead of running each script individually, you can now:
+
+### Single Command Analysis
+```bash
+./run_analysis.sh                    # Interactive analysis with progress tracking
+./run_analysis.sh --quiet            # Quiet mode
+./run_analysis.sh --full             # Full analysis with all options
+```
+
+### Python Pipeline
+```bash
+python3 analysis/run_full_analysis.py [options]
+```
+
+**What the automated pipeline does:**
+1. **Database Discovery & Merging**: Automatically finds and merges all `.db` files in `results/`
+2. **Reasoning Analysis**: Categorizes reasoning patterns using rule-based classification
+3. **Visualization Generation**: Creates comprehensive plots, charts, heatmaps, and word clouds
+4. **Error Handling**: Continues execution even if individual steps fail
+5. **Progress Tracking**: Provides detailed logging and progress updates
+6. **Summary Reporting**: Generates JSON reports with pipeline statistics
+
+**Generated Output:**
+- `plots/*.png` - All visualization files
+- `plots/analysis_summary_report.json` - Detailed pipeline results
+- `results/merged_logs_*.csv` - Consolidated data files
+
+All execution details are displayed in the console output.
+
+---
+
+## 🔧 Manual Analysis (Legacy Workflow)
+
+> **Note**: The manual workflow below is still available but **not recommended**.
+> Use the automated pipeline above for much better experience.
 
 ## 🔄 Typical Analysis Workflow
 

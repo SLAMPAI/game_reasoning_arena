@@ -7,7 +7,7 @@ slurm_jobs/request_node_julich.sh
 __pycache__/
 *.pyc
 
-# Ingore TensorFlow event files
+# Ignore TensorFlow event files
 *.event
 *.tfevents.*
 results/
