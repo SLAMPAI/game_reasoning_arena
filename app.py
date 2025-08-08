@@ -129,8 +129,8 @@ except Exception as e:
     print(f"⚠️ Failed to load games registry: {e}")
     GAMES_REGISTRY = {}
 
-# Directory to store SQLite results
-db_dir = Path("results")
+# Directory to store SQLite results - use absolute path to scripts/results
+db_dir = Path(__file__).resolve().parent / "scripts" / "results"
 
 # Constants for column headers
 LEADERBOARD_COLUMNS = [

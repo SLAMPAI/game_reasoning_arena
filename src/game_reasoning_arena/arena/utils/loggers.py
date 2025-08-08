@@ -30,9 +30,15 @@ class SQLiteLogger:
         # Sanitize model name for use in filename
         sanitized_model_name = (model_name.replace('-', '_')
                                 .replace('/', '_').replace('\\', '_'))
-        self.db_path = f"results/{agent_type}_{sanitized_model_name}.db"
+
+        # Use absolute path to scripts/results directory
+        project_root = (Path(__file__).resolve().parent.parent.parent
+                        .parent.parent)
+        results_dir = project_root / "scripts" / "results"
+        db_filename = f"{agent_type}_{sanitized_model_name}.db"
+        self.db_path = str(results_dir / db_filename)
         self.run_id = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
-        Path("results").mkdir(exist_ok=True)
+        results_dir.mkdir(parents=True, exist_ok=True)
         self._create_database()
 
     def _create_database(self):

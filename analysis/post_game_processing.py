@@ -186,9 +186,12 @@ def main():
     merged_df = merged_df[column_order]
 
     # Save logs for review - saves the reasoning behind each move !
-    Path("results").mkdir(exist_ok=True)
+    # Use absolute path to scripts/results directory
+    project_root = Path(__file__).resolve().parent.parent
+    results_dir = project_root / "scripts" / "results"
+    results_dir.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
-    merged_csv = Path("results") / f"merged_logs_{timestamp}.csv"
+    merged_csv = results_dir / f"merged_logs_{timestamp}.csv"
     # Drop verbose or unnecessary fields
     merged_df = merged_df.drop(columns=["result_timestamp"], errors="ignore")
     merged_df.to_csv(merged_csv, index=False)

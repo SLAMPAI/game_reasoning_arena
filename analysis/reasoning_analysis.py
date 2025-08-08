@@ -433,8 +433,10 @@ class LLMReasoningAnalyzer:
 
 
 if __name__ == "__main__":
-    # Use relative paths for the current workspace
-    latest_csv = LLMReasoningAnalyzer.find_latest_log("results")
+    # Use scripts/results directory for the current workspace
+    project_root = Path(__file__).resolve().parent.parent
+    scripts_results = str(project_root / "scripts" / "results")
+    latest_csv = LLMReasoningAnalyzer.find_latest_log(scripts_results)
     analyzer = LLMReasoningAnalyzer(latest_csv)
 
     # Choose one of the methods below to analyze the reasoning data
@@ -449,9 +451,9 @@ if __name__ == "__main__":
     # analyzer.plot_entropy_by_turn_across_agents()
     analyzer.plot_avg_entropy_across_games(output_dir="plots")
 
-    # Save augmented output to results directory
+    # Save augmented output to scripts/results directory
     output_path = (
-        Path(__file__).resolve().parent.parent / 'results' /
+        Path(__file__).resolve().parent.parent / 'scripts' / 'results' /
         'augmented_reasoning_output.csv'
     )
     output_path.parent.mkdir(parents=True, exist_ok=True)

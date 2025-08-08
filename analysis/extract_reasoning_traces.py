@@ -19,7 +19,9 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 def list_available_databases():
     """List all available database files in the results directory"""
-    results_dir = Path("results")
+    # Use absolute path to scripts/results directory
+    project_root = Path(__file__).resolve().parent.parent
+    results_dir = project_root / "scripts" / "results"
     if not results_dir.exists():
         print("No results directory found.")
         return []

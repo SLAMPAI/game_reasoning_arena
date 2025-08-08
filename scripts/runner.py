@@ -248,10 +248,16 @@ def create_game_config(
         Merged configuration dictionary for the specific game
     """
     game_name = game_config["game_name"]
-    output_path = game_config.get(
-        "output_path",
-        f"results/{game_name}_simulation_results.json"
-    )
+    # Use absolute path to scripts/results directory
+    if "output_path" not in game_config:
+        project_root = Path(__file__).resolve().parent.parent
+        results_dir = project_root / "scripts" / "results"
+        filename = f"{game_name}_simulation_results.json"
+        default_output_path = str(results_dir / filename)
+    else:
+        default_output_path = game_config["output_path"]
+
+    output_path = game_config.get("output_path", default_output_path)
     return {
         **base_config,  # Inherit global settings
         "env_config": game_config,  # Game configuration
