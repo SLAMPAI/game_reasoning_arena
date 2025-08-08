@@ -445,7 +445,7 @@ if __name__ == "__main__":
     # Remove limit for full analysis
 
     analyzer.compute_metrics(plot_dir="plots")
-    analyzer.plot_heatmaps_by_agent(output_dir="plots")
+    # analyzer.plot_heatmaps_by_agent(output_dir="plots")  # HEATMAP DISABLED
     # analyzer.plot_wordclouds_by_agent(output_dir="plots")  # WORDCLOUD DISABLED
     # analyzer.plot_entropy_trendlines()
     # analyzer.plot_entropy_by_turn_across_agents()

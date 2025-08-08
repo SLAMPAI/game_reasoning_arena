@@ -27,10 +27,12 @@ def _load_config_file(file_path: str) -> Dict[str, Any]:
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             return yaml.safe_load(f)
-    except FileNotFoundError:
-        raise FileNotFoundError(f"Config file not found: {file_path}")
+    except FileNotFoundError as exc:
+        raise FileNotFoundError(f"Config file not found: {file_path}") from exc
     except yaml.YAMLError as e:
-        raise ValueError(f"Error parsing YAML config file {file_path}: {e}")
+        raise ValueError(
+            f"Error parsing YAML config file {file_path}: {e}"
+        ) from e
 
 
 # Model configuration paths from environment with package-relative defaults
@@ -54,7 +56,7 @@ _huggingface_backend = None
 
 def get_litellm_backend() -> LiteLLMBackend:
     """Get or create LiteLLM backend instance."""
-    global _litellm_backend
+    global _litellm_backend  # noqa
     if _litellm_backend is None:
         _litellm_backend = LiteLLMBackend()  # Uses config automatically
     return _litellm_backend
@@ -62,7 +64,7 @@ def get_litellm_backend() -> LiteLLMBackend:
 
 def get_huggingface_backend() -> HuggingFaceBackend:
     """Get or create HuggingFace backend instance."""
-    global _huggingface_backend
+    global _huggingface_backend  # noqa
     if _huggingface_backend is None:
         _huggingface_backend = HuggingFaceBackend()
     return _huggingface_backend
@@ -70,7 +72,7 @@ def get_huggingface_backend() -> HuggingFaceBackend:
 
 def get_vllm_backend() -> VLLMBackend:
     """Get or create vLLM backend instance."""
-    global _vllm_backend
+    global _vllm_backend  # noqa
     if _vllm_backend is None:
         _vllm_backend = VLLMBackend()
     return _vllm_backend
@@ -152,14 +154,14 @@ def generate_response(model_name: str, prompt: str, **kwargs) -> str:
         raise ValueError(f"Unknown backend: {backend_name}")
 
 
-def initialize_llm_registry(user_config: Dict[str, Any] = None) -> None:
+def initialize_llm_registry() -> None:
     """Initialize the global LLM registry.
 
     Automatically loads models from both litellm_models.yaml and
     vllm_models.yaml.
     Backend selection is automatic based on model name prefixes.
     """
-    global LLM_REGISTRY, _litellm_backend, _vllm_backend
+    global LLM_REGISTRY, _litellm_backend, _vllm_backend  # noqa
     LLM_REGISTRY.clear()
 
     # Reset backend instances to pick up new config
@@ -176,8 +178,10 @@ def initialize_llm_registry(user_config: Dict[str, Any] = None) -> None:
         models_data = _load_config_file(LITELLM_MODELS_PATH)
         litellm_models = models_data.get("models", [])
         available_models.extend(litellm_models)
-    except FileNotFoundError:
-        raise FileNotFoundError(f"Error: LiteLLM models config not found at {LITELLM_MODELS_PATH}")
+    except FileNotFoundError as exc:
+        raise FileNotFoundError(
+            f"Error: LiteLLM models config not found at {LITELLM_MODELS_PATH}"
+        ) from exc
 
     # Load vLLM models
     try:
@@ -193,8 +197,10 @@ def initialize_llm_registry(user_config: Dict[str, Any] = None) -> None:
                     vllm_models.append(model_name)
 
         available_models.extend(vllm_models)
-    except FileNotFoundError:
-        raise FileNotFoundError(f"Error: vLLM models config not found at {VLLM_MODELS_PATH}")
+    except FileNotFoundError as exc:
+        raise FileNotFoundError(
+            f"Error: vLLM models config not found at {VLLM_MODELS_PATH}"
+        ) from exc
 
     # Register all models
     for model in available_models:
