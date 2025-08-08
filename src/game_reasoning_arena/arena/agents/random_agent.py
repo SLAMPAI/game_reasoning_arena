@@ -24,17 +24,16 @@ class RandomAgent(BaseAgent):
         super().__init__(agent_type="random")
         self.random_generator = random.Random(seed)
 
-    def compute_action(self, observation: Dict[str,Any]) -> int:
+    def compute_action(self, observation: Dict[str,Any]) -> Dict[str, Any]:
         """
         Randomly picks a legal action.
 
         Args:
-            legal_actions (List[int]): The set of legal actions for the current player.
-            *args: Unused additional arguments for consistency.
-            **kwargs: Unused keyword arguments (e.g., state, info).
+            observation (Dict[str, Any]): The observation dictionary with:
+                - legal_actions: List of legal actions for current player.
 
         Returns:
-            int: A randomly selected action.
+            Dict[str, Any]: Dictionary with "action" and "reasoning" keys.
         """
 
         #TODO: see if we can change to OS' native bot:
@@ -49,5 +48,5 @@ class RandomAgent(BaseAgent):
 
         '''
 
-
-        return self.random_generator.choice(observation["legal_actions"])
+        action = self.random_generator.choice(observation["legal_actions"])
+        return {"action": action, "reasoning": "random choice"}

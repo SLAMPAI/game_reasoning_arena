@@ -7,7 +7,6 @@ Implements an agent that asks the user for input to choose an action.
 from typing import Any, Dict, Optional, List
 from .base_agent import BaseAgent
 #from agents.llm_utils import generate_prompt #TODO: fix this - the prompt for human agents!!
-
 #TODO: the human agents also need a prompt! but not on the HTML format!
 
 class HumanAgent(BaseAgent):
@@ -16,21 +15,24 @@ class HumanAgent(BaseAgent):
     def __init__(self, game_name: str):
         """
         Args:
-            game_name (str): A human-readable name for the game, used for prompting.
+            game_name (str): A human-readable name for the game,
+            used for prompting.
         """
         super().__init__(agent_type="human")
         self.game_name = game_name
 
-    def compute_action(self, observation: Dict[str,Any]) -> int:
+    def compute_action(self, observation: Dict[str,Any]) -> Dict[str, Any]:
         """
         Prompts the user for a legal move.
 
         Args:
-            legal_actions (List[int]): The set of legal actions for the current player.
-            state (Any): The current OpenSpiel state.
+            observation (Dict[str, Any]): The observation dictionary with:
+                - legal_actions: List of legal actions for current player.
+                - state_string: Current game state.
+                - info: Additional information.
 
         Returns:
-            int: The chosen action.
+            Dict[str, Any]: Dictionary with "action" and "reasoning" keys.
         """
         legal_actions=observation["legal_actions"]
         state=observation.get("state_string")
@@ -46,7 +48,10 @@ class HumanAgent(BaseAgent):
             try:
                 action = int(input("Enter your action (number): "))
                 if action in legal_actions:
-                    return action
+                    return {
+                        "action": action,
+                        "reasoning": "human selected"
+                    }
             except ValueError:
                 pass
             print("Invalid action. Please choose from:", legal_actions)

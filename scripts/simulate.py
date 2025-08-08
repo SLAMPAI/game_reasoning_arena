@@ -64,6 +64,7 @@ def compute_actions(env, player_to_agent, observations):
                 agent.last_reasoning = "None"
             return agent_response.get("action", -1)
         else:
+            # Fallback for unexpected response formats
             agent.last_reasoning = "None"
             return -1
 
@@ -180,6 +181,11 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
                 # Check if the chosen action is legal
                 if (chosen_action is None or
                         chosen_action not in observation["legal_actions"]):
+                    logger.error(
+                        f"ILLEGAL MOVE DETECTED - Agent {agent_id}: "
+                        f"chosen_action={chosen_action} (type: {type(chosen_action)}), "
+                        f"legal_actions={observation['legal_actions']}"
+                    )
                     if agent_type == "llm":
                         log_llm_action(
                             agent_id, agent_model, observation,

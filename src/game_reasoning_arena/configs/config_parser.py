@@ -89,6 +89,13 @@ def build_cli_parser() -> argparse.ArgumentParser:
     )
 
     parser.add_argument(
+        "--log_level",
+        type=str,
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        help="Logging level for the simulation.",
+    )
+
+    parser.add_argument(
         "--override",
         nargs="*",
         metavar="KEY=VALUE",
@@ -140,6 +147,10 @@ def parse_config(args: argparse.Namespace) -> Dict[str, Any]:
 
     if hasattr(args, 'temperature') and args.temperature is not None:
         config["llm_backend"]["temperature"] = args.temperature
+
+    # Apply CLI log level
+    if hasattr(args, 'log_level') and args.log_level:
+        config["log_level"] = args.log_level
 
     # Apply CLI key-value overrides (if provided)
     if hasattr(args, 'override') and args.override:

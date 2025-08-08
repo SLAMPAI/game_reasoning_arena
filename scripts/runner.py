@@ -324,6 +324,20 @@ def main():
 
     # Parse config once in main
     config = parse_config(args)
+
+    # Configure logging level based on config
+    log_level = config.get("log_level", "INFO")
+    numeric_level = getattr(logging, log_level.upper(), logging.INFO)
+
+    # Reconfigure logging with the correct level
+    logging.basicConfig(
+        filename="run_logs.txt",
+        filemode="w",
+        level=numeric_level,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        force=True  # Force reconfiguration
+    )
+
     logger.info(config)
 
     try:
@@ -347,6 +361,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-

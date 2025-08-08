@@ -1,14 +1,11 @@
-# Multi-game base configuration
-# Runs multiple games in sequence with the same agent setup
-
+# Debug config for illegal move detection
 env_configs:
-  - game_name: tic_tac_toe
-    max_game_rounds: null
-  - game_name: connect_four
+  - game_name: matrix_rps
     max_game_rounds: null
 
-num_episodes: 2
+num_episodes: 1
 seed: 42
+use_ray: false
 mode: llm_vs_random
 
 agents:
@@ -23,4 +20,4 @@ llm_backend:
   temperature: 0.1
   default_model: litellm_groq/llama3-8b-8192
 
-log_level: INFO
+log_level: DEBUG
