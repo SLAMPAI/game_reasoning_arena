@@ -1,3 +1,11 @@
+Metadata-Version: 2.4
+Name: game_reasoning_arena
+Version: 0.1
+Summary: OpenSpiel LLM Arena
+Author: Lucia Cipolina-Kun
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
 # Game Reasoning Arena
 
 A framework for evaluating Large Language Models (LLMs) through strategic game-playing using Google's OpenSpiel game library. Allows to test LLM decision-making capabilities in games like Tic-Tac-Toe, Connect Four, Poker, and more.

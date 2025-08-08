@@ -1,208 +1,240 @@
-2025-08-08 09:29:14,314 - __main__ - INFO - {'env_config': {'game_name': 'tic_tac_toe', 'max_game_rounds': None}, 'num_episodes': 1, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama3-8b-8192'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama3-8b-8192'}, 'log_level': 'DEBUG', 'env_configs': [{'game_name': 'matrix_rps', 'max_game_rounds': None}]}
-2025-08-08 09:29:14,316 - __main__ - INFO - Ray disabled - using sequential execution
-2025-08-08 09:29:14,316 - __main__ - INFO - Using sequential execution (Ray disabled)
-2025-08-08 09:29:14,321 - simulate - INFO - Initializing environment for tic_tac_toe.
-2025-08-08 09:29:14,321 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for tic_tac_toe
-2025-08-08 09:29:14,321 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama3-8b-8192)
-2025-08-08 09:29:14,322 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
-2025-08-08 09:29:14,330 - simulate - INFO - Episode 1 started with seed 42.
-2025-08-08 09:29:14,331 - LiteLLM - DEBUG - 
-
-2025-08-08 09:29:14,331 - LiteLLM - DEBUG - [92mRequest to litellm:[0m
-2025-08-08 09:29:14,331 - LiteLLM - DEBUG - [92mlitellm.completion(model='groq/llama3-8b-8192', messages=[{'role': 'user', 'content': "You are playing the game: tic_tac_toe\nand you are playing with the: x.\n\nthe current move number is: 0\nBoard state:\n\n...\n...\n... \n\nAvailable actions:[0, 1, 2, 3, 4, 5, 6, 7, 8] (cell indices)\n\n\nWhat action do you choose? Reply only with the available action number.\n\nFirst, think through the game strategy and explain your reasoning.\nOnly after that, decide on the best action to take.\n\nReply only in the following JSON format:\n{\n  'reasoning': <str>,\n  'action': <int>\n}"}], max_tokens=250, temperature=0.1)[0m
-2025-08-08 09:29:14,331 - LiteLLM - DEBUG - 
-
-2025-08-08 09:29:14,332 - LiteLLM - DEBUG - self.optional_params: {}
-2025-08-08 09:29:14,332 - LiteLLM - DEBUG - SYNC kwargs[caching]: False; litellm.cache: None; kwargs.get('cache')['no-cache']: False
-2025-08-08 09:29:14,350 - LiteLLM - INFO - 
+2025-08-08 09:44:26,981 - __main__ - INFO - {'env_config': {'game_name': 'tic_tac_toe', 'max_game_rounds': None}, 'num_episodes': 5, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama3-8b-8192'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama3-8b-8192'}, 'log_level': 'INFO', 'env_configs': [{'game_name': 'tic_tac_toe', 'max_game_rounds': None}]}
+2025-08-08 09:44:26,991 - __main__ - INFO - Ray disabled - using sequential execution
+2025-08-08 09:44:26,991 - __main__ - INFO - Using sequential execution (Ray disabled)
+2025-08-08 09:44:26,995 - simulate - INFO - Initializing environment for tic_tac_toe.
+2025-08-08 09:44:26,997 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for tic_tac_toe
+2025-08-08 09:44:26,998 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama3-8b-8192)
+2025-08-08 09:44:26,998 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
+2025-08-08 09:44:27,020 - simulate - INFO - Episode 1 started with seed 42.
+2025-08-08 09:44:27,035 - LiteLLM - INFO - 
 LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:29:14,350 - LiteLLM - DEBUG - 
-LiteLLM: Params passed to completion() {'functions': None, 'function_call': None, 'temperature': 0.1, 'top_p': None, 'stream': None, 'stream_options': None, 'stop': None, 'max_tokens': 250, 'max_completion_tokens': None, 'modalities': None, 'prediction': None, 'audio': None, 'presence_penalty': None, 'frequency_penalty': None, 'logit_bias': None, 'user': None, 'response_format': None, 'seed': None, 'tools': None, 'tool_choice': None, 'max_retries': None, 'logprobs': None, 'top_logprobs': None, 'extra_headers': None, 'api_version': None, 'parallel_tool_calls': None, 'allowed_openai_params': None, 'reasoning_effort': None, 'additional_drop_params': None, 'messages': [{'role': 'user', 'content': "You are playing the game: tic_tac_toe\nand you are playing with the: x.\n\nthe current move number is: 0\nBoard state:\n\n...\n...\n... \n\nAvailable actions:[0, 1, 2, 3, 4, 5, 6, 7, 8] (cell indices)\n\n\nWhat action do you choose? Reply only with the available action number.\n\nFirst, think through the game strategy and explain your reasoning.\nOnly after that, decide on the best action to take.\n\nReply only in the following JSON format:\n{\n  'reasoning': <str>,\n  'action': <int>\n}"}], 'thinking': None, 'web_search_options': None, 'custom_llm_provider': 'groq', 'drop_params': None, 'model': 'llama3-8b-8192', 'n': None}
-2025-08-08 09:29:14,351 - LiteLLM - DEBUG - 
-LiteLLM: Non-Default params passed to completion() {'temperature': 0.1, 'max_tokens': 250}
-2025-08-08 09:29:14,351 - LiteLLM - DEBUG - Final returned optional params: {'temperature': 0.1, 'max_tokens': 250, 'extra_body': {}}
-2025-08-08 09:29:14,351 - LiteLLM - DEBUG - self.optional_params: {'temperature': 0.1, 'max_tokens': 250, 'extra_body': {}}
-2025-08-08 09:29:14,351 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-08 09:29:14,352 - LiteLLM - DEBUG - [92m
-
-POST Request Sent from LiteLLM:
-curl -X POST \
-https://api.groq.com/openai/v1/chat/completions \
--H 'Authorization: Be****GF' -H 'Content-Type: application/json' \
--d '{'model': 'llama3-8b-8192', 'messages': [{'role': 'user', 'content': "You are playing the game: tic_tac_toe\nand you are playing with the: x.\n\nthe current move number is: 0\nBoard state:\n\n...\n...\n... \n\nAvailable actions:[0, 1, 2, 3, 4, 5, 6, 7, 8] (cell indices)\n\n\nWhat action do you choose? Reply only with the available action number.\n\nFirst, think through the game strategy and explain your reasoning.\nOnly after that, decide on the best action to take.\n\nReply only in the following JSON format:\n{\n  'reasoning': <str>,\n  'action': <int>\n}"}], 'temperature': 0.1, 'max_tokens': 250}'
-[0m
-
-2025-08-08 09:29:14,374 - httpcore.connection - DEBUG - connect_tcp.started host='api.groq.com' port=443 local_address=None timeout=600.0 socket_options=None
-2025-08-08 09:29:14,434 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x15e3478e0>
-2025-08-08 09:29:14,434 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x15e3e82c0> server_hostname='api.groq.com' timeout=600.0
-2025-08-08 09:29:14,449 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x15e347700>
-2025-08-08 09:29:14,449 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
-2025-08-08 09:29:14,449 - httpcore.http11 - DEBUG - send_request_headers.complete
-2025-08-08 09:29:14,449 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
-2025-08-08 09:29:14,450 - httpcore.http11 - DEBUG - send_request_body.complete
-2025-08-08 09:29:14,450 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
-2025-08-08 09:29:14,769 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Fri, 08 Aug 2025 08:29:14 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Content-Encoding', b'br'), (b'Cache-Control', b'private, max-age=0, no-store, no-cache, must-revalidate'), (b'vary', b'Origin'), (b'x-groq-region', b'fra'), (b'x-ratelimit-limit-requests', b'14400'), (b'x-ratelimit-limit-tokens', b'6000'), (b'x-ratelimit-remaining-requests', b'14399'), (b'x-ratelimit-remaining-tokens', b'5877'), (b'x-ratelimit-reset-requests', b'6s'), (b'x-ratelimit-reset-tokens', b'1.23s'), (b'x-request-id', b'req_01k24crtc2fcrb1hemfp7y1ze6'), (b'via', b'1.1 google'), (b'cf-cache-status', b'DYNAMIC'), (b'Set-Cookie', b'__cf_bm=C0dkKCtWFCB8uDm0Wij2HdWG2rf6pORG8h_6JDrLjGQ-1754641754-1.0.1.1-CBzF4HSFnkcq.lGu5pzFwi65K_saxruzBY2gXXTIUsg2BmhReroDAnzlNcHz4cHmNPAGlE_LNkJnUXlwPWfVXig5HliBqNfTlXkNY8bnx0c; path=/; expires=Fri, 08-Aug-25 08:59:14 GMT; domain=.groq.com; HttpOnly; Secure; SameSite=None'), (b'Server', b'cloudflare'), (b'CF-RAY', b'96bda5157bf479c7-LHR'), (b'alt-svc', b'h3=":443"; ma=86400')])
-2025-08-08 09:29:14,770 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:29:14,770 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
-2025-08-08 09:29:14,771 - httpcore.http11 - DEBUG - receive_response_body.complete
-2025-08-08 09:29:14,771 - httpcore.http11 - DEBUG - response_closed.started
-2025-08-08 09:29:14,771 - httpcore.http11 - DEBUG - response_closed.complete
-2025-08-08 09:29:14,772 - LiteLLM - DEBUG - RAW RESPONSE:
-{"id": "chatcmpl-041b8799-dd5b-4804-af23-7ac3fb875b3b", "object": "chat.completion", "created": 1754641754, "model": "llama3-8b-8192", "choices": [{"index": 0, "message": {"role": "assistant", "content": "{\n  'reasoning': 'As the first move, I choose to place my X in the center of the board, which is the most strategic position. This allows me to have the most options for my next move and puts pressure on my opponent to respond accordingly.',\n  'action': 4\n}"}, "logprobs": null, "finish_reason": "stop"}], "usage": {"queue_time": 0.142367404, "prompt_tokens": 142, "prompt_time": 0.01764127, "completion_tokens": 63, "completion_time": 0.091546541, "total_tokens": 205, "total_time": 0.109187811}, "usage_breakdown": null, "system_fingerprint": "fp_5b339000ab", "x_groq": {"id": "req_01k24crtc2fcrb1hemfp7y1ze6"}, "service_tier": "on_demand"}
-
-
-2025-08-08 09:29:14,772 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:29:14,772 - LiteLLM - DEBUG - Logging Details LiteLLM-Success Call: Cache_hit=None
-2025-08-08 09:29:14,773 - LiteLLM - DEBUG - selected model name for cost calculation: groq/llama3-8b-8192
-2025-08-08 09:29:14,773 - LiteLLM - DEBUG - selected model name for cost calculation: groq/llama3-8b-8192
-2025-08-08 09:29:14,773 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-08 09:29:14,773 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-08 09:29:14,774 - LiteLLM - DEBUG - Returned custom cost for model=groq/llama3-8b-8192 - prompt_tokens_cost_usd_dollar: 7.1e-06, completion_tokens_cost_usd_dollar: 5.04e-06
-2025-08-08 09:29:14,774 - LiteLLM - DEBUG - Returned custom cost for model=groq/llama3-8b-8192 - prompt_tokens_cost_usd_dollar: 7.1e-06, completion_tokens_cost_usd_dollar: 5.04e-06
-2025-08-08 09:29:14,774 - LiteLLM - DEBUG - response_cost: 1.2139999999999999e-05
-2025-08-08 09:29:14,774 - LiteLLM - DEBUG - response_cost: 1.2139999999999999e-05
-2025-08-08 09:29:14,775 - simulate - DEBUG - Validating action - Agent 0: chosen_action=4 (type: <class 'int'>), legal_actions=[0, 1, 2, 3, 4, 5, 6, 7, 8] (types: [<class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>])
-2025-08-08 09:29:14,775 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-08 09:29:14,775 - LiteLLM - DEBUG - model_info: {'key': 'groq/llama3-8b-8192', 'max_tokens': 8192, 'max_input_tokens': 8192, 'max_output_tokens': 8192, 'input_cost_per_token': 5e-08, 'cache_creation_input_token_cost': None, 'cache_read_input_token_cost': None, 'input_cost_per_character': None, 'input_cost_per_token_above_128k_tokens': None, 'input_cost_per_token_above_200k_tokens': None, 'input_cost_per_query': None, 'input_cost_per_second': None, 'input_cost_per_audio_token': None, 'input_cost_per_token_batches': None, 'output_cost_per_token_batches': None, 'output_cost_per_token': 8e-08, 'output_cost_per_audio_token': None, 'output_cost_per_character': None, 'output_cost_per_reasoning_token': None, 'output_cost_per_token_above_128k_tokens': None, 'output_cost_per_character_above_128k_tokens': None, 'output_cost_per_token_above_200k_tokens': None, 'output_cost_per_second': None, 'output_cost_per_image': None, 'output_vector_size': None, 'citation_cost_per_token': None, 'litellm_provider': 'groq', 'mode': 'chat', 'supports_system_messages': None, 'supports_response_schema': None, 'supports_vision': None, 'supports_function_calling': None, 'supports_tool_choice': True, 'supports_assistant_prefill': None, 'supports_prompt_caching': None, 'supports_audio_input': None, 'supports_audio_output': None, 'supports_pdf_input': None, 'supports_embedding_image_input': None, 'supports_native_streaming': None, 'supports_web_search': None, 'supports_url_context': None, 'supports_reasoning': None, 'supports_computer_use': None, 'search_context_cost_per_query': None, 'tpm': None, 'rpm': None}
-2025-08-08 09:29:14,776 - LiteLLM - DEBUG - Logging Details LiteLLM-Success Call streaming complete
-2025-08-08 09:29:14,776 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-08 09:29:14,776 - LiteLLM - DEBUG - model_info: {'key': 'groq/llama3-8b-8192', 'max_tokens': 8192, 'max_input_tokens': 8192, 'max_output_tokens': 8192, 'input_cost_per_token': 5e-08, 'cache_creation_input_token_cost': None, 'cache_read_input_token_cost': None, 'input_cost_per_character': None, 'input_cost_per_token_above_128k_tokens': None, 'input_cost_per_token_above_200k_tokens': None, 'input_cost_per_query': None, 'input_cost_per_second': None, 'input_cost_per_audio_token': None, 'input_cost_per_token_batches': None, 'output_cost_per_token_batches': None, 'output_cost_per_token': 8e-08, 'output_cost_per_audio_token': None, 'output_cost_per_character': None, 'output_cost_per_reasoning_token': None, 'output_cost_per_token_above_128k_tokens': None, 'output_cost_per_character_above_128k_tokens': None, 'output_cost_per_token_above_200k_tokens': None, 'output_cost_per_second': None, 'output_cost_per_image': None, 'output_vector_size': None, 'citation_cost_per_token': None, 'litellm_provider': 'groq', 'mode': 'chat', 'supports_system_messages': None, 'supports_response_schema': None, 'supports_vision': None, 'supports_function_calling': None, 'supports_tool_choice': True, 'supports_assistant_prefill': None, 'supports_prompt_caching': None, 'supports_audio_input': None, 'supports_audio_output': None, 'supports_pdf_input': None, 'supports_embedding_image_input': None, 'supports_native_streaming': None, 'supports_web_search': None, 'supports_url_context': None, 'supports_reasoning': None, 'supports_computer_use': None, 'search_context_cost_per_query': None, 'tpm': None, 'rpm': None}
-2025-08-08 09:29:14,846 - simulate - INFO - Board state: 
+2025-08-08 09:44:27,525 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:27,529 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:27,541 - simulate - INFO - Board state: 
 ...
 ...
 ...
-2025-08-08 09:29:14,846 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-2025-08-08 09:29:14,847 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: As the first move, I choose to place my X in the center of the board, which is the most strategic position. This allows me to have the most options for my next move and puts pressure on my opponent to respond accordingly.
-2025-08-08 09:29:14,847 - simulate - DEBUG - Validating action - Agent 1: chosen_action=1 (type: <class 'int'>), legal_actions=[0, 1, 2, 3, 5, 6, 7, 8] (types: [<class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>])
-2025-08-08 09:29:14,851 - LiteLLM - DEBUG - 
-
-2025-08-08 09:29:14,851 - LiteLLM - DEBUG - [92mRequest to litellm:[0m
-2025-08-08 09:29:14,851 - LiteLLM - DEBUG - [92mlitellm.completion(model='groq/llama3-8b-8192', messages=[{'role': 'user', 'content': "You are playing the game: tic_tac_toe\nand you are playing with the: x.\n\nthe current move number is: 2\nBoard state:\n\n.o.\n.x.\n... \n\nAvailable actions:[0, 2, 3, 5, 6, 7, 8] (cell indices)\n\n\nWhat action do you choose? Reply only with the available action number.\n\nFirst, think through the game strategy and explain your reasoning.\nOnly after that, decide on the best action to take.\n\nReply only in the following JSON format:\n{\n  'reasoning': <str>,\n  'action': <int>\n}"}], max_tokens=250, temperature=0.1)[0m
-2025-08-08 09:29:14,851 - LiteLLM - DEBUG - 
-
-2025-08-08 09:29:14,851 - LiteLLM - DEBUG - self.optional_params: {}
-2025-08-08 09:29:14,852 - LiteLLM - DEBUG - SYNC kwargs[caching]: False; litellm.cache: None; kwargs.get('cache')['no-cache']: False
-2025-08-08 09:29:14,854 - LiteLLM - INFO - 
+2025-08-08 09:44:27,541 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+2025-08-08 09:44:27,541 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: I choose to place my X in the center of the board, which is the most strategic location. This allows me to have the most options for my next move and puts pressure on my opponent to respond. Additionally, placing my X in the center gives me a good chance of winning the game if my opponent makes a mistake.
+2025-08-08 09:44:27,545 - LiteLLM - INFO - 
 LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:29:14,854 - LiteLLM - DEBUG - 
-LiteLLM: Params passed to completion() {'functions': None, 'function_call': None, 'temperature': 0.1, 'top_p': None, 'stream': None, 'stream_options': None, 'stop': None, 'max_tokens': 250, 'max_completion_tokens': None, 'modalities': None, 'prediction': None, 'audio': None, 'presence_penalty': None, 'frequency_penalty': None, 'logit_bias': None, 'user': None, 'response_format': None, 'seed': None, 'tools': None, 'tool_choice': None, 'max_retries': None, 'logprobs': None, 'top_logprobs': None, 'extra_headers': None, 'api_version': None, 'parallel_tool_calls': None, 'allowed_openai_params': None, 'reasoning_effort': None, 'additional_drop_params': None, 'messages': [{'role': 'user', 'content': "You are playing the game: tic_tac_toe\nand you are playing with the: x.\n\nthe current move number is: 2\nBoard state:\n\n.o.\n.x.\n... \n\nAvailable actions:[0, 2, 3, 5, 6, 7, 8] (cell indices)\n\n\nWhat action do you choose? Reply only with the available action number.\n\nFirst, think through the game strategy and explain your reasoning.\nOnly after that, decide on the best action to take.\n\nReply only in the following JSON format:\n{\n  'reasoning': <str>,\n  'action': <int>\n}"}], 'thinking': None, 'web_search_options': None, 'custom_llm_provider': 'groq', 'drop_params': None, 'model': 'llama3-8b-8192', 'n': None}
-2025-08-08 09:29:14,855 - LiteLLM - DEBUG - 
-LiteLLM: Non-Default params passed to completion() {'temperature': 0.1, 'max_tokens': 250}
-2025-08-08 09:29:14,866 - LiteLLM - DEBUG - Final returned optional params: {'temperature': 0.1, 'max_tokens': 250, 'extra_body': {}}
-2025-08-08 09:29:14,866 - LiteLLM - DEBUG - self.optional_params: {'temperature': 0.1, 'max_tokens': 250, 'extra_body': {}}
-2025-08-08 09:29:14,866 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-08 09:29:14,867 - LiteLLM - DEBUG - [92m
-
-POST Request Sent from LiteLLM:
-curl -X POST \
-https://api.groq.com/openai/v1/chat/completions \
--H 'Authorization: Be****GF' -H 'Content-Type: application/json' \
--d '{'model': 'llama3-8b-8192', 'messages': [{'role': 'user', 'content': "You are playing the game: tic_tac_toe\nand you are playing with the: x.\n\nthe current move number is: 2\nBoard state:\n\n.o.\n.x.\n... \n\nAvailable actions:[0, 2, 3, 5, 6, 7, 8] (cell indices)\n\n\nWhat action do you choose? Reply only with the available action number.\n\nFirst, think through the game strategy and explain your reasoning.\nOnly after that, decide on the best action to take.\n\nReply only in the following JSON format:\n{\n  'reasoning': <str>,\n  'action': <int>\n}"}], 'temperature': 0.1, 'max_tokens': 250}'
-[0m
-
-2025-08-08 09:29:14,868 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
-2025-08-08 09:29:14,868 - httpcore.http11 - DEBUG - send_request_headers.complete
-2025-08-08 09:29:14,868 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
-2025-08-08 09:29:14,869 - httpcore.http11 - DEBUG - send_request_body.complete
-2025-08-08 09:29:14,870 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
-2025-08-08 09:29:15,485 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Fri, 08 Aug 2025 08:29:15 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Content-Encoding', b'br'), (b'Cache-Control', b'private, max-age=0, no-store, no-cache, must-revalidate'), (b'vary', b'Origin'), (b'x-groq-region', b'fra'), (b'x-ratelimit-limit-requests', b'14400'), (b'x-ratelimit-limit-tokens', b'6000'), (b'x-ratelimit-remaining-requests', b'14398'), (b'x-ratelimit-remaining-tokens', b'5690'), (b'x-ratelimit-reset-requests', b'11.579s'), (b'x-ratelimit-reset-tokens', b'3.1s'), (b'x-request-id', b'req_01k24crts6ejx9d1b7r7q3whp4'), (b'via', b'1.1 google'), (b'cf-cache-status', b'DYNAMIC'), (b'Server', b'cloudflare'), (b'CF-RAY', b'96bda5180db979c7-LHR'), (b'alt-svc', b'h3=":443"; ma=86400')])
-2025-08-08 09:29:15,486 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:29:15,487 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
-2025-08-08 09:29:15,487 - httpcore.http11 - DEBUG - receive_response_body.complete
-2025-08-08 09:29:15,487 - httpcore.http11 - DEBUG - response_closed.started
-2025-08-08 09:29:15,487 - httpcore.http11 - DEBUG - response_closed.complete
-2025-08-08 09:29:15,487 - LiteLLM - DEBUG - RAW RESPONSE:
-{"id": "chatcmpl-09bd086c-8745-47d3-bacf-bbbb6b12e1ea", "object": "chat.completion", "created": 1754641755, "model": "llama3-8b-8192", "choices": [{"index": 0, "message": {"role": "assistant", "content": "{\n  'reasoning': 'I choose to place my X in position 5 to block the potential O win and create a possibility for a future win. By placing my X in the middle, I also increase the chances of winning by having more options for my next move.',\n  'action': 5\n}"}, "logprobs": null, "finish_reason": "stop"}], "usage": {"queue_time": 0.372807685, "prompt_tokens": 138, "prompt_time": 0.028957303, "completion_tokens": 65, "completion_time": 0.093980446, "total_tokens": 203, "total_time": 0.122937749}, "usage_breakdown": null, "system_fingerprint": "fp_5b339000ab", "x_groq": {"id": "req_01k24crts6ejx9d1b7r7q3whp4"}, "service_tier": "on_demand"}
-
-
-2025-08-08 09:29:15,488 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:29:15,489 - LiteLLM - DEBUG - selected model name for cost calculation: groq/llama3-8b-8192
-2025-08-08 09:29:15,489 - LiteLLM - DEBUG - Logging Details LiteLLM-Success Call: Cache_hit=None
-2025-08-08 09:29:15,489 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-08 09:29:15,490 - LiteLLM - DEBUG - selected model name for cost calculation: groq/llama3-8b-8192
-2025-08-08 09:29:15,490 - LiteLLM - DEBUG - Returned custom cost for model=groq/llama3-8b-8192 - prompt_tokens_cost_usd_dollar: 6.9e-06, completion_tokens_cost_usd_dollar: 5.2e-06
-2025-08-08 09:29:15,490 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-08 09:29:15,491 - LiteLLM - DEBUG - response_cost: 1.21e-05
-2025-08-08 09:29:15,491 - LiteLLM - DEBUG - Returned custom cost for model=groq/llama3-8b-8192 - prompt_tokens_cost_usd_dollar: 6.9e-06, completion_tokens_cost_usd_dollar: 5.2e-06
-2025-08-08 09:29:15,491 - LiteLLM - DEBUG - response_cost: 1.21e-05
-2025-08-08 09:29:15,491 - simulate - DEBUG - Validating action - Agent 0: chosen_action=5 (type: <class 'int'>), legal_actions=[0, 2, 3, 5, 6, 7, 8] (types: [<class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>])
-2025-08-08 09:29:15,492 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-08 09:29:15,493 - LiteLLM - DEBUG - model_info: {'key': 'groq/llama3-8b-8192', 'max_tokens': 8192, 'max_input_tokens': 8192, 'max_output_tokens': 8192, 'input_cost_per_token': 5e-08, 'cache_creation_input_token_cost': None, 'cache_read_input_token_cost': None, 'input_cost_per_character': None, 'input_cost_per_token_above_128k_tokens': None, 'input_cost_per_token_above_200k_tokens': None, 'input_cost_per_query': None, 'input_cost_per_second': None, 'input_cost_per_audio_token': None, 'input_cost_per_token_batches': None, 'output_cost_per_token_batches': None, 'output_cost_per_token': 8e-08, 'output_cost_per_audio_token': None, 'output_cost_per_character': None, 'output_cost_per_reasoning_token': None, 'output_cost_per_token_above_128k_tokens': None, 'output_cost_per_character_above_128k_tokens': None, 'output_cost_per_token_above_200k_tokens': None, 'output_cost_per_second': None, 'output_cost_per_image': None, 'output_vector_size': None, 'citation_cost_per_token': None, 'litellm_provider': 'groq', 'mode': 'chat', 'supports_system_messages': None, 'supports_response_schema': None, 'supports_vision': None, 'supports_function_calling': None, 'supports_tool_choice': True, 'supports_assistant_prefill': None, 'supports_prompt_caching': None, 'supports_audio_input': None, 'supports_audio_output': None, 'supports_pdf_input': None, 'supports_embedding_image_input': None, 'supports_native_streaming': None, 'supports_web_search': None, 'supports_url_context': None, 'supports_reasoning': None, 'supports_computer_use': None, 'search_context_cost_per_query': None, 'tpm': None, 'rpm': None}
-2025-08-08 09:29:15,494 - LiteLLM - DEBUG - Logging Details LiteLLM-Success Call streaming complete
-2025-08-08 09:29:15,495 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-08 09:29:15,495 - LiteLLM - DEBUG - model_info: {'key': 'groq/llama3-8b-8192', 'max_tokens': 8192, 'max_input_tokens': 8192, 'max_output_tokens': 8192, 'input_cost_per_token': 5e-08, 'cache_creation_input_token_cost': None, 'cache_read_input_token_cost': None, 'input_cost_per_character': None, 'input_cost_per_token_above_128k_tokens': None, 'input_cost_per_token_above_200k_tokens': None, 'input_cost_per_query': None, 'input_cost_per_second': None, 'input_cost_per_audio_token': None, 'input_cost_per_token_batches': None, 'output_cost_per_token_batches': None, 'output_cost_per_token': 8e-08, 'output_cost_per_audio_token': None, 'output_cost_per_character': None, 'output_cost_per_reasoning_token': None, 'output_cost_per_token_above_128k_tokens': None, 'output_cost_per_character_above_128k_tokens': None, 'output_cost_per_token_above_200k_tokens': None, 'output_cost_per_second': None, 'output_cost_per_image': None, 'output_vector_size': None, 'citation_cost_per_token': None, 'litellm_provider': 'groq', 'mode': 'chat', 'supports_system_messages': None, 'supports_response_schema': None, 'supports_vision': None, 'supports_function_calling': None, 'supports_tool_choice': True, 'supports_assistant_prefill': None, 'supports_prompt_caching': None, 'supports_audio_input': None, 'supports_audio_output': None, 'supports_pdf_input': None, 'supports_embedding_image_input': None, 'supports_native_streaming': None, 'supports_web_search': None, 'supports_url_context': None, 'supports_reasoning': None, 'supports_computer_use': None, 'search_context_cost_per_query': None, 'tpm': None, 'rpm': None}
-2025-08-08 09:29:15,497 - simulate - INFO - Board state: 
+2025-08-08 09:44:28,278 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:28,279 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:28,283 - simulate - INFO - Board state: 
 .o.
 .x.
 ...
-2025-08-08 09:29:15,497 - simulate - INFO - Legal actions: [0, 2, 3, 5, 6, 7, 8]
-2025-08-08 09:29:15,497 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 5 with reasoning: I choose to place my X in position 5 to block the potential O win and create a possibility for a future win. By placing my X in the middle, I also increase the chances of winning by having more options for my next move.
-2025-08-08 09:29:15,497 - simulate - DEBUG - Validating action - Agent 1: chosen_action=0 (type: <class 'int'>), legal_actions=[0, 2, 3, 6, 7, 8] (types: [<class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>])
-2025-08-08 09:29:15,500 - LiteLLM - DEBUG - 
-
-2025-08-08 09:29:15,501 - LiteLLM - DEBUG - [92mRequest to litellm:[0m
-2025-08-08 09:29:15,501 - LiteLLM - DEBUG - [92mlitellm.completion(model='groq/llama3-8b-8192', messages=[{'role': 'user', 'content': "You are playing the game: tic_tac_toe\nand you are playing with the: x.\n\nthe current move number is: 4\nBoard state:\n\noo.\n.xx\n... \n\nAvailable actions:[2, 3, 6, 7, 8] (cell indices)\n\n\nWhat action do you choose? Reply only with the available action number.\n\nFirst, think through the game strategy and explain your reasoning.\nOnly after that, decide on the best action to take.\n\nReply only in the following JSON format:\n{\n  'reasoning': <str>,\n  'action': <int>\n}"}], max_tokens=250, temperature=0.1)[0m
-2025-08-08 09:29:15,501 - LiteLLM - DEBUG - 
-
-2025-08-08 09:29:15,501 - LiteLLM - DEBUG - self.optional_params: {}
-2025-08-08 09:29:15,501 - LiteLLM - DEBUG - SYNC kwargs[caching]: False; litellm.cache: None; kwargs.get('cache')['no-cache']: False
-2025-08-08 09:29:15,502 - LiteLLM - INFO - 
+2025-08-08 09:44:28,284 - simulate - INFO - Legal actions: [0, 2, 3, 5, 6, 7, 8]
+2025-08-08 09:44:28,284 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 5 with reasoning: I want to place my X in a position that will give me the highest chance of winning. Since the opponent has already placed their O in the top-left corner, I will place my X in the center of the board to put pressure on their position and limit their options. This will also give me the opportunity to potentially create a winning line in the future.
+2025-08-08 09:44:28,286 - LiteLLM - INFO - 
 LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-08 09:29:15,503 - LiteLLM - DEBUG - 
-LiteLLM: Params passed to completion() {'functions': None, 'function_call': None, 'temperature': 0.1, 'top_p': None, 'stream': None, 'stream_options': None, 'stop': None, 'max_tokens': 250, 'max_completion_tokens': None, 'modalities': None, 'prediction': None, 'audio': None, 'presence_penalty': None, 'frequency_penalty': None, 'logit_bias': None, 'user': None, 'response_format': None, 'seed': None, 'tools': None, 'tool_choice': None, 'max_retries': None, 'logprobs': None, 'top_logprobs': None, 'extra_headers': None, 'api_version': None, 'parallel_tool_calls': None, 'allowed_openai_params': None, 'reasoning_effort': None, 'additional_drop_params': None, 'messages': [{'role': 'user', 'content': "You are playing the game: tic_tac_toe\nand you are playing with the: x.\n\nthe current move number is: 4\nBoard state:\n\noo.\n.xx\n... \n\nAvailable actions:[2, 3, 6, 7, 8] (cell indices)\n\n\nWhat action do you choose? Reply only with the available action number.\n\nFirst, think through the game strategy and explain your reasoning.\nOnly after that, decide on the best action to take.\n\nReply only in the following JSON format:\n{\n  'reasoning': <str>,\n  'action': <int>\n}"}], 'thinking': None, 'web_search_options': None, 'custom_llm_provider': 'groq', 'drop_params': None, 'model': 'llama3-8b-8192', 'n': None}
-2025-08-08 09:29:15,503 - LiteLLM - DEBUG - 
-LiteLLM: Non-Default params passed to completion() {'temperature': 0.1, 'max_tokens': 250}
-2025-08-08 09:29:15,504 - LiteLLM - DEBUG - Final returned optional params: {'temperature': 0.1, 'max_tokens': 250, 'extra_body': {}}
-2025-08-08 09:29:15,504 - LiteLLM - DEBUG - self.optional_params: {'temperature': 0.1, 'max_tokens': 250, 'extra_body': {}}
-2025-08-08 09:29:15,504 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-08 09:29:15,505 - LiteLLM - DEBUG - [92m
-
-POST Request Sent from LiteLLM:
-curl -X POST \
-https://api.groq.com/openai/v1/chat/completions \
--H 'Authorization: Be****GF' -H 'Content-Type: application/json' \
--d '{'model': 'llama3-8b-8192', 'messages': [{'role': 'user', 'content': "You are playing the game: tic_tac_toe\nand you are playing with the: x.\n\nthe current move number is: 4\nBoard state:\n\noo.\n.xx\n... \n\nAvailable actions:[2, 3, 6, 7, 8] (cell indices)\n\n\nWhat action do you choose? Reply only with the available action number.\n\nFirst, think through the game strategy and explain your reasoning.\nOnly after that, decide on the best action to take.\n\nReply only in the following JSON format:\n{\n  'reasoning': <str>,\n  'action': <int>\n}"}], 'temperature': 0.1, 'max_tokens': 250}'
-[0m
-
-2025-08-08 09:29:15,506 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
-2025-08-08 09:29:15,507 - httpcore.http11 - DEBUG - send_request_headers.complete
-2025-08-08 09:29:15,507 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
-2025-08-08 09:29:15,508 - httpcore.http11 - DEBUG - send_request_body.complete
-2025-08-08 09:29:15,508 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
-2025-08-08 09:29:15,894 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Fri, 08 Aug 2025 08:29:15 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Content-Encoding', b'br'), (b'Cache-Control', b'private, max-age=0, no-store, no-cache, must-revalidate'), (b'vary', b'Origin'), (b'x-groq-region', b'fra'), (b'x-ratelimit-limit-requests', b'14400'), (b'x-ratelimit-limit-tokens', b'6000'), (b'x-ratelimit-remaining-requests', b'14397'), (b'x-ratelimit-remaining-tokens', b'5551'), (b'x-ratelimit-reset-requests', b'17.365s'), (b'x-ratelimit-reset-tokens', b'4.481s'), (b'x-request-id', b'req_01k24crvd4ejxr7r0byr852z2j'), (b'via', b'1.1 google'), (b'cf-cache-status', b'DYNAMIC'), (b'Server', b'cloudflare'), (b'CF-RAY', b'96bda51c084879c7-LHR'), (b'alt-svc', b'h3=":443"; ma=86400')])
-2025-08-08 09:29:15,895 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-08 09:29:15,895 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
-2025-08-08 09:29:15,895 - httpcore.http11 - DEBUG - receive_response_body.complete
-2025-08-08 09:29:15,896 - httpcore.http11 - DEBUG - response_closed.started
-2025-08-08 09:29:15,896 - httpcore.http11 - DEBUG - response_closed.complete
-2025-08-08 09:29:15,896 - LiteLLM - DEBUG - RAW RESPONSE:
-{"id": "chatcmpl-2bc3e972-db16-49a8-86cd-51356e46c3bb", "object": "chat.completion", "created": 1754641755, "model": "llama3-8b-8192", "choices": [{"index": 0, "message": {"role": "assistant", "content": "{\n  'reasoning': 'I want to block the potential two O\\'s in a row and create a possibility for X to win. I will place my X in position 3, which will block the O\\'s and give me a chance to win in the next move.',\n  'action': 3\n}"}, "logprobs": null, "finish_reason": "stop"}], "usage": {"queue_time": 0.148943503, "prompt_tokens": 132, "prompt_time": 0.027445616, "completion_tokens": 67, "completion_time": 0.099178679, "total_tokens": 199, "total_time": 0.126624295}, "usage_breakdown": null, "system_fingerprint": "fp_5b339000ab", "x_groq": {"id": "req_01k24crvd4ejxr7r0byr852z2j"}, "service_tier": "on_demand"}
-
-
-2025-08-08 09:29:15,896 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-08 09:29:15,897 - LiteLLM - DEBUG - selected model name for cost calculation: groq/llama3-8b-8192
-2025-08-08 09:29:15,897 - LiteLLM - DEBUG - Logging Details LiteLLM-Success Call: Cache_hit=None
-2025-08-08 09:29:15,897 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-08 09:29:15,897 - LiteLLM - DEBUG - selected model name for cost calculation: groq/llama3-8b-8192
-2025-08-08 09:29:15,898 - LiteLLM - DEBUG - Returned custom cost for model=groq/llama3-8b-8192 - prompt_tokens_cost_usd_dollar: 6.5999999999999995e-06, completion_tokens_cost_usd_dollar: 5.36e-06
-2025-08-08 09:29:15,898 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-08 09:29:15,898 - LiteLLM - DEBUG - response_cost: 1.196e-05
-2025-08-08 09:29:15,898 - LiteLLM - DEBUG - Returned custom cost for model=groq/llama3-8b-8192 - prompt_tokens_cost_usd_dollar: 6.5999999999999995e-06, completion_tokens_cost_usd_dollar: 5.36e-06
-2025-08-08 09:29:15,898 - simulate - DEBUG - Validating action - Agent 0: chosen_action=3 (type: <class 'int'>), legal_actions=[2, 3, 6, 7, 8] (types: [<class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>, <class 'int'>])
-2025-08-08 09:29:15,899 - LiteLLM - DEBUG - response_cost: 1.196e-05
-2025-08-08 09:29:15,899 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-08 09:29:15,899 - LiteLLM - DEBUG - model_info: {'key': 'groq/llama3-8b-8192', 'max_tokens': 8192, 'max_input_tokens': 8192, 'max_output_tokens': 8192, 'input_cost_per_token': 5e-08, 'cache_creation_input_token_cost': None, 'cache_read_input_token_cost': None, 'input_cost_per_character': None, 'input_cost_per_token_above_128k_tokens': None, 'input_cost_per_token_above_200k_tokens': None, 'input_cost_per_query': None, 'input_cost_per_second': None, 'input_cost_per_audio_token': None, 'input_cost_per_token_batches': None, 'output_cost_per_token_batches': None, 'output_cost_per_token': 8e-08, 'output_cost_per_audio_token': None, 'output_cost_per_character': None, 'output_cost_per_reasoning_token': None, 'output_cost_per_token_above_128k_tokens': None, 'output_cost_per_character_above_128k_tokens': None, 'output_cost_per_token_above_200k_tokens': None, 'output_cost_per_second': None, 'output_cost_per_image': None, 'output_vector_size': None, 'citation_cost_per_token': None, 'litellm_provider': 'groq', 'mode': 'chat', 'supports_system_messages': None, 'supports_response_schema': None, 'supports_vision': None, 'supports_function_calling': None, 'supports_tool_choice': True, 'supports_assistant_prefill': None, 'supports_prompt_caching': None, 'supports_audio_input': None, 'supports_audio_output': None, 'supports_pdf_input': None, 'supports_embedding_image_input': None, 'supports_native_streaming': None, 'supports_web_search': None, 'supports_url_context': None, 'supports_reasoning': None, 'supports_computer_use': None, 'search_context_cost_per_query': None, 'tpm': None, 'rpm': None}
-2025-08-08 09:29:15,900 - LiteLLM - DEBUG - Logging Details LiteLLM-Success Call streaming complete
-2025-08-08 09:29:15,900 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-08 09:29:15,900 - LiteLLM - DEBUG - model_info: {'key': 'groq/llama3-8b-8192', 'max_tokens': 8192, 'max_input_tokens': 8192, 'max_output_tokens': 8192, 'input_cost_per_token': 5e-08, 'cache_creation_input_token_cost': None, 'cache_read_input_token_cost': None, 'input_cost_per_character': None, 'input_cost_per_token_above_128k_tokens': None, 'input_cost_per_token_above_200k_tokens': None, 'input_cost_per_query': None, 'input_cost_per_second': None, 'input_cost_per_audio_token': None, 'input_cost_per_token_batches': None, 'output_cost_per_token_batches': None, 'output_cost_per_token': 8e-08, 'output_cost_per_audio_token': None, 'output_cost_per_character': None, 'output_cost_per_reasoning_token': None, 'output_cost_per_token_above_128k_tokens': None, 'output_cost_per_character_above_128k_tokens': None, 'output_cost_per_token_above_200k_tokens': None, 'output_cost_per_second': None, 'output_cost_per_image': None, 'output_vector_size': None, 'citation_cost_per_token': None, 'litellm_provider': 'groq', 'mode': 'chat', 'supports_system_messages': None, 'supports_response_schema': None, 'supports_vision': None, 'supports_function_calling': None, 'supports_tool_choice': True, 'supports_assistant_prefill': None, 'supports_prompt_caching': None, 'supports_audio_input': None, 'supports_audio_output': None, 'supports_pdf_input': None, 'supports_embedding_image_input': None, 'supports_native_streaming': None, 'supports_web_search': None, 'supports_url_context': None, 'supports_reasoning': None, 'supports_computer_use': None, 'search_context_cost_per_query': None, 'tpm': None, 'rpm': None}
-2025-08-08 09:29:15,901 - simulate - INFO - Board state: 
+2025-08-08 09:44:28,693 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:28,696 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:28,702 - simulate - INFO - Board state: 
 oo.
 .xx
 ...
-2025-08-08 09:29:15,901 - simulate - INFO - Legal actions: [2, 3, 6, 7, 8]
-2025-08-08 09:29:15,901 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 3 with reasoning: I want to block the potential two O\
-2025-08-08 09:29:15,902 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
-2025-08-08 09:29:15,906 - simulate - INFO - Simulation for game tic_tac_toe, Episode 1 completed.
-2025-08-08 09:29:15,907 - __main__ - INFO - Sequential simulation results for tic_tac_toe completed
-2025-08-08 09:29:15,907 - __main__ - INFO - All simulations completed. Total results: 1
-2025-08-08 09:29:16,871 - asyncio - DEBUG - Using selector: KqueueSelector
+2025-08-08 09:44:28,703 - simulate - INFO - Legal actions: [2, 3, 6, 7, 8]
+2025-08-08 09:44:28,703 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 3 with reasoning: I want to block the potential two-in-a-row for O and also create a possibility for a future win. By playing in position 3, I can block the potential win for O and also set up a potential win for myself. Additionally, playing in position 3 will give me more options for my next move.
+2025-08-08 09:44:28,703 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
+2025-08-08 09:44:28,711 - simulate - INFO - Simulation for game tic_tac_toe, Episode 1 completed.
+2025-08-08 09:44:28,711 - simulate - INFO - Episode 2 started with seed 43.
+2025-08-08 09:44:28,713 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:29,100 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:29,101 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:29,104 - simulate - INFO - Board state: 
+...
+...
+...
+2025-08-08 09:44:29,104 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+2025-08-08 09:44:29,104 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: I choose to place my X in the center of the board, as it gives me the most flexibility for my next move and puts pressure on my opponent to respond. This is a common opening strategy in Tic Tac Toe, as it allows me to control the board and limit my opponent\
+2025-08-08 09:44:29,106 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:29,426 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:29,427 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:29,433 - simulate - INFO - Board state: 
+...
+.xo
+...
+2025-08-08 09:44:29,433 - simulate - INFO - Legal actions: [0, 1, 2, 3, 6, 7, 8]
+2025-08-08 09:44:29,433 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 0 with reasoning: I want to place my X in a position that blocks the potential two-in-a-row for O. Since O has already placed their mark in the second row, I will place my X in the top row to block their potential win. Additionally, this move gives me the opportunity to create a potential two-in-a-row for myself in the future.
+2025-08-08 09:44:29,438 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:29,816 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:29,818 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:29,823 - simulate - INFO - Board state: 
+x.o
+.xo
+...
+2025-08-08 09:44:29,823 - simulate - INFO - Legal actions: [1, 3, 6, 7, 8]
+2025-08-08 09:44:29,823 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 6 with reasoning: I want to place my X in a position that will give me the highest chance of winning. Since the current state of the board is not yet decisive, I will focus on controlling the center of the board. The available actions are all on the edges, but action 6 is the closest to the center. Additionally, placing my X in position 6 will give me the opportunity to create a potential winning line in the next move. Therefore, I choose action 6.
+2025-08-08 09:44:29,827 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:30,092 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:30,093 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:30,096 - simulate - INFO - Board state: 
+x.o
+oxo
+x..
+2025-08-08 09:44:30,096 - simulate - INFO - Legal actions: [1, 7, 8]
+2025-08-08 09:44:30,096 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 1 with reasoning: I choose to place my X in position 1 to block the potential two O
+2025-08-08 09:44:30,098 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:30,395 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:30,396 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:30,397 - root - WARNING - No valid action found in response: '{
+  'reasoning': 'I want to block the potential win for O and also create a possibility for a win fo...' Using random fallback: 8
+2025-08-08 09:44:30,399 - simulate - INFO - Board state: 
+xxo
+oxo
+xo.
+2025-08-08 09:44:30,400 - simulate - INFO - Legal actions: [8]
+2025-08-08 09:44:30,400 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 8 with reasoning: I want to block the potential win for O and also create a possibility for a win for myself. The best way to do this is to place my next X in position 2, which will block O\
+2025-08-08 09:44:30,400 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
+2025-08-08 09:44:30,403 - simulate - INFO - Simulation for game tic_tac_toe, Episode 2 completed.
+2025-08-08 09:44:30,404 - simulate - INFO - Episode 3 started with seed 44.
+2025-08-08 09:44:30,404 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:30,830 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:30,831 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:30,835 - simulate - INFO - Board state: 
+...
+...
+...
+2025-08-08 09:44:30,835 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+2025-08-08 09:44:30,835 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: I choose to place my X in the center of the board, as it gives me the most flexibility for my next move and puts pressure on my opponent to respond. This is a common opening strategy in Tic Tac Toe, as it allows me to control the board and limit my opponent\
+2025-08-08 09:44:30,837 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:31,158 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:31,159 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:31,160 - root - WARNING - No valid action found in response: '{
+  'reasoning': 'I want to place my X in a position that blocks the potential winning line of O, wh...' Using random fallback: 0
+2025-08-08 09:44:31,163 - simulate - INFO - Board state: 
+.o.
+.x.
+...
+2025-08-08 09:44:31,163 - simulate - INFO - Legal actions: [0, 2, 3, 5, 6, 7, 8]
+2025-08-08 09:44:31,163 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 0 with reasoning: I want to place my X in a position that blocks the potential winning line of O, while also setting up a potential winning line for myself. The current board state shows O in the top-left corner, so I will place my X in the center to block their potential winning line. This also gives me a chance to create a winning line in the future.
+2025-08-08 09:44:31,167 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:31,483 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:31,486 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:31,493 - simulate - INFO - Board state: 
+xo.
+.x.
+..o
+2025-08-08 09:44:31,493 - simulate - INFO - Legal actions: [2, 3, 5, 6, 7]
+2025-08-08 09:44:31,493 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 3 with reasoning: I want to block the potential two-in-a-row for O and also create a possibility for a future win. By playing in cell 3, I can block O\
+2025-08-08 09:44:31,498 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:31,747 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:31,750 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:31,756 - simulate - INFO - Board state: 
+xoo
+xx.
+..o
+2025-08-08 09:44:31,756 - simulate - INFO - Legal actions: [5, 6, 7]
+2025-08-08 09:44:31,756 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 5 with reasoning: I want to block the potential two-in-a-row for O and also create a possibility for a future win. By playing in position 5, I can block the potential win for O and also set up a potential win for myself.
+2025-08-08 09:44:31,756 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
+2025-08-08 09:44:31,763 - simulate - INFO - Simulation for game tic_tac_toe, Episode 3 completed.
+2025-08-08 09:44:31,764 - simulate - INFO - Episode 4 started with seed 45.
+2025-08-08 09:44:31,765 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:32,067 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:32,068 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:32,071 - simulate - INFO - Board state: 
+...
+...
+...
+2025-08-08 09:44:32,071 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+2025-08-08 09:44:32,072 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: I choose to place my X in the center of the board, as it gives me the most flexibility for my next move and puts pressure on my opponent to respond. This is a common opening strategy in Tic Tac Toe, as it allows for the most possibilities for the next move.
+2025-08-08 09:44:32,075 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:32,477 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:32,478 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:32,481 - simulate - INFO - Board state: 
+...
+.x.
+.o.
+2025-08-08 09:44:32,481 - simulate - INFO - Legal actions: [0, 1, 2, 3, 5, 6, 8]
+2025-08-08 09:44:32,481 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 3 with reasoning: I want to block the potential two-in-a-row for O and also create a possibility for a future win. By placing my X in position 3, I can block O\
+2025-08-08 09:44:32,484 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:32,888 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:32,890 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:32,897 - simulate - INFO - Board state: 
+o..
+xx.
+.o.
+2025-08-08 09:44:32,897 - simulate - INFO - Legal actions: [1, 2, 5, 6, 8]
+2025-08-08 09:44:32,898 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 6 with reasoning: I want to block the potential three in a row for O, while also setting up a potential win for myself. I can do this by placing my X in position 6, which would block O\
+2025-08-08 09:44:32,902 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:33,300 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:33,303 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:33,309 - simulate - INFO - Board state: 
+oo.
+xx.
+xo.
+2025-08-08 09:44:33,310 - simulate - INFO - Legal actions: [2, 5, 8]
+2025-08-08 09:44:33,310 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 5 with reasoning: I want to block the potential win for O and also create a possibility for X to win. The best option is to place X in cell 5, which would be a strong move to control the center of the board and limit O\
+2025-08-08 09:44:33,310 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
+2025-08-08 09:44:33,317 - simulate - INFO - Simulation for game tic_tac_toe, Episode 4 completed.
+2025-08-08 09:44:33,318 - simulate - INFO - Episode 5 started with seed 46.
+2025-08-08 09:44:33,319 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:33,913 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:33,915 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:33,922 - simulate - INFO - Board state: 
+...
+...
+...
+2025-08-08 09:44:33,922 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+2025-08-08 09:44:33,922 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: I choose to place my X in the center of the board, as it gives me the most flexibility for my next move and puts pressure on my opponent to respond. This is a common opening strategy in Tic Tac Toe, as it allows for the possibility of creating two possible winning lines.
+2025-08-08 09:44:33,927 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:34,320 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:34,321 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:34,324 - simulate - INFO - Board state: 
+.o.
+.x.
+...
+2025-08-08 09:44:34,324 - simulate - INFO - Legal actions: [0, 2, 3, 5, 6, 7, 8]
+2025-08-08 09:44:34,324 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 5 with reasoning: I want to place my X in a position that will give me the highest chance of winning. Since the opponent has already placed their O in the top-left corner, I will place my X in the center of the board to put pressure on their position and limit their options. This will also give me the opportunity to potentially create a winning line in the future.
+2025-08-08 09:44:34,326 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:34,627 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:34,628 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:34,632 - simulate - INFO - Board state: 
+.oo
+.xx
+...
+2025-08-08 09:44:34,632 - simulate - INFO - Legal actions: [0, 3, 6, 7, 8]
+2025-08-08 09:44:34,632 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 7 with reasoning: I want to block the potential two-in-a-row for O and also create a possibility for a future win. By placing my X in position 7, I can block O\
+2025-08-08 09:44:34,634 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:34,953 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:34,955 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:34,962 - simulate - INFO - Board state: 
+.oo
+oxx
+.x.
+2025-08-08 09:44:34,963 - simulate - INFO - Legal actions: [0, 6, 8]
+2025-08-08 09:44:34,963 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 0 with reasoning: I want to block the potential two-in-a-row for O and also create a possibility for a future win. By placing my X in position 0, I can block the potential win for O and also set up a potential win for myself. Additionally, this move will also put pressure on O to respond in a way that blocks my potential win.
+2025-08-08 09:44:34,967 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-08 09:44:35,226 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-08 09:44:35,229 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-08 09:44:35,231 - root - WARNING - No valid action found in response: '{
+  'reasoning': 'I want to block the potential three in a row for O and also create a possibility f...' Using random fallback: 8
+2025-08-08 09:44:35,235 - simulate - INFO - Board state: 
+xoo
+oxx
+ox.
+2025-08-08 09:44:35,236 - simulate - INFO - Legal actions: [8]
+2025-08-08 09:44:35,236 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 8 with reasoning: I want to block the potential three in a row for O and also create a possibility for a future win. The best way to do this is to place my X in position 2, which would be the center of the board. This would give me the highest chance of winning and also limit O\
+2025-08-08 09:44:35,236 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
+2025-08-08 09:44:35,242 - simulate - INFO - Simulation for game tic_tac_toe, Episode 5 completed.
+2025-08-08 09:44:35,242 - __main__ - INFO - Sequential simulation results for tic_tac_toe completed
+2025-08-08 09:44:35,242 - __main__ - INFO - All simulations completed. Total results: 1
