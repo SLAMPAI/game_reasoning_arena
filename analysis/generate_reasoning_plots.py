@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """
-Model-Specific Reasoning Plots
+Generate Reasoning Analysis Plots
 
-This script generates reasoning analysis plots adapted for our game reasoning
-data, with one plot per model and using percentages instead of raw counts.
+This script generates comprehensive reasoning analysis visualizations for LLM
+game-playing data, including bar charts, pie charts, stacked charts, and
+evolution plots showing how reasoning patterns change over time.
 """
 
 import sys
 import os
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Optional, List
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -19,25 +20,11 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from reasoning_analysis import LLMReasoningAnalyzer  # noqa: E402
 
 
-def clean_model_name(agent_name: str) -> str:
-    """Extract a clean model name from the full agent name."""
-    if 'llama3_70b' in agent_name:
-        return 'Llama3 70B'
-    elif 'llama3_8b' in agent_name:
-        return 'Llama3 8B'
-    elif 'Meta_Llama_3.1_70B' in agent_name:
-        return 'Llama3.1 70B'
-    elif 'Meta_Llama_3.1_8B' in agent_name:
-        return 'Llama3.1 8B'
-    else:
-        # Fallback: use last part of agent name
-        return agent_name.split('_')[-1]
-
-
 def plot_reasoning_bar_chart(
     reasoning_percentages: Dict[str, float],
     model_name: str,
-    output_path: str = "reasoning_bar_chart.png"
+    output_path: str = "reasoning_bar_chart.png",
+    games_list: Optional[List[str]] = None
 ) -> None:
     """
     Plots a horizontal bar chart for reasoning type percentages.
@@ -47,6 +34,7 @@ def plot_reasoning_bar_chart(
             percentages.
         model_name: Name of the model for the title.
         output_path: File path to save the figure.
+        games_list: Optional list of games included in the analysis.
     """
     df = pd.DataFrame(
         list(reasoning_percentages.items()),
@@ -63,7 +51,13 @@ def plot_reasoning_bar_chart(
                  f'{percentage:.1f}%', ha='left', va='center',
                  fontweight='bold')
 
-    plt.title(f"Reasoning Type Distribution - {model_name}")
+    # Create title with game information
+    title = f"Reasoning Type Distribution - {model_name}"
+    if games_list:
+        games_str = ", ".join(sorted(games_list))
+        title += f"\nGames: {games_str}"
+
+    plt.title(title)
     plt.xlabel("Percentage (%)")
     plt.ylabel("Reasoning Type")
     plt.grid(True, axis='x', alpha=0.3)
@@ -195,8 +189,8 @@ def plot_reasoning_evolution_over_turns(
     plt.close()
 
 
-class ModelSpecificPlotter:
-    """Generates model-specific reasoning plots."""
+class ReasoningPlotGenerator:
+    """Generates comprehensive reasoning analysis plots for LLM game data."""
 
     def __init__(self, csv_path: str):
         """Initialize with the reasoning analysis data."""
@@ -219,7 +213,7 @@ class ModelSpecificPlotter:
 
         for agent_name in non_random_df['agent_name'].unique():
             agent_df = non_random_df[non_random_df['agent_name'] == agent_name]
-            model_name = clean_model_name(agent_name)
+            model_name = agent_name
             all_data[model_name] = {}
 
             for game in agent_df['game_name'].unique():
@@ -284,7 +278,8 @@ class ModelSpecificPlotter:
         # Process each model
         for agent_name in non_random_df['agent_name'].unique():
             agent_df = non_random_df[non_random_df['agent_name'] == agent_name]
-            model_name = clean_model_name(agent_name)
+            model_name = agent_name
+            games = agent_df['game_name'].unique().tolist()
 
             # Calculate reasoning percentages
             reasoning_counts = agent_df['reasoning_type'].value_counts()
@@ -293,12 +288,13 @@ class ModelSpecificPlotter:
                 reasoning_counts / total_moves * 100
             ).to_dict()
 
-            # 1. Horizontal bar chart
+            # 1. Aggregated horizontal bar chart (across all games)
             bar_output = Path(output_dir) / f"reasoning_bar_{agent_name}.png"
             plot_reasoning_bar_chart(
                 reasoning_percentages,
                 model_name,
-                str(bar_output)
+                str(bar_output),
+                games_list=games
             )
             generated_files.append(str(bar_output))
 
@@ -335,7 +331,27 @@ class ModelSpecificPlotter:
                 )
                 generated_files.append(str(stacked_output))
 
-            # 4. Evolution plots for each game (if multiple turns exist)
+            # 4. Individual bar charts per game
+            for game in games:
+                game_df = agent_df[agent_df['game_name'] == game]
+                game_counts = game_df['reasoning_type'].value_counts()
+                game_total_moves = game_counts.sum()
+                game_reasoning_percentages = (
+                    game_counts / game_total_moves * 100
+                ).to_dict()
+
+                game_bar_output = (
+                    Path(output_dir) / f"reasoning_bar_{agent_name}_{game}.png"
+                )
+                plot_reasoning_bar_chart(
+                    game_reasoning_percentages,
+                    model_name,
+                    str(game_bar_output),
+                    games_list=[game]  # Single game
+                )
+                generated_files.append(str(game_bar_output))
+
+            # 5. Evolution plots for each game (if multiple turns exist)
             for game in games:
                 game_df = agent_df[agent_df['game_name'] == game]
                 if len(game_df['turn'].unique()) > 1:
@@ -391,7 +407,7 @@ class ModelSpecificPlotter:
         print("Models and their move counts:")
         for agent_name in non_random_df['agent_name'].unique():
             agent_df = non_random_df[non_random_df['agent_name'] == agent_name]
-            model_name = clean_model_name(agent_name)
+            model_name = agent_name
             print(f"  {model_name}: {len(agent_df)} moves")
         print()
 
@@ -418,7 +434,7 @@ def main():
     print(f"Using data from: {latest_csv}")
 
     # Initialize the plotter
-    plotter = ModelSpecificPlotter(str(latest_csv))
+    plotter = ReasoningPlotGenerator(str(latest_csv))
 
     # Print data summary
     plotter.print_data_summary()
@@ -441,8 +457,6 @@ def main():
     print("  - Pie charts: Visual reasoning type proportions")
     print("  - Stacked bar charts: Reasoning percentages across games")
     print("  - Evolution plots: Reasoning changes over game turns")
-    print("\nAll plots use percentages instead of raw counts and include")
-    print("model names in titles for easy identification.")
 
 
 if __name__ == "__main__":

@@ -121,6 +121,28 @@ def export_traces_csv(df, output_file):
     print(f"✅ Reasoning traces exported to: {output_file}")
 
 
+def export_traces_txt(df, output_file):
+    """Export formatted reasoning traces to text file"""
+
+    from contextlib import redirect_stdout
+
+    with open(output_file, 'w', encoding='utf-8') as f:
+        with redirect_stdout(f):
+            # Print header
+            print("🔍 Board Game Arena - Reasoning Traces Extractor")
+            print("=" * 55)
+
+            # Print analysis
+            analyze_reasoning_patterns(df)
+
+            # Print detailed traces
+            display_traces_text(df)
+
+            print(f"\n✨ Extraction complete! Found {len(df)} reasoning traces.")
+
+    print(f"✅ Formatted traces exported to: {output_file}")
+
+
 def analyze_reasoning_patterns(df):
     """Analyze reasoning patterns in the traces"""
 
@@ -146,10 +168,16 @@ def analyze_reasoning_patterns(df):
     board_state_coverage = has_board_state.sum() / total_moves * 100
     print(f"Moves with board state: {has_board_state.sum()}/{total_moves} ({board_state_coverage:.1f}%)")
 
-    # Agent types
+    # Agent types and models
     print(f"\nAgent types:")
     for agent_type, count in df['agent_type'].value_counts().items():
         print(f"  - {agent_type}: {count} moves")
+
+    # Specific models used
+    if 'agent_model' in df.columns:
+        print(f"\nSpecific models:")
+        for model, count in df['agent_model'].value_counts().items():
+            print(f"  - {model}: {count} moves")
 
     # Games breakdown
     print(f"\nGames breakdown:")
@@ -169,6 +197,7 @@ def main():
     parser.add_argument("--game", help="Filter by game name")
     parser.add_argument("--episode", type=int, help="Filter by episode number")
     parser.add_argument("--export-csv", help="Export to CSV file")
+    parser.add_argument("--export-txt", help="Export formatted traces to text file")
     parser.add_argument("--analyze-only", action="store_true", help="Only show analysis, not full traces")
 
     args = parser.parse_args()
@@ -194,6 +223,11 @@ def main():
     df = extract_reasoning_traces(args.db, args.game, args.episode)
     if df is None:
         return
+
+    # Export to TXT if requested (includes analysis and traces)
+    if args.export_txt:
+        export_traces_txt(df, args.export_txt)
+        return  # Don't print to console if saving to file
 
     # Show analysis
     analyze_reasoning_patterns(df)

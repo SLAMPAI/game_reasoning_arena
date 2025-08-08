@@ -9,7 +9,7 @@ word clouds and statistical summaries of agent behavior patterns.
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from wordcloud import WordCloud
+# from wordcloud import WordCloud  # DISABLED - not using wordclouds
 import numpy as np
 import re
 import os
@@ -255,26 +255,26 @@ class LLMReasoningAnalyzer:
             plt.savefig(out_path)
             plt.close()
 
-        # Aggregate by agent across all games
-        for agent, agent_df in self.df.groupby("agent_name"):
-            if agent.startswith("random"):
-                continue
-            text = " ".join(agent_df['reasoning'].tolist())
-            wc = WordCloud(width=800, height=400, background_color='white').generate(text)
-            plt.figure(figsize=(10, 5))
-            plt.imshow(wc, interpolation='bilinear')
-            plt.axis("off")
-            games = agent_df['game_name'].unique()
-            game_list = ", ".join(games)
-            title = (
-                f"Reasoning Word Cloud - {agent}\n"
-                f"Games:{game_list}"
-            )
-            plt.title(title)
-            plt.tight_layout()
-            out_path = os.path.join(plot_dir, f"wordcloud_{agent}_all_games.png")
-            plt.savefig(out_path)
-            plt.close()
+        # Aggregate by agent across all games - WORDCLOUD DISABLED
+        # for agent, agent_df in self.df.groupby("agent_name"):
+        #     if agent.startswith("random"):
+        #         continue
+        #     text = " ".join(agent_df['reasoning'].tolist())
+        #     wc = WordCloud(width=800, height=400, background_color='white').generate(text)
+        #     plt.figure(figsize=(10, 5))
+        #     plt.imshow(wc, interpolation='bilinear')
+        #     plt.axis("off")
+        #     games = agent_df['game_name'].unique()
+        #     game_list = ", ".join(games)
+        #     title = (
+        #         f"Reasoning Word Cloud - {agent}\n"
+        #         f"Games:{game_list}"
+        #     )
+        #     plt.title(title)
+        #     plt.tight_layout()
+        #     out_path = os.path.join(plot_dir, f"wordcloud_{agent}_all_games.png")
+        #     plt.savefig(out_path)
+        #     plt.close()
 
         # pd.DataFrame(rows).to_csv(
         #     output_csv, index=False
@@ -307,28 +307,29 @@ class LLMReasoningAnalyzer:
             plt.savefig(out_path)
             plt.close()
 
-    def plot_wordclouds_by_agent(self, output_dir: str = "plots") -> None:
-        """Plot per-agent word clouds and one aggregated word cloud across all games.
+    # WORDCLOUD FUNCTION DISABLED
+    # def plot_wordclouds_by_agent(self, output_dir: str = "plots") -> None:
+    #     """Plot per-agent word clouds and one aggregated word cloud across all games.
 
-        Word clouds are created per agent-game pair and also aggregated per agent
-        over all games. The full version helps summarize LLM behavior globally.
-        """
+    #     Word clouds are created per agent-game pair and also aggregated per agent
+    #     over all games. The full version helps summarize LLM behavior globally.
+    #     """
 
-        Path(output_dir).mkdir(parents=True, exist_ok=True)
-        for (agent, game), agent_df in self.df.groupby(["agent_name", "game_name"]):
-            if agent.startswith("random"):
-                continue
-            text = " ".join(agent_df['reasoning'].tolist())
-            wc = WordCloud(width=800, height=400, background_color='white').generate(text)
-            plt.figure(figsize=(10, 5))
-            plt.imshow(wc, interpolation='bilinear')
-            plt.axis("off")
-            title = f"Reasoning Word Cloud - {agent} (Game: {game})"
-            plt.title(title)
-            plt.tight_layout()
-            out_path = os.path.join(output_dir, f"wordcloud_{agent}_{game}.png")
-            plt.savefig(out_path)
-            plt.close()
+    #     Path(output_dir).mkdir(parents=True, exist_ok=True)
+    #     for (agent, game), agent_df in self.df.groupby(["agent_name", "game_name"]):
+    #         if agent.startswith("random"):
+    #             continue
+    #         text = " ".join(agent_df['reasoning'].tolist())
+    #         wc = WordCloud(width=800, height=400, background_color='white').generate(text)
+    #         plt.figure(figsize=(10, 5))
+    #         plt.imshow(wc, interpolation='bilinear')
+    #         plt.axis("off")
+    #         title = f"Reasoning Word Cloud - {agent} (Game: {game})"
+    #         plt.title(title)
+    #         plt.tight_layout()
+    #         out_path = os.path.join(output_dir, f"wordcloud_{agent}_{game}.png")
+    #         plt.savefig(out_path)
+    #         plt.close()
 
     def plot_entropy_trendlines(self, output_dir: str = "plots") -> None:
         """Plot entropy over turns for each agent-game pair.
@@ -443,7 +444,7 @@ if __name__ == "__main__":
 
     analyzer.compute_metrics(plot_dir="plots")
     analyzer.plot_heatmaps_by_agent(output_dir="plots")
-    analyzer.plot_wordclouds_by_agent(output_dir="plots")
+    # analyzer.plot_wordclouds_by_agent(output_dir="plots")  # WORDCLOUD DISABLED
     # analyzer.plot_entropy_trendlines()
     # analyzer.plot_entropy_by_turn_across_agents()
     analyzer.plot_avg_entropy_across_games(output_dir="plots")
