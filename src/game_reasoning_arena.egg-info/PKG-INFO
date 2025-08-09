@@ -520,15 +520,26 @@ python3 show_reasoning_traces.py
 
 ### Advanced Analysis Tools
 
+> **Automated Analysis Pipeline**
+> The analysis of traces is done via an automated pipeline:
+> ```bash
+> # Single command for complete analysis
+> ./run_analysis.sh
+>
+> # Or use Python directly
+> python3 analysis/quick_analysis.py
+> ```
+> See [ANALYSIS_AUTOMATION.md](ANALYSIS_AUTOMATION.md) for details.
+
 #### 1. Extract Specific Traces
 ```bash
 # Extract traces for specific games or episodes
-python3 extract_reasoning_traces.py --game tic_tac_toe --episode 1
+python3 analysis/extract_reasoning_traces.py --game tic_tac_toe --episode 1
 ```
 
-#### 2. Reasoning Pattern Analysis
+#### 2. Reasoning Pattern Analysis (Manual)
 ```bash
-# Analyze reasoning patterns and generate visualizations
+# Manual approach (automated pipeline handles this automatically)
 python3 -c "
 from analysis.reasoning_analysis import LLMReasoningAnalyzer
 analyzer = LLMReasoningAnalyzer('results/merged_logs.csv')

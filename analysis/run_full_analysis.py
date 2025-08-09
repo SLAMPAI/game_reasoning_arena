@@ -33,7 +33,6 @@ sys.path.append(str(Path(__file__).parent))
 try:
     from post_game_processing import merge_sqlite_logs, compute_summary_statistics
     from reasoning_analysis import LLMReasoningAnalyzer
-    from generate_reasoning_plots import main as generate_plots_main
 except ImportError as e:
     print(f"Error importing analysis modules: {e}")
     print("Make sure you're running this from the project root directory")
@@ -221,46 +220,62 @@ class AnalysisPipeline:
             return False
 
     def step_3_generate_plots(self, merged_csv_path: str) -> bool:
-        """Step 3: Generate additional reasoning plots."""
-        step_name = "Plot Generation"
+        """Step 3: Generate comprehensive reasoning plots."""
+        step_name = "Comprehensive Plot Generation"
         self.logger.info(f"\n{'='*60}")
         self.logger.info(f"STEP 3: {step_name}")
         self.logger.info(f"{'='*60}")
 
         try:
-            # Change to the analysis directory to run generate_reasoning_plots
-            original_cwd = Path.cwd()
-            analysis_dir = Path(__file__).parent
+            # Import the plotting classes directly
+            from generate_reasoning_plots import ReasoningPlotGenerator
 
-            try:
-                import os
-                os.chdir(analysis_dir.parent)  # Go to project root
+            self.logger.info(
+                f"Initializing plot generator with data: {merged_csv_path}")
 
-                # Set up environment for the plots script
-                old_sys_argv = sys.argv.copy()
-                sys.argv = ['generate_reasoning_plots.py']  # Simulate command line
+            # Initialize the plotter
+            plotter = ReasoningPlotGenerator(merged_csv_path)
 
-                # Run the plot generation
-                generate_plots_main()
+            # Generate comprehensive plots
+            self.logger.info("Generating basic reasoning analysis plots...")
+            basic_files = plotter.generate_model_plots(str(self.plots_dir))
 
-                # Restore
-                sys.argv = old_sys_argv
-                os.chdir(original_cwd)
+            self.logger.info("Generating enhanced evolution plots...")
+            evolution_files = plotter.plot_all_reasoning_evolutions_enhanced(
+                str(self.plots_dir))
 
-            except Exception as e:
-                os.chdir(original_cwd)
-                raise e
+            # Count total generated files
+            all_generated_files = basic_files + evolution_files
 
-            # Count new plot files
-            plot_files = list(self.plots_dir.glob("*.png"))
+            # Log summary
+            self.logger.info(
+                f"✅ Generated {len(all_generated_files)} plot files:")
+            self.logger.info(
+                f"   • Basic plots (bar, pie, stacked): {len(basic_files)}")
+            self.logger.info(
+                f"   • Evolution plots (enhanced): {len(evolution_files)}")
 
-            self.log_step(step_name, "COMPLETED",
-                         f"Additional plots generated (total: {len(plot_files)} files)")
+            # Add to pipeline results
+            self.pipeline_results["files_generated"].extend(
+                all_generated_files)
+
+            self.pipeline_results["summary"]["comprehensive_plots"] = {
+                "total_files": len(all_generated_files),
+                "basic_plots": len(basic_files),
+                "evolution_plots": len(evolution_files),
+                "output_directory": str(self.plots_dir)
+            }
+
+            self.log_step(
+                step_name, "COMPLETED",
+                f"Generated {len(all_generated_files)} comprehensive plots "
+                f"in {self.plots_dir}")
 
             return True
 
         except Exception as e:
             self.log_step(step_name, "FAILED", str(e))
+            self.logger.error(f"Plot generation failed: {e}")
             return False
 
     def step_4_extract_sample_traces(self) -> bool:

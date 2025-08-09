@@ -204,6 +204,65 @@ The analysis tool categorizes LLM reasoning into:
 * **Rule-Based**: Following explicit strategies
 * **Random/Unjustified**: Unclear or random reasoning
 
+Entropy Analysis
+~~~~~~~~~~~~~~~~
+
+Board Game Arena provides comprehensive **entropy analysis** to measure the diversity and predictability of agent reasoning patterns over time.
+
+**What is Entropy?**
+
+Shannon entropy quantifies the diversity of reasoning categories used by an agent:
+
+.. math::
+
+   H = -\sum_{i} p_i \log_2(p_i)
+
+Where :math:`p_i` is the probability of reasoning category :math:`i`.
+
+**Entropy Interpretation:**
+
+* **High Entropy (2.5-3.0)**: Diverse reasoning, using many different strategies
+* **Medium Entropy (1.5-2.5)**: Moderate diversity, some preferred strategies
+* **Low Entropy (0.0-1.5)**: Focused reasoning, few dominant strategies
+
+**Key Entropy Metrics:**
+
+* **Reasoning Entropy**: Diversity of reasoning categories per game turn
+* **Temporal Trends**: How entropy changes throughout gameplay
+* **Cross-Game Comparison**: Entropy patterns across different game types
+* **Agent Comparison**: Reasoning diversity between different models
+
+**Entropy Analysis Tools:**
+
+.. code-block:: python
+
+   from analysis.reasoning_analysis import LLMReasoningAnalyzer
+
+   # Initialize analyzer
+   analyzer = LLMReasoningAnalyzer("run_logs/experiment_results.csv")
+
+   # Generate entropy trendline plots
+   analyzer.plot_entropy_trendlines(output_dir="plots/")
+
+   # Plot average entropy across all games
+   analyzer.plot_avg_entropy_across_games(output_dir="plots/")
+
+   # Calculate entropy for specific game/agent combinations
+   entropy_data = analyzer.calculate_entropy_by_turn(
+       game_name="tic_tac_toe",
+       agent_type="llm_litellm_groq_llama3_8b_8192"
+   )
+
+**Generated Entropy Visualizations:**
+
+* ``entropy_trend_[agent]_[game].png``: Entropy evolution over game turns
+* ``avg_entropy_all_games.png``: Average entropy comparison across games
+* ``entropy_heatmap_[agent].png``: Entropy patterns across different conditions
+
+**Example Entropy Interpretation:**
+
+A decreasing entropy trend might indicate that an agent becomes more focused on specific strategies as the game progresses, while fluctuating entropy could suggest adaptive reasoning based on changing game states.
+
 Comparative Analysis
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -263,11 +322,24 @@ Generated Visualizations
 
 The analysis tools generate various plots and charts:
 
+**Reasoning Analysis Plots:**
+
 * **Reasoning Type Pie Charts**: Distribution of reasoning categories
 * **Word Clouds**: Common phrases in agent reasoning
-* **Heatmaps**: Performance across different game conditions
-* **Entropy Plots**: Decision randomness over time
+* **Stacked Bar Evolution**: Reasoning category transitions over game turns
+* **Reasoning Heatmaps**: Performance across different game conditions
+
+**Entropy Analysis Plots:**
+
+* **Entropy Trendlines**: Decision diversity evolution over game turns (``entropy_trend_[agent]_[game].png``)
+* **Average Entropy Comparison**: Cross-game entropy comparison (``avg_entropy_all_games.png``)
+* **Entropy Heatmaps**: Reasoning diversity patterns across conditions
+
+**Performance Analysis:**
+
 * **Win Rate Analysis**: Comparative performance metrics
+* **Evolution Plots**: Enhanced single-panel stacked bar visualizations showing reasoning transitions
+* **Cross-Agent Comparisons**: Side-by-side performance and reasoning analysis
 
 Example Analysis Workflow
 --------------------------

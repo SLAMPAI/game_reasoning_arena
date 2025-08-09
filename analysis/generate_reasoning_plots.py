@@ -14,6 +14,8 @@ from typing import Dict, Optional, List
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
 
 # Add analysis directory to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -42,28 +44,23 @@ def plot_reasoning_bar_chart(
     )
     df = df.sort_values("percentage", ascending=True)
 
-    plt.figure(figsize=(8, 6))
-    bars = plt.barh(df["reasoning_type"], df["percentage"], color="skyblue")
+    plt.figure(figsize=(10, 6))
+    bars = plt.barh(df["reasoning_type"], df["percentage"])
+
+    # Generate title
+    title = f"Reasoning Type Distribution - {model_name}"
+    if games_list:
+        title += f" ({', '.join(games_list)})"
+
+    plt.title(title, fontsize=16, fontweight='bold')
+    plt.xlabel("Percentage (%)", fontsize=14)
+    plt.ylabel("Reasoning Type", fontsize=14)
+    plt.tick_params(axis='both', which='major', labelsize=12)
 
     # Add percentage labels on bars
     for bar, percentage in zip(bars, df["percentage"]):
         plt.text(bar.get_width() + 0.5, bar.get_y() + bar.get_height()/2,
-                 f'{percentage:.1f}%', ha='left', va='center',
-                 fontweight='bold')
-
-    # Create title with game information
-    title = f"Reasoning Type Distribution - {model_name}"
-    if games_list:
-        games_str = ", ".join(sorted(games_list))
-        title += f"\nGames: {games_str}"
-
-    plt.title(title)
-    plt.xlabel("Percentage (%)")
-    plt.ylabel("Reasoning Type")
-    plt.grid(True, axis='x', alpha=0.3)
-    plt.tight_layout()
-    plt.savefig(output_path, dpi=300, bbox_inches='tight')
-    plt.close()
+                 f'{percentage:.1f}%', ha='left', va='center', fontsize=11)
 
 
 def plot_reasoning_pie_chart(
@@ -87,14 +84,17 @@ def plot_reasoning_pie_chart(
         series.values,
         labels=series.index,
         autopct='%1.1f%%',
-        startangle=90
+        startangle=90,
+        textprops={'fontsize': 12}
     )
 
     # Make percentage text bold
     for autotext in autotexts:
         autotext.set_fontweight('bold')
+        autotext.set_fontsize(12)
 
-    plt.title(f"Reasoning Type Distribution - {model_name}", fontsize=14)
+    plt.title(f"Reasoning Type Distribution - {model_name}",
+              fontsize=16, fontweight='bold')
     plt.tight_layout()
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
     plt.close()
@@ -119,12 +119,14 @@ def plot_stacked_bar_chart(
     plt.figure(figsize=(12, 6))
     df.plot(kind='bar', stacked=True, colormap="tab20c")
 
-    plt.ylabel("Percentage (%)")
-    plt.xlabel("Game")
-    plt.title(f"Reasoning Types per Game - {model_name}")
+    plt.ylabel("Percentage (%)", fontsize=14)
+    plt.xlabel("Game", fontsize=14)
+    plt.title(f"Reasoning Types per Game - {model_name}",
+              fontsize=16, fontweight='bold')
     plt.legend(title="Reasoning Type", bbox_to_anchor=(1.05, 1),
-               loc='upper left')
-    plt.xticks(rotation=45)
+               loc='upper left', fontsize=12, title_fontsize=13)
+    plt.xticks(rotation=45, fontsize=12)
+    plt.yticks(fontsize=12)
 
     # Add percentage labels on stacked bars
     for i, game in enumerate(df.index):
@@ -134,7 +136,7 @@ def plot_stacked_bar_chart(
             if percentage > 5:  # Only show label if segment is large enough
                 plt.text(i, cumulative + percentage/2, f'{percentage:.0f}%',
                          ha='center', va='center', fontweight='bold',
-                         fontsize=8)
+                         fontsize=10)
             cumulative += percentage
 
     plt.tight_layout()
@@ -150,7 +152,7 @@ def plot_reasoning_evolution_over_turns(
 ) -> None:
     """
     Plots how reasoning type distribution changes over turns for a
-    model-game pair.
+    model-game pair using a stacked area chart.
 
     Args:
         reasoning_per_turn: Dict mapping turn_number -> reasoning_type ->
@@ -166,24 +168,91 @@ def plot_reasoning_evolution_over_turns(
     # Normalize to proportions per turn
     df_prop = df.div(df.sum(axis=1), axis=0).fillna(0)
 
-    # Plot
-    plt.figure(figsize=(10, 6))
-    for reasoning_type in df_prop.columns:
-        plt.plot(
-            df_prop.index,
-            df_prop[reasoning_type],
-            label=reasoning_type,
-            linewidth=2,
-            marker='o'
-        )
+    # If we have sparse data, skip this plot
+    if len(df_prop) < 2:
+        print(f"Skipping evolution plot for {model_name}-{game_name}: "
+              f"insufficient turn data")
+        return
 
-    plt.title(f"{model_name} - {game_name}: Reasoning Evolution Over Turns")
-    plt.xlabel("Turn")
-    plt.ylabel("Proportion of Reasoning")
+    # Create single figure with stacked bar chart
+    plt.figure(figsize=(12, 8))
+
+    # Create stacked bar chart where each bar represents a turn
+    # and each segment represents a reasoning category
+    bottom = np.zeros(len(df_prop))
+    colors = plt.cm.Set3(np.linspace(0, 1, len(df_prop.columns)))
+
+    for i, reasoning_type in enumerate(df_prop.columns):
+        plt.bar(df_prop.index, df_prop[reasoning_type],
+                bottom=bottom, label=reasoning_type,
+                color=colors[i], alpha=0.8, edgecolor='black',
+                linewidth=0.5)
+        bottom += df_prop[reasoning_type]
+
+    plt.title(f"{model_name} - {game_name}: Reasoning Category Evolution",
+              fontsize=16, fontweight='bold')
+    plt.xlabel("Game Turn", fontsize=14)
+    plt.ylabel("Proportion of Reasoning Types", fontsize=14)
     plt.ylim(0, 1)
-    plt.grid(True, alpha=0.3)
-    plt.legend(loc="upper left", bbox_to_anchor=(1.05, 1),
-               title="Reasoning Type")
+    plt.grid(True, alpha=0.3, axis='y')
+    plt.legend(loc="center left", bbox_to_anchor=(1.05, 0.5),
+               title="Reasoning Type", fontsize=12, title_fontsize=13)
+    plt.tick_params(axis='both', which='major', labelsize=12)
+
+    # Add sample size annotations above each bar
+    for turn in df_prop.index:
+        total_count = df.loc[turn].sum()
+        plt.annotate(f'n={int(total_count)}',
+                     xy=(turn, 1.02),
+                     ha='center', va='bottom',
+                     fontsize=11, alpha=0.7)
+
+    plt.tight_layout()
+    plt.savefig(output_path, dpi=300, bbox_inches='tight')
+    plt.close()
+
+
+def plot_reasoning_evolution_heatmap(
+    reasoning_per_turn: Dict[int, Dict[str, int]],
+    model_name: str,
+    game_name: str,
+    output_path: str = "reasoning_evolution_heatmap.png"
+) -> None:
+    """
+    Creates a heatmap showing reasoning evolution over turns.
+    Better for sparse data or when you want to see patterns clearly.
+    """
+    # Convert to DataFrame
+    df = pd.DataFrame.from_dict(reasoning_per_turn, orient="index").fillna(0)
+    df = df.sort_index()
+
+    # If insufficient data, skip
+    if len(df) < 2 or df.empty:
+        print(f"Skipping heatmap for {model_name}-{game_name}: "
+              f"insufficient data")
+        return
+
+    # Normalize to proportions
+    df_prop = df.div(df.sum(axis=1), axis=0).fillna(0)
+
+    # Create heatmap
+    plt.figure(figsize=(10, 6))
+    sns.heatmap(df_prop.T, annot=True, cmap='RdYlBu_r',
+                cbar_kws={'label': 'Proportion'}, fmt='.2f',
+                annot_kws={'fontsize': 12})
+
+    plt.title(f"{model_name} - {game_name}: Reasoning Evolution Heatmap",
+              fontsize=16, fontweight='bold')
+    plt.xlabel("Game Turn", fontsize=14)
+    plt.ylabel("Reasoning Type", fontsize=14)
+    plt.tick_params(axis='both', which='major', labelsize=12)
+
+    # Add sample size annotations
+    for i, turn in enumerate(df.index):
+        total = df.loc[turn].sum()
+        plt.text(i + 0.5, len(df.columns) + 0.1, f'n={int(total)}',
+                 ha='center', va='bottom', fontsize=11)
+
     plt.tight_layout()
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
     plt.close()
@@ -246,8 +315,10 @@ class ReasoningPlotGenerator:
 
         for model_name, model_games in all_data.items():
             for game_name, reasoning_per_turn in model_games.items():
-                filename = f"evolution_{model_name}_{game_name}.png"
-                filename = filename.replace(" ", "_").replace(".", "_").lower()
+                # Clean the model and game names for filename
+                clean_model = model_name.replace(" ", "_").replace(".", "_")
+                clean_game = game_name.replace(" ", "_").replace(".", "_")
+                filename = f"evolution_{clean_model}_{clean_game}.png".lower()
                 output_path = Path(output_dir) / filename
 
                 plot_reasoning_evolution_over_turns(
@@ -259,6 +330,123 @@ class ReasoningPlotGenerator:
                 generated_files.append(str(output_path))
 
         return generated_files
+
+    def plot_all_reasoning_evolutions_enhanced(self,
+                                               output_dir: str = "plots"):
+        """
+        Plots both standard evolution plots and heatmaps for all
+        model-game pairs.
+
+        Args:
+            output_dir: Directory to save plots
+        """
+        Path(output_dir).mkdir(parents=True, exist_ok=True)
+
+        all_data = self.extract_all_evolution_data()
+        generated_files = []
+
+        for model_name, model_games in all_data.items():
+            for game_name, reasoning_per_turn in model_games.items():
+                # Clean the model and game names for filename
+                clean_model = model_name.replace(" ", "_").replace(".", "_")
+                clean_game = game_name.replace(" ", "_").replace(".", "_")
+
+                # Generate standard evolution plot
+                filename = f"evolution_{clean_model}_{clean_game}.png".lower()
+                output_path = Path(output_dir) / filename
+
+                plot_reasoning_evolution_over_turns(
+                    reasoning_per_turn=reasoning_per_turn,
+                    model_name=model_name,
+                    game_name=game_name,
+                    output_path=str(output_path)
+                )
+                generated_files.append(str(output_path))
+
+                # Generate heatmap version
+                heatmap_filename = (f"evolution_heatmap_{clean_model}_"
+                                    f"{clean_game}.png").lower()
+                heatmap_path = Path(output_dir) / heatmap_filename
+
+                plot_reasoning_evolution_heatmap(
+                    reasoning_per_turn=reasoning_per_turn,
+                    model_name=model_name,
+                    game_name=game_name,
+                    output_path=str(heatmap_path)
+                )
+                generated_files.append(str(heatmap_path))
+
+        return generated_files
+
+    def analyze_reasoning_evolution_patterns(self) -> Dict:
+        """
+        Analyze and summarize reasoning evolution patterns across models.
+        Returns insights about how reasoning changes over turns.
+        """
+        all_data = self.extract_all_evolution_data()
+        analysis = {
+            'models': {},
+            'summary': {
+                'total_models': len(all_data),
+                'evolution_patterns': []
+            }
+        }
+
+        for model_name, games in all_data.items():
+            model_analysis = {'games': {}}
+
+            for game_name, turn_data in games.items():
+                turns = sorted(turn_data.keys())
+
+                # Analyze transition patterns
+                dominant_categories = {}
+
+                for turn in turns:
+                    reasoning_counts = turn_data[turn]
+                    total = sum(reasoning_counts.values())
+
+                    # Find dominant category for this turn
+                    if reasoning_counts:
+                        dominant = max(reasoning_counts.items(),
+                                       key=lambda x: x[1])
+                        dominant_categories[turn] = {
+                            'category': dominant[0],
+                            'proportion': dominant[1] / total,
+                            'count': dominant[1],
+                            'total': total
+                        }
+
+                # Detect evolution patterns
+                pattern_description = self._describe_evolution_pattern(
+                    dominant_categories)
+
+                model_analysis['games'][game_name] = {
+                    'turns_analyzed': turns,
+                    'dominant_by_turn': dominant_categories,
+                    'pattern': pattern_description
+                }
+
+            analysis['models'][model_name] = model_analysis
+
+        return analysis
+
+    def _describe_evolution_pattern(self, dominant_categories: Dict) -> str:
+        """Helper method to describe evolution patterns in natural language."""
+        turns = sorted(dominant_categories.keys())
+        categories = [dominant_categories[turn]['category'] for turn in turns]
+
+        if len(set(categories)) == 1:
+            return f"Consistent {categories[0]} throughout"
+        elif len(categories) >= 3:
+            # Look for progression patterns
+            if categories[0] != categories[-1]:
+                return (f"Evolution: {categories[0]} → ... → {categories[-1]} "
+                        f"(progresses through {len(set(categories))} "
+                        f"categories)")
+            else:
+                return f"Mixed pattern with {len(set(categories))} categories"
+        else:
+            return f"Transition: {' → '.join(categories)}"
 
     def generate_model_plots(self, output_dir: str = "plots"):
         """Generate all plot types for each model."""
