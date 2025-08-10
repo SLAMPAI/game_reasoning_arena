@@ -48,43 +48,7 @@ Where:
 - **Shows**: Average reasoning diversity across all agents and games
 - **Purpose**: Global understanding of reasoning evolution
 
-## 📁 Current Entropy Files Available
 
-Based on your current data, these entropy plot files exist in the `plots/` directory:
-
-1. **Individual Agent Trends:**
-   - `entropy_trend_llm_litellm_groq_llama3_8b_8192_tic_tac_toe.png`
-   - `entropy_trend_llm_litellm_groq_gemma_7b_it_tic_tac_toe.png`
-
-2. **Cross-Agent Comparison:**
-   - `entropy_by_turn_all_agents_tic_tac_toe.png`
-
-3. **Overall Trends:**
-   - `avg_entropy_all_games.png`
-
-## 🔍 Entropy Analysis from Your Data
-
-### 🤖 LLAMA3-8B Model Performance
-```
-Turn 0: 0.000 bits (100% Opponent Modeling)
-Turn 2: 1.157 bits (70% Positional, 20% Blocking, 10% Other)
-Turn 4: 0.000 bits (100% Blocking)
-```
-
-**Interpretation**:
-- ✅ Shows **adaptive reasoning** - changes strategy based on game state
-- ✅ Demonstrates **strategic evolution** from exploration → mixed strategy → focused defense
-- ✅ Mid-game entropy peak (1.157 bits) indicates sophisticated strategic thinking
-
-### 🤖 GEMMA-7B Model Performance
-```
-All turns: 0.000 bits (100% Random/Unjustified)
-```
-
-**Interpretation**:
-- ⚠️ **Zero adaptation** - uses same poor reasoning throughout
-- ⚠️ **Low-quality consistency** - predictable but ineffective
-- ⚠️ **No strategic thinking** - fails to adapt to game context
 
 ## 🎯 How to Interpret Entropy Values
 
