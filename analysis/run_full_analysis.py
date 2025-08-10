@@ -10,14 +10,17 @@ Usage:
     python3 analysis/run_full_analysis.py [options]
 
 Options:
-    --results-dir DIR     Directory containing SQLite database files (default: results)
-    --plots-dir DIR       Directory for output plots and visualizations (default: plots)
+    --results-dir DIR     Directory containing SQLite database files
+                        (default: results)
+    --plots-dir DIR       Directory for output plots and visualizations
+                        (default: plots)
     --quiet               Run in quiet mode (less verbose output)
     --skip-existing       Skip analysis steps if output files already exist
 
 Examples:
     python3 analysis/run_full_analysis.py
-    python3 analysis/run_full_analysis.py --results-dir my_results --plots-dir my_plots
+    python3 analysis/run_full_analysis.py --results-dir my_results \
+        --plots-dir my_plots
     python3 analysis/run_full_analysis.py --quiet
     python3 analysis/run_full_analysis.py --skip-existing
 
@@ -30,10 +33,10 @@ Features:
     - Error handling and recovery
 """
 
+
 import argparse
 import json
 import logging
-import os
 import sys
 import time
 from pathlib import Path
@@ -44,7 +47,8 @@ sys.path.append(str(Path(__file__).parent))
 
 # Import analysis modules
 try:
-    from post_game_processing import merge_sqlite_logs, compute_summary_statistics
+    from post_game_processing import (merge_sqlite_logs,
+                                      compute_summary_statistics)
     from reasoning_analysis import LLMReasoningAnalyzer
 except ImportError as e:
     print(f"Error importing analysis modules: {e}")
@@ -101,7 +105,7 @@ class AnalysisPipeline:
     def log_step(self, step_name: str, status: str, details: str = ""):
         """Log pipeline step progress."""
         timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-        self.logger.info(f"[{step_name}] {status}: {details}")
+        self.logger.info("[%s] %s: %s", step_name, status, details)
 
         if status == "COMPLETED":
             self.pipeline_results["steps_completed"].append({
@@ -119,9 +123,9 @@ class AnalysisPipeline:
     def step_1_merge_databases(self) -> Optional[str]:
         """Step 1: Merge all SQLite databases into a consolidated CSV."""
         step_name = "Database Merging"
-        self.logger.info(f"\n{'='*60}")
-        self.logger.info(f"STEP 1: {step_name}")
-        self.logger.info(f"{'='*60}")
+        self.logger.info("\n" + "="*60)
+        self.logger.info("STEP 1: %s", step_name)
+        self.logger.info("="*60)
 
         try:
             # Check if results directory exists and has .db files
@@ -136,7 +140,7 @@ class AnalysisPipeline:
                     f"No .db files found in {self.results_dir}"
                 )
 
-            self.logger.info(f"Found {len(db_files)} database files to merge")
+            self.logger.info("Found %d database files to merge", len(db_files))
 
             # Merge databases
             merged_df = merge_sqlite_logs(str(self.results_dir))
@@ -179,9 +183,9 @@ class AnalysisPipeline:
     def step_2_reasoning_analysis(self, merged_csv_path: str) -> bool:
         """Step 2: Run comprehensive reasoning analysis."""
         step_name = "Reasoning Analysis"
-        self.logger.info(f"\n{'='*60}")
-        self.logger.info(f"STEP 2: {step_name}")
-        self.logger.info(f"{'='*60}")
+        self.logger.info("\n" + "="*60)
+        self.logger.info("STEP 2: %s", step_name)
+        self.logger.info("="*60)
 
         try:
             # Initialize analyzer
@@ -192,7 +196,8 @@ class AnalysisPipeline:
             analyzer.categorize_reasoning()
 
             # Generate metrics and plots
-            self.logger.info("Computing metrics and generating visualizations...")
+            self.logger.info(
+                "Computing metrics and generating visualizations...")
             analyzer.compute_metrics(plot_dir=str(self.plots_dir))
 
             # Generate additional visualizations (if enabled)
@@ -200,43 +205,45 @@ class AnalysisPipeline:
                 self.logger.info("Generating heatmaps...")
                 analyzer.plot_heatmaps_by_agent(output_dir=str(self.plots_dir))
             except Exception as e:
-                self.logger.warning(f"Heatmap generation failed: {e}")
-
-            try:
-                self.logger.info("Generating word clouds...")
-                analyzer.plot_wordclouds_by_agent(output_dir=str(self.plots_dir))
-            except Exception as e:
-                self.logger.warning(f"Wordcloud generation failed: {e}")
+                self.logger.warning("Heatmap generation failed: %s", e)
 
             try:
                 self.logger.info("Generating entropy trend lines...")
                 analyzer.plot_entropy_trendlines()
             except Exception as e:
-                self.logger.warning(f"Entropy trend generation failed: {e}")
+                self.logger.warning("Entropy trend generation failed: %s", e)
             # Additional entropy plots
             try:
                 self.logger.info("Generating entropy by turn across agents...")
-                analyzer.plot_entropy_by_turn_across_agents(output_dir=str(self.plots_dir))
+                analyzer.plot_entropy_by_turn_across_agents(
+                    output_dir=str(self.plots_dir))
             except Exception as e:
-                self.logger.warning(f"plot_entropy_by_turn_across_agents failed: {e}")
+                self.logger.warning(
+                    "plot_entropy_by_turn_across_agents failed: %s", e)
 
             try:
                 self.logger.info("Generating average entropy across games...")
-                analyzer.plot_avg_entropy_across_games(output_dir=str(self.plots_dir))
+                analyzer.plot_avg_entropy_across_games(
+                    output_dir=str(self.plots_dir))
             except Exception as e:
-                self.logger.warning(f"plot_avg_entropy_across_games failed: {e}")
+                self.logger.warning(
+                    "plot_avg_entropy_across_games failed: %s", e)
 
             # Count generated plot files
             plot_files = list(self.plots_dir.glob("*.png"))
-            self.pipeline_results["files_generated"].extend([str(f) for f in plot_files])
+            self.pipeline_results["files_generated"].extend(
+                [str(f) for f in plot_files])
 
             self.pipeline_results["summary"]["reasoning_analysis"] = {
                 "total_plot_files": len(plot_files),
                 "analyzer_initialized": True
             }
 
-            self.log_step(step_name, "COMPLETED",
-                         f"Generated {len(plot_files)} visualization files in {self.plots_dir}")
+            self.log_step(
+                step_name, "COMPLETED",
+                "Generated %d visualization files in %s" % (
+                    len(plot_files), self.plots_dir)
+            )
 
             return True
 
@@ -254,10 +261,9 @@ class AnalysisPipeline:
         try:
             # Import the plotting classes directly
             from generate_reasoning_plots import ReasoningPlotGenerator
-            from generate_reasoning_plots import plot_reasoning_evolution_over_turns
 
             self.logger.info(
-                f"Initializing plot generator with data: {merged_csv_path}")
+                "Initializing plot generator with data: %s", merged_csv_path)
 
             # Initialize the plotter
             plotter = ReasoningPlotGenerator(merged_csv_path)
@@ -271,46 +277,55 @@ class AnalysisPipeline:
                 str(self.plots_dir))
 
             self.logger.info("Generating standard evolution plots...")
-            std_evolution_files = plotter.plot_all_reasoning_evolutions(str(self.plots_dir))
+            std_evolution_files = plotter.plot_all_reasoning_evolutions(
+                str(self.plots_dir))
 
             self.logger.info("Analyzing reasoning evolution patterns...")
             evolution_patterns = plotter.analyze_reasoning_evolution_patterns()
             # Save evolution pattern summary
             import json
-            evolution_summary_path = self.plots_dir / "reasoning_evolution_patterns.json"
+            evolution_summary_path = (
+                self.plots_dir / "reasoning_evolution_patterns.json")
             with open(evolution_summary_path, "w") as f:
                 json.dump(evolution_patterns, f, indent=2)
 
             # Optionally, describe evolution pattern for first model/game
             try:
-                for model, model_data in evolution_patterns.get('models', {}).items():
+                for model, model_data in evolution_patterns.get(
+                        'models', {}).items():
                     for game, game_data in model_data.get('games', {}).items():
-                        desc = plotter._describe_evolution_pattern(game_data['dominant_by_turn'])
-                        self.logger.info(f"Evolution pattern for {model} - {game}: {desc}")
+                        desc = plotter._describe_evolution_pattern(
+                            game_data['dominant_by_turn'])
+                        self.logger.info(
+                            "Evolution pattern for %s - %s: %s",
+                            model, game, desc)
                         break
                     break
             except Exception as e:
-                self.logger.warning(f"_describe_evolution_pattern failed: {e}")
+                self.logger.warning(
+                    "_describe_evolution_pattern failed: %s", e)
 
             # Count total generated files
-            all_generated_files = basic_files + evolution_files + std_evolution_files + [str(evolution_summary_path)]
+            all_generated_files = (
+                basic_files + evolution_files + std_evolution_files +
+                [str(evolution_summary_path)])
 
             # Log summary
             self.logger.info(
-                f"✅ Generated {len(all_generated_files)} plot files:")
+                "✅ Generated %d plot files:", len(all_generated_files))
             self.logger.info(
-                f"   • Basic plots (bar, pie, stacked): {len(basic_files)}")
+                "   • Basic plots (bar, pie, stacked): %d", len(basic_files))
             self.logger.info(
-                f"   • Evolution plots (enhanced): {len(evolution_files)}")
+                "   • Evolution plots (enhanced): %d", len(evolution_files))
             self.logger.info(
-                f"   • Evolution plots (standard): {len(std_evolution_files)}")
+                "   • Evolution plots (standard): %d",
+                len(std_evolution_files))
             self.logger.info(
-                f"   • Evolution pattern summary: {evolution_summary_path}")
+                "   • Evolution pattern summary: %s", evolution_summary_path)
 
             # Add to pipeline results
             self.pipeline_results["files_generated"].extend(
                 all_generated_files)
-
             self.pipeline_results["summary"]["comprehensive_plots"] = {
                 "total_files": len(all_generated_files),
                 "basic_plots": len(basic_files),
@@ -321,8 +336,8 @@ class AnalysisPipeline:
 
             self.log_step(
                 step_name, "COMPLETED",
-                f"Generated {len(all_generated_files)} comprehensive plots "
-                f"in {self.plots_dir}")
+                f"Generated {len(all_generated_files)} comprehensive plots in "
+                f"{self.plots_dir}")
 
             return True
 
@@ -342,7 +357,8 @@ class AnalysisPipeline:
             # Find the latest database file
             db_files = list(self.results_dir.glob("*.db"))
             if not db_files:
-                self.logger.warning("No database files found for trace extraction")
+                self.logger.warning(
+                    "No database files found for trace extraction")
                 return True  # Not critical failure
 
             latest_db = max(db_files, key=lambda x: x.stat().st_mtime)
@@ -355,25 +371,35 @@ class AnalysisPipeline:
             sample_csv = exports_dir / "sample_reasoning_traces.csv"
             sample_txt = exports_dir / "detailed_reasoning_report.txt"
 
-
-            # Actually run extraction and export using extract_reasoning_traces.py functions
+            # Actually run extraction and export using
+            # extract_reasoning_traces.py functions
             try:
-                from extract_reasoning_traces import extract_reasoning_traces, export_traces_csv, export_traces_txt
+                from extract_reasoning_traces import (
+                    extract_reasoning_traces,
+                    export_traces_csv,
+                    export_traces_txt
+                )
                 df = extract_reasoning_traces(str(latest_db))
                 if df is not None:
                     export_traces_csv(df, str(sample_csv))
                     export_traces_txt(df, str(sample_txt))
-                    self.logger.info(f"Sample trace files generated in {exports_dir}")
-                    self.pipeline_results["files_generated"].extend([str(sample_csv), str(sample_txt)])
-                    self.log_step(step_name, "COMPLETED",
-                                 f"Sample traces extracted to {exports_dir}")
+                    self.logger.info(
+                        "Sample trace files generated in %s", exports_dir)
+                    self.pipeline_results["files_generated"].extend(
+                        [str(sample_csv), str(sample_txt)])
+                    self.log_step(
+                        step_name, "COMPLETED",
+                        f"Sample traces extracted to {exports_dir}")
                     return True
                 else:
                     self.logger.warning("No traces extracted from database.")
-                    self.log_step(step_name, "FAILED", "No traces extracted from database.")
+                    self.log_step(
+                        step_name, "FAILED",
+                        "No traces extracted from database."
+                    )
                     return False
             except Exception as e:
-                self.logger.error(f"Trace extraction failed: {e}")
+                self.logger.error("Trace extraction failed: %s", e)
                 self.log_step(step_name, "FAILED", str(e))
                 return False
 
@@ -397,23 +423,32 @@ class AnalysisPipeline:
             "completed_steps": completed_steps,
             "failed_steps": failed_steps,
             "success_rate": f"{(completed_steps/total_steps)*100:.1f}%",
-            "total_files_generated": len(self.pipeline_results["files_generated"])
+            "total_files_generated": len(
+                self.pipeline_results["files_generated"]
+            )
         }
 
         # Save detailed report
         with open(report_path, 'w') as f:
             json.dump(self.pipeline_results, f, indent=2)
 
-        self.logger.info(f"\n{'='*60}")
-        self.logger.info(f"ANALYSIS PIPELINE SUMMARY")
-        self.logger.info(f"{'='*60}")
-        self.logger.info(f"Pipeline completed: {completed_steps}/{total_steps} steps successful")
-        self.logger.info(f"Files generated: {len(self.pipeline_results['files_generated'])}")
-        self.logger.info(f"Output directory: {self.plots_dir}")
-        self.logger.info(f"Detailed report: {report_path}")
+        self.logger.info("\n" + "="*60)
+        self.logger.info("ANALYSIS PIPELINE SUMMARY")
+        self.logger.info("="*60)
+        self.logger.info(
+            "Pipeline completed: %d/%d steps successful",
+            completed_steps, total_steps
+        )
+        self.logger.info(
+            "Files generated: %d",
+            len(self.pipeline_results['files_generated'])
+        )
+        self.logger.info("Output directory: %s", self.plots_dir)
+        self.logger.info("Detailed report: %s", report_path)
 
         if failed_steps > 0:
-            self.logger.warning(f"⚠️  {failed_steps} steps failed - check logs for details")
+            self.logger.warning(
+                "⚠️  %d steps failed - check logs for details", failed_steps)
         else:
             self.logger.info("✅ All analysis steps completed successfully!")
 
@@ -421,38 +456,34 @@ class AnalysisPipeline:
 
     def run_full_pipeline(self) -> bool:
         """Run the complete analysis pipeline."""
-        self.pipeline_results["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S")
-
-        self.logger.info(f"\n🚀 Starting Game Reasoning Arena Analysis Pipeline")
-        self.logger.info(f"Results directory: {self.results_dir}")
-        self.logger.info(f"Output directory: {self.plots_dir}")
-        self.logger.info(f"Verbose mode: {self.verbose}")
-
+        self.pipeline_results["start_time"] = time.strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
+        self.logger.info("\n🚀 Starting Game Reasoning Arena Analysis Pipeline")
+        self.logger.info("Results directory: %s", self.results_dir)
+        self.logger.info("Output directory: %s", self.plots_dir)
+        self.logger.info("Verbose mode: %s", self.verbose)
         success = True
-
         # Step 1: Merge databases
         merged_csv = self.step_1_merge_databases()
         if not merged_csv:
             self.logger.error("❌ Pipeline failed at Step 1 (Database Merging)")
             success = False
             merged_csv = None
-
         # Step 2: Reasoning analysis (only if Step 1 succeeded)
         if merged_csv and not self.step_2_reasoning_analysis(merged_csv):
-            self.logger.error("❌ Pipeline failed at Step 2 (Reasoning Analysis)")
+            self.logger.error(
+                "❌ Pipeline failed at Step 2 (Reasoning Analysis)"
+            )
             success = False
-
         # Step 3: Generate additional plots (continue even if Step 2 failed)
         if merged_csv and not self.step_3_generate_plots(merged_csv):
             self.logger.warning("⚠️  Step 3 (Plot Generation) had issues")
-
         # Step 4: Extract sample traces (continue regardless)
         if not self.step_4_extract_sample_traces():
             self.logger.warning("⚠️  Step 4 (Trace Extraction) had issues")
-
         # Generate summary report
-        report_path = self.generate_summary_report()
-
+        self.generate_summary_report()
         return success
 
 
@@ -467,7 +498,8 @@ Examples:
     python analysis/run_full_analysis.py
 
     # Specify custom directories
-    python analysis/run_full_analysis.py --results-dir results --plots-dir custom_plots
+    python analysis/run_full_analysis.py --results-dir results \
+        --plots-dir custom_plots
 
     # Run in quiet mode
     python analysis/run_full_analysis.py --quiet
