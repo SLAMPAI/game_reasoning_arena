@@ -1,0 +1,45 @@
+# Config for running multiple games with multiple LLM models
+
+env_configs:
+  - game_name: kuhn_poker
+    max_game_rounds: null
+  - game_name: connect_four
+    max_game_rounds: null
+  - game_name: hex
+    max_game_rounds: null
+  - game_name: tic_tac_toe
+    max_game_rounds: null
+  - game_name: matrix_rps
+    max_game_rounds: 10
+  - game_name: matrix_pd
+    max_game_rounds: 10
+
+num_episodes: 1
+seed: 42
+use_ray: false
+mode: llm_vs_random
+
+# To run all models, override agents.player_0.model in your script or loop over these models externally
+models:
+  - litellm_groq/llama3-8b-8192
+  - litellm_groq/llama3-70b-8192
+  - litellm_groq/gemma2-9b-it
+  - litellm_together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
+  - litellm_together_ai/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo
+  - litellm_together_ai/mistralai/Mixtral-8x7B-Instruct-v0.1
+  - litellm_fireworks_ai/accounts/fireworks/models/llama-v3-8b-instruct
+  - litellm_fireworks_ai/accounts/fireworks/models/llama-v3-70b-instruct
+
+agents:
+  player_0:
+    type: llm
+    model: litellm_groq/llama3-8b-8192  # Default, override as needed
+  player_1:
+    type: random
+
+llm_backend:
+  max_tokens: 250
+  temperature: 0.1
+  default_model: litellm_groq/llama3-8b-8192
+
+log_level: INFO

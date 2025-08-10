@@ -74,22 +74,30 @@ from game_reasoning_arena.configs.config_parser import (  # noqa: E402
 
 def load_config_vars(config):
     """Extract games, models, num_episodes from parsed config."""
-    # Extract games - check for multiple games first, then single game
-    games = config.get("games", [])
-    if not games:
-        # Single game from env_config
+    # Extract games from env_configs if present
+    games = []
+    if "env_configs" in config:
+        for env in config["env_configs"]:
+            if "game_name" in env:
+                games.append(env["game_name"])
+    elif "games" in config:
+        games = config["games"]
+    elif "env_config" in config and "game_name" in config["env_config"]:
         games = [config["env_config"]["game_name"]]
 
-    # Extract models from agents
-    models = []
-    agents = config.get("agents", {})
-    for agent in agents.values():
-        if agent.get("type") == "llm" and "model" in agent:
-            models.append(agent["model"])
-
-    # If no models found in agents, use llm_backend default_model
-    if not models:
-        models = [config["llm_backend"]["default_model"]]
+    # Extract models from top-level models if present
+    if "models" in config and isinstance(config["models"], list):
+        models = config["models"]
+    else:
+        # Fallback: Extract models from agents
+        models = []
+        agents = config.get("agents", {})
+        for agent in agents.values():
+            if agent.get("type") == "llm" and "model" in agent:
+                models.append(agent["model"])
+        # If no models found in agents, use llm_backend default_model
+        if not models:
+            models = [config["llm_backend"]["default_model"]]
 
     num_episodes = config["num_episodes"]
     return games, models, num_episodes

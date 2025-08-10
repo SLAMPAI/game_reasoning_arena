@@ -1,52 +1,42 @@
-2025-08-10 10:42:36,484 - __main__ - INFO - {'env_config': {'game_name': 'tic_tac_toe', 'max_game_rounds': None}, 'num_episodes': 1, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama-3.1-8b-instant'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/gemma-7b-it'}, 'log_level': 'INFO'}
-2025-08-10 10:42:36,501 - __main__ - INFO - Ray disabled - using sequential execution
-2025-08-10 10:42:36,501 - __main__ - INFO - Using sequential execution (Ray disabled)
-2025-08-10 10:42:36,509 - simulate - INFO - Initializing environment for tic_tac_toe.
-2025-08-10 10:42:36,512 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for tic_tac_toe
-2025-08-10 10:42:36,512 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama-3.1-8b-instant)
-2025-08-10 10:42:36,513 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
-2025-08-10 10:42:36,554 - simulate - INFO - Episode 1 started with seed 42.
-2025-08-10 10:42:36,576 - LiteLLM - INFO - 
-LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
-2025-08-10 10:42:37,458 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-10 10:42:37,462 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-10 10:42:37,472 - simulate - INFO - Board state: 
+2025-08-10 11:04:23,228 - __main__ - INFO - {'env_config': {'game_name': 'tic_tac_toe', 'max_game_rounds': None}, 'num_episodes': 1, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama3-8b-8192'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama3-8b-8192'}, 'log_level': 'INFO', 'env_configs': [{'game_name': 'kuhn_poker', 'max_game_rounds': None}, {'game_name': 'connect_four', 'max_game_rounds': None}, {'game_name': 'hex', 'max_game_rounds': None}, {'game_name': 'tic_tac_toe', 'max_game_rounds': None}, {'game_name': 'matrix_rps', 'max_game_rounds': 10}, {'game_name': 'matrix_pd', 'max_game_rounds': 10}], 'models': ['litellm_groq/llama3-8b-8192', 'litellm_groq/llama3-70b-8192', 'litellm_groq/gemma2-9b-it', 'litellm_together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo', 'litellm_together_ai/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo', 'litellm_together_ai/mistralai/Mixtral-8x7B-Instruct-v0.1', 'litellm_fireworks_ai/accounts/fireworks/models/llama-v3-8b-instruct', 'litellm_fireworks_ai/accounts/fireworks/models/llama-v3-70b-instruct']}
+2025-08-10 11:04:23,241 - __main__ - INFO - Ray disabled - using sequential execution
+2025-08-10 11:04:23,241 - __main__ - INFO - Using sequential execution (Ray disabled)
+2025-08-10 11:04:23,247 - simulate - INFO - Initializing environment for tic_tac_toe.
+2025-08-10 11:04:23,250 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for tic_tac_toe
+2025-08-10 11:04:23,250 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama3-8b-8192)
+2025-08-10 11:04:23,250 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
+2025-08-10 11:04:23,282 - simulate - INFO - Episode 1 started with seed 42.
+2025-08-10 11:04:23,297 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-10 11:04:23,668 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-10 11:04:23,673 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-10 11:04:23,688 - simulate - INFO - Board state: 
 ...
 ...
 ...
-2025-08-10 10:42:37,472 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-2025-08-10 10:42:37,472 - simulate - INFO - Agent 0 (litellm_groq/llama-3.1-8b-instant) chose action: 4 with reasoning: As the game starts, I want to control the center of the board. This gives me the highest chance of winning and the lowest chance of losing. By placing my X in the center, I can potentially create a row, column, or diagonal with my next move.
-2025-08-10 10:42:37,477 - LiteLLM - INFO - 
-LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
-2025-08-10 10:42:38,488 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-10 10:42:38,491 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-10 10:42:38,498 - simulate - INFO - Board state: 
+2025-08-10 11:04:23,688 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+2025-08-10 11:04:23,688 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: I choose to place my X in the center of the board, which is the most strategic position. This allows me to have the most options for my next move and puts pressure on my opponent to respond. Additionally, placing my X in the center gives me the best chance to win the game by creating a potential row, column, or diagonal.
+2025-08-10 11:04:23,693 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-10 11:04:23,976 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-10 11:04:23,978 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-10 11:04:23,984 - simulate - INFO - Board state: 
 .o.
 .x.
 ...
-2025-08-10 10:42:38,498 - simulate - INFO - Legal actions: [0, 2, 3, 5, 6, 7, 8]
-2025-08-10 10:42:38,498 - simulate - INFO - Agent 0 (litellm_groq/llama-3.1-8b-instant) chose action: 6 with reasoning: I will choose to place my X in a central position to increase my chances of winning and limit the opponent\
-2025-08-10 10:42:38,503 - LiteLLM - INFO - 
-LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
-2025-08-10 10:42:39,407 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-10 10:42:39,408 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-10 10:42:39,413 - simulate - INFO - Board state: 
+2025-08-10 11:04:23,984 - simulate - INFO - Legal actions: [0, 2, 3, 5, 6, 7, 8]
+2025-08-10 11:04:23,984 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 5 with reasoning: I want to place my X in a position that will give me the highest chance of winning. Since the opponent has already placed their O in the top-left corner, I will place my X in the center of the board to put pressure on their position and limit their options. This will also give me the opportunity to potentially create a winning line in the future.
+2025-08-10 11:04:23,988 - LiteLLM - INFO - 
+LiteLLM completion() model= llama3-8b-8192; provider = groq
+2025-08-10 11:04:24,282 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-10 11:04:24,285 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-10 11:04:24,291 - simulate - INFO - Board state: 
 oo.
-.x.
-x..
-2025-08-10 10:42:39,413 - simulate - INFO - Legal actions: [2, 3, 5, 7, 8]
-2025-08-10 10:42:39,413 - simulate - INFO - Agent 0 (litellm_groq/llama-3.1-8b-instant) chose action: 3 with reasoning: To win the game, I need to place my X in a position where I can get two in a row. Since the current state of the board is "oo.x.x..", I should focus on blocking the opponent\
-2025-08-10 10:42:39,416 - LiteLLM - INFO - 
-LiteLLM completion() model= llama-3.1-8b-instant; provider = groq
-2025-08-10 10:42:40,535 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-10 10:42:40,538 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-10 10:42:40,547 - simulate - INFO - Board state: 
-oo.
-xx.
-xo.
-2025-08-10 10:42:40,547 - simulate - INFO - Legal actions: [2, 5, 8]
-2025-08-10 10:42:40,547 - simulate - INFO - Agent 0 (litellm_groq/llama-3.1-8b-instant) chose action: 5 with reasoning: To win the game, I need to place my X in a position where I can get three in a row. Since the current state is "oo.xx.xo", my opponent has two possible winning lines: horizontal (top row) and vertical (middle column). I will block the horizontal winning line by placing my X in the top row. The available actions are [2, 5, 8], but I will choose the one that blocks the opponent\
-2025-08-10 10:42:40,548 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
-2025-08-10 10:42:40,556 - simulate - INFO - Simulation for game tic_tac_toe, Episode 1 completed.
-2025-08-10 10:42:40,557 - __main__ - INFO - Sequential simulation results for tic_tac_toe completed
-2025-08-10 10:42:40,557 - __main__ - INFO - All simulations completed. Total results: 1
+.xx
+...
+2025-08-10 11:04:24,291 - simulate - INFO - Legal actions: [2, 3, 6, 7, 8]
+2025-08-10 11:04:24,291 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 3 with reasoning: I want to block the potential two o\
+2025-08-10 11:04:24,291 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
+2025-08-10 11:04:24,299 - simulate - INFO - Simulation for game tic_tac_toe, Episode 1 completed.
+2025-08-10 11:04:24,300 - __main__ - INFO - Sequential simulation results for tic_tac_toe completed
+2025-08-10 11:04:24,300 - __main__ - INFO - All simulations completed. Total results: 1
