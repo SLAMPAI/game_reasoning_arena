@@ -22,6 +22,8 @@ ___
 - `matrix_pd` - Matrix form prisoner's dilemma
 - `matching_pennies` - Zero-sum matching game
 - `matrix_rps` - Rock-paper-scissors matrix game
+- `hex` - Abstract connection game on a hexagonal grid
+- `chess` - Classic 8x8 board game of strategy and tactics
 
 ___
 

@@ -48,22 +48,54 @@ A simplified poker variant that's perfect for AI research.
 
    env = EnvInitializer.create_env("kuhn_poker")
 
-Iterated Prisoners Dilemma
-~~~~~
 
-Cooperation versus competition dynamics
+Prisoner's Dilemma (Matrix Form)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Classic two-player dilemma game in matrix form, modeling cooperation vs defection.
 
 * **Players**: 2
-* **Action space**: 2
-* **Game length**: Variable (can be very long)
+* **State space**: 2x2 matrix
+* **Action space**: 2 (Cooperate, Defect)
+* **Game length**: 1 round
 
 .. code-block:: python
 
-   env = EnvInitializer.create_env("iterated_prisoners_dilemma")
+   env = EnvInitializer.create_env("prisoners_dilemma")
+
+
+Matrix Prisoner's Dilemma
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Matrix representation of the prisoner's dilemma, useful for payoff analysis and agent strategy.
+
+* **Players**: 2
+* **State space**: 2x2 matrix
+* **Action space**: 2 (Cooperate, Defect)
+* **Game length**: 1 round
+
+.. code-block:: python
+
+   env = EnvInitializer.create_env("matrix_pd")
+
+
+Matching Pennies
+~~~~~~~~~~~~~~~~
+
+Zero-sum game where each player chooses heads or tails; one wins if the choices match, the other if they differ.
+
+* **Players**: 2
+* **State space**: 2x2 matrix
+* **Action space**: 2 (Heads, Tails)
+* **Game length**: 1 round
+
+.. code-block:: python
+
+   env = EnvInitializer.create_env("matching_pennies")
 
 
 Matrix Rock-Paper-Scissors
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A strategic variant of rock-paper-scissors with a matrix representation.
 
@@ -75,6 +107,36 @@ A strategic variant of rock-paper-scissors with a matrix representation.
 .. code-block:: python
 
    env = EnvInitializer.create_env("matrix_rps")
+
+
+Hex
+~~~
+
+Abstract connection game played on a hexagonal grid. Players aim to connect opposite sides of the board.
+
+* **Players**: 2
+* **State space**: Large (depends on board size)
+* **Action space**: Number of empty hexes
+* **Game length**: Variable (until one player connects their sides)
+
+.. code-block:: python
+
+   env = EnvInitializer.create_env("hex")
+
+
+Chess
+~~~~~
+
+Classic 8x8 board game of strategy and tactics, featuring a variety of pieces and complex rules.
+
+* **Players**: 2
+* **State space**: Extremely large
+* **Action space**: Varies by position (moves, captures, special moves)
+* **Game length**: Variable (typically 20-60 moves)
+
+.. code-block:: python
+
+   env = EnvInitializer.create_env("chess")
 
 
 Game Properties
