@@ -6,7 +6,20 @@ This script orchestrates the complete analysis workflow by running all analysis
 scripts in the correct order automatically. No more manual script execution!
 
 Usage:
-    python analysis/run_full_analysis.py [options]
+
+    python3 analysis/run_full_analysis.py [options]
+
+Options:
+    --results-dir DIR     Directory containing SQLite database files (default: results)
+    --plots-dir DIR       Directory for output plots and visualizations (default: plots)
+    --quiet               Run in quiet mode (less verbose output)
+    --skip-existing       Skip analysis steps if output files already exist
+
+Examples:
+    python3 analysis/run_full_analysis.py
+    python3 analysis/run_full_analysis.py --results-dir my_results --plots-dir my_plots
+    python3 analysis/run_full_analysis.py --quiet
+    python3 analysis/run_full_analysis.py --skip-existing
 
 Features:
     - Automatic data processing and merging
@@ -200,6 +213,18 @@ class AnalysisPipeline:
                 analyzer.plot_entropy_trendlines()
             except Exception as e:
                 self.logger.warning(f"Entropy trend generation failed: {e}")
+            # Additional entropy plots
+            try:
+                self.logger.info("Generating entropy by turn across agents...")
+                analyzer.plot_entropy_by_turn_across_agents(output_dir=str(self.plots_dir))
+            except Exception as e:
+                self.logger.warning(f"plot_entropy_by_turn_across_agents failed: {e}")
+
+            try:
+                self.logger.info("Generating average entropy across games...")
+                analyzer.plot_avg_entropy_across_games(output_dir=str(self.plots_dir))
+            except Exception as e:
+                self.logger.warning(f"plot_avg_entropy_across_games failed: {e}")
 
             # Count generated plot files
             plot_files = list(self.plots_dir.glob("*.png"))
@@ -229,6 +254,7 @@ class AnalysisPipeline:
         try:
             # Import the plotting classes directly
             from generate_reasoning_plots import ReasoningPlotGenerator
+            from generate_reasoning_plots import plot_reasoning_evolution_over_turns
 
             self.logger.info(
                 f"Initializing plot generator with data: {merged_csv_path}")
@@ -244,8 +270,30 @@ class AnalysisPipeline:
             evolution_files = plotter.plot_all_reasoning_evolutions_enhanced(
                 str(self.plots_dir))
 
+            self.logger.info("Generating standard evolution plots...")
+            std_evolution_files = plotter.plot_all_reasoning_evolutions(str(self.plots_dir))
+
+            self.logger.info("Analyzing reasoning evolution patterns...")
+            evolution_patterns = plotter.analyze_reasoning_evolution_patterns()
+            # Save evolution pattern summary
+            import json
+            evolution_summary_path = self.plots_dir / "reasoning_evolution_patterns.json"
+            with open(evolution_summary_path, "w") as f:
+                json.dump(evolution_patterns, f, indent=2)
+
+            # Optionally, describe evolution pattern for first model/game
+            try:
+                for model, model_data in evolution_patterns.get('models', {}).items():
+                    for game, game_data in model_data.get('games', {}).items():
+                        desc = plotter._describe_evolution_pattern(game_data['dominant_by_turn'])
+                        self.logger.info(f"Evolution pattern for {model} - {game}: {desc}")
+                        break
+                    break
+            except Exception as e:
+                self.logger.warning(f"_describe_evolution_pattern failed: {e}")
+
             # Count total generated files
-            all_generated_files = basic_files + evolution_files
+            all_generated_files = basic_files + evolution_files + std_evolution_files + [str(evolution_summary_path)]
 
             # Log summary
             self.logger.info(
@@ -254,6 +302,10 @@ class AnalysisPipeline:
                 f"   • Basic plots (bar, pie, stacked): {len(basic_files)}")
             self.logger.info(
                 f"   • Evolution plots (enhanced): {len(evolution_files)}")
+            self.logger.info(
+                f"   • Evolution plots (standard): {len(std_evolution_files)}")
+            self.logger.info(
+                f"   • Evolution pattern summary: {evolution_summary_path}")
 
             # Add to pipeline results
             self.pipeline_results["files_generated"].extend(
@@ -263,6 +315,7 @@ class AnalysisPipeline:
                 "total_files": len(all_generated_files),
                 "basic_plots": len(basic_files),
                 "evolution_plots": len(evolution_files),
+                "std_evolution_plots": len(std_evolution_files),
                 "output_directory": str(self.plots_dir)
             }
 
@@ -302,16 +355,27 @@ class AnalysisPipeline:
             sample_csv = exports_dir / "sample_reasoning_traces.csv"
             sample_txt = exports_dir / "detailed_reasoning_report.txt"
 
-            # Simulate running extract_reasoning_traces.py with different options
-            # This is a simplified version - in practice you might want to call the functions directly
 
-            self.logger.info(f"Sample trace files would be generated in {exports_dir}")
-            self.pipeline_results["files_generated"].extend([str(sample_csv), str(sample_txt)])
-
-            self.log_step(step_name, "COMPLETED",
-                         f"Sample traces extracted to {exports_dir}")
-
-            return True
+            # Actually run extraction and export using extract_reasoning_traces.py functions
+            try:
+                from extract_reasoning_traces import extract_reasoning_traces, export_traces_csv, export_traces_txt
+                df = extract_reasoning_traces(str(latest_db))
+                if df is not None:
+                    export_traces_csv(df, str(sample_csv))
+                    export_traces_txt(df, str(sample_txt))
+                    self.logger.info(f"Sample trace files generated in {exports_dir}")
+                    self.pipeline_results["files_generated"].extend([str(sample_csv), str(sample_txt)])
+                    self.log_step(step_name, "COMPLETED",
+                                 f"Sample traces extracted to {exports_dir}")
+                    return True
+                else:
+                    self.logger.warning("No traces extracted from database.")
+                    self.log_step(step_name, "FAILED", "No traces extracted from database.")
+                    return False
+            except Exception as e:
+                self.logger.error(f"Trace extraction failed: {e}")
+                self.log_step(step_name, "FAILED", str(e))
+                return False
 
         except Exception as e:
             self.log_step(step_name, "FAILED", str(e))
