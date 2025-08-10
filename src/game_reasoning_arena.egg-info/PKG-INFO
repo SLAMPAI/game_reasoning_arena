@@ -78,24 +78,24 @@ cd ..
 ### Test the Installation
 ```bash
 # Run a quick test
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml
 ```
 
 ___
 ### Game Examples
 ```bash
 # Different games
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override env_config.game_name=connect_four
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override env_config.game_name=kuhn_poker
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml --override env_config.game_name=connect_four
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml --override env_config.game_name=kuhn_poker
 
 # LLM vs Random in a multi-episode tournament
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override \
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml --override \
   agents.player_0.type=llm \
   agents.player_0.model=litellm_groq/llama3-8b-8192 \
   num_episodes=10
 
 # LLM vs LLM with mixed backends (liteLLM vs vLLM)
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override \
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml --override \
 mode=llm_vs_llm \
 agents.player_0.model=litellm_groq/llama3-8b-8192 \
 agents.player_1.model=vllm_Qwen2-7B-Instruct
@@ -205,7 +205,7 @@ python3 scripts/runner.py \
 **Option 3: Command-Line Override**
 ```bash
 # Enable Ray with any existing configuration
-  python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml \
+  python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml \
  --override use_ray=true parallel_episodes=true
 ```
 
@@ -317,7 +317,7 @@ game_reasoning_arena/
 │       ├── litellm_models.yaml
 │       ├── vllm_models.yaml
 │       ├── ray_config.yaml
-│       └── example_config.yaml
+│       └── human_vs_random_config.yaml
 ├── scripts/
 │   ├── runner.py          # Main entry point
 │   └── simulate.py        # Core simulation logic
@@ -372,7 +372,7 @@ class MyNewGameLoader(GameLoader):
 python3 -c "from src.game_reasoning_arena.arena.games.registry import registry; print(list(registry._registry.keys()))"
 
 # Test the game
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override env_config.game_name=my_new_game
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml --override env_config.game_name=my_new_game
 ```
 
 ### Adding a New Agent
@@ -411,7 +411,7 @@ agents:
 
 **Step 4: Test**
 ```bash
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override \
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml --override \
   agents.player_0.type=my_agent \
   agents.player_0.model=my_model
 ```

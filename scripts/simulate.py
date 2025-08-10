@@ -103,7 +103,7 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
     set_seed(seed)
 
     # Initialize LLM registry
-    initialize_llm_registry(config)
+    initialize_llm_registry()
 
     # Initialize loggers for all agents
     logger.info("Initializing environment for %s.", game_name)
