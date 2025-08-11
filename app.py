@@ -349,72 +349,84 @@ def play_game(
 
 def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
     all_stats = []
-
     for db_file, agent_type, model_name in iter_agent_databases():
         conn = sqlite3.connect(db_file)
         try:
             if game_name == "Aggregated Performance":
-                q = (
-                    "SELECT COUNT(DISTINCT episode) AS games_played, "
-                    "SUM(reward) AS total_rewards FROM game_results"
+                # get totals across all games in this DB
+                df = pd.read_sql_query(
+                    "SELECT COUNT(DISTINCT episode) AS games_played, SUM(reward) AS total_rewards "
+                    "FROM game_results",
+                    conn,
                 )
-                df = pd.read_sql_query(q, conn)
                 avg_time = conn.execute(
-                    "SELECT AVG(generation_time) FROM moves "
-                    "WHERE game_name = 'kuhn_poker'"
+                    "SELECT AVG(generation_time) FROM moves"
+                ).fetchone()[0] or 0
+                wins_vs_random = conn.execute(
+                    "SELECT COUNT(*) FROM game_results "
+                    "WHERE opponent = 'random_None' AND reward > 0",
+                ).fetchone()[0] or 0
+                total_vs_random = conn.execute(
+                    "SELECT COUNT(*) FROM game_results "
+                    "WHERE opponent = 'random_None'",
                 ).fetchone()[0] or 0
             else:
-                q = (
-                    "SELECT COUNT(DISTINCT episode) AS games_played, "
-                    "SUM(reward) AS total_rewards "
-                    "FROM game_results WHERE game_name = ?"
+                # filter by the selected game
+                df = pd.read_sql_query(
+                    "SELECT COUNT(DISTINCT episode) AS games_played, SUM(reward) AS total_rewards "
+                    "FROM game_results WHERE game_name = ?",
+                    conn,
+                    params=(game_name,),
                 )
-                df = pd.read_sql_query(q, conn, params=(game_name,))
                 avg_time = conn.execute(
-                 "SELECT AVG(generation_time) FROM moves WHERE game_name = ?",
+                    "SELECT AVG(generation_time) FROM moves WHERE game_name = ?",
+                    (game_name,),
+                ).fetchone()[0] or 0
+                wins_vs_random = conn.execute(
+                    "SELECT COUNT(*) FROM game_results "
+                    "WHERE opponent = 'random_None' AND reward > 0 AND game_name = ?",
+                    (game_name,),
+                ).fetchone()[0] or 0
+                total_vs_random = conn.execute(
+                    "SELECT COUNT(*) FROM game_results "
+                    "WHERE opponent = 'random_None' AND game_name = ?",
                     (game_name,),
                 ).fetchone()[0] or 0
 
-            df["total_rewards"] = (
-                df["total_rewards"].fillna(0).astype(float) / 2
-            )
-            avg_time = round(float(avg_time), 3)
+            # If there were no results for this game, df will be empty or NaNs.
+            if df.empty or df["games_played"].iloc[0] is None:
+                games_played = 0
+                total_rewards = 0.0
+            else:
+                games_played = int(df["games_played"].iloc[0] or 0)
+                total_rewards = float(df["total_rewards"].iloc[0] or 0) / 2.0
 
-            wins_vs_random = conn.execute(
-                "SELECT COUNT(*) FROM game_results "
-                "WHERE opponent = 'random_None' AND reward > 0"
-            ).fetchone()[0] or 0
-            total_vs_random = conn.execute(
-                "SELECT COUNT(*) FROM game_results "
-                "WHERE opponent = 'random_None'"
-            ).fetchone()[0] or 0
             vs_random_rate = (
-                wins_vs_random / total_vs_random * 100
+                (wins_vs_random / total_vs_random) * 100.0
                 if total_vs_random > 0
-                else 0
+                else 0.0
             )
 
-            df.insert(0, "agent_name", model_name)
-            df.insert(1, "agent_type", agent_type)
-            df["avg_generation_time (sec)"] = avg_time
-            df["win vs_random (%)"] = round(vs_random_rate, 2)
-            # Optional: derive win-rate from rewards/games if you wish
-            df["# games"] = df["games_played"]
-            df["win-rate"] = df["win vs_random (%)"]  # simple proxy for table
-
-            all_stats.append(df)
+            # Build a single-row DataFrame for this agent
+            row = {
+                "agent_name": model_name,
+                "agent_type": agent_type,
+                "# games": games_played,
+                "total rewards": total_rewards,
+                "avg_generation_time (sec)": round(float(avg_time), 3),
+                "win-rate": round(vs_random_rate, 2),
+                "win vs_random (%)": round(vs_random_rate, 2),
+            }
+            all_stats.append(pd.DataFrame([row]))
         finally:
             conn.close()
 
-    leaderboard_df = (
-        pd.concat(all_stats, ignore_index=True)
-        if all_stats
-        else pd.DataFrame(columns=LEADERBOARD_COLUMNS)
-    )
-    # Reorder columns to match LEADERBOARD_COLUMNS (ignore missing)
-    cols = [c for c in LEADERBOARD_COLUMNS if c in leaderboard_df.columns]
-    leaderboard_df = leaderboard_df[cols]
-    return leaderboard_df
+    # Concatenate all rows; if all_stats is empty, return an empty DataFrame with columns.
+    if not all_stats:
+        return pd.DataFrame(columns=LEADERBOARD_COLUMNS)
+
+    leaderboard_df = pd.concat(all_stats, ignore_index=True)
+    return leaderboard_df[LEADERBOARD_COLUMNS]
 
 # -----------------------------------------------------------------------------
 # Simple plotting helpers
