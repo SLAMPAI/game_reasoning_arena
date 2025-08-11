@@ -109,17 +109,17 @@ def _create_agent_config(player_type: str,
     print("🔧 AGENT CONFIG DEBUG: Creating agent config for:")
     print(f"   player_type: {player_type}")
     print(f"   model: {model}")
-    
+
     # Handle Gradio-specific formats
     if player_type == "random_bot":
         config = {"type": "random"}
     elif player_type.startswith("hf_"):
         # Extract model from player type (e.g., "hf_gpt2" -> "gpt2")
         model_from_type = player_type[3:]  # Remove "hf_" prefix
-        
+
         # Use the hf_prefixed model name for LLM registry lookup
         model_name = f"hf_{model_from_type}"
-        
+
         config = {
             "type": "llm",  # Use standard LLM agent type
             "model": model_name  # This will be looked up in LLM_REGISTRY
@@ -127,13 +127,13 @@ def _create_agent_config(player_type: str,
     elif player_type.startswith("llm_"):
         # For backwards compatibility with LiteLLM models
         model_from_type = player_type[4:]  # Remove "llm_" prefix
-        
+
         # Map display model names to actual model names with prefixes
         model_name = model or model_from_type
         if not model_name.startswith(("litellm_", "vllm_")):
             # Add litellm_ prefix for LiteLLM models
             model_name = f"litellm_{model_name}"
-        
+
         config = {
             "type": "llm",
             "model": model_name
@@ -153,7 +153,7 @@ def _create_agent_config(player_type: str,
     else:
         # Default to random for unknown types
         config = {"type": "random"}
-    
+
     print(f"   → Created config: {config}")
     return config
 
@@ -235,7 +235,7 @@ def run_game_with_existing_infrastructure(
         set_seed(seed)
 
         # Initialize LLM registry (required for simulate_game)
-        initialize_llm_registry(config)
+        initialize_llm_registry()
 
         # Use existing infrastructure but capture detailed logs
         return _run_game_with_detailed_logging(game_name, config, seed)

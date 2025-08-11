@@ -19,8 +19,9 @@ from __future__ import annotations
 import sqlite3
 
 import sys
+import shutil
 from pathlib import Path
-from typing import List, Dict, Any, Tuple, Generator
+from typing import List, Dict, Any, Tuple, Generator, TypedDict
 
 import pandas as pd
 import gradio as gr
@@ -30,7 +31,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("arena_space")
 
-# Optional transformers import (only needed if your backend uses it here)
+# Optional transformers import
 try:
     from transformers import pipeline  # noqa: F401
 except Exception:
@@ -42,27 +43,15 @@ if str(src_path) not in sys.path:
     sys.path.insert(0, str(src_path))
 
 # Try to import game registry
-try:
-    from src.game_reasoning_arena.arena.games.registry import (
-        registry as games_registry
-    )
-except Exception as e:
-    log.warning("Game registry not available: %s", e)
-    games_registry = None
-
-# Optional: import backend & LLM registry
-try:
-    from src.game_reasoning_arena.backends.huggingface_backend import (
+from game_reasoning_arena.arena.games.registry import registry as games_registry
+from game_reasoning_arena.backends.huggingface_backend import (
         HuggingFaceBackend,
     )
-    from src.game_reasoning_arena.backends import (
+from game_reasoning_arena.backends import (
         initialize_llm_registry, LLM_REGISTRY,
     )
-    BACKEND_SYSTEM_AVAILABLE = True
-    log.info("Backend system available - using proper LLM infrastructure.")
-except Exception as e:
-    BACKEND_SYSTEM_AVAILABLE = False
-    log.warning("Backend system not available: %s", e)
+
+BACKEND_SYSTEM_AVAILABLE = True
 
 # -----------------------------------------------------------------------------
 # Config & constants
@@ -77,7 +66,7 @@ HUGGINGFACE_MODELS: Dict[str, str] = {
 }
 
 GAMES_REGISTRY: Dict[str, Any] = {}
-db_dir = Path(__file__).resolve().parent / "scripts" / "results"
+db_dir = Path(__file__).resolve().parent / "results"
 
 LEADERBOARD_COLUMNS = [
     "agent_name", "agent_type", "# games", "total rewards",
@@ -226,13 +215,13 @@ def extract_illegal_moves_summary() -> pd.DataFrame:
 # -----------------------------------------------------------------------------
 
 
-class PlayerConfigData(gr.TypedDict, total=False):
+class PlayerConfigData(TypedDict, total=False):
     player_types: List[str]
     player_type_display: Dict[str, str]
     available_models: List[str]
 
 
-class GameArenaConfig(gr.TypedDict, total=False):
+class GameArenaConfig(TypedDict, total=False):
     available_games: List[str]
     player_config: PlayerConfigData
     model_info: str
@@ -465,11 +454,11 @@ def handle_db_upload(files: list[gr.File]) -> str:
         f"Uploaded: {', '.join(saved)}" if saved else "No files uploaded."
     )
 
+
 # -----------------------------------------------------------------------------
 # UI
 # -----------------------------------------------------------------------------
-with gr.Blocks() as interface:
-    pass
+
 with gr.Blocks() as interface:
     with gr.Tab("Game Arena"):
         config = create_player_config()
@@ -668,7 +657,7 @@ with gr.Blocks() as interface:
             - **Metrics Dashboard**: Visual summaries
             - **Reasoning Analysis**: Illegal moves & behavior
 
-            **Data**: SQLite databases in `scripts/results/`.
+            **Data**: SQLite databases in `/results/`.
             """
         )
 

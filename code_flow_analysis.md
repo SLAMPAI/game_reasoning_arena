@@ -55,7 +55,7 @@ for game_config in game_configs:
 
 ```python
 # 1. Initialize LLM backends
-initialize_llm_registry(config)
+initialize_llm_registry()
 
 # 2. Create agent policies for each player
 policies_dict = initialize_policies(config, game_name, seed)
