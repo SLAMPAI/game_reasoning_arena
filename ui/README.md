@@ -24,7 +24,7 @@ python app.py
 ```
 app.py (Gradio UI - in root directory for HF Spaces)
     ↓
-gradio/gradio_config_generator.py (Game configuration bridge)
+ui/gradio_config_generator.py (Game configuration bridge)
     ↓
 src/game_reasoning_arena/ (Core game library)
 ```
@@ -34,3 +34,9 @@ The Gradio app provides:
 - Performance leaderboards
 - Metrics dashboards
 - LLM reasoning analysis
+
+
+## Uploading Results
+
+- Go to **Leaderboard** tab → **Upload .db**
+- Files are stored in `scripts/results/` inside the Space
