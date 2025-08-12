@@ -1,6 +1,6 @@
 # Simple tic-tac-toe test config
-env_configs:
-  - game_name: tic_tac_toe
+env_config:
+    game_name: tic_tac_toe
     max_game_rounds: null
 
 num_episodes: 1

@@ -23,6 +23,7 @@ class OpenSpielEnv(ABC):
                  max_game_rounds: int = None,
                  seed: Optional[int] = None
                  ):
+        print(f"[DEBUG] OpenSpielEnv created with game_name: {game_name}")
         """
         Args:
             game (Any): The OpenSpiel game object being simulated.

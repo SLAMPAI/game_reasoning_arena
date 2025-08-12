@@ -79,7 +79,7 @@ python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_ran
 ___
 ### Game Examples
 ```bash
-# Different games
+# Play against the LLM in the terminal!
 python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml --override env_config.game_name=connect_four
 python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml --override env_config.game_name=kuhn_poker
 

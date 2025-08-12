@@ -265,13 +265,20 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
                     opponents_list.append(opponent_str)
             opponents = ", ".join(opponents_list)
 
+            # Log reward to the rewards table
+            agent_logger.log_rewards(
+                game_name=game_name,
+                episode=episode + 1,
+                reward=reward
+            )
+
             agent_logger.log_game_result(
-                    game_name=game_name,
-                    episode=episode + 1,
-                    status=game_status,
-                    reward=reward,
-                    opponent=opponents
-                )
+                game_name=game_name,
+                episode=episode + 1,
+                status=game_status,
+                reward=reward,
+                opponent=opponents
+            )
             # Tensorboard logging
             agent_type = "unknown"
             agent_model = "None"

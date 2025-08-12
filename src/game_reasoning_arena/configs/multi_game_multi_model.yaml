@@ -1,5 +1,6 @@
 # Config for running multiple games with multiple LLM models
 
+# use env_configs for multiple games and pass them as lists!
 env_configs:
   - game_name: kuhn_poker
     max_game_rounds: null

@@ -1,13 +1,6 @@
-# Example configuration demonstrating multi-game setup
-# This runs 3 different games with the same agent configuration
-
-# Use env_config for multiple games and pass them as lists!
+# Simple tic-tac-toe test config
 env_config:
-  - game_name: kuhn_poker
-    max_game_rounds: null
-  - game_name: connect_four
-    max_game_rounds: null
-  - game_name: tic_tac_toe
+    game_name: matching_pennies # kuhn_poker #connect_four #tic_tac_toe
     max_game_rounds: null
 
 num_episodes: 1

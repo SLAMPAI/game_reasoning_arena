@@ -305,20 +305,26 @@ def validate_config(config: Dict[str, Any]) -> None:
     Raises:
         ValueError: If configuration is invalid
     """
-    # Validate game name
-    game_name = config.get("env_config", {}).get("game_name")
-    if not game_name:
-        raise ValueError("Game name is required in env_config.game_name")
+    # Validate single-game config
+    if "env_config" in config:
+        game_cfgs = [config["env_config"]]
+    elif "env_configs" in config:
+        game_cfgs = config["env_configs"]
+    else:
+        raise ValueError("Config must contain either 'env_config' or 'env_configs'")
 
-    # Check if game is registered
-    if game_name not in registry._registry:
-        available_games = list(registry._registry.keys())
-        raise ValueError(
-            f"Game '{game_name}' not found. "
-            f"Available games: {available_games}"
-        )
+    for game_cfg in game_cfgs:
+        game_name = game_cfg.get("game_name")
+        if not game_name:
+            raise ValueError("Game name is required in each game config (game_name)")
+        if game_name not in registry._registry:
+            available_games = list(registry._registry.keys())
+            raise ValueError(
+                f"Game '{game_name}' not found. "
+                f"Available games: {available_games}"
+            )
 
-    # Validate agent configurations
+    # Validate agent configurations (global, not per-game)
     agents = config.get("agents", {})
     for player_id, agent_config in agents.items():
         if "type" not in agent_config:
