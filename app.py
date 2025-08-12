@@ -255,9 +255,9 @@ def setup_player_config(
     return {"type": "random"}
 
 
-def create_player_config() -> GameArenaConfig:
+def create_player_config(include_aggregated: bool = False) -> GameArenaConfig:
     # Internal names for arena dropdown
-    available_keys = get_available_games(include_aggregated=False)
+    available_keys = get_available_games(include_aggregated=include_aggregated)
 
     # Map internal names to display names
     key_to_display = _get_game_display_mapping()
@@ -497,7 +497,7 @@ def handle_db_upload(files: list[gr.File]) -> str:
 
 with gr.Blocks() as interface:
     with gr.Tab("Game Arena"):
-        config = create_player_config()
+        config = create_player_config(include_aggregated=False)
 
         gr.Markdown("# LLM Game Arena")
         gr.Markdown("Play games against LLMs or watch LLMs compete!")
@@ -590,7 +590,7 @@ with gr.Blocks() as interface:
             "Track performance across different games!"
         )
         # Use the same display logic as Game Arena
-        leaderboard_config = create_player_config()
+        leaderboard_config = create_player_config(include_aggregated=True)
         leaderboard_game_dropdown = gr.Dropdown(
             choices=leaderboard_config["available_games"],
             label="Select Game",
