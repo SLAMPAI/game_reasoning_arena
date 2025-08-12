@@ -66,6 +66,7 @@ HUGGINGFACE_MODELS: Dict[str, str] = {
 }
 
 GAMES_REGISTRY: Dict[str, Any] = {}
+
 db_dir = Path(__file__).resolve().parent / "results"
 
 LEADERBOARD_COLUMNS = [
@@ -110,6 +111,22 @@ try:
 except Exception as e:
     log.warning("Failed to load games registry: %s", e)
     GAMES_REGISTRY = {}
+
+def _get_game_display_mapping() -> Dict[str, str]:
+    """
+    Build a mapping from internal game keys to their human‑friendly display names.
+    If the registry is not available or a game has no explicit display_name,
+    fall back to a title‑cased version of the internal key.
+    """
+    mapping: Dict[str, str] = {}
+    if games_registry is not None and hasattr(games_registry, "_registry"):
+        for key, info in games_registry._registry.items():
+            display = info.get("display_name") if isinstance(info, dict) else None
+            if not display:
+                display = key.replace("_", " ").title()
+            mapping[key] = display
+    return mapping
+
 
 # -----------------------------------------------------------------------------
 # DB helpers
@@ -210,10 +227,11 @@ def extract_illegal_moves_summary() -> pd.DataFrame:
         summary.append({"agent_name": model_name, "illegal_moves": count})
     return pd.DataFrame(summary)
 
+
+
 # -----------------------------------------------------------------------------
 # Player config
 # -----------------------------------------------------------------------------
-
 
 class PlayerConfigData(TypedDict, total=False):
     player_types: List[str]
@@ -257,14 +275,21 @@ def setup_player_config(
 
 
 def create_player_config() -> GameArenaConfig:
-    available_games = get_available_games(include_aggregated=False)
+    # Internal names for arena dropdown
+    available_keys = get_available_games(include_aggregated=False)
 
-    # Collect models seen in DBs (for charts/labels)
+    # Map internal names to display names
+    key_to_display = _get_game_display_mapping()
+    available_games = [
+        key_to_display.get(key, key.replace("_", " ").title())
+        for key in available_keys
+    ]
+
+    # Collect models seen in DBs for charts/labels
     database_models = [model for _, _, model in iter_agent_databases()]
 
     player_types = ["random_bot"]
     player_type_display = {"random_bot": "Random Bot"}
-
     if BACKEND_SYSTEM_AVAILABLE:
         for model_key in HUGGINGFACE_MODELS.keys():
             key = f"hf_{model_key}"
@@ -273,15 +298,21 @@ def create_player_config() -> GameArenaConfig:
             player_type_display[key] = f"HuggingFace: {tag}"
 
     all_models = list(HUGGINGFACE_MODELS.keys()) + database_models
-
     model_info = (
         "HuggingFace transformer models integrated with backend system."
         if BACKEND_SYSTEM_AVAILABLE
         else "Backend system not available - limited functionality."
     )
 
+    # Build display→key mapping for games
+    display_to_key = {
+        key_to_display.get(key, key.replace("_", " ").title()): key
+        for key in available_keys
+    }
+
     return {
         "available_games": available_games,
+        "game_display_to_key": display_to_key,
         "player_config": {
             "player_types": player_types,
             "player_type_display": player_type_display,
@@ -291,10 +322,10 @@ def create_player_config() -> GameArenaConfig:
         "backend_available": BACKEND_SYSTEM_AVAILABLE,
     }
 
+
 # -----------------------------------------------------------------------------
 # Main game entry
 # -----------------------------------------------------------------------------
-
 
 def play_game(
     game_name: str,
@@ -317,8 +348,12 @@ def play_game(
         rounds,
     )
 
-    # Gradio passes display labels sometimes—map back to keys
+    # Map human‑friendly game name back to internal key if needed
     config = create_player_config()
+    if "game_display_to_key" in config and game_name in config["game_display_to_key"]:
+        game_name = config["game_display_to_key"][game_name]
+
+    # Map display labels for player types back to keys
     display_to_key = {
         v: k for k, v in config["player_config"]["player_type_display"].items()
     }
@@ -328,11 +363,9 @@ def play_game(
         player2_type = display_to_key[player2_type]
 
     try:
-        # IMPORTANT: rename your local folder to 'ui/'
         from ui.gradio_config_generator import (
             run_game_with_existing_infrastructure,
         )
-
         result = run_game_with_existing_infrastructure(
             game_name=game_name,
             player1_type=player1_type,
@@ -345,7 +378,6 @@ def play_game(
         return result
     except Exception as e:
         return f"Error during game simulation: {e}"
-
 
 def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
     all_stats = []
@@ -428,10 +460,11 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
     leaderboard_df = pd.concat(all_stats, ignore_index=True)
     return leaderboard_df[LEADERBOARD_COLUMNS]
 
+
+
 # -----------------------------------------------------------------------------
 # Simple plotting helpers
 # -----------------------------------------------------------------------------
-
 
 def create_bar_plot(
     data: pd.DataFrame,

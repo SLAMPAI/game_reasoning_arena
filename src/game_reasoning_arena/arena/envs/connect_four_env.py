@@ -59,7 +59,7 @@ class ConnectFourEnv(OpenSpielEnv):
         Returns:
             str: A formatted 6x7 board with x/o/., visual separators, and a legend.
         """
-        legend = "Legend: x = Player 0, o = Player 1, . = empty cell\n"
+        legend = "Legend: x = Player 0, o = Player 1, . = marks an empty cell\n"
         raw = self.state.observation_string(agent_id)
         symbols = [char for char in raw if char in ("x", "o", ".")]
 

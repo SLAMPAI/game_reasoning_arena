@@ -78,18 +78,22 @@ class MatrixGameEnv(OpenSpielEnv):
 
         prompt = f"""You are Player {agent_id} in the game: {self.game_name}
 
-Available actions:
-{action_list}
+        Available actions:
+        {action_list}
 
-What action do you choose? Reply only with the action number.
+        What action do you choose? Reply only with the action number.
 
-First, think through the game strategy and explain your reasoning.
-Only after that, decide on the best action to take.
+        First, think through the game strategy and explain your reasoning.
+        Only after that, decide on the best action to take.
 
-Reply only in the following JSON format:
-{{
-  'reasoning': <str>,
-  'action': <int>
-}}"""
+        Reply only in the following JSON format:
+        {{
+        'reasoning': <str>,
+        'action': <int>
+        }}"""
 
         return prompt
+
+    def render_board(self, agent_id: int) -> str:
+        # Matrix games have no spatial board; return a basic description.
+        return "Matrix game – no board representation available"
