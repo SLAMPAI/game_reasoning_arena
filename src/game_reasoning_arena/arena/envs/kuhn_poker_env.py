@@ -9,8 +9,8 @@ game state and potential strategies.
 """
 
 from typing import Any, Dict, Optional
-from .open_spiel_env import OpenSpielEnv
 from game_reasoning_arena.arena.agents.llm_utils import format_prompt
+from .open_spiel_env import OpenSpielEnv
 
 
 class KuhnPokerEnv(OpenSpielEnv):
@@ -31,6 +31,54 @@ class KuhnPokerEnv(OpenSpielEnv):
                              for iterated games (optional, default is None).
         """
         super().__init__(game, game_name, player_types, max_game_rounds, seed)
+
+    def render_board(self, agent_id=0) -> str:
+        """Return a human-readable summary of the current
+        Kuhn Poker state for Gradio display."""
+        state = self.state
+        if state.is_chance_node():
+            return "Cards are being dealt..."
+
+        legal_actions = state.legal_actions(agent_id)
+        tensor_observation = state.observation_tensor(agent_id)
+        private_card = self.extract_private_card_from_tensor(
+                                                        tensor_observation
+                                                        )
+        betting_history = self._get_betting_history(state)
+        total_pot = sum(tensor_observation[-2:])
+        player_contribution = tensor_observation[-2 + agent_id]
+        move_number = state.move_number()
+
+        # Detect if an opponent has already bet
+        previous_actions = state.history()
+        opponent_has_bet = 1 in previous_actions
+
+        # Define action labels dynamically based on game context
+        if opponent_has_bet:
+            action_labels = {
+                0: "Fold (give up and lose the pot)",
+                1: "Call (match the opponent's bet)"
+            }
+        else:
+            action_labels = {
+                0: "Check (stay in the game without betting)",
+                1: "Bet (add a chip to the pot)"
+            }
+
+        lines = [
+            f"Kuhn Poker — Player {agent_id}",
+            f"Private card: {private_card}",
+            f"Move number: {move_number}",
+            f"Betting history: {betting_history}",
+            f"Total pot: {total_pot} chips",
+            f"Your contribution: {player_contribution} chips",
+            "Available actions:"
+        ]
+        for action in legal_actions:
+            lines.append(
+                f"  {action}: {action_labels.get(action, str(action))}"
+            )
+        return "\n".join(lines)
 
     def _state_to_observation(self) -> Dict[int, Dict[str, Any]]:
         """Returns the observation for each agent in the game.

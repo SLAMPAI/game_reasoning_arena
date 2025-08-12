@@ -367,7 +367,12 @@ def _compute_actions_for_gradio(env, player_to_agent, observations, game_log):
             action, reasoning = _extract_action_and_reasoning(agent_response)
             actions[player] = action
 
-            game_log.append(f"  Player {player} chooses action {action}")
+            # Always show both action number and action name (universal solution)
+            try:
+                action_name = env.state.action_to_string(player, action)
+            except Exception:
+                action_name = str(action)
+            game_log.append(f"  Player {player} chooses action {action} ({action_name})")
             if reasoning and reasoning != "None":
                 reasoning_preview = reasoning[:100] + ("..." if len(reasoning) > 100 else "")
                 game_log.append(f"    Reasoning: {reasoning_preview}")
