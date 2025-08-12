@@ -1,42 +1,12 @@
-2025-08-10 11:17:26,360 - __main__ - INFO - {'env_config': {'game_name': 'tic_tac_toe', 'max_game_rounds': None}, 'num_episodes': 1, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama3-8b-8192'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama3-8b-8192'}, 'log_level': 'INFO', 'env_configs': [{'game_name': 'kuhn_poker', 'max_game_rounds': None}, {'game_name': 'connect_four', 'max_game_rounds': None}, {'game_name': 'hex', 'max_game_rounds': None}, {'game_name': 'tic_tac_toe', 'max_game_rounds': None}, {'game_name': 'matrix_rps', 'max_game_rounds': 10}, {'game_name': 'matrix_pd', 'max_game_rounds': 10}], 'models': ['litellm_groq/llama3-8b-8192', 'litellm_groq/llama3-70b-8192', 'litellm_groq/gemma2-9b-it', 'litellm_together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo', 'litellm_together_ai/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo', 'litellm_together_ai/mistralai/Mixtral-8x7B-Instruct-v0.1', 'litellm_fireworks_ai/accounts/fireworks/models/llama-v3-8b-instruct', 'litellm_fireworks_ai/accounts/fireworks/models/llama-v3-70b-instruct']}
-2025-08-10 11:17:26,362 - __main__ - INFO - Ray disabled - using sequential execution
-2025-08-10 11:17:26,362 - __main__ - INFO - Using sequential execution (Ray disabled)
-2025-08-10 11:17:26,364 - simulate - INFO - Initializing environment for tic_tac_toe.
-2025-08-10 11:17:26,365 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for tic_tac_toe
-2025-08-10 11:17:26,365 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama3-8b-8192)
-2025-08-10 11:17:26,365 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
-2025-08-10 11:17:26,370 - simulate - INFO - Episode 1 started with seed 42.
-2025-08-10 11:17:26,378 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-10 11:17:26,752 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-10 11:17:26,755 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-10 11:17:26,763 - simulate - INFO - Board state: 
-...
-...
-...
-2025-08-10 11:17:26,764 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-2025-08-10 11:17:26,764 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: I choose to place my X in the center of the board, which is the most strategic position. This allows me to have the most options for my next move and puts pressure on my opponent to respond. Additionally, placing my X in the center gives me the best chance to win the game by creating a potential row, column, or diagonal.
-2025-08-10 11:17:26,769 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-10 11:17:27,046 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-10 11:17:27,049 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-10 11:17:27,055 - simulate - INFO - Board state: 
-.o.
-.x.
-...
-2025-08-10 11:17:27,056 - simulate - INFO - Legal actions: [0, 2, 3, 5, 6, 7, 8]
-2025-08-10 11:17:27,056 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 3 with reasoning: I want to place my X in a position that blocks O\
-2025-08-10 11:17:27,060 - LiteLLM - INFO - 
-LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-10 11:17:27,384 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-10 11:17:27,386 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-10 11:17:27,391 - simulate - INFO - Board state: 
-oo.
-xx.
-...
-2025-08-10 11:17:27,391 - simulate - INFO - Legal actions: [2, 5, 6, 7, 8]
-2025-08-10 11:17:27,391 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 5 with reasoning: I want to block the potential winning line of the opponent (o) and create a possibility to win for myself. The best way to do this is to place my x in position 5, which would block the winning line and also give me a chance to create a winning line in the future.
-2025-08-10 11:17:27,391 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
-2025-08-10 11:17:27,397 - simulate - INFO - Simulation for game tic_tac_toe, Episode 1 completed.
-2025-08-10 11:17:27,398 - __main__ - INFO - Sequential simulation results for tic_tac_toe completed
-2025-08-10 11:17:27,399 - __main__ - INFO - All simulations completed. Total results: 1
+2025-08-12 20:57:16,300 - __main__ - INFO - {'env_config': {'game_name': 'connect_four', 'max_game_rounds': None}, 'num_episodes': 1, 'seed': 42, 'use_ray': False, 'mode': 'human_vs_random', 'agents': {'player_0': {'type': 'human', 'model': 'litellm_groq/llama-3.1-8b-instant'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama3-8b-8192'}, 'log_level': 'INFO'}
+2025-08-12 20:57:16,301 - __main__ - INFO - Ray disabled - using sequential execution
+2025-08-12 20:57:16,301 - __main__ - INFO - Using sequential execution (Ray disabled)
+2025-08-12 20:57:16,304 - simulate - INFO - Initializing environment for connect_four.
+2025-08-12 20:57:16,304 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for connect_four
+2025-08-12 20:57:16,304 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> HUMAN (litellm_groq/llama-3.1-8b-instant)
+2025-08-12 20:57:16,304 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
+2025-08-12 20:57:16,332 - simulate - INFO - Episode 1 started with seed 42.
+2025-08-12 20:57:22,051 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
+2025-08-12 20:57:22,056 - simulate - INFO - Simulation for game connect_four, Episode 1 completed.
+2025-08-12 20:57:22,057 - __main__ - INFO - Sequential simulation results for connect_four completed
+2025-08-12 20:57:22,057 - __main__ - INFO - All simulations completed. Total results: 1

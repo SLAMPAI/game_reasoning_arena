@@ -3,8 +3,9 @@ Name: game_reasoning_arena
 Version: 0.1
 Summary: OpenSpiel LLM Arena
 Author: Lucia Cipolina-Kun
-Requires-Python: >=3.7
+Requires-Python: >=3.10
 Description-Content-Type: text/markdown
+
 
 # Game Reasoning Arena
 
@@ -30,6 +31,8 @@ ___
 - `matrix_pd` - Matrix form prisoner's dilemma
 - `matching_pennies` - Zero-sum matching game
 - `matrix_rps` - Rock-paper-scissors matrix game
+- `hex` - Abstract connection game on a hexagonal grid
+- `chess` - Classic 8x8 board game of strategy and tactics
 
 ___
 
