@@ -2,7 +2,7 @@
 Policy Manager
 
 Policy assignment, initialization, and mapping.
-A policy is a class (human, llm, random) that receives an observation 
+A policy is a class (human, llm, random) that receives an observation
 (board state) and returns an action (move).
 """
 
@@ -62,7 +62,7 @@ def initialize_policies(config: Dict[str, Any],
         elif agent_type == "random":
             policies[f"policy_{i}"] = agent_class(seed=seed)
         elif agent_type == "human":
-            policies[f"policy_{i}"] = agent_class()
+            policies[f"policy_{i}"] = agent_class(game_name=game_name)
 
         logger.info("Assigned: policy_%d -> %s (%s)",
                     i, agent_type.upper(),
