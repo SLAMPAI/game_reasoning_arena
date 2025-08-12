@@ -1,1 +1,0 @@
-"""OpenSpiel LLM Arena package."""
