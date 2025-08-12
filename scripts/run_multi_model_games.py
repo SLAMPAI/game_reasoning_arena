@@ -13,6 +13,7 @@ Basic usage (uses defaults):
 
 With a config file:
     python3 scripts/run_multi_model_games.py --config path/to/config.yaml
+    python3 scripts/run_multi_model_games.py --config src/game_reasoning_arena/configs/multi_game_multi_model.yaml
 
 With CLI overrides:
     python3 scripts/run_multi_model_games.py --override num_episodes=5

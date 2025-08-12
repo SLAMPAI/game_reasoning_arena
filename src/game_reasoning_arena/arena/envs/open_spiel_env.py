@@ -28,8 +28,10 @@ class OpenSpielEnv(ABC):
         Args:
             game (Any): The OpenSpiel game object being simulated.
             game_name (str): A human-readable name for the game.
-            player_type (Dict[str, str]): Maps "Player 1", "Player 2", ... to their types (human, random, llm, etc.).
-            max_game_rounds (int): Maximum number of rounds for iterated games. Ignored by single-shot games.
+            player_type (Dict[str, str]): Maps "Player 1", "Player 2", ...
+            to their types (human, random, llm, etc.).
+            max_game_rounds (int): Maximum number of rounds for iterated games.
+            Ignored by single-shot games.
             seed (Optional[int]): Random seed for reproducibility.
         """
         self.game = game
@@ -48,7 +50,8 @@ class OpenSpielEnv(ABC):
 
     def reset(self, seed: Optional[int]=None) -> Tuple[str, Dict[str, Any]]:
         """
-        Resets the environment to an initial state and returns an initial observation.
+        Resets the environment to an initial state and returns an
+         initial observation.
 
         Args:
         seed (Optional[int]): Seed for environment randomization.
@@ -63,7 +66,8 @@ class OpenSpielEnv(ABC):
         if hasattr(self.game, "set_seed"):
             self.game.set_seed(seed)
 
-        self.state = self.game.new_initial_state() # Instantiates the pyspiel game state
+        # Instantiates the pyspiel game state
+        self.state = self.game.new_initial_state()
         self.terminated = False
         self.truncated = False
         self.info = {}
@@ -74,21 +78,27 @@ class OpenSpielEnv(ABC):
 
         return self._state_to_observation(), self.info
 
-    def step(self, action_dict: Dict[int, int]) -> Tuple[Any, float, bool,bool, Dict[str, Any]]:
-        """Applies the given action(s) to the environment and returns the new state.
+    def step(self, action_dict: Dict[int, int]
+             ) -> Tuple[Any, float, bool, bool, Dict[str, Any]]:
+        """Applies the given action(s) to the environment
+        and returns the new state.
 
         Args:
-            action_dict (Dict[int, int]): A dictionary mapping agent IDs to actions.
+            action_dict (Dict[int, int]): A dictionary mapping
+            agent IDs to actions.
                 - For turn-based games: {current_player: action}
-                - For simultaneous games: {player_0: action_0, player_1: action_1, ...}
+                - For simultaneous games:
+                {player_0: action_0, player_1: action_1, ...}
 
         Returns:
             Tuple[Any, float, bool, bool, Dict[str, Any]]: A tuple containing:
                 - observation (Any): The resulting state after the action.
                 - reward (float): The reward obtained from this step.
                 - terminated (bool): Whether the episode has ended normally.
-                - truncated (bool): Whether the episode ended due to `max_game_rounds`.
-                - info (Dict[str, Any]): Additional diagnostic information (e.g., final scores if done).
+                - truncated (bool): Whether the episode ended
+                due to `max_game_rounds`.
+                - info (Dict[str, Any]): Additional diagnostic
+                information (e.g., final scores if done).
         """
 
         # Handle chance nodes
@@ -104,11 +114,14 @@ class OpenSpielEnv(ABC):
 
         # Move environment to the next state
         if self.state.is_simultaneous_node():
-            actions = [action_dict[player] for player in sorted(action_dict.keys())]
+            actions = [action_dict[player] for player in sorted(
+                action_dict.keys()
+                )]
             self.state.apply_actions(actions)  # Multi-agent moves
         else:
             current_player = list(action_dict.keys())[0]
-            self.state.apply_action(action_dict[current_player]) # Single action
+            # Single action
+            self.state.apply_action(action_dict[current_player])
 
         # Stepwise reward for each OpenSpiel-indexed agent
         reward_dict = self._compute_reward()
@@ -122,7 +135,8 @@ class OpenSpielEnv(ABC):
              and self.state.move_number() >= self.max_game_rounds
         )
 
-        # If the game is finished, store final scores; otherwise, update current player
+        # If the game is finished, store final scores;
+        # otherwise, update current player
         if self.terminated or self.truncated:
             print("game terminated" if self.terminated else "game truncated")
             # Note: final rewards are corectly updated by the OpenSpiel rewards tracker.
@@ -181,7 +195,8 @@ class OpenSpielEnv(ABC):
         """Returns the observation for each agent in the game.
 
         Returns:
-            Dict[int, Dict[str, Any]]: Mapping from agent ID to their respective observations.
+            Dict[int, Dict[str, Any]]: Mapping from agent ID
+            to their respective observations.
         """
 
         agent_id = self.state.current_player()
