@@ -181,30 +181,11 @@ def extract_agent_info(filename: str) -> Tuple[str, str]:
 
 
 def get_available_games(include_aggregated: bool = True) -> List[str]:
-    """Union of games seen in DBs and in registry."""
-    game_names = set()
-
-    # From DBs
-    for db_file in find_or_download_db():
-        conn = sqlite3.connect(db_file)
-        try:
-            df = pd.read_sql_query(
-                "SELECT DISTINCT game_name FROM moves", conn
-            )
-            game_names.update(df["game_name"].tolist())
-        except Exception:
-            pass
-        finally:
-            conn.close()
-
-    # From registry
+    """Return only games from the registry."""
     if GAMES_REGISTRY:
-        game_names.update(GAMES_REGISTRY.keys())
-
-    if not game_names:
-        game_names.update(["tic_tac_toe", "kuhn_poker", "connect_four"])
-
-    game_list = sorted(game_names)
+        game_list = sorted(GAMES_REGISTRY.keys())
+    else:
+        game_list = ["tic_tac_toe", "kuhn_poker", "connect_four"]
     if include_aggregated:
         game_list.insert(0, "Aggregated Performance")
     return game_list
@@ -280,13 +261,17 @@ def create_player_config() -> GameArenaConfig:
 
     # Map internal names to display names
     key_to_display = _get_game_display_mapping()
-    available_games = [
+    mapped_games = [
         key_to_display.get(key, key.replace("_", " ").title())
         for key in available_keys
     ]
-
-    # Collect models seen in DBs for charts/labels
-    database_models = [model for _, _, model in iter_agent_databases()]
+    # Deduplicate while preserving order
+    seen = set()
+    available_games = []
+    for name in mapped_games:
+        if name not in seen:
+            available_games.append(name)
+            seen.add(name)
 
     player_types = ["random_bot"]
     player_type_display = {"random_bot": "Random Bot"}
@@ -297,7 +282,7 @@ def create_player_config() -> GameArenaConfig:
             tag = model_key.split("/")[-1]
             player_type_display[key] = f"HuggingFace: {tag}"
 
-    all_models = list(HUGGINGFACE_MODELS.keys()) + database_models
+    all_models = list(HUGGINGFACE_MODELS.keys())
     model_info = (
         "HuggingFace transformer models integrated with backend system."
         if BACKEND_SYSTEM_AVAILABLE
@@ -305,10 +290,11 @@ def create_player_config() -> GameArenaConfig:
     )
 
     # Build display→key mapping for games
-    display_to_key = {
-        key_to_display.get(key, key.replace("_", " ").title()): key
-        for key in available_keys
-    }
+    display_to_key = {}
+    for key in available_keys:
+        display = key_to_display.get(key, key.replace("_", " ").title())
+        if display not in display_to_key:
+            display_to_key[display] = key
 
     return {
         "available_games": available_games,
@@ -603,10 +589,16 @@ with gr.Blocks() as interface:
             "# LLM Model Leaderboard\n"
             "Track performance across different games!"
         )
+        # Use the same display logic as Game Arena
+        leaderboard_config = create_player_config()
         leaderboard_game_dropdown = gr.Dropdown(
-            choices=get_available_games(),
+            choices=leaderboard_config["available_games"],
             label="Select Game",
-            value="Aggregated Performance",
+            value=(
+                leaderboard_config["available_games"][0]
+                if leaderboard_config["available_games"]
+                else "No Games Found"
+            ),
         )
         leaderboard_table = gr.Dataframe(
             value=extract_leaderboard_stats("Aggregated Performance"),
@@ -616,7 +608,10 @@ with gr.Blocks() as interface:
         refresh_btn = gr.Button("🔄 Refresh")
 
         def _update_leaderboard(game: str) -> pd.DataFrame:
-            return extract_leaderboard_stats(game)
+            # Map display name back to internal key
+            display_to_key = leaderboard_config.get("game_display_to_key", {})
+            internal_game = display_to_key.get(game, game)
+            return extract_leaderboard_stats(internal_game)
 
         leaderboard_game_dropdown.change(
             _update_leaderboard,
