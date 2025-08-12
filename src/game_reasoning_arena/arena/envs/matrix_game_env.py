@@ -1,8 +1,8 @@
 """Simulator for Matrix Games.
 
 This module implements the MatrixGameEnvclass, which handles various
-matrix games like Rock-Paper-Scissors and Prisoner's Dilemma using the OpenSpiel
-framework.
+matrix games like Rock-Paper-Scissors and Prisoner's Dilemma using
+the OpenSpiel framework.
 """
 
 from typing import Any, Dict, List, Optional
@@ -20,7 +20,8 @@ class MatrixGameEnv(OpenSpielEnv):
         Args:
             game: The OpenSpiel game object.
             game_name: A string representing the name of the game.
-            player_types: A dictionary mapping player IDs to their types (e.g., human, random).
+            player_types: A dictionary mapping player IDs to their types
+            (e.g., human, random).
             max_game_rounds: Maximum number of rounds
                              for iterated games (optional, default is None).
         """
@@ -83,7 +84,8 @@ class MatrixGameEnv(OpenSpielEnv):
 
                 What action do you choose? Reply only with the action number.
 
-                First, think through the game strategy and explain your reasoning.
+                First, think through the game strategy
+                and explain your reasoning.
                 Only after that, decide on the best action to take.
 
                 Reply only in the following JSON format:

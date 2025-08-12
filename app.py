@@ -334,6 +334,7 @@ def play_game(
     player1_model: str | None = None,
     player2_model: str | None = None,
     rounds: int = 1,
+    seed: int | None = None,
 ) -> str:
     if game_name == "No Games Found":
         return "No games available. Please add game databases."
@@ -362,10 +363,14 @@ def play_game(
     if player2_type in display_to_key:
         player2_type = display_to_key[player2_type]
 
+    import time
     try:
         from ui.gradio_config_generator import (
             run_game_with_existing_infrastructure,
         )
+        # Use a random seed if not provided
+        if seed is None:
+            seed = int(time.time() * 1000) % (2**31 - 1)
         result = run_game_with_existing_infrastructure(
             game_name=game_name,
             player1_type=player1_type,
@@ -373,7 +378,7 @@ def play_game(
             player1_model=player1_model,
             player2_model=player2_model,
             rounds=rounds,
-            seed=42,
+            seed=seed,
         )
         return result
     except Exception as e:
@@ -588,6 +593,7 @@ with gr.Blocks() as interface:
                 p1_model,
                 p2_model,
                 rounds_slider,
+                # No seed input from user; will default to None
             ],
             outputs=[game_output],
         )
