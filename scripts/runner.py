@@ -25,10 +25,10 @@ from game_reasoning_arena.configs.config_parser import (
     parse_config
 )
 
-# Ensure the src directory is in the Python path #TODO: delete this!
-#current_dir = Path(__file__).parent
-#src_dir = current_dir / ".." / "src"
-#sys.path.insert(0, str(src_dir.resolve()))
+# Ensure the src directory is in the Python path
+current_dir = Path(__file__).parent
+src_dir = current_dir / ".." / "src"
+sys.path.insert(0, str(src_dir.resolve()))
 
 # Set the soft and hard core file size limits to 0 (disable core dumps)
 resource.setrlimit(resource.RLIMIT_CORE, (0, 0))

@@ -1,7 +1,7 @@
-# Simple tic-tac-toe test config
+# Use env_config as a single dict for single games
 env_config:
-    game_name: matching_pennies # kuhn_poker #connect_four #tic_tac_toe
-    max_game_rounds: null
+  game_name: matching_pennies # kuhn_poker #connect_four #tic_tac_toe
+  max_game_rounds: null
 
 num_episodes: 1
 seed: 42

@@ -1,6 +1,7 @@
 # LLM vs LLM configuration for Kuhn Poker
 # This config sets up a game between two different LLM models
 
+# Use env_config as a single dict for single games
 env_config:
   game_name: kuhn_poker
   max_game_rounds: null

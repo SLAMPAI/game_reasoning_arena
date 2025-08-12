@@ -1,77 +1,20 @@
-2025-08-12 22:04:27,447 - __main__ - INFO - {'env_config': {'game_name': 'matching_pennies', 'max_game_rounds': None}, 'num_episodes': 1, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama3-8b-8192'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama3-8b-8192'}, 'log_level': 'DEBUG'}
-2025-08-12 22:04:27,449 - __main__ - INFO - Ray disabled - using sequential execution
-2025-08-12 22:04:27,449 - __main__ - INFO - Using sequential execution (Ray disabled)
-2025-08-12 22:04:27,452 - simulate - INFO - Initializing environment for matching_pennies.
-2025-08-12 22:04:27,453 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for matching_pennies
-2025-08-12 22:04:27,453 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama3-8b-8192)
-2025-08-12 22:04:27,453 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
-2025-08-12 22:04:27,465 - simulate - INFO - Episode 1 started with seed 42.
-2025-08-12 22:04:27,466 - LiteLLM - DEBUG - 
-
-2025-08-12 22:04:27,466 - LiteLLM - DEBUG - [92mRequest to litellm:[0m
-2025-08-12 22:04:27,466 - LiteLLM - DEBUG - [92mlitellm.completion(model='groq/llama3-8b-8192', messages=[{'role': 'user', 'content': "You are Player 0 in the game: matching_pennies\n\n                Available actions:\n                0: Heads\n1: Tails\n\n                What action do you choose? Reply only with the action number.\n\n                First, think through the game strategy\n                and explain your reasoning.\n                Only after that, decide on the best action to take.\n\n                Reply only in the following JSON format:\n                {\n                'reasoning': <str>,\n                'action': <int>\n                }"}], max_tokens=250, temperature=0.1)[0m
-2025-08-12 22:04:27,466 - LiteLLM - DEBUG - 
-
-2025-08-12 22:04:27,467 - LiteLLM - DEBUG - self.optional_params: {}
-2025-08-12 22:04:27,467 - LiteLLM - DEBUG - SYNC kwargs[caching]: False; litellm.cache: None; kwargs.get('cache')['no-cache']: False
-2025-08-12 22:04:27,477 - LiteLLM - INFO - 
+2025-08-13 00:04:21,292 - __main__ - INFO - {'env_config': {'game_name': 'matrix_rps', 'max_game_rounds': 10}, 'num_episodes': True, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama3-8b-8192'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama3-8b-8192'}, 'log_level': 'INFO'}
+2025-08-13 00:04:21,294 - __main__ - INFO - Ray disabled - using sequential execution
+2025-08-13 00:04:21,294 - __main__ - INFO - Using sequential execution (Ray disabled)
+2025-08-13 00:04:21,297 - simulate - INFO - Initializing environment for matrix_rps.
+2025-08-13 00:04:21,298 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for matrix_rps
+2025-08-13 00:04:21,298 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama3-8b-8192)
+2025-08-13 00:04:21,298 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
+2025-08-13 00:04:21,304 - simulate - INFO - Episode 1 started with seed 42.
+2025-08-13 00:04:21,315 - LiteLLM - INFO - 
 LiteLLM completion() model= llama3-8b-8192; provider = groq
-2025-08-12 22:04:27,477 - LiteLLM - DEBUG - 
-LiteLLM: Params passed to completion() {'functions': None, 'function_call': None, 'temperature': 0.1, 'top_p': None, 'stream': None, 'stream_options': None, 'stop': None, 'max_tokens': 250, 'max_completion_tokens': None, 'modalities': None, 'prediction': None, 'audio': None, 'presence_penalty': None, 'frequency_penalty': None, 'logit_bias': None, 'user': None, 'response_format': None, 'seed': None, 'tools': None, 'tool_choice': None, 'max_retries': None, 'logprobs': None, 'top_logprobs': None, 'extra_headers': None, 'api_version': None, 'parallel_tool_calls': None, 'allowed_openai_params': None, 'reasoning_effort': None, 'additional_drop_params': None, 'messages': [{'role': 'user', 'content': "You are Player 0 in the game: matching_pennies\n\n                Available actions:\n                0: Heads\n1: Tails\n\n                What action do you choose? Reply only with the action number.\n\n                First, think through the game strategy\n                and explain your reasoning.\n                Only after that, decide on the best action to take.\n\n                Reply only in the following JSON format:\n                {\n                'reasoning': <str>,\n                'action': <int>\n                }"}], 'thinking': None, 'web_search_options': None, 'custom_llm_provider': 'groq', 'drop_params': None, 'model': 'llama3-8b-8192', 'n': None}
-2025-08-12 22:04:27,477 - LiteLLM - DEBUG - 
-LiteLLM: Non-Default params passed to completion() {'temperature': 0.1, 'max_tokens': 250}
-2025-08-12 22:04:27,478 - LiteLLM - DEBUG - Final returned optional params: {'temperature': 0.1, 'max_tokens': 250, 'extra_body': {}}
-2025-08-12 22:04:27,478 - LiteLLM - DEBUG - self.optional_params: {'temperature': 0.1, 'max_tokens': 250, 'extra_body': {}}
-2025-08-12 22:04:27,478 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-12 22:04:27,478 - LiteLLM - DEBUG - [92m
-
-POST Request Sent from LiteLLM:
-curl -X POST \
-https://api.groq.com/openai/v1/chat/completions \
--H 'Authorization: Be****GF' -H 'Content-Type: application/json' \
--d '{'model': 'llama3-8b-8192', 'messages': [{'role': 'user', 'content': "You are Player 0 in the game: matching_pennies\n\n                Available actions:\n                0: Heads\n1: Tails\n\n                What action do you choose? Reply only with the action number.\n\n                First, think through the game strategy\n                and explain your reasoning.\n                Only after that, decide on the best action to take.\n\n                Reply only in the following JSON format:\n                {\n                'reasoning': <str>,\n                'action': <int>\n                }"}], 'temperature': 0.1, 'max_tokens': 250}'
-[0m
-
-2025-08-12 22:04:27,495 - httpcore.connection - DEBUG - connect_tcp.started host='api.groq.com' port=443 local_address=None timeout=600.0 socket_options=None
-2025-08-12 22:04:27,512 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x158a6e020>
-2025-08-12 22:04:27,512 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x158b14340> server_hostname='api.groq.com' timeout=600.0
-2025-08-12 22:04:27,526 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x158a6e080>
-2025-08-12 22:04:27,526 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
-2025-08-12 22:04:27,526 - httpcore.http11 - DEBUG - send_request_headers.complete
-2025-08-12 22:04:27,526 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
-2025-08-12 22:04:27,527 - httpcore.http11 - DEBUG - send_request_body.complete
-2025-08-12 22:04:27,527 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
-2025-08-12 22:04:27,919 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Tue, 12 Aug 2025 21:04:27 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Content-Encoding', b'br'), (b'Cache-Control', b'private, max-age=0, no-store, no-cache, must-revalidate'), (b'vary', b'Origin'), (b'x-groq-region', b'fra'), (b'x-ratelimit-limit-requests', b'14400'), (b'x-ratelimit-limit-tokens', b'6000'), (b'x-ratelimit-remaining-requests', b'14399'), (b'x-ratelimit-remaining-tokens', b'5863'), (b'x-ratelimit-reset-requests', b'6s'), (b'x-ratelimit-reset-tokens', b'1.37s'), (b'x-request-id', b'req_01k2g1jhdje96bqmfvyvkt5zz1'), (b'via', b'1.1 google'), (b'cf-cache-status', b'DYNAMIC'), (b'Server', b'cloudflare'), (b'CF-RAY', b'96e2ecdc2984768b-LHR'), (b'alt-svc', b'h3=":443"; ma=86400')])
-2025-08-12 22:04:27,920 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-12 22:04:27,920 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
-2025-08-12 22:04:27,921 - httpcore.http11 - DEBUG - receive_response_body.complete
-2025-08-12 22:04:27,922 - httpcore.http11 - DEBUG - response_closed.started
-2025-08-12 22:04:27,922 - httpcore.http11 - DEBUG - response_closed.complete
-2025-08-12 22:04:27,922 - LiteLLM - DEBUG - RAW RESPONSE:
-{"id": "chatcmpl-270c43e9-bf2a-4ba9-afa5-9ca8fb6c9f43", "object": "chat.completion", "created": 1755032667, "model": "llama3-8b-8192", "choices": [{"index": 0, "message": {"role": "assistant", "content": "{\n\"reasoning\": \"As Player 0, I will choose an action based on the game's strategy. Since I don't have any information about the opponent's action, I will choose randomly. This is because the game is symmetric, and the opponent's action is independent of my action. By choosing randomly, I am ensuring that my action is not biased towards any particular outcome.\",\n'action': 0\n}"}, "logprobs": null, "finish_reason": "stop"}], "usage": {"queue_time": 0.222363511, "prompt_tokens": 109, "prompt_time": 0.031303123, "completion_tokens": 85, "completion_time": 0.09441306, "total_tokens": 194, "total_time": 0.125716183}, "usage_breakdown": null, "system_fingerprint": "fp_c0b3855449", "x_groq": {"id": "req_01k2g1jhdje96bqmfvyvkt5zz1"}, "service_tier": "on_demand"}
-
-
-2025-08-12 22:04:27,925 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-12 22:04:27,925 - LiteLLM - DEBUG - Logging Details LiteLLM-Success Call: Cache_hit=None
-2025-08-12 22:04:27,927 - LiteLLM - DEBUG - selected model name for cost calculation: groq/llama3-8b-8192
-2025-08-12 22:04:27,927 - LiteLLM - DEBUG - selected model name for cost calculation: groq/llama3-8b-8192
-2025-08-12 22:04:27,928 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-12 22:04:27,929 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-12 22:04:27,930 - LiteLLM - DEBUG - Returned custom cost for model=groq/llama3-8b-8192 - prompt_tokens_cost_usd_dollar: 5.4499999999999995e-06, completion_tokens_cost_usd_dollar: 6.8e-06
-2025-08-12 22:04:27,930 - LiteLLM - DEBUG - Returned custom cost for model=groq/llama3-8b-8192 - prompt_tokens_cost_usd_dollar: 5.4499999999999995e-06, completion_tokens_cost_usd_dollar: 6.8e-06
-2025-08-12 22:04:27,930 - LiteLLM - DEBUG - response_cost: 1.225e-05
-2025-08-12 22:04:27,931 - LiteLLM - DEBUG - response_cost: 1.225e-05
-2025-08-12 22:04:27,934 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-12 22:04:27,935 - LiteLLM - DEBUG - model_info: {'key': 'groq/llama3-8b-8192', 'max_tokens': 8192, 'max_input_tokens': 8192, 'max_output_tokens': 8192, 'input_cost_per_token': 5e-08, 'cache_creation_input_token_cost': None, 'cache_read_input_token_cost': None, 'input_cost_per_character': None, 'input_cost_per_token_above_128k_tokens': None, 'input_cost_per_token_above_200k_tokens': None, 'input_cost_per_query': None, 'input_cost_per_second': None, 'input_cost_per_audio_token': None, 'input_cost_per_token_batches': None, 'output_cost_per_token_batches': None, 'output_cost_per_token': 8e-08, 'output_cost_per_audio_token': None, 'output_cost_per_character': None, 'output_cost_per_reasoning_token': None, 'output_cost_per_token_above_128k_tokens': None, 'output_cost_per_character_above_128k_tokens': None, 'output_cost_per_token_above_200k_tokens': None, 'output_cost_per_second': None, 'output_cost_per_image': None, 'output_vector_size': None, 'citation_cost_per_token': None, 'litellm_provider': 'groq', 'mode': 'chat', 'supports_system_messages': None, 'supports_response_schema': None, 'supports_vision': None, 'supports_function_calling': None, 'supports_tool_choice': True, 'supports_assistant_prefill': None, 'supports_prompt_caching': None, 'supports_audio_input': None, 'supports_audio_output': None, 'supports_pdf_input': None, 'supports_embedding_image_input': None, 'supports_native_streaming': None, 'supports_web_search': None, 'supports_url_context': None, 'supports_reasoning': None, 'supports_computer_use': None, 'search_context_cost_per_query': None, 'tpm': None, 'rpm': None}
-2025-08-12 22:04:27,936 - LiteLLM - DEBUG - Logging Details LiteLLM-Success Call streaming complete
-2025-08-12 22:04:27,937 - LiteLLM - DEBUG - checking potential_model_names in litellm.model_cost: {'split_model': 'llama3-8b-8192', 'combined_model_name': 'groq/llama3-8b-8192', 'stripped_model_name': 'llama3-8b-8192', 'combined_stripped_model_name': 'groq/llama3-8b-8192', 'custom_llm_provider': 'groq'}
-2025-08-12 22:04:27,937 - LiteLLM - DEBUG - model_info: {'key': 'groq/llama3-8b-8192', 'max_tokens': 8192, 'max_input_tokens': 8192, 'max_output_tokens': 8192, 'input_cost_per_token': 5e-08, 'cache_creation_input_token_cost': None, 'cache_read_input_token_cost': None, 'input_cost_per_character': None, 'input_cost_per_token_above_128k_tokens': None, 'input_cost_per_token_above_200k_tokens': None, 'input_cost_per_query': None, 'input_cost_per_second': None, 'input_cost_per_audio_token': None, 'input_cost_per_token_batches': None, 'output_cost_per_token_batches': None, 'output_cost_per_token': 8e-08, 'output_cost_per_audio_token': None, 'output_cost_per_character': None, 'output_cost_per_reasoning_token': None, 'output_cost_per_token_above_128k_tokens': None, 'output_cost_per_character_above_128k_tokens': None, 'output_cost_per_token_above_200k_tokens': None, 'output_cost_per_second': None, 'output_cost_per_image': None, 'output_vector_size': None, 'citation_cost_per_token': None, 'litellm_provider': 'groq', 'mode': 'chat', 'supports_system_messages': None, 'supports_response_schema': None, 'supports_vision': None, 'supports_function_calling': None, 'supports_tool_choice': True, 'supports_assistant_prefill': None, 'supports_prompt_caching': None, 'supports_audio_input': None, 'supports_audio_output': None, 'supports_pdf_input': None, 'supports_embedding_image_input': None, 'supports_native_streaming': None, 'supports_web_search': None, 'supports_url_context': None, 'supports_reasoning': None, 'supports_computer_use': None, 'search_context_cost_per_query': None, 'tpm': None, 'rpm': None}
-2025-08-12 22:04:27,939 - simulate - INFO - Board state: 
+2025-08-13 00:04:21,657 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-13 00:04:21,658 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-13 00:04:21,664 - simulate - INFO - Board state: 
 Matrix game - Player 0
-2025-08-12 22:04:27,939 - simulate - INFO - Legal actions: [0, 1]
-2025-08-12 22:04:27,939 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 0 with reasoning: As Player 0, I will choose an action based on the game's strategy. Since I don't have any information about the opponent's action, I will choose randomly. This is because the game is symmetric, and the opponent's action is independent of my action. By choosing randomly, I am ensuring that my action is not biased towards any particular outcome.
-2025-08-12 22:04:27,942 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
-2025-08-12 22:04:27,954 - simulate - INFO - Simulation for game matching_pennies, Episode 1 completed.
-2025-08-12 22:04:27,955 - __main__ - INFO - Sequential simulation results for matching_pennies completed
-2025-08-12 22:04:27,955 - __main__ - INFO - All simulations completed. Total results: 1
-2025-08-12 22:04:28,897 - asyncio - DEBUG - Using selector: KqueueSelector
+2025-08-13 00:04:21,664 - simulate - INFO - Legal actions: [0, 1, 2]
+2025-08-13 00:04:21,664 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 1 with reasoning: As Player 0, I will choose an action that is most likely to win against the opponent's random choice. Since I don't know the opponent's strategy, I will choose a random action with a slight bias towards Paper, as it beats Rock and loses to Scissors. This will give me a 50% chance of winning and a 25% chance of losing.
+2025-08-13 00:04:21,666 - simulate - INFO - Game status: terminated with rewards dict: {0: -1.0, 1: 1.0}
+2025-08-13 00:04:21,674 - simulate - INFO - Simulation for game matrix_rps, Episode 1 completed.
+2025-08-13 00:04:21,675 - __main__ - INFO - Sequential simulation results for matrix_rps completed
+2025-08-13 00:04:21,675 - __main__ - INFO - All simulations completed. Total results: 1

@@ -7,6 +7,7 @@ Hex using the OpenSpiel framework.
 from typing import Any, Dict, Optional
 from .open_spiel_env import OpenSpielEnv
 
+
 class HexEnv(OpenSpielEnv):
     """Environment Simulator for Hex."""
 

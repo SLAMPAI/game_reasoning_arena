@@ -97,7 +97,7 @@ def build_cli_parser() -> argparse.ArgumentParser:
 
     parser.add_argument(
         "--override",
-        nargs="*",
+        action="append",
         metavar="KEY=VALUE",
         help="Key-value overrides for configuration.",
     )
@@ -120,6 +120,7 @@ def parse_config(args: argparse.Namespace) -> Dict[str, Any]:
     # Start with default config
     config = default_simulation_config()
 
+
     # Merge base config first (if provided)
     if hasattr(args, 'base_config') and args.base_config:
         base_config = load_config(args.base_config)
@@ -134,6 +135,12 @@ def parse_config(args: argparse.Namespace) -> Dict[str, Any]:
     if hasattr(args, 'ray_config') and args.ray_config:
         ray_config = load_config(args.ray_config)
         config = deep_merge_dicts(config, ray_config)
+
+    # Handle env_config vs env_configs conflict after merging
+    # If env_configs (plural) exists, remove env_config (singular) to avoid
+    # conflicts
+    if "env_configs" in config and "env_config" in config:
+        del config["env_config"]
 
     # Apply specific CLI arguments for LLM backend
     if hasattr(args, 'backend') and args.backend:
@@ -305,14 +312,27 @@ def validate_config(config: Dict[str, Any]) -> None:
     Raises:
         ValueError: If configuration is invalid
     """
-    # Validate single-game config
+
+    # Validate env_config structure
     if "env_config" in config:
-        game_cfgs = [config["env_config"]]
+        env_config = config["env_config"]
+        if isinstance(env_config, dict):
+            # Single game config
+            game_cfgs = [env_config]
+        elif isinstance(env_config, list):
+            # Multiple game configs
+            game_cfgs = env_config
+        else:
+            raise ValueError("env_config must be a dict or list of dicts")
     elif "env_configs" in config:
+        # Multiple game configs (alternative naming)
         game_cfgs = config["env_configs"]
+        if not isinstance(game_cfgs, list):
+            raise ValueError("env_configs must be a list of game configs")
     else:
         raise ValueError(
-            "Config must contain either 'env_config' or 'env_configs'"
+            "Config must contain 'env_config' (single game) or "
+            "'env_configs' (multiple games)"
         )
 
     for game_cfg in game_cfgs:

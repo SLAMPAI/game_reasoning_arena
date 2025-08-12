@@ -7,11 +7,19 @@ Handles environment creation, policy initialization, and the simulation loop.
 """
 
 import logging
+import sys
+from pathlib import Path
 from typing import Dict, Any
+
+# Ensure the src directory is in the Python path
+current_dir = Path(__file__).parent
+src_dir = current_dir / ".." / "src"
+sys.path.insert(0, str(src_dir.resolve()))
+
+# pylint: disable=wrong-import-position
 from game_reasoning_arena.arena.utils.seeding import set_seed
 from game_reasoning_arena.arena.games.registry import registry  # Games registry
 from game_reasoning_arena.backends import initialize_llm_registry
-
 from game_reasoning_arena.arena.agents.policy_manager import (
     initialize_policies, policy_mapping_fn
 )

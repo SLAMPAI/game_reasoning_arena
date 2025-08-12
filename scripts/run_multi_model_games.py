@@ -13,7 +13,8 @@ Basic usage (uses defaults):
 
 With a config file:
     python3 scripts/run_multi_model_games.py --config path/to/config.yaml
-    python3 scripts/run_multi_model_games.py --config src/game_reasoning_arena/configs/multi_game_multi_model.yaml
+    python3 scripts/run_multi_model_games.py \
+      --config src/game_reasoning_arena/configs/multi_game_multi_model.yaml
 
 With CLI overrides:
     python3 scripts/run_multi_model_games.py --override num_episodes=5
@@ -83,8 +84,15 @@ def load_config_vars(config):
                 games.append(env["game_name"])
     elif "games" in config:
         games = config["games"]
+    elif "env_config" in config and isinstance(config["env_config"], list):
+        games = [env["game_name"] for env in config["env_config"]
+                 if "game_name" in env]
     elif "env_config" in config and "game_name" in config["env_config"]:
+        # fallback for dict (should not be used in new configs)
         games = [config["env_config"]["game_name"]]
+    else:
+        # Default fallback
+        games = ["tic_tac_toe"]
 
     # Extract models from top-level models if present
     if "models" in config and isinstance(config["models"], list):
@@ -97,10 +105,21 @@ def load_config_vars(config):
             if agent.get("type") == "llm" and "model" in agent:
                 models.append(agent["model"])
         # If no models found in agents, use llm_backend default_model
-        if not models:
+        if not models and "llm_backend" in config:
             models = [config["llm_backend"]["default_model"]]
+        elif not models:
+            # Final fallback
+            models = ["litellm_groq/llama-3.1-8b-instant"]
 
-    num_episodes = config["num_episodes"]
+    num_episodes = config.get("num_episodes", 1)
+    # Ensure num_episodes is an integer (handle boolean conversion issues)
+    if isinstance(num_episodes, bool):
+        num_episodes = 1 if num_episodes else 0
+    elif isinstance(num_episodes, str):
+        try:
+            num_episodes = int(num_episodes)
+        except ValueError:
+            num_episodes = 1
     return games, models, num_episodes
 
 
@@ -119,10 +138,15 @@ def run_command(command, description):
     print(f"{'='*60}")
     print(f"Command: {command}")
 
-    # Set PYTHONPATH to include project root so subprocesses can import game_reasoning_arena
+    # Set PYTHONPATH to include project root so subprocesses can import
+    # game_reasoning_arena
     env = os.environ.copy()
     project_root = str(Path(__file__).parent.parent.resolve())
-    env["PYTHONPATH"] = project_root + os.pathsep + env.get("PYTHONPATH", "")
+    src_dir = str(Path(__file__).parent.parent / "src")
+    current_pythonpath = env.get("PYTHONPATH", "")
+    env["PYTHONPATH"] = (
+        f"{project_root}{os.pathsep}{src_dir}{os.pathsep}{current_pythonpath}"
+    )
     try:
         result = subprocess.run(
             command,
@@ -131,12 +155,16 @@ def run_command(command, description):
             capture_output=True,
             text=True,
             cwd=os.getcwd(),
-            env=env
+            env=env,
+            timeout=300  # 5 minute timeout
         )
         print("✅ SUCCESS")
         if result.stdout:
             print("Output:", result.stdout[-500:])
         return True
+    except subprocess.TimeoutExpired:
+        print("⏰ TIMEOUT - Command took longer than 5 minutes")
+        return False
     except subprocess.CalledProcessError as e:
         print(f"❌ FAILED with exit code {e.returncode}")
         print(f"Error: {e.stderr}")
@@ -183,23 +211,56 @@ def main():
     current_run = 0
     start_time = time.time()
 
-    # Run all game combinations
+    # Get the game configurations from config
+    # runner.py expects either env_config (single) or env_configs (multiple)
+    game_configs = []
+    if "env_configs" in config:
+        game_configs = config["env_configs"]
+    elif "env_config" in config and isinstance(config["env_config"], dict):
+        game_configs = [config["env_config"]]
+    else:
+        # Default fallback - create basic configs from game names
+        game_configs = [{"game_name": game} for game in games]
+
+    # Run all game/model combinations
     for model in models:
-        for game in games:
+        for game_cfg in game_configs:
             current_run += 1
+            game = game_cfg.get("game_name", "unknown")
             print(f"\n🎯 Progress: {current_run}/{total_runs}")
 
             model_short = model.split('/')[-1]
 
-            # Build command to run single game
+            # Build command to run single game with all game config overrides
+            # Since runner.py expects env_config as a single dict, we pass each
+            # game separately WITHOUT the base config file to avoid conflicts
             command = f"{sys.executable} scripts/runner.py "
-            if args.config:
-                command += f"--config {args.config} "
+
+            # Don't use the base config file since it has env_configs (plural)
+            # Instead, build individual overrides for a single game
+
+            # Override env_config with the specific game config
+            game_name = game_cfg['game_name']
+            command += f"--override env_config.game_name={game_name} "
+            if 'max_game_rounds' in game_cfg:
+                max_rounds = game_cfg['max_game_rounds']
+                command += (
+                    f"--override env_config.max_game_rounds={max_rounds} "
+                )
+
+            # Add other overrides from base config
             command += (
-                f"--override env_config.game_name={game} "
                 f"--override agents.player_0.model={model} "
+                f"--override agents.player_0.type=llm "
+                f"--override agents.player_1.type=random "
                 f"--override num_episodes={num_episodes} "
-                f"--override mode=llm_vs_random"
+                f"--override mode=llm_vs_random "
+                f"--override seed=42 "
+                f"--override use_ray=false "
+                f"--override log_level=INFO "
+                f"--override llm_backend.max_tokens=250 "
+                f"--override llm_backend.temperature=0.1 "
+                f"--override llm_backend.default_model={model}"
             )
 
             description = f"Running {game} with {model_short} vs Random"

@@ -1,6 +1,7 @@
 # Hybrid configuration - LiteLLM vs vLLM
 # Demonstrates mixed backends: API-based vs local GPU inference
 
+# Use env_config as a single dict for single games
 env_config:
   game_name: tic_tac_toe
   max_game_rounds: null

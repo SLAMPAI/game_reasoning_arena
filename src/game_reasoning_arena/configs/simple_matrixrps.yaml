@@ -1,7 +1,8 @@
 # Debug config for illegal move detection
+# Use env_config as a single dict for single games
 env_config:
-    game_name: matrix_rps
-    max_game_rounds: null
+  game_name: matrix_rps
+  max_game_rounds: null
 
 num_episodes: 1
 seed: 42

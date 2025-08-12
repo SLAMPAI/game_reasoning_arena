@@ -1,8 +1,8 @@
 # Example configuration demonstrating multi-game setup
 # This runs 3 different games with the same agent configuration
 
-# Use env_config for multiple games and pass them as lists!
-env_config:
+# Use env_configs (plural) for multiple games as a list
+env_configs:
   - game_name: kuhn_poker
     max_game_rounds: null
   - game_name: connect_four
