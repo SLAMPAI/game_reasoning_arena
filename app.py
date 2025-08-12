@@ -71,7 +71,8 @@ db_dir = Path(__file__).resolve().parent / "results"
 
 LEADERBOARD_COLUMNS = [
     "agent_name", "agent_type", "# games", "total rewards",
-    "avg_generation_time (sec)", "win-rate", "win vs_random (%)",
+    # "avg_generation_time (sec)",  # Commented out - needs fixing
+    "win-rate", "win vs_random (%)",
 ]
 
 # -----------------------------------------------------------------------------
@@ -382,9 +383,9 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
                     "FROM game_results",
                     conn,
                 )
-                avg_time = conn.execute(
-                    "SELECT AVG(generation_time) FROM moves"
-                ).fetchone()[0] or 0
+                # avg_time = conn.execute(
+                #     "SELECT AVG(generation_time) FROM moves"
+                # ).fetchone()[0] or 0 # to fix later
                 wins_vs_random = conn.execute(
                     "SELECT COUNT(*) FROM game_results "
                     "WHERE opponent = 'random_None' AND reward > 0",
@@ -401,10 +402,10 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
                     conn,
                     params=(game_name,),
                 )
-                avg_time = conn.execute(
-                    "SELECT AVG(generation_time) FROM moves WHERE game_name = ?",
-                    (game_name,),
-                ).fetchone()[0] or 0
+                # avg_time = conn.execute(
+                #     "SELECT AVG(generation_time) FROM moves WHERE game_name = ?",
+                #     (game_name,),
+                # ).fetchone()[0] or 0
                 wins_vs_random = conn.execute(
                     "SELECT COUNT(*) FROM game_results "
                     "WHERE opponent = 'random_None' AND reward > 0 AND game_name = ?",
@@ -436,7 +437,7 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
                 "agent_type": agent_type,
                 "# games": games_played,
                 "total rewards": total_rewards,
-                "avg_generation_time (sec)": round(float(avg_time), 3),
+                # "avg_generation_time (sec)": round(float(avg_time), 3),
                 "win-rate": round(vs_random_rate, 2),
                 "win vs_random (%)": round(vs_random_rate, 2),
             }
@@ -651,14 +652,16 @@ with gr.Blocks() as interface:
             )
 
         with gr.Row():
-            create_bar_plot(
-                data=metrics_df,
-                x_col="agent_name",
-                y_col="avg_generation_time (sec)",
-                title="Average Generation Time",
-                x_label="LLM Model",
-                y_label="Time (sec)",
-            )
+            # Commented out - avg_generation_time needs fixing
+            # create_bar_plot(
+            #     data=metrics_df,
+            #     x_col="agent_name",
+            #     y_col="avg_generation_time (sec)",
+            #     title="Average Generation Time",
+            #     x_label="LLM Model",
+            #     y_label="Time (sec)",
+            # )
+            pass
 
         with gr.Row():
             gr.Dataframe(

@@ -14,17 +14,18 @@ class GameLoader:
 
 
 # Registering games with simplified registry format
-@registry.register(
-    name="prisoners_dilemma",
-    module_path="game_reasoning_arena.arena.games.loaders",
-    class_name="PrisonersDilemmaLoader",
-    environment_path="game_reasoning_arena.arena.envs.matrix_game_env.MatrixGameEnv",
-    display_name="Prisoner's Dilemma (Matrix)"
-)
-class PrisonersDilemmaLoader(GameLoader):
-    @staticmethod
-    def load():
-        return pyspiel.load_game("matrix_pd")
+# NOTE: Commented out duplicate prisoners_dilemma - use matrix_pd instead
+# @registry.register(
+#     name="prisoners_dilemma",
+#     module_path="game_reasoning_arena.arena.games.loaders",
+#     class_name="PrisonersDilemmaLoader",
+#     environment_path="game_reasoning_arena.arena.envs.matrix_game_env.MatrixGameEnv",
+#     display_name="Prisoner's Dilemma (Matrix)"
+# )
+# class PrisonersDilemmaLoader(GameLoader):
+#     @staticmethod
+#     def load():
+#         return pyspiel.load_game("matrix_pd")
 
 
 @registry.register(
