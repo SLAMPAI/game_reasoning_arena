@@ -311,12 +311,16 @@ def validate_config(config: Dict[str, Any]) -> None:
     elif "env_configs" in config:
         game_cfgs = config["env_configs"]
     else:
-        raise ValueError("Config must contain either 'env_config' or 'env_configs'")
+        raise ValueError(
+            "Config must contain either 'env_config' or 'env_configs'"
+        )
 
     for game_cfg in game_cfgs:
         game_name = game_cfg.get("game_name")
         if not game_name:
-            raise ValueError("Game name is required in each game config (game_name)")
+            raise ValueError(
+                "Game name is required in each game config (game_name)"
+            )
         if game_name not in registry._registry:
             available_games = list(registry._registry.keys())
             raise ValueError(
