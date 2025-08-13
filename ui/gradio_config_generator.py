@@ -155,7 +155,7 @@ def start_game_interactive(
                 response = player_to_agent[cur](obs[cur])
                 a, reasoning = _extract_action_and_reasoning(response)
                 actions = {cur: a}
-                log.append(f"Player {cur} (auto) chooses {a}")
+                log.append(f"Player {cur} chooses {a}")
                 if reasoning and reasoning != "None":
                     prev = reasoning[:100]
                     if len(reasoning) > 100:
