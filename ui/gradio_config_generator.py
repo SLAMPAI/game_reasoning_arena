@@ -113,23 +113,96 @@ def start_game_interactive(
         "show_id": show_id,
     }
 
-    # Prepare initial human choices (if any)
+    # Auto-advance the game until it's a human player's turn
+    def _is_human(pid: int) -> bool:
+        return ((pid == 0 and player1_type == "human") or
+                (pid == 1 and player2_type == "human"))
+
+    def _any_human_needs_action() -> bool:
+        """Check if any human player needs to make an action."""
+        try:
+            if env.state.is_simultaneous_node():
+                return _is_human(0) or _is_human(1)
+            else:
+                cur = env.state.current_player()
+                return _is_human(cur)
+        except Exception:
+            return False
+
+    # Process AI moves until a human needs to act or game ends
+    term = False
+    trunc = False
+    while not (term or trunc) and not _any_human_needs_action():
+        # Build actions for current turn
+        if env.state.is_simultaneous_node():
+            actions = {}
+            # P0
+            if not _is_human(0):
+                response = player_to_agent[0](obs[0])
+                a0, _ = _extract_action_and_reasoning(response)
+                actions[0] = a0
+            # P1
+            if not _is_human(1):
+                response = player_to_agent[1](obs[1])
+                a1, _ = _extract_action_and_reasoning(response)
+                actions[1] = a1
+            log.append(f"Auto-play: P0={actions.get(0, 'waiting')}, "
+                       f"P1={actions.get(1, 'waiting')}")
+        else:
+            # Sequential game
+            cur = env.state.current_player()
+            if not _is_human(cur):
+                response = player_to_agent[cur](obs[cur])
+                a, reasoning = _extract_action_and_reasoning(response)
+                actions = {cur: a}
+                log.append(f"Player {cur} (auto) chooses {a}")
+                if reasoning and reasoning != "None":
+                    prev = reasoning[:100]
+                    if len(reasoning) > 100:
+                        prev += "..."
+                    log.append(f" Reasoning: {prev}")
+            else:
+                # Human's turn - break out of loop
+                break
+
+        # Step env
+        obs, step_rewards, term, trunc, _ = env.step(actions)
+        for pid, r in step_rewards.items():
+            state["rewards"][pid] += r
+
+        # Update board display
+        try:
+            log.append("Board:")
+            log.append(env.render_board(show_id))
+        except NotImplementedError:
+            log.append("Board rendering not implemented for this game.")
+        except Exception as e:
+            log.append(f"Board not available: {e}")
+
+    # Update state with current observations
+    state["obs"] = obs
+    state["terminated"] = term
+    state["truncated"] = trunc
+
+    # Prepare human choices for current state
     legal_p0: List[Tuple[int, str]] = []
     legal_p1: List[Tuple[int, str]] = []
-    try:
-        if env.state.is_simultaneous_node():
-            if player1_type == "human":
-                legal_p0 = _legal_actions_with_labels(env, 0)
-            if player2_type == "human":
-                legal_p1 = _legal_actions_with_labels(env, 1)
-        else:
-            cur = env.state.current_player()
-            if cur == 0 and player1_type == "human":
-                legal_p0 = _legal_actions_with_labels(env, 0)
-            if cur == 1 and player2_type == "human":
-                legal_p1 = _legal_actions_with_labels(env, 1)
-    except Exception:
-        pass
+
+    if not (term or trunc):
+        try:
+            if env.state.is_simultaneous_node():
+                if player1_type == "human":
+                    legal_p0 = _legal_actions_with_labels(env, 0)
+                if player2_type == "human":
+                    legal_p1 = _legal_actions_with_labels(env, 1)
+            else:
+                cur = env.state.current_player()
+                if cur == 0 and player1_type == "human":
+                    legal_p0 = _legal_actions_with_labels(env, 0)
+                if cur == 1 and player2_type == "human":
+                    legal_p1 = _legal_actions_with_labels(env, 1)
+        except Exception:
+            pass
 
     return "\n".join(log), state, legal_p0, legal_p1
 
