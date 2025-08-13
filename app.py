@@ -235,6 +235,9 @@ def setup_player_config(
     if player_type == "random_bot":
         return {"type": "random"}
 
+    if player_type == "human":
+        return {"type": "human"}
+
     if (
         player_type
         and (
@@ -274,8 +277,8 @@ def create_player_config(include_aggregated: bool = False) -> GameArenaConfig:
             available_games.append(name)
             seen.add(name)
 
-    player_types = ["random_bot"]
-    player_type_display = {"random_bot": "Random Bot"}
+    player_types = ["human", "random_bot"]
+    player_type_display = {"human": "Human Player", "random_bot": "Random Bot"}
     if BACKEND_SYSTEM_AVAILABLE:
         for model_key in HUGGINGFACE_MODELS.keys():
             key = f"hf_{model_key}"
@@ -548,7 +551,7 @@ with gr.Blocks() as interface:
             dd_type = gr.Dropdown(
                 choices=choices_pairs,
                 label=f"{label} Type",
-                value=choices_pairs[0][0],
+                value=choices_pairs[0][0] if choices_pairs else None,
             )
             dd_model = gr.Dropdown(
                 choices=config["player_config"]["available_models"],
@@ -577,13 +580,81 @@ with gr.Blocks() as interface:
         p1_type.change(_vis, inputs=p1_type, outputs=p1_model)
         p2_type.change(_vis, inputs=p2_type, outputs=p2_model)
 
+        # Create gr.State for interactive games
+        game_state = gr.State(value=None)
+
+        # Interactive game components (initially hidden)
+        with gr.Column(visible=False) as interactive_panel:
+            gr.Markdown("## Interactive Game")
+
+            with gr.Row():
+                with gr.Column(scale=2):
+                    board_display = gr.Textbox(
+                        label="Game Board",
+                        lines=10,
+                        placeholder="Board state will appear here...",
+                        interactive=False,
+                    )
+
+                with gr.Column(scale=1):
+                    # Human move controls
+                    gr.Markdown("### Your Move")
+
+                    # Player 0 move selection
+                    p0_move_dropdown = gr.Dropdown(
+                        choices=[],
+                        label="Player 0 Action",
+                        visible=False,
+                        interactive=True,
+                    )
+
+                    # Player 1 move selection
+                    p1_move_dropdown = gr.Dropdown(
+                        choices=[],
+                        label="Player 1 Action",
+                        visible=False,
+                        interactive=True,
+                    )
+
+                    submit_move_btn = gr.Button(
+                        "Submit Move",
+                        variant="primary",
+                        visible=False
+                    )
+
+                    reset_game_btn = gr.Button(
+                        "Reset Game",
+                        visible=False
+                    )
+
+        # Standard game simulation (non-interactive)
         play_button = gr.Button("🎮 Start Game", variant="primary")
+        start_interactive_btn = gr.Button("🎯 Start Interactive Game", variant="secondary", visible=False)
+
         game_output = gr.Textbox(
             label="Game Log",
             lines=20,
             placeholder="Game results will appear here...",
         )
 
+        def check_for_human_players(p1_type, p2_type):
+            """Show/hide interactive controls based on player types."""
+            has_human = (p1_type == "human" or p2_type == "human")
+            return (
+                gr.update(visible=has_human),  # interactive_panel
+                gr.update(visible=has_human),  # start_interactive_btn
+                gr.update(visible=not has_human),  # play_button (single-shot)
+            )
+
+        # Update UI when player types change
+        for player_type_dropdown in [p1_type, p2_type]:
+            player_type_dropdown.change(
+                check_for_human_players,
+                inputs=[p1_type, p2_type],
+                outputs=[interactive_panel, start_interactive_btn, play_button],
+            )
+
+        # Standard single-shot game
         play_button.click(
             play_game,
             inputs=[
@@ -596,6 +667,109 @@ with gr.Blocks() as interface:
                 # No seed input from user; will default to None
             ],
             outputs=[game_output],
+        )
+
+        # Interactive game functions
+        def start_interactive_game(game_name, p1_type, p2_type, p1_model, p2_model, rounds):
+            """Initialize an interactive game session."""
+            try:
+                from ui.gradio_config_generator import start_game_interactive
+                import time
+
+                # Use timestamp as seed
+                seed = int(time.time() * 1000) % (2**31 - 1)
+
+                log, state, legal_p0, legal_p1 = start_game_interactive(
+                    game_name=game_name,
+                    player1_type=p1_type,
+                    player2_type=p2_type,
+                    player1_model=p1_model,
+                    player2_model=p2_model,
+                    rounds=rounds,
+                    seed=seed,
+                )
+
+                # Update dropdowns with legal actions
+                p0_choices = [(action, label) for action, label in legal_p0]
+                p1_choices = [(action, label) for action, label in legal_p1]
+
+                return (
+                    state,  # game_state
+                    log,    # board_display
+                    gr.update(choices=p0_choices, visible=len(p0_choices) > 0, value=None),  # p0_move_dropdown
+                    gr.update(choices=p1_choices, visible=len(p1_choices) > 0, value=None),  # p1_move_dropdown
+                    gr.update(visible=True),  # submit_move_btn
+                    gr.update(visible=True),  # reset_game_btn
+                )
+            except Exception as e:
+                return (
+                    None,   # game_state
+                    f"Error starting interactive game: {e}",  # board_display
+                    gr.update(choices=[], visible=False),     # p0_move_dropdown
+                    gr.update(choices=[], visible=False),     # p1_move_dropdown
+                    gr.update(visible=False),                 # submit_move_btn
+                    gr.update(visible=False),                 # reset_game_btn
+                )
+
+        def submit_human_move_handler(p0_action, p1_action, state):
+            """Process human moves and advance the game."""
+            try:
+                from ui.gradio_config_generator import submit_human_move
+
+                if not state:
+                    return state, "No game running.", gr.update(choices=[], visible=False), gr.update(choices=[], visible=False), gr.update(visible=False), gr.update(visible=False)
+
+                log_append, new_state, next_p0, next_p1 = submit_human_move(
+                    action_p0=p0_action,
+                    action_p1=p1_action,
+                    state=state,
+                )
+
+                # Update dropdowns with next legal actions
+                p0_choices = [(action, label) for action, label in next_p0]
+                p1_choices = [(action, label) for action, label in next_p1]
+
+                # Check if game is finished
+                game_over = new_state.get("terminated", False) or new_state.get("truncated", False)
+
+                return (
+                    new_state,  # game_state
+                    log_append,  # board_display (append to current)
+                    gr.update(choices=p0_choices, visible=len(p0_choices) > 0 and not game_over, value=None),  # p0_move_dropdown
+                    gr.update(choices=p1_choices, visible=len(p1_choices) > 0 and not game_over, value=None),  # p1_move_dropdown
+                    gr.update(visible=not game_over),  # submit_move_btn
+                    gr.update(visible=True),           # reset_game_btn (always visible to restart)
+                )
+            except Exception as e:
+                return state, f"Error processing move: {e}", gr.update(), gr.update(), gr.update(), gr.update()
+
+        def reset_interactive_game():
+            """Reset the interactive game state."""
+            return (
+                None,  # game_state
+                "Game reset. Click 'Start Interactive Game' to begin a new game.",  # board_display
+                gr.update(choices=[], visible=False),  # p0_move_dropdown
+                gr.update(choices=[], visible=False),  # p1_move_dropdown
+                gr.update(visible=False),              # submit_move_btn
+                gr.update(visible=False),              # reset_game_btn
+            )
+
+        # Wire up interactive game handlers
+        start_interactive_btn.click(
+            start_interactive_game,
+            inputs=[game_dropdown, p1_type, p2_type, p1_model, p2_model, rounds_slider],
+            outputs=[game_state, board_display, p0_move_dropdown, p1_move_dropdown, submit_move_btn, reset_game_btn],
+        )
+
+        submit_move_btn.click(
+            submit_human_move_handler,
+            inputs=[p0_move_dropdown, p1_move_dropdown, game_state],
+            outputs=[game_state, board_display, p0_move_dropdown, p1_move_dropdown, submit_move_btn, reset_game_btn],
+        )
+
+        reset_game_btn.click(
+            reset_interactive_game,
+            outputs=[game_state, board_display, p0_move_dropdown, p1_move_dropdown, submit_move_btn, reset_game_btn],
         )
 
     with gr.Tab("Leaderboard"):

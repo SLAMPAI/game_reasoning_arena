@@ -8,10 +8,249 @@ simulate.py infrastructure, eliminating code duplication in the Gradio app.
 
 import tempfile
 import yaml
-from typing import Dict, Any, Tuple
+from typing import Dict, Any, Tuple, List, Optional
 import logging
 
 logger = logging.getLogger(__name__)
+
+
+def _legal_actions_with_labels(env, pid: int) -> List[Tuple[int, str]]:
+    """Return the current player's legal actions as (id, label) pairs."""
+    try:
+        actions = env.state.legal_actions(pid)
+    except Exception:
+        return []
+    labelled = []
+    for a in actions:
+        label = None
+        if hasattr(env, "get_action_display"):
+            try:
+                label = env.get_action_display(a, pid)
+            except Exception:
+                label = None
+        elif hasattr(env.state, "action_to_string"):
+            try:
+                label = env.state.action_to_string(pid, a)
+            except Exception:
+                label = None
+        labelled.append((a, label or str(a)))
+    return labelled
+
+
+def start_game_interactive(
+    game_name: str,
+    player1_type: str,
+    player2_type: str,
+    player1_model: Optional[str],
+    player2_model: Optional[str],
+    rounds: int,
+    seed: int,
+) -> Tuple[str, Dict[str, Any], List[Tuple[int, str]], List[Tuple[int, str]]]:
+    """Initialize env + policies; return (log, state, legal_p0, legal_p1)."""
+    from src.game_reasoning_arena.arena.utils.seeding import set_seed
+    from src.game_reasoning_arena.backends import initialize_llm_registry
+    from src.game_reasoning_arena.arena.games.registry import registry
+    from src.game_reasoning_arena.arena.agents.policy_manager import (
+        initialize_policies,
+    )
+
+    cfg = create_config_for_gradio_game(
+        game_name=game_name,
+        player1_type=player1_type,
+        player2_type=player2_type,
+        player1_model=player1_model,
+        player2_model=player2_model,
+        rounds=1,
+        seed=seed,
+    )
+
+    set_seed(seed)
+    try:
+        initialize_llm_registry()
+    except Exception:
+        # ok if LLM backend not available for random/human vs random/human
+        pass
+
+    # Build agents + env using your existing infra
+    policies = initialize_policies(cfg, game_name, seed)
+    env = registry.make_env(game_name, cfg)
+    obs, _ = env.reset(seed=seed)
+
+    # Map policy order to player ids (same as your simulate.py)
+    player_to_agent: Dict[int, Any] = {}
+    for i, policy_name in enumerate(policies.keys()):
+        player_to_agent[i] = policies[policy_name]
+
+    log = []
+    log.append("🎮 INTERACTIVE GAME")
+    log.append("=" * 50)
+    log.append(f"Game: {game_name.replace('_', ' ').title()}")
+    log.append("")
+
+    # Choose which agent_id's board to show:
+    # - If P0 is human -> agent_id=0; elif P1 is human -> agent_id=1; else 0.
+    show_id = 0 if player1_type == "human" else (1 if player2_type == "human" else 0)
+    try:
+        board = env.render_board(show_id)
+        log.append("Initial board:")
+        log.append(board)
+    except NotImplementedError:
+        log.append("Board rendering not implemented for this game.")
+    except Exception as e:
+        log.append(f"Board not available: {e}")
+
+    state = {
+        "env": env,
+        "obs": obs,
+        "terminated": False,
+        "truncated": False,
+        "rewards": {0: 0, 1: 0},
+        "players": {
+            0: {"type": player1_type},
+            1: {"type": player2_type},
+        },
+        "agents": player_to_agent,
+        "show_id": show_id,
+    }
+
+    # Prepare initial human choices (if any)
+    legal_p0: List[Tuple[int, str]] = []
+    legal_p1: List[Tuple[int, str]] = []
+    try:
+        if env.state.is_simultaneous_node():
+            if player1_type == "human":
+                legal_p0 = _legal_actions_with_labels(env, 0)
+            if player2_type == "human":
+                legal_p1 = _legal_actions_with_labels(env, 1)
+        else:
+            cur = env.state.current_player()
+            if cur == 0 and player1_type == "human":
+                legal_p0 = _legal_actions_with_labels(env, 0)
+            if cur == 1 and player2_type == "human":
+                legal_p1 = _legal_actions_with_labels(env, 1)
+    except Exception:
+        pass
+
+    return "\n".join(log), state, legal_p0, legal_p1
+
+
+def submit_human_move(
+    action_p0: Optional[int],
+    action_p1: Optional[int],
+    state: Dict[str, Any],
+) -> Tuple[str, Dict[str, Any], List[Tuple[int, str]], List[Tuple[int, str]]]:
+    """Advance one step; return (log_append, state, next_legal_p0, next_legal_p1)."""
+    if not state:
+        return "No game is running.", state, [], []
+
+    env = state["env"]
+    obs = state["obs"]
+    term = state["terminated"]
+    trunc = state["truncated"]
+    rewards = state["rewards"]
+    ptypes = state["players"]
+    agents = state["agents"]
+    show_id = state["show_id"]
+
+    if term or trunc:
+        return "Game already finished.", state, [], []
+
+    def _is_human(pid: int) -> bool:
+        return ptypes[pid]["type"] == "human"
+
+    log = []
+
+    # Build actions
+    if env.state.is_simultaneous_node():
+        actions = {}
+        # P0
+        if _is_human(0):
+            if action_p0 is None:
+                return ("Pick an action for Player 0.", state,
+                        _legal_actions_with_labels(env, 0), [])
+            actions[0] = action_p0
+        else:
+            a0, _ = _extract_action_and_reasoning(agents[0](obs[0]))
+            actions[0] = a0
+        # P1
+        if _is_human(1):
+            if action_p1 is None:
+                return ("Pick an action for Player 1.", state,
+                        [], _legal_actions_with_labels(env, 1))
+            actions[1] = action_p1
+        else:
+            a1, _ = _extract_action_and_reasoning(agents[1](obs[1]))
+            actions[1] = a1
+        log.append(f"Actions: P0={actions[0]}, P1={actions[1]}")
+    else:
+        cur = env.state.current_player()
+        if _is_human(cur):
+            chosen = action_p0 if cur == 0 else action_p1
+            if chosen is None:
+                choices = _legal_actions_with_labels(env, cur)
+                return ("Pick an action first.", state,
+                        choices if cur == 0 else [],
+                        choices if cur == 1 else [])
+            actions = {cur: chosen}
+            log.append(f"Player {cur} (human) chooses {chosen}")
+        else:
+            a, reasoning = _extract_action_and_reasoning(agents[cur](obs[cur]))
+            actions = {cur: a}
+            log.append(f"Player {cur} (agent) chooses {a}")
+            if reasoning and reasoning != "None":
+                prev = reasoning[:100] + ("..." if len(reasoning) > 100 else "")
+                log.append(f" Reasoning: {prev}")
+
+    # Step env
+    obs, step_rewards, term, trunc, _ = env.step(actions)
+    for pid, r in step_rewards.items():
+        rewards[pid] += r
+
+    # Board
+    try:
+        log.append("Board:")
+        log.append(env.render_board(show_id))
+    except NotImplementedError:
+        log.append("Board rendering not implemented for this game.")
+    except Exception as e:
+        log.append(f"Board not available: {e}")
+
+    # End?
+    if term or trunc:
+        if rewards[0] > rewards[1]:
+            winner = "Player 0"
+        elif rewards[1] > rewards[0]:
+            winner = "Player 1"
+        else:
+            winner = "Draw"
+        log.append(f"Winner: {winner}")
+        log.append(f"Scores: P0={rewards[0]}, P1={rewards[1]}")
+        state["terminated"] = term
+        state["truncated"] = trunc
+        state["obs"] = obs
+        return "\n".join(log), state, [], []
+
+    # Next human choices
+    next_p0, next_p1 = [], []
+    try:
+        if env.state.is_simultaneous_node():
+            if _is_human(0):
+                next_p0 = _legal_actions_with_labels(env, 0)
+            if _is_human(1):
+                next_p1 = _legal_actions_with_labels(env, 1)
+        else:
+            cur = env.state.current_player()
+            if _is_human(cur):
+                choices = _legal_actions_with_labels(env, cur)
+                if cur == 0:
+                    next_p0 = choices
+                else:
+                    next_p1 = choices
+    except Exception:
+        pass
+
+    state["obs"] = obs
+    return "\n".join(log), state, next_p0, next_p1
 
 
 def create_config_for_gradio_game(
@@ -97,7 +336,7 @@ def _create_agent_config(player_type: str,
     Create agent configuration based on player type and model.
 
     Handles both Gradio-specific formats (e.g., "hf_gpt2", "random_bot")
-    and standard formats (e.g., "llm", "random").
+    and standard formats (e.g., "llm", "random", "human").
 
     Args:
         player_type: Type of player (human, random, random_bot, hf_*, etc.)
@@ -113,6 +352,8 @@ def _create_agent_config(player_type: str,
     # Handle Gradio-specific formats
     if player_type == "random_bot":
         config = {"type": "random"}
+    elif player_type == "human":
+        config = {"type": "human"}
     elif player_type.startswith("hf_"):
         # Extract model from player type (e.g., "hf_gpt2" -> "gpt2")
         model_from_type = player_type[3:]  # Remove "hf_" prefix
@@ -148,8 +389,6 @@ def _create_agent_config(player_type: str,
         }
     elif player_type == "random":
         config = {"type": "random"}
-    elif player_type == "human":
-        config = {"type": "human"}  # This might need additional handling
     else:
         # Default to random for unknown types
         config = {"type": "random"}
