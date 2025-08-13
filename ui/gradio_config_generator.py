@@ -139,7 +139,13 @@ def submit_human_move(
     action_p1: Optional[int],
     state: Dict[str, Any],
 ) -> Tuple[str, Dict[str, Any], List[Tuple[int, str]], List[Tuple[int, str]]]:
-    """Advance one step; return (log_append, state, next_legal_p0, next_legal_p1)."""
+    """
+    Process human move and continue advancing the game automatically until:
+    - It's a human player's turn again, OR
+    - The game ends
+
+    Returns (log_append, state, next_legal_p0, next_legal_p1)
+    """
     if not state:
         return "No game is running.", state, [], []
 
@@ -158,64 +164,95 @@ def submit_human_move(
     def _is_human(pid: int) -> bool:
         return ptypes[pid]["type"] == "human"
 
+    def _any_human_needs_action() -> bool:
+        """Check if any human player needs to make an action."""
+        try:
+            if env.state.is_simultaneous_node():
+                return _is_human(0) or _is_human(1)
+            else:
+                cur = env.state.current_player()
+                return _is_human(cur)
+        except Exception:
+            return False
+
     log = []
 
-    # Build actions
-    if env.state.is_simultaneous_node():
-        actions = {}
-        # P0
-        if _is_human(0):
-            if action_p0 is None:
-                return ("Pick an action for Player 0.", state,
-                        _legal_actions_with_labels(env, 0), [])
-            actions[0] = action_p0
+    # Continue processing moves until a human needs to act or game ends
+    while not (term or trunc):
+        # Build actions for current turn
+        if env.state.is_simultaneous_node():
+            actions = {}
+            # P0
+            if _is_human(0):
+                if action_p0 is None:
+                    return ("Pick an action for Player 0.", state,
+                            _legal_actions_with_labels(env, 0), [])
+                actions[0] = action_p0
+                action_p0 = None  # Only use human action once
+            else:
+                a0, _ = _extract_action_and_reasoning(agents[0](obs[0]))
+                actions[0] = a0
+            # P1
+            if _is_human(1):
+                if action_p1 is None:
+                    return ("Pick an action for Player 1.", state,
+                            [], _legal_actions_with_labels(env, 1))
+                actions[1] = action_p1
+                action_p1 = None  # Only use human action once
+            else:
+                a1, _ = _extract_action_and_reasoning(agents[1](obs[1]))
+                actions[1] = a1
+            log.append(f"Actions: P0={actions[0]}, P1={actions[1]}")
         else:
-            a0, _ = _extract_action_and_reasoning(agents[0](obs[0]))
-            actions[0] = a0
-        # P1
-        if _is_human(1):
-            if action_p1 is None:
-                return ("Pick an action for Player 1.", state,
-                        [], _legal_actions_with_labels(env, 1))
-            actions[1] = action_p1
-        else:
-            a1, _ = _extract_action_and_reasoning(agents[1](obs[1]))
-            actions[1] = a1
-        log.append(f"Actions: P0={actions[0]}, P1={actions[1]}")
-    else:
-        cur = env.state.current_player()
-        if _is_human(cur):
-            chosen = action_p0 if cur == 0 else action_p1
-            if chosen is None:
-                choices = _legal_actions_with_labels(env, cur)
-                return ("Pick an action first.", state,
-                        choices if cur == 0 else [],
-                        choices if cur == 1 else [])
-            actions = {cur: chosen}
-            log.append(f"Player {cur} (human) chooses {chosen}")
-        else:
-            a, reasoning = _extract_action_and_reasoning(agents[cur](obs[cur]))
-            actions = {cur: a}
-            log.append(f"Player {cur} (agent) chooses {a}")
-            if reasoning and reasoning != "None":
-                prev = reasoning[:100] + ("..." if len(reasoning) > 100 else "")
-                log.append(f" Reasoning: {prev}")
+            # Sequential game
+            cur = env.state.current_player()
+            if _is_human(cur):
+                chosen = action_p0 if cur == 0 else action_p1
+                if chosen is None:
+                    choices = _legal_actions_with_labels(env, cur)
+                    return ("Pick an action first.", state,
+                            choices if cur == 0 else [],
+                            choices if cur == 1 else [])
+                actions = {cur: chosen}
+                log.append(f"Player {cur} (human) chooses {chosen}")
+                # Clear the action so it's not reused
+                if cur == 0:
+                    action_p0 = None
+                else:
+                    action_p1 = None
+            else:
+                a, reasoning = _extract_action_and_reasoning(agents[cur](obs[cur]))
+                actions = {cur: a}
+                log.append(f"Player {cur} (agent) chooses {a}")
+                if reasoning and reasoning != "None":
+                    prev = reasoning[:100] + ("..." if len(reasoning) > 100 else "")
+                    log.append(f" Reasoning: {prev}")
 
-    # Step env
-    obs, step_rewards, term, trunc, _ = env.step(actions)
-    for pid, r in step_rewards.items():
-        rewards[pid] += r
+        # Step env
+        obs, step_rewards, term, trunc, _ = env.step(actions)
+        for pid, r in step_rewards.items():
+            rewards[pid] += r
 
-    # Board
-    try:
-        log.append("Board:")
-        log.append(env.render_board(show_id))
-    except NotImplementedError:
-        log.append("Board rendering not implemented for this game.")
-    except Exception as e:
-        log.append(f"Board not available: {e}")
+        # Board
+        try:
+            log.append("Board:")
+            log.append(env.render_board(show_id))
+        except NotImplementedError:
+            log.append("Board rendering not implemented for this game.")
+        except Exception as e:
+            log.append(f"Board not available: {e}")
 
-    # End?
+        # Check if game ended
+        if term or trunc:
+            break
+
+        # Check if we should continue automatically (AI turn) or stop (human turn)
+        if _any_human_needs_action():
+            break  # Stop here, human needs to act
+
+        # If we reach here, it's an AI's turn - continue the loop
+
+    # Game ended or waiting for human input
     if term or trunc:
         if rewards[0] > rewards[1]:
             winner = "Player 0"
@@ -230,7 +267,7 @@ def submit_human_move(
         state["obs"] = obs
         return "\n".join(log), state, [], []
 
-    # Next human choices
+    # Determine next human choices
     next_p0, next_p1 = [], []
     try:
         if env.state.is_simultaneous_node():

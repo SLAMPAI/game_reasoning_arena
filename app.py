@@ -2,6 +2,9 @@
 """
 Game Reasoning Arena — Hugging Face Spaces Gradio App
 
+This module provides a web interface for playing games between humans and AI agents,
+analyzing LLM performance, and visualizing game statistics.
+
 Pipeline:
 User clicks "Start Game" in Gradio
     ↓
@@ -12,21 +15,32 @@ ui/gradio_config_generator.py (run_game_with_existing_infrastructure)
 src/game_reasoning_arena/ (core game infrastructure)
     ↓
 Game results + metrics displayed in Gradio
+
+Features:
+- Interactive human vs AI gameplay
+- LLM leaderboards and performance metrics
+- Real-time game visualization
+- Database management for results
 """
 
 from __future__ import annotations
 
-import sqlite3
+# =============================================================================
+# IMPORTS
+# =============================================================================
 
+# Standard library imports
+import sqlite3
 import sys
 import shutil
 from pathlib import Path
 from typing import List, Dict, Any, Tuple, Generator, TypedDict
 
+# Third-party imports
 import pandas as pd
 import gradio as gr
 
-# Logging (optional)
+# Logging configuration
 import logging
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("arena_space")
@@ -37,27 +51,34 @@ try:
 except Exception:
     pass
 
+# =============================================================================
+# PATH SETUP & CORE IMPORTS
+# =============================================================================
+
 # Make sure src is on PYTHONPATH
 src_path = Path(__file__).parent / "src"
 if str(src_path) not in sys.path:
     sys.path.insert(0, str(src_path))
 
-# Try to import game registry
-from game_reasoning_arena.arena.games.registry import registry as games_registry
+# Game arena core imports
+from game_reasoning_arena.arena.games.registry import (
+    registry as games_registry
+)
 from game_reasoning_arena.backends.huggingface_backend import (
-        HuggingFaceBackend,
-    )
+    HuggingFaceBackend,
+)
 from game_reasoning_arena.backends import (
-        initialize_llm_registry, LLM_REGISTRY,
-    )
+    initialize_llm_registry, LLM_REGISTRY,
+)
 
+# =============================================================================
+# GLOBAL CONFIGURATION
+# =============================================================================
+
+# Backend availability flag
 BACKEND_SYSTEM_AVAILABLE = True
 
-# -----------------------------------------------------------------------------
-# Config & constants
-# -----------------------------------------------------------------------------
-
-# HF demo-safe tiny models (CPU friendly)
+# HuggingFace demo-safe tiny models (CPU friendly)
 HUGGINGFACE_MODELS: Dict[str, str] = {
     "gpt2": "gpt2",
     "distilgpt2": "distilgpt2",
@@ -65,26 +86,31 @@ HUGGINGFACE_MODELS: Dict[str, str] = {
     "EleutherAI/gpt-neo-125M": "EleutherAI/gpt-neo-125M",
 }
 
+# Global registries
 GAMES_REGISTRY: Dict[str, Any] = {}
 
+# Database configuration
 db_dir = Path(__file__).resolve().parent / "results"
 
+# Leaderboard display columns
 LEADERBOARD_COLUMNS = [
     "agent_name", "agent_type", "# games", "total rewards",
     # "avg_generation_time (sec)",  # Commented out - needs fixing
     "win-rate", "win vs_random (%)",
 ]
 
-# -----------------------------------------------------------------------------
-# Init backend + register models (optional)
-# -----------------------------------------------------------------------------
+# =============================================================================
+# BACKEND INITIALIZATION
+# =============================================================================
 
+# Initialize HuggingFace backend and register models
 huggingface_backend = None
 if BACKEND_SYSTEM_AVAILABLE:
     try:
         huggingface_backend = HuggingFaceBackend()
         initialize_llm_registry()
 
+        # Register available HuggingFace models
         for model_name in HUGGINGFACE_MODELS.keys():
             if huggingface_backend.is_model_available(model_name):
                 registry_key = f"hf_{model_name}"
@@ -97,10 +123,11 @@ if BACKEND_SYSTEM_AVAILABLE:
         log.error("Failed to initialize HuggingFace backend: %s", e)
         huggingface_backend = None
 
-# -----------------------------------------------------------------------------
-# Load games registry
-# -----------------------------------------------------------------------------
+# =============================================================================
+# GAMES REGISTRY SETUP
+# =============================================================================
 
+# Load available games from the registry
 try:
     if games_registry is not None:
         GAMES_REGISTRY = {
@@ -113,33 +140,46 @@ except Exception as e:
     log.warning("Failed to load games registry: %s", e)
     GAMES_REGISTRY = {}
 
+
 def _get_game_display_mapping() -> Dict[str, str]:
     """
-    Build a mapping from internal game keys to their human‑friendly display names.
-    If the registry is not available or a game has no explicit display_name,
-    fall back to a title‑cased version of the internal key.
+    Build a mapping from internal game keys to their human-friendly
+    display names. If the registry is not available or a game has no
+    explicit display_name, fall back to a title-cased version of the
+    internal key.
+
+    Returns:
+        Dict mapping internal game keys to display names
     """
     mapping: Dict[str, str] = {}
     if games_registry is not None and hasattr(games_registry, "_registry"):
         for key, info in games_registry._registry.items():
-            display = info.get("display_name") if isinstance(info, dict) else None
+            if isinstance(info, dict):
+                display = info.get("display_name")
+            else:
+                display = None
             if not display:
                 display = key.replace("_", " ").title()
             mapping[key] = display
     return mapping
 
 
-# -----------------------------------------------------------------------------
-# DB helpers
-# -----------------------------------------------------------------------------
-
+# =============================================================================
+# DATABASE HELPER FUNCTIONS
+# =============================================================================
 
 def ensure_results_dir() -> None:
+    """Create the results directory if it doesn't exist."""
     db_dir.mkdir(parents=True, exist_ok=True)
 
 
 def iter_agent_databases() -> Generator[Tuple[str, str, str], None, None]:
-    """Yield (db_file, agent_type, model_name) for non-random agents."""
+    """
+    Yield (db_file, agent_type, model_name) for non-random agents.
+
+    Yields:
+        Tuple of (database file path, agent type, model name)
+    """
     for db_file in find_or_download_db():
         agent_type, model_name = extract_agent_info(db_file)
         if agent_type != "random":
@@ -147,7 +187,12 @@ def iter_agent_databases() -> Generator[Tuple[str, str, str], None, None]:
 
 
 def find_or_download_db() -> List[str]:
-    """Return .db files; ensure random_None.db exists with minimal schema."""
+    """
+    Return .db files; ensure random_None.db exists with minimal schema.
+
+    Returns:
+        List of database file paths
+    """
     ensure_results_dir()
 
     random_db_path = db_dir / "random_None.db"
@@ -174,6 +219,15 @@ def find_or_download_db() -> List[str]:
 
 
 def extract_agent_info(filename: str) -> Tuple[str, str]:
+    """
+    Extract agent type and model name from database filename.
+
+    Args:
+        filename: Database filename (e.g., "llm_gpt2.db")
+
+    Returns:
+        Tuple of (agent_type, model_name)
+    """
     base_name = Path(filename).stem
     parts = base_name.split("_", 1)
     if len(parts) == 2:
@@ -182,7 +236,15 @@ def extract_agent_info(filename: str) -> Tuple[str, str]:
 
 
 def get_available_games(include_aggregated: bool = True) -> List[str]:
-    """Return only games from the registry."""
+    """
+    Return only games from the registry.
+
+    Args:
+        include_aggregated: Whether to include "Aggregated Performance" option
+
+    Returns:
+        List of available game names
+    """
     if GAMES_REGISTRY:
         game_list = sorted(GAMES_REGISTRY.keys())
     else:
@@ -193,7 +255,12 @@ def get_available_games(include_aggregated: bool = True) -> List[str]:
 
 
 def extract_illegal_moves_summary() -> pd.DataFrame:
-    """# illegal moves per agent."""
+    """
+    Extract summary of illegal moves per agent.
+
+    Returns:
+        DataFrame with agent names and illegal move counts
+    """
     summary = []
     for db_file, agent_type, model_name in iter_agent_databases():
         conn = sqlite3.connect(db_file)
@@ -211,17 +278,19 @@ def extract_illegal_moves_summary() -> pd.DataFrame:
 
 
 
-# -----------------------------------------------------------------------------
-# Player config
-# -----------------------------------------------------------------------------
+# =============================================================================
+# PLAYER CONFIGURATION & TYPE DEFINITIONS
+# =============================================================================
 
 class PlayerConfigData(TypedDict, total=False):
+    """Type definition for player configuration data."""
     player_types: List[str]
     player_type_display: Dict[str, str]
     available_models: List[str]
 
 
 class GameArenaConfig(TypedDict, total=False):
+    """Type definition for game arena configuration."""
     available_games: List[str]
     player_config: PlayerConfigData
     model_info: str
@@ -231,26 +300,46 @@ class GameArenaConfig(TypedDict, total=False):
 def setup_player_config(
     player_type: str, player_model: str, player_id: str
 ) -> Dict[str, Any]:
-    """Map dropdown selection to agent config for the runner."""
-    if player_type == "random_bot":
+    """
+    Map dropdown selection to agent config for the runner.
+
+    Args:
+        player_type: Display label for player type
+        player_model: Model name if LLM type
+        player_id: Player identifier
+
+    Returns:
+        Agent configuration dictionary
+    """
+    # Create a temporary config to get the display-to-key mapping
+    temp_config = create_player_config()
+    display_to_key = {
+        v: k for k, v in
+        temp_config["player_config"]["player_type_display"].items()
+    }
+
+    # Map display label back to internal key
+    internal_key = display_to_key.get(player_type, player_type)
+
+    if internal_key == "random_bot":
         return {"type": "random"}
 
-    if player_type == "human":
+    if internal_key == "human":
         return {"type": "human"}
 
     if (
-        player_type
+        internal_key
         and (
-            player_type.startswith("llm_")
-            or player_type.startswith("hf_")
+            internal_key.startswith("llm_")
+            or internal_key.startswith("hf_")
         )
     ):
-        model_id = player_type.split("_", 1)[1]
+        model_id = internal_key.split("_", 1)[1]
         if BACKEND_SYSTEM_AVAILABLE and model_id in HUGGINGFACE_MODELS:
             return {"type": "llm", "model": model_id}
 
     if (
-        player_type == "llm"
+        internal_key == "llm"
         and player_model in HUGGINGFACE_MODELS
         and BACKEND_SYSTEM_AVAILABLE
     ):
@@ -260,6 +349,15 @@ def setup_player_config(
 
 
 def create_player_config(include_aggregated: bool = False) -> GameArenaConfig:
+    """
+    Create player and game configuration for the arena.
+
+    Args:
+        include_aggregated: Whether to include aggregated stats option
+
+    Returns:
+        Complete game arena configuration
+    """
     # Internal names for arena dropdown
     available_keys = get_available_games(include_aggregated=include_aggregated)
 
@@ -277,14 +375,32 @@ def create_player_config(include_aggregated: bool = False) -> GameArenaConfig:
             available_games.append(name)
             seen.add(name)
 
+    # Define available player types
     player_types = ["human", "random_bot"]
-    player_type_display = {"human": "Human Player", "random_bot": "Random Bot"}
+    player_type_display = {
+        "human": "Human Player",
+        "random_bot": "Random Bot"
+    }
+
+    # Add HuggingFace models if backend is available
     if BACKEND_SYSTEM_AVAILABLE:
         for model_key in HUGGINGFACE_MODELS.keys():
             key = f"hf_{model_key}"
             player_types.append(key)
+            # Clean up model names for display
             tag = model_key.split("/")[-1]
-            player_type_display[key] = f"HuggingFace: {tag}"
+            if tag == "gpt2":
+                display_name = "GPT-2"
+            elif tag == "distilgpt2":
+                display_name = "DistilGPT-2"
+            elif tag == "flan-t5-small":
+                display_name = "FLAN-T5 Small"
+            elif tag == "gpt-neo-125M":
+                display_name = "GPT-Neo 125M"
+            else:
+                # Fallback for any new models
+                display_name = tag.replace("-", " ").title()
+            player_type_display[key] = display_name
 
     all_models = list(HUGGINGFACE_MODELS.keys())
     model_info = (
@@ -313,45 +429,62 @@ def create_player_config(include_aggregated: bool = False) -> GameArenaConfig:
     }
 
 
-# -----------------------------------------------------------------------------
-# Main game entry
-# -----------------------------------------------------------------------------
+# =============================================================================
+# MAIN GAME LOGIC
+# =============================================================================
 
 def play_game(
     game_name: str,
     player1_type: str,
     player2_type: str,
-    player1_model: str | None = None,
-    player2_model: str | None = None,
     rounds: int = 1,
     seed: int | None = None,
 ) -> str:
+    """
+    Execute a complete game simulation between two players.
+
+    Args:
+        game_name: Name of the game to play
+        player1_type: Type of player 1 (display name like "Human Player", "GPT-2")
+        player2_type: Type of player 2 (display name like "Human Player", "GPT-2")
+        rounds: Number of rounds to play
+        seed: Random seed for reproducibility
+
+    Returns:
+        Game result log as string
+    """
     if game_name == "No Games Found":
         return "No games available. Please add game databases."
 
     log.info(
-        "Starting game: %s | P1=%s(%s) P2=%s(%s) rounds=%d",
+        "Starting game: %s | P1=%s P2=%s rounds=%d",
         game_name,
         player1_type,
-        player1_model,
         player2_type,
-        player2_model,
         rounds,
     )
 
     # Map human‑friendly game name back to internal key if needed
     config = create_player_config()
-    if "game_display_to_key" in config and game_name in config["game_display_to_key"]:
+    if ("game_display_to_key" in config and
+            game_name in config["game_display_to_key"]):
         game_name = config["game_display_to_key"][game_name]
 
     # Map display labels for player types back to keys
     display_to_key = {
         v: k for k, v in config["player_config"]["player_type_display"].items()
     }
-    if player1_type in display_to_key:
-        player1_type = display_to_key[player1_type]
-    if player2_type in display_to_key:
-        player2_type = display_to_key[player2_type]
+
+    # Extract internal keys and models
+    p1_key = display_to_key.get(player1_type, player1_type)
+    p2_key = display_to_key.get(player2_type, player2_type)
+
+    player1_model = None
+    player2_model = None
+    if p1_key.startswith("hf_"):
+        player1_model = p1_key.split("_", 1)[1]
+    if p2_key.startswith("hf_"):
+        player2_model = p2_key.split("_", 1)[1]
 
     import time
     try:
@@ -363,8 +496,8 @@ def play_game(
             seed = int(time.time() * 1000) % (2**31 - 1)
         result = run_game_with_existing_infrastructure(
             game_name=game_name,
-            player1_type=player1_type,
-            player2_type=player2_type,
+            player1_type=p1_key,
+            player2_type=p2_key,
             player1_model=player1_model,
             player2_model=player2_model,
             rounds=rounds,
@@ -374,16 +507,30 @@ def play_game(
     except Exception as e:
         return f"Error during game simulation: {e}"
 
+
+# =============================================================================
+# LEADERBOARD & ANALYTICS
+# =============================================================================
+
 def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
+    """
+    Extract leaderboard statistics for a specific game or all games.
+
+    Args:
+        game_name: Name of the game or "Aggregated Performance"
+
+    Returns:
+        DataFrame with leaderboard statistics
+    """
     all_stats = []
     for db_file, agent_type, model_name in iter_agent_databases():
         conn = sqlite3.connect(db_file)
         try:
             if game_name == "Aggregated Performance":
-                # get totals across all games in this DB
+                # Get totals across all games in this DB
                 df = pd.read_sql_query(
-                    "SELECT COUNT(DISTINCT episode) AS games_played, SUM(reward) AS total_rewards "
-                    "FROM game_results",
+                    "SELECT COUNT(DISTINCT episode) AS games_played, "
+                    "SUM(reward) AS total_rewards FROM game_results",
                     conn,
                 )
                 # avg_time = conn.execute(
@@ -398,20 +545,22 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
                     "WHERE opponent = 'random_None'",
                 ).fetchone()[0] or 0
             else:
-                # filter by the selected game
+                # Filter by the selected game
                 df = pd.read_sql_query(
-                    "SELECT COUNT(DISTINCT episode) AS games_played, SUM(reward) AS total_rewards "
+                    "SELECT COUNT(DISTINCT episode) AS games_played, "
+                    "SUM(reward) AS total_rewards "
                     "FROM game_results WHERE game_name = ?",
                     conn,
                     params=(game_name,),
                 )
                 # avg_time = conn.execute(
-                #     "SELECT AVG(generation_time) FROM moves WHERE game_name = ?",
-                #     (game_name,),
+                #     "SELECT AVG(generation_time) FROM moves "
+                #     "WHERE game_name = ?", (game_name,),
                 # ).fetchone()[0] or 0
                 wins_vs_random = conn.execute(
                     "SELECT COUNT(*) FROM game_results "
-                    "WHERE opponent = 'random_None' AND reward > 0 AND game_name = ?",
+                    "WHERE opponent = 'random_None' AND reward > 0 "
+                    "AND game_name = ?",
                     (game_name,),
                 ).fetchone()[0] or 0
                 total_vs_random = conn.execute(
@@ -448,7 +597,8 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
         finally:
             conn.close()
 
-    # Concatenate all rows; if all_stats is empty, return an empty DataFrame with columns.
+    # Concatenate all rows; if all_stats is empty, return an empty DataFrame
+    # with columns.
     if not all_stats:
         return pd.DataFrame(columns=LEADERBOARD_COLUMNS)
 
@@ -456,10 +606,9 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
     return leaderboard_df[LEADERBOARD_COLUMNS]
 
 
-
-# -----------------------------------------------------------------------------
-# Simple plotting helpers
-# -----------------------------------------------------------------------------
+# =============================================================================
+# VISUALIZATION HELPERS
+# =============================================================================
 
 def create_bar_plot(
     data: pd.DataFrame,
@@ -470,7 +619,21 @@ def create_bar_plot(
     y_label: str,
     horizontal: bool = False,
 ) -> gr.BarPlot:
-    """Create a bar plot with optional horizontal orientation."""
+    """
+    Create a bar plot with optional horizontal orientation.
+
+    Args:
+        data: DataFrame containing the data
+        x_col: Column name for x-axis
+        y_col: Column name for y-axis
+        title: Plot title
+        x_label: X-axis label
+        y_label: Y-axis label
+        horizontal: Whether to create horizontal bars
+
+    Returns:
+        Gradio BarPlot component
+    """
     if horizontal:
         # Swap x and y for horizontal bars
         return gr.BarPlot(
@@ -491,12 +654,21 @@ def create_bar_plot(
             y_label=y_label,
         )
 
-# -----------------------------------------------------------------------------
-# Upload handler (save .db files to scripts/results/)
-# -----------------------------------------------------------------------------
 
+# =============================================================================
+# FILE UPLOAD HANDLERS
+# =============================================================================
 
 def handle_db_upload(files: list[gr.File]) -> str:
+    """
+    Handle upload of database files to the results directory.
+
+    Args:
+        files: List of uploaded files
+
+    Returns:
+        Status message about upload success
+    """
     ensure_results_dir()
     saved = []
     for f in files or []:
@@ -508,22 +680,50 @@ def handle_db_upload(files: list[gr.File]) -> str:
     )
 
 
-# -----------------------------------------------------------------------------
-# UI
-# -----------------------------------------------------------------------------
+# =============================================================================
+# GRADIO USER INTERFACE
+# =============================================================================
+
+"""
+This section defines the complete Gradio web interface with the following tabs:
+1. Game Arena: Interactive gameplay between humans and AI
+2. Leaderboard: Performance statistics and rankings
+3. Metrics Dashboard: Visual analytics and charts
+4. Analysis of LLM Reasoning: Illegal moves and behavior analysis
+5. About: Documentation and information
+
+The interface supports:
+- Real-time human vs AI gameplay
+- Automatic AI move processing
+- Dynamic dropdown population
+- State management for interactive games
+- File upload for database results
+- Interactive visualizations
+"""
 
 with gr.Blocks() as interface:
+    # =========================================================================
+    # TAB 1: GAME ARENA
+    # =========================================================================
+
     with gr.Tab("Game Arena"):
         config = create_player_config(include_aggregated=False)
 
-        gr.Markdown("# LLM Game Arena")
-        gr.Markdown("Play games against LLMs or watch LLMs compete!")
+        # Header and introduction
+        gr.Markdown("# Interactive Game Reasoning Arena")
+        gr.Markdown("Play games against LLMs, a random bot or watch LLMs compete!")
         gr.Markdown(
             f"> **🤖 Available AI Players**: {config['model_info']}\n"
             "> Local transformer models run with Hugging Face transformers. "
-            "No API tokens required!"
+            "No API tokens required!\n\n"
+            "> **⚠️ Note on Reasoning Quality**: The available models are "
+            "relatively basic (GPT-2, DistilGPT-2, etc.) and may produce "
+            "limited or nonsensical reasoning. They are suitable for "
+            "demonstration purposes but don't expect sophisticated "
+            "strategic thinking or coherent explanations."
         )
 
+        # Game selection and configuration
         with gr.Row():
             game_dropdown = gr.Dropdown(
                 choices=config["available_games"],
@@ -543,45 +743,32 @@ with gr.Blocks() as interface:
             )
 
         def player_selector_block(label: str):
+            """Create player selection UI block."""
             gr.Markdown(f"### {label}")
-            choices_pairs = [
-                (key, config["player_config"]["player_type_display"][key])
+            # Create display choices (what user sees)
+            display_choices = [
+                config["player_config"]["player_type_display"][key]
                 for key in config["player_config"]["player_types"]
             ]
+            # Set default to first display choice
+            default_choice = display_choices[0] if display_choices else None
+
             dd_type = gr.Dropdown(
-                choices=choices_pairs,
-                label=f"{label} Type",
-                value=choices_pairs[0][0] if choices_pairs else None,
+                choices=display_choices,
+                label=f"{label}",  # Just "Player 0" or "Player 1"
+                value=default_choice,
             )
-            dd_model = gr.Dropdown(
-                choices=config["player_config"]["available_models"],
-                label=f"{label} Model (if LLM)",
-                visible=False,
-            )
-            return dd_type, dd_model
+            return dd_type
 
+        # Player configuration
         with gr.Row():
-            p1_type, p1_model = player_selector_block("Player 0")
-            p2_type, p2_model = player_selector_block("Player 1")
+            p1_type = player_selector_block("Player 0")
+            p2_type = player_selector_block("Player 1")
 
-        def _vis(player_type: str):
-            is_llm = (
-                player_type == "llm"
-                or (
-                    player_type
-                    and (
-                        player_type.startswith("llm_")
-                        or player_type.startswith("hf_")
-                    )
-                )
-            )
-            return gr.update(visible=is_llm)
-
-        p1_type.change(_vis, inputs=p1_type, outputs=p1_model)
-        p2_type.change(_vis, inputs=p2_type, outputs=p2_model)
-
-        # Create gr.State for interactive games
+        # Game state management
         game_state = gr.State(value=None)
+        human_choices_p0 = gr.State([])
+        human_choices_p1 = gr.State([])
 
         # Interactive game components (initially hidden)
         with gr.Column(visible=False) as interactive_panel:
@@ -601,22 +788,22 @@ with gr.Blocks() as interface:
                     gr.Markdown("### Your Move")
 
                     # Player 0 move selection
-                    p0_move_dropdown = gr.Dropdown(
+                    human_move_p0 = gr.Dropdown(
                         choices=[],
-                        label="Player 0 Action",
+                        label="Your move (Player 0)",
                         visible=False,
                         interactive=True,
                     )
 
                     # Player 1 move selection
-                    p1_move_dropdown = gr.Dropdown(
+                    human_move_p1 = gr.Dropdown(
                         choices=[],
-                        label="Player 1 Action",
+                        label="Your move (Player 1)",
                         visible=False,
                         interactive=True,
                     )
 
-                    submit_move_btn = gr.Button(
+                    submit_btn = gr.Button(
                         "Submit Move",
                         variant="primary",
                         visible=False
@@ -627,10 +814,15 @@ with gr.Blocks() as interface:
                         visible=False
                     )
 
-        # Standard game simulation (non-interactive)
+        # Game control buttons
         play_button = gr.Button("🎮 Start Game", variant="primary")
-        start_interactive_btn = gr.Button("🎯 Start Interactive Game", variant="secondary", visible=False)
+        start_btn = gr.Button(
+            "🎯 Start Interactive Game",
+            variant="secondary",
+            visible=False
+        )
 
+        # Game output display
         game_output = gr.Textbox(
             label="Game Log",
             lines=20,
@@ -639,10 +831,18 @@ with gr.Blocks() as interface:
 
         def check_for_human_players(p1_type, p2_type):
             """Show/hide interactive controls based on player types."""
-            has_human = (p1_type == "human" or p2_type == "human")
+            # Map display labels back to internal keys
+            display_to_key = {
+                v: k for k, v in
+                config["player_config"]["player_type_display"].items()
+            }
+            p1_key = display_to_key.get(p1_type, p1_type)
+            p2_key = display_to_key.get(p2_type, p2_type)
+
+            has_human = (p1_key == "human" or p2_key == "human")
             return (
                 gr.update(visible=has_human),  # interactive_panel
-                gr.update(visible=has_human),  # start_interactive_btn
+                gr.update(visible=has_human),  # start_btn
                 gr.update(visible=not has_human),  # play_button (single-shot)
             )
 
@@ -651,7 +851,7 @@ with gr.Blocks() as interface:
             player_type_dropdown.change(
                 check_for_human_players,
                 inputs=[p1_type, p2_type],
-                outputs=[interactive_panel, start_interactive_btn, play_button],
+                outputs=[interactive_panel, start_btn, play_button],
             )
 
         # Standard single-shot game
@@ -661,8 +861,6 @@ with gr.Blocks() as interface:
                 game_dropdown,
                 p1_type,
                 p2_type,
-                p1_model,
-                p2_model,
                 rounds_slider,
                 # No seed input from user; will default to None
             ],
@@ -670,106 +868,178 @@ with gr.Blocks() as interface:
         )
 
         # Interactive game functions
-        def start_interactive_game(game_name, p1_type, p2_type, p1_model, p2_model, rounds):
+        def start_interactive_game(
+            game_name, p1_type, p2_type, rounds
+        ):
             """Initialize an interactive game session."""
             try:
                 from ui.gradio_config_generator import start_game_interactive
                 import time
 
+                # Map display labels back to internal keys
+                display_to_key = {
+                    v: k for k, v in
+                    config["player_config"]["player_type_display"].items()
+                }
+                p1_key = display_to_key.get(p1_type, p1_type)
+                p2_key = display_to_key.get(p2_type, p2_type)
+
+                # Map display game name back to internal key if needed
+                game_display_to_key = config.get("game_display_to_key", {})
+                internal_game = game_display_to_key.get(game_name, game_name)
+
+                # Extract model from player type if it's an LLM
+                p1_model = None
+                p2_model = None
+                if p1_key.startswith("hf_"):
+                    p1_model = p1_key.split("_", 1)[1]
+                if p2_key.startswith("hf_"):
+                    p2_model = p2_key.split("_", 1)[1]
+
                 # Use timestamp as seed
                 seed = int(time.time() * 1000) % (2**31 - 1)
 
                 log, state, legal_p0, legal_p1 = start_game_interactive(
-                    game_name=game_name,
-                    player1_type=p1_type,
-                    player2_type=p2_type,
+                    game_name=internal_game,
+                    player1_type=p1_key,
+                    player2_type=p2_key,
                     player1_model=p1_model,
                     player2_model=p2_model,
                     rounds=rounds,
                     seed=seed,
                 )
 
-                # Update dropdowns with legal actions
-                p0_choices = [(action, label) for action, label in legal_p0]
-                p1_choices = [(action, label) for action, label in legal_p1]
+                # Store choices in state for reliable mapping
+                # [(action_id, label), ...] from _legal_actions_with_labels()
+                p0_choices = legal_p0
+                p1_choices = legal_p1
+
+                # Create Gradio dropdown choices: user sees OpenSpiel action
+                # labels, selects action IDs
+                p0_dropdown_choices = [
+                    (label, action_id) for action_id, label in p0_choices
+                ]
+                p1_dropdown_choices = [
+                    (label, action_id) for action_id, label in p1_choices
+                ]
+
+                # Show/hide dropdowns based on whether each player is human
+                p0_is_human = (p1_key == "human")
+                p1_is_human = (p2_key == "human")
 
                 return (
                     state,  # game_state
+                    p0_choices,  # human_choices_p0
+                    p1_choices,  # human_choices_p1
                     log,    # board_display
-                    gr.update(choices=p0_choices, visible=len(p0_choices) > 0, value=None),  # p0_move_dropdown
-                    gr.update(choices=p1_choices, visible=len(p1_choices) > 0, value=None),  # p1_move_dropdown
-                    gr.update(visible=True),  # submit_move_btn
+                    gr.update(
+                        choices=p0_dropdown_choices,
+                        visible=p0_is_human,
+                        value=None
+                    ),  # human_move_p0
+                    gr.update(
+                        choices=p1_dropdown_choices,
+                        visible=p1_is_human,
+                        value=None
+                    ),  # human_move_p1
+                    gr.update(visible=True),  # submit_btn
                     gr.update(visible=True),  # reset_game_btn
                 )
             except Exception as e:
                 return (
                     None,   # game_state
+                    [],     # human_choices_p0
+                    [],     # human_choices_p1
                     f"Error starting interactive game: {e}",  # board_display
-                    gr.update(choices=[], visible=False),     # p0_move_dropdown
-                    gr.update(choices=[], visible=False),     # p1_move_dropdown
-                    gr.update(visible=False),                 # submit_move_btn
+                    gr.update(choices=[], visible=False),     # human_move_p0
+                    gr.update(choices=[], visible=False),     # human_move_p1
+                    gr.update(visible=False),                 # submit_btn
                     gr.update(visible=False),                 # reset_game_btn
                 )
 
-        def submit_human_move_handler(p0_action, p1_action, state):
+        def submit_human_move_handler(p0_action, p1_action, state, choices_p0, choices_p1):
             """Process human moves and advance the game."""
             try:
                 from ui.gradio_config_generator import submit_human_move
 
                 if not state:
-                    return state, "No game running.", gr.update(choices=[], visible=False), gr.update(choices=[], visible=False), gr.update(visible=False), gr.update(visible=False)
+                    return (
+                        state, [], [], "No game running.",
+                        gr.update(choices=[], visible=False),
+                        gr.update(choices=[], visible=False),
+                        gr.update(visible=False),
+                        gr.update(visible=False)
+                    )
 
+                # The submit_human_move function already handles:
+                # 1. Taking human actions for human players
+                # 2. Computing AI actions for AI players
+                # 3. Advancing the game with both actions
+                # 4. Returning the next legal moves
                 log_append, new_state, next_p0, next_p1 = submit_human_move(
-                    action_p0=p0_action,
-                    action_p1=p1_action,
+                    action_p0=p0_action,  # None if P0 is AI, action_id if P0 is human
+                    action_p1=p1_action,  # None if P1 is AI, action_id if P1 is human
                     state=state,
                 )
 
-                # Update dropdowns with next legal actions
-                p0_choices = [(action, label) for action, label in next_p0]
-                p1_choices = [(action, label) for action, label in next_p1]
+                # next_p0 and next_p1 are from _legal_actions_with_labels()
+                # Format: [(action_id, label), ...] where label comes from OpenSpiel
+                new_choices_p0 = next_p0
+                new_choices_p1 = next_p1
+
+                # Create Gradio dropdown choices: user sees OpenSpiel labels, selects action IDs
+                p0_dropdown_choices = [(label, action_id) for action_id, label in new_choices_p0]
+                p1_dropdown_choices = [(label, action_id) for action_id, label in new_choices_p1]
 
                 # Check if game is finished
-                game_over = new_state.get("terminated", False) or new_state.get("truncated", False)
+                game_over = (new_state.get("terminated", False) or
+                           new_state.get("truncated", False))
 
                 return (
                     new_state,  # game_state
+                    new_choices_p0,  # human_choices_p0
+                    new_choices_p1,  # human_choices_p1
                     log_append,  # board_display (append to current)
-                    gr.update(choices=p0_choices, visible=len(p0_choices) > 0 and not game_over, value=None),  # p0_move_dropdown
-                    gr.update(choices=p1_choices, visible=len(p1_choices) > 0 and not game_over, value=None),  # p1_move_dropdown
-                    gr.update(visible=not game_over),  # submit_move_btn
-                    gr.update(visible=True),           # reset_game_btn (always visible to restart)
+                    gr.update(choices=p0_dropdown_choices, visible=len(p0_dropdown_choices) > 0 and not game_over, value=None),
+                    gr.update(choices=p1_dropdown_choices, visible=len(p1_dropdown_choices) > 0 and not game_over, value=None),
+                    gr.update(visible=not game_over),  # submit_btn
+                    gr.update(visible=True),           # reset_game_btn
                 )
             except Exception as e:
-                return state, f"Error processing move: {e}", gr.update(), gr.update(), gr.update(), gr.update()
+                return (
+                    state, choices_p0, choices_p1, f"Error processing move: {e}",
+                    gr.update(), gr.update(), gr.update(), gr.update()
+                )
 
         def reset_interactive_game():
             """Reset the interactive game state."""
             return (
                 None,  # game_state
+                [],    # human_choices_p0
+                [],    # human_choices_p1
                 "Game reset. Click 'Start Interactive Game' to begin a new game.",  # board_display
-                gr.update(choices=[], visible=False),  # p0_move_dropdown
-                gr.update(choices=[], visible=False),  # p1_move_dropdown
-                gr.update(visible=False),              # submit_move_btn
+                gr.update(choices=[], visible=False),  # human_move_p0
+                gr.update(choices=[], visible=False),  # human_move_p1
+                gr.update(visible=False),              # submit_btn
                 gr.update(visible=False),              # reset_game_btn
             )
 
         # Wire up interactive game handlers
-        start_interactive_btn.click(
+        start_btn.click(
             start_interactive_game,
-            inputs=[game_dropdown, p1_type, p2_type, p1_model, p2_model, rounds_slider],
-            outputs=[game_state, board_display, p0_move_dropdown, p1_move_dropdown, submit_move_btn, reset_game_btn],
+            inputs=[game_dropdown, p1_type, p2_type, rounds_slider],
+            outputs=[game_state, human_choices_p0, human_choices_p1, board_display, human_move_p0, human_move_p1, submit_btn, reset_game_btn],
         )
 
-        submit_move_btn.click(
+        submit_btn.click(
             submit_human_move_handler,
-            inputs=[p0_move_dropdown, p1_move_dropdown, game_state],
-            outputs=[game_state, board_display, p0_move_dropdown, p1_move_dropdown, submit_move_btn, reset_game_btn],
+            inputs=[human_move_p0, human_move_p1, game_state, human_choices_p0, human_choices_p1],
+            outputs=[game_state, human_choices_p0, human_choices_p1, board_display, human_move_p0, human_move_p1, submit_btn, reset_game_btn],
         )
 
         reset_game_btn.click(
             reset_interactive_game,
-            outputs=[game_state, board_display, p0_move_dropdown, p1_move_dropdown, submit_move_btn, reset_game_btn],
+            outputs=[game_state, human_choices_p0, human_choices_p1, board_display, human_move_p0, human_move_p1, submit_btn, reset_game_btn],
         )
 
     with gr.Tab("Leaderboard"):

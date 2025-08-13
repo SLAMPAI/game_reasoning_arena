@@ -6,8 +6,6 @@ Implements an agent that asks the user for input to choose an action.
 
 from typing import Any, Dict, Optional, List
 from .base_agent import BaseAgent
-#from agents.llm_utils import generate_prompt #TODO: fix this - the prompt for human agents!!
-#TODO: the human agents also need a prompt! but not on the HTML format!
 
 class HumanAgent(BaseAgent):
     """An agent that queries the user for an action."""
