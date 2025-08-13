@@ -3,6 +3,8 @@
 
 A framework for evaluating Large Language Models (LLMs) through strategic game-playing using Google's OpenSpiel game library. Allows to test LLM decision-making capabilities in games like Tic-Tac-Toe, Connect Four, Poker, and more.
 
+<img src="plots_paper/radar_comparison_llm_litellm_groq_llama3_70b_8192.png" alt="LLM Performance Radar Chart" width="600">
+
 ## Official Documentation
 
 For a detailed documentation guide, visit the [Game Reasoning Arena Documentation](https://game-reasoning-arena.readthedocs.io/en/latest/index.html).
