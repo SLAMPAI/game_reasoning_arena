@@ -21,3 +21,6 @@ models:
   - litellm_fireworks_ai/accounts/fireworks/models/llama-v3-8b-instruct
   - litellm_fireworks_ai/accounts/fireworks/models/llama-v3-70b-instruct
   - litellm_fireworks_ai/accounts/fireworks/models/qwen3-235b-a22b-thinking-2507
+  - litellm_fireworks_ai/accounts/fireworks/models/glm-4p5-air
+  - litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct
+ 

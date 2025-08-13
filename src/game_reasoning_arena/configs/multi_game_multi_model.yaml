@@ -30,6 +30,9 @@ models:
   - litellm_together_ai/mistralai/Mixtral-8x7B-Instruct-v0.1
   - litellm_fireworks_ai/accounts/fireworks/models/llama-v3-8b-instruct
   - litellm_fireworks_ai/accounts/fireworks/models/llama-v3-70b-instruct
+  - litellm_fireworks_ai/accounts/fireworks/models/qwen3-235b-a22b-thinking-2507
+  - litellm_fireworks_ai/accounts/fireworks/models/glm-4p5-air
+  - litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct
 
 agents:
   player_0:
