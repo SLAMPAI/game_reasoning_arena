@@ -465,15 +465,28 @@ def create_bar_plot(
     title: str,
     x_label: str,
     y_label: str,
+    horizontal: bool = False,
 ) -> gr.BarPlot:
-    return gr.BarPlot(
-        value=data,
-        x=x_col,
-        y=y_col,
-        title=title,
-        x_label=x_label,
-        y_label=y_label,
-    )
+    """Create a bar plot with optional horizontal orientation."""
+    if horizontal:
+        # Swap x and y for horizontal bars
+        return gr.BarPlot(
+            value=data,
+            x=y_col,  # metrics on x-axis
+            y=x_col,  # model names on y-axis
+            title=title,
+            x_label=y_label,  # swap labels too
+            y_label=x_label,
+        )
+    else:
+        return gr.BarPlot(
+            value=data,
+            x=x_col,
+            y=y_col,
+            title=title,
+            x_label=x_label,
+            y_label=y_label,
+        )
 
 # -----------------------------------------------------------------------------
 # Upload handler (save .db files to scripts/results/)
@@ -545,8 +558,8 @@ with gr.Blocks() as interface:
             return dd_type, dd_model
 
         with gr.Row():
-            p1_type, p1_model = player_selector_block("Player 1")
-            p2_type, p2_model = player_selector_block("Player 2")
+            p1_type, p1_model = player_selector_block("Player 0")
+            p2_type, p2_model = player_selector_block("Player 1")
 
         def _vis(player_type: str):
             is_llm = (
@@ -649,6 +662,7 @@ with gr.Blocks() as interface:
                 title="Win Rate vs Random Bot",
                 x_label="LLM Model",
                 y_label="Win Rate (%)",
+                horizontal=True,
             )
 
         with gr.Row():
@@ -685,6 +699,7 @@ with gr.Blocks() as interface:
                 title="Illegal Moves by Model",
                 x_label="LLM Model",
                 y_label="# of Illegal Moves",
+                horizontal=True,
             )
 
         with gr.Row():
