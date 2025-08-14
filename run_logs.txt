@@ -1,20 +1,20 @@
-2025-08-14 00:28:09,166 - __main__ - INFO - {'env_config': {'game_name': 'kuhn_poker', 'max_game_rounds': None}, 'num_episodes': True, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_fireworks_ai/accounts/fireworks/models/qwen3-235b-a22b-thinking-2507'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_fireworks_ai/accounts/fireworks/models/qwen3-235b-a22b-thinking-2507'}, 'log_level': 'INFO'}
-2025-08-14 00:28:09,175 - __main__ - INFO - Ray disabled - using sequential execution
-2025-08-14 00:28:09,175 - __main__ - INFO - Using sequential execution (Ray disabled)
-2025-08-14 00:28:09,181 - simulate - INFO - Initializing environment for kuhn_poker.
-2025-08-14 00:28:09,181 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for kuhn_poker
-2025-08-14 00:28:09,181 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_fireworks_ai/accounts/fireworks/models/qwen3-235b-a22b-thinking-2507)
-2025-08-14 00:28:09,181 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
-2025-08-14 00:28:09,191 - simulate - INFO - Episode 1 started with seed 42.
-2025-08-14 00:28:09,201 - LiteLLM - INFO - 
-LiteLLM completion() model= accounts/fireworks/models/qwen3-235b-a22b-thinking-2507; provider = fireworks_ai
-2025-08-14 00:28:16,276 - httpx - INFO - HTTP Request: POST https://api.fireworks.ai/inference/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-14 00:28:16,279 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-14 00:28:16,292 - simulate - INFO - Board state: 
-111
-2025-08-14 00:28:16,292 - simulate - INFO - Legal actions: [0, 1]
-2025-08-14 00:28:16,293 - simulate - INFO - Agent 0 (litellm_fireworks_ai/accounts/fireworks/models/qwen3-235b-a22b-thinking-2507) chose action: 0 with reasoning: Okay, let's see. I'm Player 0 in Kuhn Poker with a Q. The move number is 2, which means it's the second move in the game. The betting history says it's the first round after card dealing. Total pot is...
-2025-08-14 00:28:16,296 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
-2025-08-14 00:28:16,307 - simulate - INFO - Simulation for game kuhn_poker, Episode 1 completed.
-2025-08-14 00:28:16,308 - __main__ - INFO - Sequential simulation results for kuhn_poker completed
-2025-08-14 00:28:16,309 - __main__ - INFO - All simulations completed. Total results: 1
+2025-08-14 01:21:33,557 - __main__ - INFO - {'env_config': {'game_name': 'matrix_pd', 'max_game_rounds': 10}, 'num_episodes': True, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct'}, 'log_level': 'INFO'}
+2025-08-14 01:21:33,558 - __main__ - INFO - Ray disabled - using sequential execution
+2025-08-14 01:21:33,558 - __main__ - INFO - Using sequential execution (Ray disabled)
+2025-08-14 01:21:33,561 - simulate - INFO - Initializing environment for matrix_pd.
+2025-08-14 01:21:33,561 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for matrix_pd
+2025-08-14 01:21:33,561 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct)
+2025-08-14 01:21:33,561 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
+2025-08-14 01:21:33,566 - simulate - INFO - Episode 1 started with seed 42.
+2025-08-14 01:21:33,574 - LiteLLM - INFO - 
+LiteLLM completion() model= accounts/fireworks/models/kimi-k2-instruct; provider = fireworks_ai
+2025-08-14 01:21:36,003 - httpx - INFO - HTTP Request: POST https://api.fireworks.ai/inference/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-14 01:21:36,006 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-14 01:21:36,016 - simulate - INFO - Board state: 
+Matrix game - Player 0
+2025-08-14 01:21:36,016 - simulate - INFO - Legal actions: [0, 1]
+2025-08-14 01:21:36,016 - simulate - INFO - Agent 0 (litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct) chose action: 1 with reasoning: This is a one-shot Prisoner's Dilemma. In the absence of any history, reputation effects, or future interactions, the dominant strategy for a purely self-interested player is to Defect, because it yields a higher payoff regardless of what the opponent does. Cooperating only makes sense if I believe the opponent will cooperate and we both value mutual cooperation more than the temptation to defect, but without any information about the opponent, I cannot assume that.
+2025-08-14 01:21:36,019 - simulate - INFO - Game status: terminated with rewards dict: {0: 10.0, 1: 0.0}
+2025-08-14 01:21:36,030 - simulate - INFO - Simulation for game matrix_pd, Episode 1 completed.
+2025-08-14 01:21:36,030 - __main__ - INFO - Sequential simulation results for matrix_pd completed
+2025-08-14 01:21:36,030 - __main__ - INFO - All simulations completed. Total results: 1

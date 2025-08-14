@@ -94,7 +94,7 @@ db_dir = Path(__file__).resolve().parent / "results"
 
 # Leaderboard display columns
 LEADERBOARD_COLUMNS = [
-    "agent_name", "agent_type", "# games", "total rewards",
+    "agent_name", "agent_type", "# game instances", "total rewards",
     # "avg_generation_time (sec)",  # Commented out - needs fixing
     "win-rate", "win vs_random (%)",
 ]
@@ -529,10 +529,12 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
             if game_name == "Aggregated Performance":
                 # Get totals across all games in this DB
                 df = pd.read_sql_query(
-                    "SELECT COUNT(DISTINCT episode) AS games_played, "
-                    "SUM(reward) AS total_rewards FROM game_results",
+                    "SELECT COUNT(*) AS total_games, SUM(reward) AS total_rewards "
+                    "FROM game_results",
                     conn,
                 )
+                # Each row represents a game instance
+                games_played = int(df["total_games"].iloc[0] or 0)
                 # avg_time = conn.execute(
                 #     "SELECT AVG(generation_time) FROM moves"
                 # ).fetchone()[0] or 0 # to fix later
@@ -547,12 +549,13 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
             else:
                 # Filter by the selected game
                 df = pd.read_sql_query(
-                    "SELECT COUNT(DISTINCT episode) AS games_played, "
-                    "SUM(reward) AS total_rewards "
+                    "SELECT COUNT(*) AS total_games, SUM(reward) AS total_rewards "
                     "FROM game_results WHERE game_name = ?",
                     conn,
                     params=(game_name,),
                 )
+                # Each row represents a game instance
+                games_played = int(df["total_games"].iloc[0] or 0)
                 # avg_time = conn.execute(
                 #     "SELECT AVG(generation_time) FROM moves "
                 #     "WHERE game_name = ?", (game_name,),
@@ -570,11 +573,10 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
                 ).fetchone()[0] or 0
 
             # If there were no results for this game, df will be empty or NaNs.
-            if df.empty or df["games_played"].iloc[0] is None:
+            if df.empty or df["total_games"].iloc[0] is None:
                 games_played = 0
                 total_rewards = 0.0
             else:
-                games_played = int(df["games_played"].iloc[0] or 0)
                 total_rewards = float(df["total_rewards"].iloc[0] or 0) / 2.0
 
             vs_random_rate = (
@@ -587,7 +589,7 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
             row = {
                 "agent_name": model_name,
                 "agent_type": agent_type,
-                "# games": games_played,
+                "# game instances": games_played,
                 "total rewards": total_rewards,
                 # "avg_generation_time (sec)": round(float(avg_time), 3),
                 "win-rate": round(vs_random_rate, 2),
