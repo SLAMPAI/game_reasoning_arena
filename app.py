@@ -767,6 +767,9 @@ with gr.Blocks() as interface:
             p1_type = player_selector_block("Player 0")
             p2_type = player_selector_block("Player 1")
 
+        # Validation error message
+        validation_error = gr.Markdown(visible=False)
+
         # Game state management
         game_state = gr.State(value=None)
         human_choices_p0 = gr.State([])
@@ -848,23 +851,124 @@ with gr.Blocks() as interface:
                 gr.update(visible=not has_human),  # play_button (single-shot)
             )
 
+        def validate_player_selection(p1_type, p2_type):
+            """Validate players and update dropdown choices accordingly."""
+            # Map display labels back to internal keys
+            display_to_key = {
+                v: k for k, v in
+                config["player_config"]["player_type_display"].items()
+            }
+            p1_key = display_to_key.get(p1_type, p1_type)
+            p2_key = display_to_key.get(p2_type, p2_type)
+
+            # Check if both players are human
+            both_human = (p1_key == "human" and p2_key == "human")
+
+            # Create display choices for dropdowns
+            display_choices = [
+                config["player_config"]["player_type_display"][key]
+                for key in config["player_config"]["player_types"]
+            ]
+
+            # Filter choices based on current selection
+            p1_choices = display_choices.copy()
+            p2_choices = display_choices.copy()
+
+            # If Player 0 is human, remove "Human Player" from Player 1 choices
+            if p1_key == "human":
+                human_display = config["player_config"][
+                    "player_type_display"
+                ]["human"]
+                if human_display in p2_choices:
+                    p2_choices.remove(human_display)
+
+            # If Player 1 is human, remove "Human Player" from Player 0 choices
+            if p2_key == "human":
+                human_display = config["player_config"][
+                    "player_type_display"
+                ]["human"]
+                if human_display in p1_choices:
+                    p1_choices.remove(human_display)
+
+            # Generate error message if both are human
+            error_msg = ""
+            if both_human:
+                error_msg = ("⚠️ **Cannot have Human vs Human games!** "
+                             "Please select an AI player for one side.")
+
+            # Return updated dropdown choices and error message
+            return (
+                gr.update(choices=p1_choices),  # p1_type dropdown
+                gr.update(choices=p2_choices),  # p2_type dropdown
+                error_msg  # validation error message
+            )
+
         # Update UI when player types change
-        for player_type_dropdown in [p1_type, p2_type]:
-            player_type_dropdown.change(
-                check_for_human_players,
+        def update_validation_and_ui(p1_type, p2_type):
+            """Update validation, player choices, and UI visibility."""
+            # First update validation and dropdowns
+            p1_update, p2_update, error_msg = validate_player_selection(
+                p1_type, p2_type
+            )
+
+            # Then update UI visibility
+            vis_update = check_for_human_players(p1_type, p2_type)
+
+            # Show/hide error message
+            error_visible = bool(error_msg)
+            error_update = gr.update(
+                value=error_msg,
+                visible=error_visible
+            )
+
+            return (
+                p1_update,      # p1_type choices
+                p2_update,      # p2_type choices
+                error_update,   # validation_error
+                vis_update[0],  # interactive_panel
+                vis_update[1],  # start_btn
+                vis_update[2],  # play_button
+            )
+
+        # Wire up change handlers for both player dropdowns
+        for player_dropdown in [p1_type, p2_type]:
+            player_dropdown.change(
+                update_validation_and_ui,
                 inputs=[p1_type, p2_type],
-                outputs=[interactive_panel, start_btn, play_button],
+                outputs=[
+                    p1_type, p2_type, validation_error,
+                    interactive_panel, start_btn, play_button
+                ],
             )
 
         # Standard single-shot game
+        def start_game_with_validation(
+            game_name, p1_type, p2_type, rounds
+        ):
+            """Start game only if validation passes."""
+            # Map display labels back to internal keys
+            display_to_key = {
+                v: k for k, v in
+                config["player_config"]["player_type_display"].items()
+            }
+            p1_key = display_to_key.get(p1_type, p1_type)
+            p2_key = display_to_key.get(p2_type, p2_type)
+
+            # Check if both players are human
+            if p1_key == "human" and p2_key == "human":
+                return ("⚠️ **Cannot start Human vs Human game!** "
+                        "Please select an AI player for one side.")
+
+            # If validation passes, start the game
+            return play_game(game_name, p1_type, p2_type, rounds)
+
         play_button.click(
-            play_game,
+            start_game_with_validation,
             inputs=[
                 game_dropdown,
                 p1_type,
                 p2_type,
                 rounds_slider,
-                # No seed input from user; will default to None
             ],
             outputs=[game_output],
         )
@@ -875,9 +979,6 @@ with gr.Blocks() as interface:
         ):
             """Initialize an interactive game session."""
             try:
-                from ui.gradio_config_generator import start_game_interactive
-                import time
-
                 # Map display labels back to internal keys
                 display_to_key = {
                     v: k for k, v in
@@ -885,6 +986,23 @@ with gr.Blocks() as interface:
                 }
                 p1_key = display_to_key.get(p1_type, p1_type)
                 p2_key = display_to_key.get(p2_type, p2_type)
+
+                # Check if both players are human
+                if p1_key == "human" and p2_key == "human":
+                    return (
+                        None,   # game_state
+                        [],     # human_choices_p0
+                        [],     # human_choices_p1
+                        ("⚠️ **Cannot start Human vs Human game!** "
+                         "Please select an AI player for one side."),
+                        gr.update(choices=[], visible=False),  # human_move_p0
+                        gr.update(choices=[], visible=False),  # human_move_p1
+                        gr.update(visible=False),              # submit_btn
+                        gr.update(visible=False),              # reset_game_btn
+                    )
+
+                from ui.gradio_config_generator import start_game_interactive
+                import time
 
                 # Map display game name back to internal key if needed
                 game_display_to_key = config.get("game_display_to_key", {})
