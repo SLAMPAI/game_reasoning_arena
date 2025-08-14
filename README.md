@@ -684,12 +684,14 @@ ___
 If you found this work useful, please consider citing:
 
 ```
-@article{cipolina-kun2025game_reasoning_arena,
-    title={Board Game Arena: A Framework and Benchmark for Assessing Large Language Models},
-    author={Lucia Cipolina-Kun and  Marianna Nezhurina and Jenia Jitsev},
-    year={2025},
-    journal={arXiv},
-    url={https://arxiv.org/abs/2}
+@misc{cipolinakun2025gamereasoningarenaframework,
+      title={Game Reasoning Arena: A Framework and Benchmark for Assessing Reasoning Capabilites of Large Language Models via Game Play},
+      author={Lucia Cipolina-Kun and Marianna Nezhurina and Jenia Jitsev},
+      year={2025},
+      eprint={2508.03368},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2508.03368},
 }
 ```
 ___
