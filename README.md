@@ -5,7 +5,8 @@ A comprehensive framework for evaluating Large Language Models (LLMs) through st
 
 <h3>
 
-[📖 Documentation](https://game-reasoning-arena.readthedocs.io/en/latest/index.html)
+[📖 Extended Documentation](https://game-reasoning-arena.readthedocs.io/en/latest/index.html)
+
 
 </h3>
 
@@ -15,9 +16,6 @@ A comprehensive framework for evaluating Large Language Models (LLMs) through st
 
 <img src="plots_paper/radar_comparison_llm_litellm_groq_llama3_70b_8192.png" alt="LLM Performance Radar Chart" width="600">
 
-## Official Documentation
-
-For a detailed documentation guide, visit the [Game Reasoning Arena Documentation](https://game-reasoning-arena.readthedocs.io/en/latest/index.html).
 
 ### Key Features
 - **Multi-Agent Testing**: LLMs vs Random, LLM vs LLM, Self-play
