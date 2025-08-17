@@ -1,20 +1,23 @@
-2025-08-17 20:30:35,178 - __main__ - INFO - {'env_config': {'game_name': 'kuhn_poker', 'max_game_rounds': None}, 'num_episodes': True, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/gemma2-9b-it'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/gemma2-9b-it'}, 'log_level': 'INFO'}
-2025-08-17 20:30:35,180 - __main__ - INFO - Ray disabled - using sequential execution
-2025-08-17 20:30:35,180 - __main__ - INFO - Using sequential execution (Ray disabled)
-2025-08-17 20:30:35,185 - simulate - INFO - Initializing environment for kuhn_poker.
-2025-08-17 20:30:35,185 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for kuhn_poker
-2025-08-17 20:30:35,185 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/gemma2-9b-it)
-2025-08-17 20:30:35,185 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
-2025-08-17 20:30:35,194 - simulate - INFO - Episode 1 started with seed 42.
-2025-08-17 20:30:35,205 - LiteLLM - INFO - 
-LiteLLM completion() model= gemma2-9b-it; provider = groq
-2025-08-17 20:30:35,705 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-17 20:30:35,707 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-17 20:30:35,715 - simulate - INFO - Board state: 
-111
-2025-08-17 20:30:35,715 - simulate - INFO - Legal actions: [0, 1]
-2025-08-17 20:30:35,715 - simulate - INFO - Agent 0 (litellm_groq/gemma2-9b-it) chose action: 0 with reasoning: In Kuhn Poker, with limited information, it's crucial to consider the opponent's possible actions and the potential value of the pot.  At move 2, after a bet has already been placed, it's likely the opponent has a decent hand. Folding might be too hasty, as I could have a strong hand myself. However, without knowing the opponent's betting pattern or the strength of my own hand, calling is a risky move. 
-2025-08-17 20:30:35,792 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
-2025-08-17 20:30:35,802 - simulate - INFO - Simulation for game kuhn_poker, Episode 1 completed.
-2025-08-17 20:30:35,802 - __main__ - INFO - Sequential simulation results for kuhn_poker completed
-2025-08-17 20:30:35,802 - __main__ - INFO - All simulations completed. Total results: 1
+2025-08-17 20:34:47,007 - __main__ - INFO - {'env_config': {'game_name': 'matrix_rps', 'max_game_rounds': 10}, 'num_episodes': True, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_gpt-3.5-turbo'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_gpt-3.5-turbo'}, 'log_level': 'INFO'}
+2025-08-17 20:34:47,009 - __main__ - INFO - Ray disabled - using sequential execution
+2025-08-17 20:34:47,009 - __main__ - INFO - Using sequential execution (Ray disabled)
+2025-08-17 20:34:47,014 - simulate - INFO - Initializing environment for matrix_rps.
+2025-08-17 20:34:47,014 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for matrix_rps
+2025-08-17 20:34:47,015 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_gpt-3.5-turbo)
+2025-08-17 20:34:47,015 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
+2025-08-17 20:34:47,023 - simulate - INFO - Episode 1 started with seed 42.
+2025-08-17 20:34:47,038 - LiteLLM - INFO - 
+LiteLLM completion() model= gpt-3.5-turbo; provider = openai
+2025-08-17 20:34:48,140 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-17 20:34:48,170 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
+2025-08-17 20:34:48,180 - simulate - INFO - Board state: 
+Matrix game - Player 0
+2025-08-17 20:34:48,180 - simulate - INFO - Legal actions: [0, 1, 2]
+2025-08-17 20:34:48,180 - simulate - INFO - Agent 0 (litellm_gpt-3.5-turbo) chose action: 0 with reasoning: {
+    'reasoning': "I will choose Rock because it is a strong and stable choice that can defeat Scissors but lose to Paper. It is a safe option to start with.",
+    'action': 0
+}
+2025-08-17 20:34:48,182 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
+2025-08-17 20:34:48,194 - simulate - INFO - Simulation for game matrix_rps, Episode 1 completed.
+2025-08-17 20:34:48,195 - __main__ - INFO - Sequential simulation results for matrix_rps completed
+2025-08-17 20:34:48,195 - __main__ - INFO - All simulations completed. Total results: 1

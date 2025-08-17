@@ -532,7 +532,7 @@ class LLMReasoningAnalyzer:
             )
             plt.xlabel("Turn")
             plt.ylabel("Entropy")
-            plt.legend()
+            plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.1), ncol=3)
             plt.grid(True)
             plt.tight_layout()
             out_path = os.path.join(
