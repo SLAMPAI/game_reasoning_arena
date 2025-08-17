@@ -16,6 +16,7 @@ import os
 from typing import Optional
 from transformers import pipeline
 from pathlib import Path
+from utils import display_game_name
 
 
 REASONING_RULES = {
@@ -156,17 +157,26 @@ class LLMReasoningAnalyzer:
             return response.strip().split("\n")[0].replace(
                 "CATEGORY:", "").strip()
 
-        self.df['reasoning_type_llm'] = self.df.apply(
+        df_to_classify = self.df
+        if max_samples is not None and max_samples > 0:
+            df_to_classify = df_to_classify.sample(
+                n=min(max_samples, len(df_to_classify)), random_state=42
+            )
+        # Default to Uncategorized for all, then fill for sampled rows
+        self.df['reasoning_type_llm'] = "Uncategorized"
+        classified = df_to_classify.apply(
             lambda row: classify_llm(row['reasoning'])
             if row['reasoning'] and not row['agent_name'].startswith("random")
             else "Uncategorized",
             axis=1
         )
+        # Assign back to the original indices
+        self.df.loc[classified.index, 'reasoning_type_llm'] = classified
 
     def summarize_reasoning(self) -> None:
-        """Generate a short summary for each reasoning entry (simple heuristic).
+        """Generate a short summary for each reasoning entry.
 
-        OBS: Later we can replace this with LLM compression.
+        Simple heuristic; later we can replace this with LLM compression.
         """
         def summarize(reasoning: str) -> str:
             if "." in reasoning:
@@ -177,7 +187,9 @@ class LLMReasoningAnalyzer:
 
         self.df['summary'] = self.df['reasoning'].apply(summarize)
 
-    def summarize_games(self, output_csv: str = "results/game_summary.csv") -> pd.DataFrame:
+    def summarize_games(
+        self, output_csv: str = "results/game_summary.csv"
+    ) -> pd.DataFrame:
         """Summarize the reasoning data by game and agent."""
         # Ensure the results directory exists
         Path(output_csv).parent.mkdir(parents=True, exist_ok=True)
@@ -234,7 +246,10 @@ class LLMReasoningAnalyzer:
         type_dist = group_df['reasoning_type'].value_counts()
         plt.figure()
         type_dist.plot.pie(autopct='%1.1f%%')
-        plt.title(f"Reasoning Type Distribution - {agent}\n(Game: {game})")
+        plt.title(
+            f"Reasoning Type Distribution - {agent}\n"
+            f"(Game: {display_game_name(game)})"
+        )
         plt.ylabel("")
         plt.tight_layout()
         plt.savefig(
@@ -258,8 +273,10 @@ class LLMReasoningAnalyzer:
         plt.figure(figsize=(10, 6))
         sns.heatmap(pivot, cmap="YlGnBu", annot=True)
         games = df_agent['game_name'].unique()
-        plt.title(f"Reasoning Type by Turn - {agent}\n"
-                  f"Games:\n{', '.join(games)}")
+        plt.title(
+            f"Reasoning Type by Turn - {agent}\n"
+            f"Games:\n{', '.join(display_game_name(g) for g in games)}"
+        )
         plt.ylabel("Turn")
         plt.xlabel("Reasoning Type")
         plt.tight_layout()
@@ -268,7 +285,7 @@ class LLMReasoningAnalyzer:
         plt.close()
 
     def compute_agent_metrics(
-            self, output_csv: str = "agent_metrics_summary.csv"
+        self, output_csv: str = "results/agent_metrics_summary.csv"
     ) -> pd.DataFrame:
         """Compute metrics for each agent and game combination.
 
@@ -331,8 +348,8 @@ class LLMReasoningAnalyzer:
             self._create_agent_aggregate_heatmap(df_agent, agent, plot_dir)
 
     def compute_metrics(
-            self, output_csv: str = "agent_metrics_summary.csv",
-            plot_dir: str = "plots"
+        self, output_csv: str = "results/agent_metrics_summary.csv",
+        plot_dir: str = "plots"
     ) -> None:
         """Compute metrics and generate visualizations for each agent and game.
 
@@ -370,7 +387,10 @@ class LLMReasoningAnalyzer:
             )
             plt.figure(figsize=(10, 6))
             sns.heatmap(pivot, cmap="YlGnBu", annot=True)
-            plt.title(f"Reasoning Type by Turn - {agent} (Game: {game})")
+            plt.title(
+                f"Reasoning Type by Turn - {agent} "
+                f"(Game: {display_game_name(game)})"
+            )
             plt.ylabel("Turn")
             plt.xlabel("Reasoning Type")
             plt.tight_layout()
@@ -407,7 +427,10 @@ class LLMReasoningAnalyzer:
             plt.figure(figsize=(10, 5))
             plt.imshow(wc, interpolation='bilinear')
             plt.axis("off")
-            title = f"Reasoning Word Cloud - {agent} (Game: {game})"
+            title = (
+                f"Reasoning Word Cloud - {agent} "
+                f"(Game: {display_game_name(game)})"
+            )
             plt.title(title)
             plt.tight_layout()
             out_path = os.path.join(
@@ -439,7 +462,10 @@ class LLMReasoningAnalyzer:
             )
             plt.figure()
             entropy_by_turn.plot(marker='o')
-            plt.title(f"Reasoning Entropy by Turn - {agent} (Game: {game})")
+            plt.title(
+                f"Reasoning Entropy by Turn - {agent} "
+                f"(Game: {display_game_name(game)})"
+            )
             plt.xlabel("Turn")
             plt.ylabel("Entropy")
             plt.grid(True)
@@ -474,7 +500,9 @@ class LLMReasoningAnalyzer:
                     ))
                 )
                 entropy_by_turn.plot(label=agent)
-            plt.title(f"Entropy by Turn Across Agents - {game}")
+            plt.title(
+                f"Entropy by Turn Across Agents - {display_game_name(game)}"
+            )
             plt.xlabel("Turn")
             plt.ylabel("Entropy")
             plt.legend()
@@ -487,7 +515,7 @@ class LLMReasoningAnalyzer:
             plt.close()
 
     def plot_avg_entropy_across_games(self, output_dir: str = "plots") -> None:
-        """Plot average reasoning entropy over time across all games and agents.
+        """Plot average entropy over time across all games and agents.
 
         This reveals the general trend of reasoning diversity (entropy) per
         turn for all agents collectively, helping to understand how LLM
@@ -530,9 +558,12 @@ if __name__ == "__main__":
     # Remove limit for full analysis
 
     analyzer.compute_metrics(plot_dir="plots")
-    # analyzer.plot_heatmaps_by_agent(output_dir="plots")  # HEATMAP DISABLED
-    # analyzer.plot_wordclouds_by_agent(output_dir="plots")  # WORDCLOUD DISABLED
-    # analyzer.plot_entropy_trendlines()  # Individual entropy trends per agent-game pair
+    # analyzer.plot_heatmaps_by_agent(output_dir="plots")
+    #   HEATMAP DISABLED
+    # analyzer.plot_wordclouds_by_agent(output_dir="plots")
+    #   WORDCLOUD DISABLED
+    # analyzer.plot_entropy_trendlines()
+    #   Individual entropy trends per agent-game pair
     analyzer.plot_entropy_by_turn_across_agents()
     analyzer.plot_avg_entropy_across_games(output_dir="plots")
 

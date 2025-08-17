@@ -17,9 +17,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
+from utils import display_game_name
+from reasoning_analysis import LLMReasoningAnalyzer  # noqa: E402
+
 # Add analysis directory to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from reasoning_analysis import LLMReasoningAnalyzer  # noqa: E402
 
 
 def plot_reasoning_bar_chart(
@@ -50,7 +52,8 @@ def plot_reasoning_bar_chart(
     # Generate title
     title = f"Reasoning Type Distribution - {model_name}"
     if games_list:
-        title += f" ({', '.join(games_list)})"
+        pretty_games = [display_game_name(g) for g in games_list]
+        title += f" ({', '.join(pretty_games)})"
 
     plt.title(title, fontsize=16, fontweight='bold')
     plt.xlabel("Percentage (%)", fontsize=14)
@@ -61,6 +64,11 @@ def plot_reasoning_bar_chart(
     for bar, percentage in zip(bars, df["percentage"]):
         plt.text(bar.get_width() + 0.5, bar.get_y() + bar.get_height()/2,
                  f'{percentage:.1f}%', ha='left', va='center', fontsize=11)
+
+    # Save and close
+    plt.tight_layout()
+    plt.savefig(output_path, dpi=300, bbox_inches='tight')
+    plt.close()
 
 
 def plot_reasoning_pie_chart(
@@ -117,15 +125,19 @@ def plot_stacked_bar_chart(
     df = pd.DataFrame(game_reasoning_percentages).T.fillna(0)
 
     plt.figure(figsize=(12, 6))
-    df.plot(kind='bar', stacked=True, colormap="tab20c")
+    ax = df.plot(kind='bar', stacked=True, colormap="tab20c")
 
     plt.ylabel("Percentage (%)", fontsize=14)
     plt.xlabel("Game", fontsize=14)
     plt.title(f"Reasoning Types per Game - {model_name}",
               fontsize=16, fontweight='bold')
-    plt.legend(title="Reasoning Type", bbox_to_anchor=(1.05, 1),
-               loc='upper left', fontsize=12, title_fontsize=13)
-    plt.xticks(rotation=45, fontsize=12)
+    plt.legend(title="Reasoning Type",
+               bbox_to_anchor=(1.02, 0.5),
+               loc='center left', fontsize=12, title_fontsize=13,
+               borderaxespad=0.0, frameon=False)
+    # Use friendly game names on x-axis
+    pretty_index = [display_game_name(g) for g in df.index]
+    ax.set_xticklabels(pretty_index, rotation=45, fontsize=12)
     plt.yticks(fontsize=12)
 
     # Add percentage labels on stacked bars
@@ -140,6 +152,8 @@ def plot_stacked_bar_chart(
             cumulative += percentage
 
     plt.tight_layout()
+    # Reserve a consistent right margin for the legend (after tight_layout)
+    plt.subplots_adjust(right=0.82)
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
     plt.close()
 
@@ -180,7 +194,8 @@ def plot_reasoning_evolution_over_turns(
     # Create stacked bar chart where each bar represents a turn
     # and each segment represents a reasoning category
     bottom = np.zeros(len(df_prop))
-    colors = plt.cm.Set3(np.linspace(0, 1, len(df_prop.columns)))
+    cmap = plt.get_cmap('Set3')
+    colors = cmap(np.linspace(0, 1, len(df_prop.columns)))
 
     for i, reasoning_type in enumerate(df_prop.columns):
         plt.bar(df_prop.index, df_prop[reasoning_type],
@@ -189,14 +204,18 @@ def plot_reasoning_evolution_over_turns(
                 linewidth=0.5)
         bottom += df_prop[reasoning_type]
 
-    plt.title(f"{model_name} - {game_name}: Reasoning Category Evolution",
-              fontsize=16, fontweight='bold')
+    plt.title(
+        f"{model_name} - {display_game_name(game_name)}: "
+        f"Reasoning Category Evolution",
+        fontsize=16, fontweight='bold'
+    )
     plt.xlabel("Game Turn", fontsize=14)
     plt.ylabel("Proportion of Reasoning Types", fontsize=14)
     plt.ylim(0, 1)
     plt.grid(True, alpha=0.3, axis='y')
-    plt.legend(loc="center left", bbox_to_anchor=(1.05, 0.5),
-               title="Reasoning Type", fontsize=12, title_fontsize=13)
+    plt.legend(loc="center left", bbox_to_anchor=(1.02, 0.5),
+               title="Reasoning Type", fontsize=12, title_fontsize=13,
+               borderaxespad=0.0, frameon=False)
     plt.tick_params(axis='both', which='major', labelsize=12)
 
     # Add sample size annotations above each bar
@@ -208,6 +227,8 @@ def plot_reasoning_evolution_over_turns(
                      fontsize=11, alpha=0.7)
 
     plt.tight_layout()
+    # Reserve a consistent right margin for the legend (after tight_layout)
+    plt.subplots_adjust(right=0.82)
     plt.savefig(output_path, dpi=300, bbox_inches='tight')
     plt.close()
 
@@ -241,8 +262,11 @@ def plot_reasoning_evolution_heatmap(
                 cbar_kws={'label': 'Proportion'}, fmt='.2f',
                 annot_kws={'fontsize': 12})
 
-    plt.title(f"{model_name} - {game_name}: Reasoning Evolution Heatmap",
-              fontsize=16, fontweight='bold')
+    plt.title(
+        f"{model_name} - {display_game_name(game_name)}: "
+        f"Reasoning Evolution Heatmap",
+        fontsize=16, fontweight='bold'
+    )
     plt.xlabel("Game Turn", fontsize=14)
     plt.ylabel("Reasoning Type", fontsize=14)
     plt.tick_params(axis='both', which='major', labelsize=12)
