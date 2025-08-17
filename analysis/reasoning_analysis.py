@@ -189,103 +189,174 @@ class LLMReasoningAnalyzer:
         summary.to_csv(output_csv, index=False)
         return summary
 
-    def compute_metrics(self, output_csv: str = "agent_metrics_summary.csv", plot_dir: str = "plots") -> None:
-        """Compute metrics for each agent and game."""
+    def _calculate_agent_metrics(self, group_df: pd.DataFrame) -> dict:
+        """Calculate metrics for a single agent-game group.
 
-        Path(plot_dir).mkdir(parents=True, exist_ok=True)
+        Args:
+            group_df: DataFrame subset for one agent-game combination
+
+        Returns:
+            Dictionary containing calculated metrics
+        """
+        total = len(group_df)
+        opponent_mentions = group_df['reasoning'].str.lower().str.contains(
+            "opponent"
+        ).sum()
+        reasoning_len_avg = group_df['reasoning'].apply(
+            lambda r: len(r.split())
+        ).mean()
+        unique_types = group_df['reasoning_type'].nunique()
+        type_counts = group_df['reasoning_type'].value_counts(
+            normalize=True
+        ).to_dict()
+        entropy = -sum(
+            p * np.log2(p) for p in type_counts.values() if p > 0
+        )
+
+        return {
+            "total_moves": total,
+            "avg_reasoning_length": reasoning_len_avg,
+            "%_opponent_mentions": opponent_mentions / total,
+            "reasoning_diversity": unique_types,
+            "reasoning_entropy": entropy
+        }
+
+    def _create_pie_chart(self, group_df: pd.DataFrame, agent: str,
+                          game: str, plot_dir: str) -> None:
+        """Create a pie chart for reasoning type distribution.
+
+        Args:
+            group_df: DataFrame subset for one agent-game combination
+            agent: Agent name
+            game: Game name
+            plot_dir: Directory to save the plot
+        """
+        type_dist = group_df['reasoning_type'].value_counts()
+        plt.figure()
+        type_dist.plot.pie(autopct='%1.1f%%')
+        plt.title(f"Reasoning Type Distribution - {agent}\n(Game: {game})")
+        plt.ylabel("")
+        plt.tight_layout()
+        plt.savefig(
+            Path(plot_dir) / f"pie_reasoning_type_{agent}_{game}.png"
+        )
+        plt.close()
+
+    def _create_agent_aggregate_heatmap(self, df_agent: pd.DataFrame,
+                                        agent: str, plot_dir: str) -> None:
+        """Create aggregate heatmap for one agent across all games.
+
+        Args:
+            df_agent: DataFrame subset for one agent across all games
+            agent: Agent name
+            plot_dir: Directory to save the plot
+        """
+        pivot = df_agent.pivot_table(
+            index="turn", columns="reasoning_type", values="agent_name",
+            aggfunc="count", fill_value=0
+        )
+        plt.figure(figsize=(10, 6))
+        sns.heatmap(pivot, cmap="YlGnBu", annot=True)
+        games = df_agent['game_name'].unique()
+        plt.title(f"Reasoning Type by Turn - {agent}\n"
+                  f"Games:\n{', '.join(games)}")
+        plt.ylabel("Turn")
+        plt.xlabel("Reasoning Type")
+        plt.tight_layout()
+        out_path = os.path.join(plot_dir, f"heatmap_{agent}_all_games.png")
+        plt.savefig(out_path)
+        plt.close()
+
+    def compute_agent_metrics(
+            self, output_csv: str = "agent_metrics_summary.csv"
+    ) -> pd.DataFrame:
+        """Compute metrics for each agent and game combination.
+
+        Args:
+            output_csv: Path to save the metrics CSV
+
+        Returns:
+            DataFrame containing computed metrics
+        """
         rows = []
         for (game, agent), group_df in self.df.groupby(
             ["game_name", "agent_name"]
         ):
             if agent.startswith("random"):
                 continue
-            total = len(group_df)
-            opponent_mentions = group_df['reasoning'].str.lower().str.contains(
-                "opponent"
-            ).sum()
-            reasoning_len_avg = group_df['reasoning'].apply(
-                lambda r: len(r.split())
-            ).mean()
-            unique_types = group_df['reasoning_type'].nunique()
-            type_counts = group_df['reasoning_type'].value_counts(
-                normalize=True
-            ).to_dict()
-            entropy = -sum(
-                p * np.log2(p) for p in type_counts.values() if p > 0
-            )
 
-            rows.append({
+            metrics = self._calculate_agent_metrics(group_df)
+            metrics.update({
                 "agent_name": agent,
-                "game_name": game,
-                "total_moves": total,
-                "avg_reasoning_length": reasoning_len_avg,
-                "%_opponent_mentions": opponent_mentions / total,
-                "reasoning_diversity": unique_types,
-                "reasoning_entropy": entropy
+                "game_name": game
             })
+            rows.append(metrics)
 
-            # Pie chart for this (agent, game)
-            type_dist = group_df['reasoning_type'].value_counts()
-            plt.figure()
-            type_dist.plot.pie(autopct='%1.1f%%')
-            plt.title(f"Reasoning Type Distribution - {agent}\n(Game: {game})")
-            plt.ylabel("")
-            plt.tight_layout()
-            plt.savefig(
-                Path(plot_dir) / f"pie_reasoning_type_{agent}_{game}.png"
-            )
-            plt.close()
+        df_metrics = pd.DataFrame(rows)
 
-    # Aggregate heatmap for each agent across all games
+        # Save to CSV if path provided
+        if output_csv:
+            Path(output_csv).parent.mkdir(parents=True, exist_ok=True)
+            df_metrics.to_csv(output_csv, index=False)
+
+        return df_metrics
+
+    def plot_reasoning_type_pie_charts(self, plot_dir: str = "plots") -> None:
+        """Create pie charts showing reasoning type distribution for
+        each agent-game pair.
+
+        Args:
+            plot_dir: Directory to save the plots
+        """
+        Path(plot_dir).mkdir(parents=True, exist_ok=True)
+
+        for (game, agent), group_df in self.df.groupby(
+            ["game_name", "agent_name"]
+        ):
+            if agent.startswith("random"):
+                continue
+            self._create_pie_chart(group_df, agent, game, plot_dir)
+
+    def plot_agent_aggregate_heatmaps(self, plot_dir: str = "plots") -> None:
+        """Create aggregate heatmaps for each agent across all their games.
+
+        Args:
+            plot_dir: Directory to save the plots
+        """
+        Path(plot_dir).mkdir(parents=True, exist_ok=True)
+
         for agent, df_agent in self.df.groupby("agent_name"):
             if agent.startswith("random"):
                 continue
-            pivot = df_agent.pivot_table(
-                index="turn", columns="reasoning_type", values="agent_name",
-                aggfunc="count", fill_value=0
-            )
-            plt.figure(figsize=(10, 6))
-            sns.heatmap(pivot, cmap="YlGnBu", annot=True)
-            games = df_agent['game_name'].unique()
-            plt.title(f"Reasoning Type by Turn - {agent}\n Games:\n{', '.join(games)}")
-            plt.ylabel("Turn")
-            plt.xlabel("Reasoning Type")
-            plt.tight_layout()
-            out_path = os.path.join(plot_dir, f"heatmap_{agent}_all_games.png")
-            plt.savefig(out_path)
-            plt.close()
+            self._create_agent_aggregate_heatmap(df_agent, agent, plot_dir)
 
-        # Aggregate by agent across all games - WORDCLOUD DISABLED
-        # for agent, agent_df in self.df.groupby("agent_name"):
-        #     if agent.startswith("random"):
-        #         continue
-        #     text = " ".join(agent_df['reasoning'].tolist())
-        #     wc = WordCloud(width=800, height=400, background_color='white').generate(text)
-        #     plt.figure(figsize=(10, 5))
-        #     plt.imshow(wc, interpolation='bilinear')
-        #     plt.axis("off")
-        #     games = agent_df['game_name'].unique()
-        #     game_list = ", ".join(games)
-        #     title = (
-        #         f"Reasoning Word Cloud - {agent}\n"
-        #         f"Games:{game_list}"
-        #     )
-        #     plt.title(title)
-        #     plt.tight_layout()
-        #     out_path = os.path.join(plot_dir, f"wordcloud_{agent}_all_games.png")
-        #     plt.savefig(out_path)
-        #     plt.close()
+    def compute_metrics(
+            self, output_csv: str = "agent_metrics_summary.csv",
+            plot_dir: str = "plots"
+    ) -> None:
+        """Compute metrics and generate visualizations for each agent and game.
 
-        # pd.DataFrame(rows).to_csv(
-        #     output_csv, index=False
-        # )  # Uncomment to save the metrics to a CSV
+        This is the main interface that combines metric computation with
+        visualization generation for backward compatibility.
+
+        Args:
+            output_csv: Path to save the metrics CSV
+            plot_dir: Directory to save the plots
+        """
+        # Compute and save metrics
+        self.compute_agent_metrics(output_csv)
+
+        # Generate visualizations
+        self.plot_reasoning_type_pie_charts(plot_dir)
+        self.plot_agent_aggregate_heatmaps(plot_dir)
 
     def plot_heatmaps_by_agent(self, output_dir: str = "plots") -> None:
-        """Plot per-agent heatmaps and one aggregated heatmap across all games.
+        """Plot per-agent heatmaps and one aggregated heatmap across
+        all games.
 
-        Individual heatmaps are saved per agent-game pair. This also includes
-        a general heatmap per agent showing all turns merged across all games.
-        Useful for seeing broad reasoning type patterns.
+        Individual heatmaps are saved per agent-game pair. This also
+        includes a general heatmap per agent showing all turns merged
+        across all games. Useful for seeing broad reasoning type patterns.
         """
         Path(output_dir).mkdir(parents=True, exist_ok=True)
         for (agent, game), df_agent in self.df.groupby(
@@ -294,8 +365,8 @@ class LLMReasoningAnalyzer:
             if agent.startswith("random"):
                 continue
             pivot = df_agent.pivot_table(
-                index="turn", columns="reasoning_type", values="agent_name",
-                aggfunc="count", fill_value=0
+                index="turn", columns="reasoning_type",
+                values="agent_name", aggfunc="count", fill_value=0
             )
             plt.figure(figsize=(10, 6))
             sns.heatmap(pivot, cmap="YlGnBu", annot=True)
@@ -303,33 +374,47 @@ class LLMReasoningAnalyzer:
             plt.ylabel("Turn")
             plt.xlabel("Reasoning Type")
             plt.tight_layout()
-            out_path = os.path.join(output_dir, f"heatmap_{agent}_{game}.png")
+            out_path = os.path.join(
+                output_dir, f"heatmap_{agent}_{game}.png"
+            )
             plt.savefig(out_path)
             plt.close()
 
-    # WORDCLOUD FUNCTION DISABLED
-    # def plot_wordclouds_by_agent(self, output_dir: str = "plots") -> None:
-    #     """Plot per-agent word clouds and one aggregated word cloud across all games.
+    def plot_wordclouds_by_agent(self, output_dir: str = "plots") -> None:
+        """Plot per-agent word clouds and one aggregated word cloud across
+        all games.
 
-    #     Word clouds are created per agent-game pair and also aggregated per agent
-    #     over all games. The full version helps summarize LLM behavior globally.
-    #     """
+        Word clouds are created per agent-game pair and also aggregated per
+        agent over all games. The full version helps summarize LLM behavior
+        globally.
 
-    #     Path(output_dir).mkdir(parents=True, exist_ok=True)
-    #     for (agent, game), agent_df in self.df.groupby(["agent_name", "game_name"]):
-    #         if agent.startswith("random"):
-    #             continue
-    #         text = " ".join(agent_df['reasoning'].tolist())
-    #         wc = WordCloud(width=800, height=400, background_color='white').generate(text)
-    #         plt.figure(figsize=(10, 5))
-    #         plt.imshow(wc, interpolation='bilinear')
-    #         plt.axis("off")
-    #         title = f"Reasoning Word Cloud - {agent} (Game: {game})"
-    #         plt.title(title)
-    #         plt.tight_layout()
-    #         out_path = os.path.join(output_dir, f"wordcloud_{agent}_{game}.png")
-    #         plt.savefig(out_path)
-    #         plt.close()
+        Note: WordCloud import is disabled at module level, so this function
+        will fail if called. Use this only when WordCloud dependency is
+        available.
+        """
+        from wordcloud import WordCloud  # Import only when needed
+
+        Path(output_dir).mkdir(parents=True, exist_ok=True)
+        for (agent, game), agent_df in self.df.groupby(
+                ["agent_name", "game_name"]
+        ):
+            if agent.startswith("random"):
+                continue
+            text = " ".join(agent_df['reasoning'].tolist())
+            wc = WordCloud(
+                width=800, height=400, background_color='white'
+            ).generate(text)
+            plt.figure(figsize=(10, 5))
+            plt.imshow(wc, interpolation='bilinear')
+            plt.axis("off")
+            title = f"Reasoning Word Cloud - {agent} (Game: {game})"
+            plt.title(title)
+            plt.tight_layout()
+            out_path = os.path.join(
+                output_dir, f"wordcloud_{agent}_{game}.png"
+            )
+            plt.savefig(out_path)
+            plt.close()
 
     def plot_entropy_trendlines(self, output_dir: str = "plots") -> None:
         """Plot entropy over turns for each agent-game pair.
@@ -447,8 +532,8 @@ if __name__ == "__main__":
     analyzer.compute_metrics(plot_dir="plots")
     # analyzer.plot_heatmaps_by_agent(output_dir="plots")  # HEATMAP DISABLED
     # analyzer.plot_wordclouds_by_agent(output_dir="plots")  # WORDCLOUD DISABLED
-    # analyzer.plot_entropy_trendlines()
-    # analyzer.plot_entropy_by_turn_across_agents()
+    # analyzer.plot_entropy_trendlines()  # Individual entropy trends per agent-game pair
+    analyzer.plot_entropy_by_turn_across_agents()
     analyzer.plot_avg_entropy_across_games(output_dir="plots")
 
     # Save augmented output to scripts/results directory

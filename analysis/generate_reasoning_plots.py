@@ -363,18 +363,19 @@ class ReasoningPlotGenerator:
                 )
                 generated_files.append(str(output_path))
 
-                # Generate heatmap version
-                heatmap_filename = (f"evolution_heatmap_{clean_model}_"
-                                    f"{clean_game}.png").lower()
-                heatmap_path = Path(output_dir) / heatmap_filename
+                # HEATMAP GENERATION DISABLED
+                # # Generate heatmap version
+                # heatmap_filename = (f"evolution_heatmap_{clean_model}_"
+                #                     f"{clean_game}.png").lower()
+                # heatmap_path = Path(output_dir) / heatmap_filename
 
-                plot_reasoning_evolution_heatmap(
-                    reasoning_per_turn=reasoning_per_turn,
-                    model_name=model_name,
-                    game_name=game_name,
-                    output_path=str(heatmap_path)
-                )
-                generated_files.append(str(heatmap_path))
+                # plot_reasoning_evolution_heatmap(
+                #     reasoning_per_turn=reasoning_per_turn,
+                #     model_name=model_name,
+                #     game_name=game_name,
+                #     output_path=str(heatmap_path)
+                # )
+                # generated_files.append(str(heatmap_path))
 
         return generated_files
 

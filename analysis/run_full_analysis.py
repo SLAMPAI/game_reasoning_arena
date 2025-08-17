@@ -201,11 +201,12 @@ class AnalysisPipeline:
             analyzer.compute_metrics(plot_dir=str(self.plots_dir))
 
             # Generate additional visualizations (if enabled)
-            try:
-                self.logger.info("Generating heatmaps...")
-                analyzer.plot_heatmaps_by_agent(output_dir=str(self.plots_dir))
-            except Exception as e:
-                self.logger.warning("Heatmap generation failed: %s", e)
+            # HEATMAPS DISABLED 
+            # try:
+            #     self.logger.info("Generating heatmaps...")
+            #     analyzer.plot_heatmaps_by_agent(output_dir=str(self.plots_dir))
+            # except Exception as e:
+            #     self.logger.warning("Heatmap generation failed: %s", e)
 
             try:
                 self.logger.info("Generating entropy trend lines...")
