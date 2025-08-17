@@ -18,7 +18,8 @@ import numpy as np
 import seaborn as sns
 
 from utils import display_game_name
-from reasoning_analysis import LLMReasoningAnalyzer  # noqa: E402
+from reasoning_analysis import (LLMReasoningAnalyzer,
+                                get_reasoning_colors)  # noqa: E402
 
 # Add analysis directory to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -47,7 +48,8 @@ def plot_reasoning_bar_chart(
     df = df.sort_values("percentage", ascending=True)
 
     plt.figure(figsize=(10, 6))
-    bars = plt.barh(df["reasoning_type"], df["percentage"])
+    colors = get_reasoning_colors(df["reasoning_type"])
+    bars = plt.barh(df["reasoning_type"], df["percentage"], color=colors)
 
     # Generate title
     title = f"Reasoning Type Distribution - {model_name}"
@@ -86,6 +88,7 @@ def plot_reasoning_pie_chart(
         output_path: File path to save the figure.
     """
     series = pd.Series(reasoning_percentages)
+    colors = get_reasoning_colors(series.index)
 
     plt.figure(figsize=(8, 8))
     _, _, autotexts = plt.pie(
@@ -93,6 +96,7 @@ def plot_reasoning_pie_chart(
         labels=series.index,
         autopct='%1.1f%%',
         startangle=90,
+        colors=colors,
         textprops={'fontsize': 12}
     )
 
@@ -123,9 +127,10 @@ def plot_stacked_bar_chart(
         output_path: File path to save the figure.
     """
     df = pd.DataFrame(game_reasoning_percentages).T.fillna(0)
+    colors = get_reasoning_colors(df.columns)
 
     plt.figure(figsize=(12, 6))
-    ax = df.plot(kind='bar', stacked=True, colormap="tab20c")
+    ax = df.plot(kind='bar', stacked=True, color=colors)
 
     plt.ylabel("Percentage (%)", fontsize=14)
     plt.xlabel("Game", fontsize=14)
@@ -194,8 +199,7 @@ def plot_reasoning_evolution_over_turns(
     # Create stacked bar chart where each bar represents a turn
     # and each segment represents a reasoning category
     bottom = np.zeros(len(df_prop))
-    cmap = plt.get_cmap('Set3')
-    colors = cmap(np.linspace(0, 1, len(df_prop.columns)))
+    colors = get_reasoning_colors(df_prop.columns)
 
     for i, reasoning_type in enumerate(df_prop.columns):
         plt.bar(df_prop.index, df_prop[reasoning_type],

@@ -65,6 +65,32 @@ REASONING_RULES = {
     ]
 }
 
+# Consistent color mapping for all reasoning types
+REASONING_COLOR_MAP = {
+    "Positional": "#1f77b4",          # Blue
+    "Blocking": "#ff7f0e",            # Orange
+    "Opponent Modeling": "#2ca02c",   # Green
+    "Winning Logic": "#d62728",       # Red
+    "Heuristic": "#9467bd",           # Purple
+    "Rule-Based": "#8c564b",          # Brown
+    "Random/Unjustified": "#e377c2",  # Pink
+    "Uncategorized": "#7f7f7f"        # Gray
+}
+
+
+def get_reasoning_colors(reasoning_types):
+    """Get consistent colors for a list of reasoning types.
+
+    Args:
+        reasoning_types: List or iterable of reasoning type names
+
+    Returns:
+        List of hex color codes matching the reasoning types
+    """
+    return [REASONING_COLOR_MAP.get(rtype, "#999999")
+            for rtype in reasoning_types]
+
+
 LLM_PROMPT_TEMPLATE = (
     "You are a reasoning classifier. Your job is to categorize a move "
     "explanation into one of the following types:\n"
@@ -244,8 +270,9 @@ class LLMReasoningAnalyzer:
             plot_dir: Directory to save the plot
         """
         type_dist = group_df['reasoning_type'].value_counts()
+        colors = get_reasoning_colors(type_dist.index)
         plt.figure()
-        type_dist.plot.pie(autopct='%1.1f%%')
+        type_dist.plot.pie(autopct='%1.1f%%', colors=colors)
         plt.title(
             f"Reasoning Type Distribution - {agent}\n"
             f"(Game: {display_game_name(game)})"
