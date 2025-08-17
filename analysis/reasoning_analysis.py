@@ -514,7 +514,7 @@ class LLMReasoningAnalyzer:
         """
         Path(output_dir).mkdir(parents=True, exist_ok=True)
         for game, df_game in self.df.groupby("game_name"):
-            plt.figure()
+            plt.figure(figsize=(10, 6))
             for agent, df_agent in df_game.groupby("agent_name"):
                 if agent.startswith("random"):
                     continue
@@ -535,6 +535,7 @@ class LLMReasoningAnalyzer:
             plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.1), ncol=3)
             plt.grid(True)
             plt.tight_layout()
+            plt.subplots_adjust(bottom=0.2)
             out_path = os.path.join(
                 output_dir, f"entropy_by_turn_all_agents_{game}.png"
             )

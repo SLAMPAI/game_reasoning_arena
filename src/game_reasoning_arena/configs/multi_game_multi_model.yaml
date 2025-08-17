@@ -26,9 +26,9 @@ models:
   - litellm_groq/llama3-70b-8192
   - litellm_groq/gemma2-9b-it
   - litellm_groq/qwen3-32b
-  - litellm_gpt-3.5-turbo
+#  - litellm_gpt-3.5-turbo
   - litellm_gpt-4
-  - litellm_gpt-4-turbo
+#  - litellm_gpt-4-turbo
   - litellm_gpt-o4-mini
   - litellm_gpt-5
   - litellm_gpt-5-mini
