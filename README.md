@@ -693,7 +693,7 @@ If you found this work useful, please consider citing:
 
 ```
 @misc{cipolinakun2025gamereasoningarenaframework,
-      title={Game Reasoning Arena: A Framework and Benchmark for Assessing Reasoning Capabilites of Large Language Models via Game Play},
+      title={Game Reasoning Arena: A Framework and Benchmark for Assessing Reasoning Capabilities of Large Language Models via Game Play},
       author={Lucia Cipolina-Kun and Marianna Nezhurina and Jenia Jitsev},
       year={2025},
       eprint={2508.03368},
