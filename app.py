@@ -71,6 +71,9 @@ from game_reasoning_arena.backends import (
     initialize_llm_registry, LLM_REGISTRY,
 )
 
+# UI utilities
+from ui.utils import clean_model_name
+
 # =============================================================================
 # GLOBAL CONFIGURATION
 # =============================================================================
@@ -273,14 +276,15 @@ def extract_illegal_moves_summary() -> pd.DataFrame:
             count = 0
         finally:
             conn.close()
-        summary.append({"agent_name": model_name, "illegal_moves": count})
+        clean_name = clean_model_name(model_name)
+        summary.append({"agent_name": clean_name, "illegal_moves": count})
     return pd.DataFrame(summary)
-
 
 
 # =============================================================================
 # PLAYER CONFIGURATION & TYPE DEFINITIONS
 # =============================================================================
+
 
 class PlayerConfigData(TypedDict, total=False):
     """Type definition for player configuration data."""
@@ -587,7 +591,7 @@ def extract_leaderboard_stats(game_name: str) -> pd.DataFrame:
 
             # Build a single-row DataFrame for this agent
             row = {
-                "agent_name": model_name,
+                "agent_name": clean_model_name(model_name),
                 "agent_type": agent_type,
                 "# game instances": games_played,
                 "total rewards": total_rewards,
