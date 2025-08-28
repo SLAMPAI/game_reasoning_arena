@@ -106,3 +106,16 @@ class MatrixRPSLoader(GameLoader):
     @staticmethod
     def load():
         return pyspiel.load_game("matrix_rps")
+
+
+@registry.register(
+    name="hex",
+    module_path="game_reasoning_arena.arena.games.loaders",
+    class_name="HexLoader",
+    environment_path="game_reasoning_arena.arena.envs.hex_env.HexEnv",
+    display_name="Hex"
+)
+class HexLoader(GameLoader):
+    @staticmethod
+    def load():
+        return pyspiel.load_game("hex")

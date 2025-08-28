@@ -1,0 +1,23 @@
+# Hex Random vs Random configuration
+# Test HEX game implementation with two random agents
+
+# Use env_config as a single dict for single games
+env_config:
+  game_name: hex
+  max_game_rounds: null
+
+num_episodes: 5
+seed: 42
+use_ray: false
+mode: random_vs_random
+
+agents:
+  player_0:
+    type: random
+  player_1:
+    type: random
+
+llm_backend:
+  max_tokens: 250
+  temperature: 0.1
+  default_model: litellm_groq/llama3-8b-8192
