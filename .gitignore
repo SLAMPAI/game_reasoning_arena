@@ -16,3 +16,5 @@ tests/
 game_reasoning_arena_blog_post.md
 slurm_jobs/run_simulation.sh
 board_game_arena_blog_post.md
+src/game_reasoning_arena.egg-info/SOURCES.txt
+src/.DS_Store

@@ -36,7 +36,7 @@ class OpenSpielEnv(ABC):
         """
         self.game = game
         self.game_name = game_name
-        self.player_types = player_types # List of strings
+        self.player_types = player_types  # List of strings
         self.max_game_rounds = max_game_rounds  # For iterated games only
         self.state = None
         self.info = {}
@@ -48,7 +48,7 @@ class OpenSpielEnv(ABC):
 
         self.state = None
 
-    def reset(self, seed: Optional[int]=None) -> Tuple[str, Dict[str, Any]]:
+    def reset(self, seed: Optional[int] = None) -> Tuple[str, Dict[str, Any]]:
         """
         Resets the environment to an initial state and returns an
          initial observation.
@@ -139,12 +139,17 @@ class OpenSpielEnv(ABC):
         # otherwise, update current player
         if self.terminated or self.truncated:
             print("game terminated" if self.terminated else "game truncated")
-            # Note: final rewards are corectly updated by the OpenSpiel rewards tracker.
-            observation_dict = {agentID: None for agentID in list(action_dict.keys())} # No observation when the game ends
+            # Note: final rewards are correctly 
+            # updated by the OpenSpiel rewards tracker.
+            observation_dict = {
+                agentID: None for agentID in list(action_dict.keys())
+            }  # No observation when the game ends
         else:
-            observation_dict = self._state_to_observation() # Get next observation for all agents
+            # Get next observation for all agents
+            observation_dict = self._state_to_observation() 
 
-        return observation_dict, reward_dict, self.terminated, self.truncated, self.info
+        return (observation_dict, reward_dict, self.terminated, 
+                self.truncated, self.info)
 
     def render(self, mode: str = 'human'):
         """Print out the current state of the game."""
@@ -158,7 +163,7 @@ class OpenSpielEnv(ABC):
         Args:
             seed (int): The random seed.
         """
-        self.random_generator = random.Random(seed)  # Ensure Python's RNG is seeded
+        self.random_generator = random.Random(seed)  
 
         # Set game seed if OpenSpiel supports it
         if hasattr(self.game, "set_seed"):
@@ -168,7 +173,8 @@ class OpenSpielEnv(ABC):
 
     def detect_illegal_moves(self, actions_dict: Dict[int, int]) -> int:
         """
-        Detects illegal moves by comparing chosen actions with OpenSpiel's legal actions.
+        Detects illegal moves by comparing chosen actions
+        with OpenSpiel's legal actions.
 
         Args:
             actions_dict: Dictionary mapping player IDs to chosen actions.
@@ -204,7 +210,8 @@ class OpenSpielEnv(ABC):
             agent_id: {
                 "state_string": self.state.observation_string(agent_id),
                 "legal_actions": self.state.legal_actions(agent_id),
-                "prompt": self._generate_prompt(agent_id) # Overriden in some child classes
+                # Overriden in some child classes
+                "prompt": self._generate_prompt(agent_id)
             }
         }
 

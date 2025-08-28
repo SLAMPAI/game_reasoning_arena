@@ -20,12 +20,12 @@ class HexEnv(OpenSpielEnv):
         Args:
             game: The OpenSpiel game object.
             game_name: A string representing the name of the game.
-            player_types: A dictionary mapping player IDs to their types (e.g., human, random).
+            player_types: A dictionary mapping player IDs to their types 
+            (e.g., human, random).
             max_game_rounds: Maximum number of rounds
                              for iterated games (optional, default is None).
         """
         super().__init__(game, game_name, player_types, max_game_rounds, seed)
-
 
     def get_player_symbol(self, agent_id: int) -> str:
         """Returns the symbol used by a Tic Tac Toe player.
