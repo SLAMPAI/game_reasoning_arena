@@ -10,7 +10,8 @@ def clean_model_name(model_name: str) -> str:
     """
     Clean up long model names to display only the essential model name.
 
-    This function handles various model naming patterns from different providers:
+    This function handles various model naming patterns
+    from different providers:
     - LiteLLM models with provider prefixes
     - vLLM models with prefixes
     - Models with slash-separated paths
@@ -24,9 +25,13 @@ def clean_model_name(model_name: str) -> str:
         Cleaned model name (e.g., "Meta-Llama-3.1-8B-Instruct-Turbo")
 
     Examples:
-        >>> clean_model_name("litellm_together_ai/meta-llama/Meta-Llama-3.1-8B")
+        >>> clean_model_name(
+        "litellm_together_ai/meta-llama/Meta-Llama-3.1-8B"
+        )
         "Meta-Llama-3.1-8B"
-        >>> clean_model_name("litellm_fireworks_ai/accounts/fireworks/models/glm-4p5-air")
+        >>> clean_model_name(
+        "litellm_fireworks_ai/accounts/fireworks/models/glm-4p5-air"
+        )
         "glm-4p5-air"
         >>> clean_model_name("vllm_Qwen2-7B-Instruct")
         "Qwen2-7B-Instruct"
@@ -89,8 +94,13 @@ def clean_model_name(model_name: str) -> str:
     if model_name.startswith("litellm_"):
         parts = model_name.split("_")
 
-        # Handle Fireworks AI pattern: litellm_fireworks_ai_accounts_fireworks_models_*
-        if "fireworks" in model_name and "accounts" in model_name and "models" in model_name:
+        # Handle Fireworks AI pattern:
+        # litellm_fireworks_ai_accounts_fireworks_models_*
+        if (
+            "fireworks" in model_name
+            and "accounts" in model_name
+            and "models" in model_name
+        ):
             try:
                 models_idx = parts.index("models")
                 model_parts = parts[models_idx + 1:]
@@ -99,14 +109,25 @@ def clean_model_name(model_name: str) -> str:
                 pass
 
         # Handle Together AI pattern: litellm_together_ai_meta_llama_*
-        # Original: litellm_together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
-        # Becomes: litellm_together_ai_meta_llama_Meta_Llama_3.1_8B_Instruct_Turbo
+        # Original:
+        # litellm_together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
+        # Becomes:
+        # litellm_together_ai_meta_llama_Meta_Llama_3.1_8B_Instruct_Turbo
         # We want: Meta-Llama-3.1-8B-Instruct-Turbo
-        if "together" in model_name and "meta" in model_name and "llama" in model_name:
+        if (
+            "together" in model_name
+            and "meta" in model_name
+            and "llama" in model_name
+        ):
             try:
-                # Find "meta" and "llama" - the model name starts after "meta_llama_"
+                # Find "meta" and "llama" -
+                # the model name starts after "meta_llama_"
                 for i, part in enumerate(parts):
-                    if part == "meta" and i + 1 < len(parts) and parts[i + 1] == "llama":
+                    if (
+                        part == "meta"
+                        and i + 1 < len(parts)
+                        and parts[i + 1] == "llama"
+                    ):
                         # Model name starts after "meta_llama_"
                         model_parts = parts[i + 2:]
                         return "-".join(model_parts)
