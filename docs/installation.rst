@@ -54,7 +54,7 @@ If you plan to contribute or modify the code:
 .. code-block:: bash
 
    # Clone with development tools
-   git clone https://github.com/lcipolina/game_reasoning_arena.git
+   git clone https://github.com/SLAMPAI/game_reasoning_arena.git
    cd game_reasoning_arena
 
    # Set up conda environment with development dependencies
@@ -138,15 +138,8 @@ Choose your preferred LLM backend:
 GPU Support (Optional)
 ~~~~~~~~~~~~~~~~~~~~~~
 
-For accelerated local model inference:
+For accelerated local model inference. Install Pytorch with CUDA support
 
-.. code-block:: bash
-
-   # Install PyTorch with CUDA support
-   conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
-
-   # Or with pip
-   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 Cluster Setup (Optional)
 ------------------------
@@ -194,13 +187,13 @@ Run a quick test to verify everything is working:
 .. code-block:: bash
 
    # Test basic functionality
-   python scripts/runner.py --config configs/example_config.yaml --debug
+   python scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --log_level DEBUG
 
    # Test specific games
-   python scripts/runner.py --config configs/kuhn_poker_llm_vs_llm.yaml --num_games 5
+   python scripts/runner.py --config src/game_reasoning_arena/configs/kuhn_poker_llm_vs_llm.yaml --num_games 5
 
    # Test with different backends
-   python scripts/runner.py --config configs/example_config.yaml --backend litellm
+   python scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --backend litellm
 
 Expected Output
 ~~~~~~~~~~~~~~~
@@ -209,31 +202,20 @@ You should see output similar to:
 
 .. code-block:: text
 
-   2024-08-01 10:30:15 [INFO] Initializing Game Reasoning Arena...
-   2024-08-01 10:30:15 [INFO] Loading configuration: configs/example_config.yaml
-   2024-08-01 10:30:16 [INFO] Backend: litellm initialized successfully
-   2024-08-01 10:30:16 [INFO] Game: tic_tac_toe loaded
-   2024-08-01 10:30:16 [INFO] Agents: ['llm_agent', 'random_agent'] ready
-   2024-08-01 10:30:16 [INFO] Starting simulation with 10 games...
+   Running simulation...
+   Initializing LLM registry with automatic backend detection
+   [DEBUG] OpenSpielEnv created with game_name: tic_tac_toe
+   game terminated
+   Running post-game processing...
+   Starting post-game processing...
+   Merged logs saved as CSV to results/merged_logs_YYYYMMDD_HHMMSS.csv
+   Game Outcomes Summary:
+   terminated    XXXX
+   truncated      XXX
+   Name: status, dtype: int64
+   Simulation completed.
 
-Run Test Suite
-~~~~~~~~~~~~~~
 
-For a comprehensive verification:
-
-.. code-block:: bash
-
-   # Install test dependencies
-   pip install pytest
-
-   # Run full test suite
-   pytest tests/
-
-   # Run with verbose output
-   pytest tests/ -v
-
-   # Run specific test files
-   pytest tests/test_all_games_config.yaml
 
 Quick Interactive Test
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -243,7 +225,7 @@ Test the installation by running a simple game:
 .. code-block:: bash
 
    # Run a quick tic-tac-toe game with random agents
-   python scripts/runner.py --config configs/example_config.yaml --override \
+   python scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml --override \
      env_configs.0.game_name=tic_tac_toe \
      agents.player_0.type=random \
      agents.player_1.type=random \
@@ -290,29 +272,6 @@ Common Issues
    ray stop
    ray start --head
 
-**Memory Issues**
-
-.. code-block:: bash
-
-   # Reduce batch size or number of parallel games
-   python scripts/runner.py --config configs/example_config.yaml --num_games 1 --batch_size 1
-
-Getting Help
-~~~~~~~~~~~~
-
-If you encounter issues:
-
-1. Check the `GitHub Issues <https://github.com/lcipolina/game_reasoning_arena/issues>`_
-2. Review the troubleshooting section in our documentation
-3. Join our community discussions
-4. Contact the development team
-
-For installation-specific issues, please include:
-
-* Your operating system and version
-* Python version
-* Full error message
-* Steps to reproduce the issue
 
 Next Steps
 ----------
