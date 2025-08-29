@@ -35,6 +35,7 @@ Available Games
 * **prisoners_dilemma** - Cooperation vs defection scenarios
 * **matching_pennies** - Zero-sum matching game
 * **matrix_rps** - Rock-paper-scissors in matrix form
+* **hex** - Long strategy game on a hexagonal grid
 
 .. toctree::
    :caption: Getting Started
@@ -77,8 +78,5 @@ Available Games
    contributing
    extending
 
-.. toctree::
-   :caption: Extra Information
-   :maxdepth: 2
 
 .. license  # Commented out for blind conference submission
