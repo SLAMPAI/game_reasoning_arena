@@ -20,6 +20,61 @@ Where:
 - `p_i` = Proportion of reasoning type i
 - `Σ` = Sum over all reasoning types
 
+## 🔬 Entropy Methodology Calculation
+
+### **Data Aggregation Across Multiple Episodes**
+
+The entropy calculation in this system **aggregates data across ALL games played by each LLM model**, not just a single game instance. Here's the detailed methodology:
+
+#### **1. Multi-Episode Data Structure**
+Each LLM model plays multiple episodes (games) of each game type. The entropy calculation groups data by:
+- **Agent Name**: The specific LLM model (e.g., `llama3-8b`, `gpt-4`)
+- **Game Type**: The specific game (e.g., `tic_tac_toe`, `connect_four`)
+- **Turn Position**: The turn number within each game (Turn 1, Turn 2, Turn 3, etc.)
+
+#### **2. Turn-Wise Aggregation Process**
+```python
+# Conceptual representation of the calculation
+for each LLM model and game type:
+    Turn 1: [reasoning_types from ALL Episode 1 moves] → Calculate H₁
+    Turn 2: [reasoning_types from ALL Episode 2 moves] → Calculate H₂
+    Turn 3: [reasoning_types from ALL Episode 3 moves] → Calculate H₃
+    # Continue for all turns...
+```
+
+#### **3. Cross-Episode Entropy Calculation**
+For each turn position, the entropy is calculated from the **combined reasoning types across all episodes**:
+
+**Example**: If an LLM played 10 episodes of Tic-Tac-Toe:
+- **Turn 1 Entropy**: Uses reasoning types from Turn 1 of all 10 games
+- **Turn 2 Entropy**: Uses reasoning types from Turn 2 of all 10 games
+- **Turn 3 Entropy**: Uses reasoning types from Turn 3 of all 10 games
+
+This creates a **turn-wise entropy trend** that represents the LLM's reasoning diversity patterns across typical gameplay.
+
+### **4. Scientific Value of This Methodology**
+
+#### **Statistical Robustness**
+- **Reduces noise**: Single-game analysis can be misleading due to random factors
+- **Increases sample size**: Multiple episodes provide statistically significant data
+- **Captures consistency**: Shows whether reasoning patterns are reproducible across games
+
+#### **Strategic Insights**
+The entropy values represent:
+
+- **Turn-wise reasoning diversity** averaged across all games played
+- **Strategic adaptation patterns** showing if an LLM becomes more/less diverse over the course of typical gameplay
+- **Model comparison capability** since all models are evaluated on the same aggregation basis
+
+#### **Research Sophistication**
+This approach is **comprehensive** because it reveals whether LLMs have **consistent reasoning patterns at specific game phases** (early, mid, late game) across multiple game instances, rather than just looking at a single game which could be noisy or atypical.
+
+#### **Practical Applications**
+- **Model Development**: Identify which models show better strategic adaptation
+- **Training Insights**: Understand how reasoning diversity should evolve during gameplay
+- **Behavioral Analysis**: Quantify the "intelligence" and "adaptability" of reasoning beyond simple accuracy metrics
+- **Phase-Specific Analysis**: Understand optimal reasoning patterns for different game phases
+
 ## 🎯 Entropy Value Interpretation
 
 | Entropy Range | Meaning | Interpretation |
