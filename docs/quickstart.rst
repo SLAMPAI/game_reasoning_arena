@@ -8,7 +8,7 @@ Installation
 
 .. code-block:: bash
 
-   git clone https://github.com/lcipolina/game_reasoning_arena.git
+   git clone https://github.com/SLAMPAI/game_reasoning_arena.git
    cd game_reasoning_arena
    conda env create -f environment.yaml
    conda activate game_reasoning_arena

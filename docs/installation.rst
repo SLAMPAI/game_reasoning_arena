@@ -6,15 +6,10 @@ This guide covers how to install and set up Game Reasoning Arena for your resear
 Quick Installation
 ------------------
 
-Conda Installation (Recommended)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If you have conda installed, this is the fastest way to get started:
-
 .. code-block:: bash
 
    # Clone the repository
-   git clone https://github.com/lcipolina/game_reasoning_arena.git
+   git clone https://github.com/SLAMPAI/game_reasoning_arena.git
    cd game_reasoning_arena
 
    # Create and activate conda environment
@@ -24,24 +19,6 @@ If you have conda installed, this is the fastest way to get started:
    # Install the package in development mode
    pip install -e .
 
-Pip Installation
-~~~~~~~~~~~~~~~~
-
-If you prefer pip or don't have conda:
-
-.. code-block:: bash
-
-   # Clone the repository
-   git clone https://github.com/lcipolina/game_reasoning_arena.git
-   cd game_reasoning_arena
-
-   # Create virtual environment
-   python3 -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-   # Install dependencies
-   pip install -r requirements.txt
-   pip install -e .
 
 Development Installation
 ------------------------
