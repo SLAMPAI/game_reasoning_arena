@@ -13,8 +13,9 @@ Basic usage (uses defaults):
 
 With a config file:
     python3 scripts/run_multi_model_games.py --config path/to/config.yaml
+Example:
     python3 scripts/run_multi_model_games.py \
-      --config src/game_reasoning_arena/configs/multi_game_multi_model.yaml
+        --config src/game_reasoning_arena/configs/multi_game_multi_model.yaml
 
 With CLI overrides:
     python3 scripts/run_multi_model_games.py --override num_episodes=5
@@ -249,6 +250,12 @@ def main():
                 )
 
             # Add other overrides from base config
+            # Use config values instead of hardcoded ones
+            llm_config = config.get("llm_backend", {})
+            log_level = config.get("log_level", "INFO")
+            max_tokens = llm_config.get("max_tokens", 250)
+            temperature = llm_config.get("temperature", 0.1)
+
             command += (
                 f"--override agents.player_0.model={model} "
                 f"--override agents.player_0.type=llm "
@@ -257,9 +264,9 @@ def main():
                 f"--override mode=llm_vs_random "
                 f"--override seed=42 "
                 f"--override use_ray=false "
-                f"--override log_level=INFO "
-                f"--override llm_backend.max_tokens=250 "
-                f"--override llm_backend.temperature=0.1 "
+                f"--override log_level={log_level} "
+                f"--override llm_backend.max_tokens={max_tokens} "
+                f"--override llm_backend.temperature={temperature} "
                 f"--override llm_backend.default_model={model}"
             )
 

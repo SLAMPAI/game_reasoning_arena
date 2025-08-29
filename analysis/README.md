@@ -27,17 +27,71 @@ python3 analysis/run_full_analysis.py --help
 python3 analysis/run_full_analysis.py                    # Default settings
 python3 analysis/run_full_analysis.py --quiet            # Less verbose
 python3 analysis/run_full_analysis.py --plots-dir custom_plots  # Custom output
+
+# 🎯 NEW: Game-specific and Model-specific Analysis
+python3 analysis/run_full_analysis.py --game hex         # Analyze only HEX games
+python3 analysis/run_full_analysis.py --model llama3     # Analyze only Llama3 models
+python3 analysis/run_full_analysis.py --game hex --model llama3  # Combined filtering
+python3 analysis/run_full_analysis.py --game tic_tac_toe --quiet # Quiet HEX analysis
 ```
 
 These automated solutions will:
 1. 🔍 **Auto-discover** all SQLite databases in `results/`
 2. 🔄 **Merge databases** into consolidated CSV files
-3. 🧠 **Analyze reasoning patterns** using rule-based categorization
-4. 📊 **Generate visualizations** (plots, charts, heatmaps, word clouds)
-5. 📋 **Create summary reports** with pipeline statistics
-6. ⚡ **Handle errors gracefully** with detailed logging
+3. 🎯 **Apply filters** (optional) for specific games or models
+4. 🧠 **Analyze reasoning patterns** using rule-based categorization
+5. 📊 **Generate visualizations** (plots, charts, heatmaps, word clouds)
+6. 📋 **Create summary reports** with pipeline statistics
+7. ⚡ **Handle errors gracefully** with detailed logging
 
 **Output**: All results saved to `plots/` directory + detailed logs
+
+---
+
+## 🎯 Game-Specific and Model-Specific Analysis (NEW!)
+
+The analysis pipeline now supports filtering for specific games and models, allowing you to focus your analysis on particular scenarios.
+
+### Filter by Game
+```bash
+# Analyze only HEX games
+python3 analysis/run_full_analysis.py --game hex
+
+# Analyze only Tic-Tac-Toe games
+python3 analysis/run_full_analysis.py --game tic_tac_toe
+
+# Analyze only Connect Four games
+python3 analysis/run_full_analysis.py --game connect_four
+```
+
+### Filter by Model
+```bash
+# Analyze only Llama models (partial matching)
+python3 analysis/run_full_analysis.py --model llama
+
+# Analyze only GPT models
+python3 analysis/run_full_analysis.py --model gpt
+
+# Analyze specific model variant
+python3 analysis/run_full_analysis.py --model llama3-8b
+```
+
+### Combined Filtering
+```bash
+# Analyze HEX games played by Llama models only
+python3 analysis/run_full_analysis.py --game hex --model llama
+
+# Analyze Tic-Tac-Toe games with GPT models in quiet mode
+python3 analysis/run_full_analysis.py --game tic_tac_toe --model gpt --quiet
+```
+
+### Output Organization
+When filters are applied, plots are automatically organized in subdirectories:
+- `plots/game_hex/` - HEX-specific analysis
+- `plots/model_llama/` - Llama model-specific analysis
+- `plots/game_hex_model_llama/` - Combined filtering results
+
+This makes it easy to focus on specific research questions without processing all data.
 
 ---
 
@@ -183,11 +237,19 @@ The new automated pipeline replaces the manual multi-step process below. Instead
 ./run_analysis.sh                    # Interactive analysis with progress tracking
 ./run_analysis.sh --quiet            # Quiet mode
 ./run_analysis.sh --full             # Full analysis with all options
+
+# Note: For game/model filtering, use the Python pipeline:
+python3 analysis/run_full_analysis.py --game hex --model llama
 ```
 
 ### Python Pipeline
 ```bash
 python3 analysis/run_full_analysis.py [options]
+
+# New filtering options:
+python3 analysis/run_full_analysis.py --game hex      # HEX games only
+python3 analysis/run_full_analysis.py --model llama   # Llama models only
+python3 analysis/run_full_analysis.py --game hex --model llama  # Combined
 ```
 
 **What the automated pipeline does:**
@@ -336,18 +398,7 @@ The SQLite schema can be extended by modifying the logging functions in the main
 ## 📚 Dependencies
 
 Core requirements for the analysis module:
-```
-pandas>=1.3.0
-matplotlib>=3.3.0
-seaborn>=0.11.0
-wordcloud>=1.8.0
-transformers>=4.0.0
-numpy>=1.20.0
-sqlite3 (built-in)
-pathlib (built-in)
-```
 
-Install with:
 ```bash
 pip install pandas matplotlib seaborn wordcloud transformers numpy
 ```
@@ -368,12 +419,13 @@ pip install pandas matplotlib seaborn wordcloud transformers numpy
 ### Memory Issues with Large Datasets
 - Process data in chunks using pandas `chunksize` parameter
 - Filter data by game type or time period before analysis
+- **NEW:** Use `--game` and `--model` filters to analyze specific subsets
 - Use SQLite queries to pre-filter before loading into memory
 
-### Visualization Problems
-- Ensure output directories exist before running plotting functions
-- Check file permissions for output directories
-- Verify all required fonts are available for matplotlib
+### Focused Analysis
+- **NEW:** Use `--game hex` to analyze only HEX games for faster processing
+- **NEW:** Use `--model llama` to compare only Llama model variants
+- Combine filters: `--game hex --model llama` for targeted research questions
 
 ---
 

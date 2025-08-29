@@ -87,7 +87,9 @@ class AnalysisPipeline:
                  results_dir: str = "results",
                  plots_dir: str = "plots",
                  verbose: bool = True,
-                 skip_existing: bool = False):
+                 skip_existing: bool = False,
+                 game_filter: Optional[str] = None,
+                 model_filter: Optional[str] = None):
         """
         Initialize the analysis pipeline.
 
@@ -96,11 +98,15 @@ class AnalysisPipeline:
             plots_dir: Directory for output plots and visualizations
             verbose: Enable verbose logging
             skip_existing: Skip steps if output files already exist
+            game_filter: Filter analysis for specific game (e.g., 'hex')
+            model_filter: Filter analysis for specific model
         """
         self.results_dir = Path(results_dir)
         self.plots_dir = Path(plots_dir)
         self.verbose = verbose
         self.skip_existing = skip_existing
+        self.game_filter = game_filter
+        self.model_filter = model_filter
 
         # Setup logging
         log_level = logging.INFO if verbose else logging.WARNING
@@ -204,6 +210,53 @@ class AnalysisPipeline:
             self.log_step(step_name, "FAILED", str(e))
             return None
 
+    def _apply_filters(self, analyzer) -> bool:
+        """Apply game and model filters to the analyzer data."""
+        if not self.game_filter and not self.model_filter:
+            return True  # No filtering needed
+
+        original_size = len(analyzer.df)
+
+        # Apply game filter
+        if self.game_filter:
+            self.logger.info("Filtering for game: %s", self.game_filter)
+            analyzer.df = analyzer.df[
+                analyzer.df['game_name'] == self.game_filter
+            ]
+
+        # Apply model filter
+        if self.model_filter:
+            self.logger.info("Filtering for model: %s", self.model_filter)
+            # Model filter can match partial model names
+            analyzer.df = analyzer.df[
+                analyzer.df['agent_model'].str.contains(
+                    self.model_filter, case=False, na=False
+                )
+            ]
+
+        filtered_size = len(analyzer.df)
+        self.logger.info(
+            "Filtered data: %d -> %d records", original_size, filtered_size
+        )
+
+        if filtered_size == 0:
+            self.logger.error("No data remaining after filtering!")
+            return False
+
+        # Update plots directory to reflect filtering
+        if self.game_filter or self.model_filter:
+            filter_suffix = []
+            if self.game_filter:
+                filter_suffix.append(f"game_{self.game_filter}")
+            if self.model_filter:
+                filter_suffix.append(f"model_{self.model_filter}")
+
+            self.plots_dir = self.plots_dir / "_".join(filter_suffix)
+            self.plots_dir.mkdir(exist_ok=True)
+            self.logger.info("Plots will be saved to: %s", self.plots_dir)
+
+        return True
+
     def step_2_reasoning_analysis(self, merged_csv_path: str) -> bool:
         """Step 2: Run comprehensive reasoning analysis."""
         step_name = "Reasoning Analysis"
@@ -214,6 +267,10 @@ class AnalysisPipeline:
         try:
             # Initialize analyzer
             analyzer = LLMReasoningAnalyzer(merged_csv_path)
+
+            # Apply filters if specified
+            if not self._apply_filters(analyzer):
+                raise ValueError("No data remaining after filtering")
 
             # Categorize reasoning patterns
             self.logger.info("Categorizing reasoning patterns...")
@@ -529,6 +586,15 @@ Examples:
     python analysis/run_full_analysis.py --results-dir results \
         --plots-dir custom_plots
 
+    # Run analysis only for HEX game
+    python analysis/run_full_analysis.py --game hex
+
+    # Run analysis only for a specific model
+    python analysis/run_full_analysis.py --model llama3
+
+    # Run analysis for HEX game with specific model
+    python analysis/run_full_analysis.py --game hex --model llama3
+
     # Run in quiet mode
     python analysis/run_full_analysis.py --quiet
 
@@ -561,6 +627,16 @@ Examples:
         help="Skip analysis steps if output files already exist"
     )
 
+    parser.add_argument(
+        "--game",
+        help="Filter analysis for a specific game (e.g., hex, tic_tac_toe)"
+    )
+
+    parser.add_argument(
+        "--model",
+        help="Filter analysis for a specific model (e.g., llama3, gpt-4)"
+    )
+
     args = parser.parse_args()
 
     # Initialize and run pipeline
@@ -568,7 +644,9 @@ Examples:
         results_dir=args.results_dir,
         plots_dir=args.plots_dir,
         verbose=not args.quiet,
-        skip_existing=args.skip_existing
+        skip_existing=args.skip_existing,
+        game_filter=args.game,
+        model_filter=args.model
     )
 
     success = pipeline.run_full_pipeline()

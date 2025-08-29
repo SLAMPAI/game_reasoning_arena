@@ -1,20 +1,144 @@
 Analysis & Evaluation
 ====================
 
-Board Game Arena provides comprehensive tools for analyzing agent behavior and game outcomes.
+Board Game Arena provides comprehensive tools for analyzing agent behavior and game outcomes. The analysis pipeline supports both automated workflows and detailed manual analysis.
 
-Analysis Tools
---------------
+Quick Start: Automated Analysis Pipeline
+----------------------------------------
 
-Reasoning Traces Analysis
-~~~~~~~~~~~~~~~~~~~~~~~~~
+The easiest way to get started with analysis is using the automated pipeline:
 
-Board Game Arena includes reasoning traces functionality that captures LLM decision-making processes during gameplay. This provides deep insights into how LLMs think through game strategies.
+.. code-block:: bash
+
+   # Complete analysis with all games and models
+   python3 analysis/run_full_analysis.py
+
+   # Game-specific analysis
+   python3 analysis/run_full_analysis.py --game hex
+
+   # Model-specific analysis
+   python3 analysis/run_full_analysis.py --model llama3
+
+   # Combined filtering for targeted research
+   python3 analysis/run_full_analysis.py --game hex --model llama3
+
+   # Additional options
+   python3 analysis/run_full_analysis.py --quiet --plots-dir custom_plots
+
+**Pipeline Features:**
+* 🔍 **Auto-discovery** of SQLite databases in ``results/``
+* 🔄 **Automatic merging** of databases into consolidated CSV files
+* 🎯 **Smart filtering** by game type and/or model
+* 🧠 **Reasoning categorization** using rule-based classification
+* 📊 **Comprehensive visualizations** (plots, charts, heatmaps, word clouds)
+* 📁 **Organized output** in game/model-specific directories
+* ⚡ **Error handling** with detailed logging
+
+Focused Analysis
+-----------------------
+
+The analysis pipeline now supports filtering for specific games and models, enabling targeted research questions:
+
+Game-Specific Analysis
+~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+   # Focus on specific game strategies
+   python3 analysis/run_full_analysis.py --game hex         
+
+
+Model-Specific Analysis
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+   # Compare model families (partial string matching)
+   python3 analysis/run_full_analysis.py --model llama        # All Llama variants
+   python3 analysis/run_full_analysis.py --model gpt          # All GPT models
+   python3 analysis/run_full_analysis.py --model llama3-8b    # Specific model size
+
+Combined Filtering for Research Questions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+   # Answer specific research questions
+   python3 analysis/run_full_analysis.py --game hex --model llama3
+   # → "How does Llama3 approach HEX connection strategies?"
+
+   python3 analysis/run_full_analysis.py --game kuhn_poker --model gpt
+   # → "How do GPT models handle hidden information in poker?"
+
+**Output Organization:**
+
+When filters are applied, results are organized in subdirectories:
+
+* ``plots/game_hex/`` - HEX-specific analysis and visualizations
+* ``plots/model_llama/`` - Llama model family analysis
+* ``plots/game_hex_model_llama3/`` - Combined game+model filtering results
+
+**Benefits:**
+* ⚡ **Faster processing** by analyzing only relevant data
+* 🎯 **Research-focused** analysis for specific hypotheses
+* 💾 **Memory efficient** for large datasets
+* 📊 **Cleaner visualizations** with focused data
+
+Command-Line Options Reference
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``run_full_analysis.py`` script supports the following options:
+
+.. code-block:: bash
+
+   python3 analysis/run_full_analysis.py [OPTIONS]
+
+**Core Options:**
+
+* ``--game GAME`` - Filter analysis for specific game (e.g., ``hex``, ``tic_tac_toe``, ``connect_four``)
+* ``--model MODEL`` - Filter analysis for specific model (supports partial matching, e.g., ``llama3``, ``gpt``)
+* ``--results-dir DIR`` - Directory containing SQLite database files (default: ``results``)
+* ``--plots-dir DIR`` - Directory for output plots and visualizations (default: ``plots``)
+* ``--quiet`` - Run in quiet mode with minimal output
+* ``--skip-existing`` - Skip analysis steps if output files already exist
+
+**Example Commands:**
+
+.. code-block:: bash
+
+   # Get help
+   python3 analysis/run_full_analysis.py --help
+
+   # Basic usage
+   python3 analysis/run_full_analysis.py
+
+   # Game-specific analysis
+   python3 analysis/run_full_analysis.py --game hex
+
+   # Model-specific analysis
+   python3 analysis/run_full_analysis.py --model llama3
+
+   # Combined filtering
+   python3 analysis/run_full_analysis.py --game hex --model llama3
+
+   # Custom directories with quiet mode
+   python3 analysis/run_full_analysis.py --results-dir my_results --plots-dir my_plots --quiet
+
+   # Skip existing files for faster re-runs
+   python3 analysis/run_full_analysis.py --skip-existing
+
+Detailed Analysis Tools
+-----------------------
+
+Reasoning Traces Collection & Viewing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Board Game Arena automatically captures LLM decision-making processes during gameplay, providing deep insights into strategic thinking.
 
 .. note::
    For a comprehensive tutorial on reasoning traces analysis, see :doc:`reasoning_traces`.
 
-Quick Start with Reasoning Traces:
+**Automatic Collection:**
 
 .. code-block:: bash
 
@@ -25,8 +149,16 @@ Quick Start with Reasoning Traces:
      agents.player_0.model=litellm_groq/llama3-8b-8192 \
      num_episodes=5
 
-   # View the collected reasoning traces
+**Viewing Traces:**
+
+.. code-block:: bash
+
+   # View all reasoning traces
    python3 show_reasoning_traces.py
+
+   # Extract specific traces with filtering
+   python3 analysis/extract_reasoning_traces.py --game tic_tac_toe --episode 1
+   python3 analysis/extract_reasoning_traces.py --db results/llm_model.db --analyze-only
 
 **Example Reasoning Trace Output:**
 
@@ -79,7 +211,27 @@ Quick Start with Reasoning Traces:
 Reasoning Analysis Module
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Analyze the reasoning patterns of LLM agents using the reasoning analysis module:
+Analyze reasoning patterns using both automated pipeline and manual analysis:
+
+**Automated Analysis (Recommended):**
+
+.. code-block:: bash
+
+   # Complete reasoning analysis
+   python3 analysis/run_full_analysis.py
+
+   # 🎯 Game-specific reasoning analysis
+   python3 analysis/run_full_analysis.py --game hex
+   python3 analysis/run_full_analysis.py --game tic_tac_toe
+
+   # 🎯 Model-specific reasoning analysis
+   python3 analysis/run_full_analysis.py --model llama3
+   python3 analysis/run_full_analysis.py --model gpt
+
+   # 🎯 Combined filtering for focused research
+   python3 analysis/run_full_analysis.py --game hex --model llama3
+
+**Manual Analysis (Advanced):**
 
 .. code-block:: python
 
@@ -103,12 +255,20 @@ Analyze the reasoning patterns of LLM agents using the reasoning analysis module
    # Generate reasoning heatmaps
    analyzer.plot_heatmaps_by_agent(output_dir="plots/")
 
-Alternatively, run as a script:
+**Manual Filtering (for custom analysis):**
 
-.. code-block:: bash
+.. code-block:: python
 
-   cd analysis/
-   python reasoning_analysis.py
+   # Load and filter data manually
+   analyzer = LLMReasoningAnalyzer("merged_logs.csv")
+
+   # Filter for specific game
+   hex_data = analyzer.df[analyzer.df['game_name'] == 'hex']
+
+   # Filter for specific model (partial matching)
+   llama_data = analyzer.df[
+       analyzer.df['agent_model'].str.contains('llama3', case=False, na=False)
+   ]
 
 **Features:**
 * Categorizes reasoning types (strategic, tactical, random)
@@ -341,12 +501,66 @@ The analysis tools generate various plots and charts:
 * **Evolution Plots**: Enhanced single-panel stacked bar visualizations showing reasoning transitions
 * **Cross-Agent Comparisons**: Side-by-side performance and reasoning analysis
 
-Example Analysis Workflow
+Example Analysis Workflows
 --------------------------
+
+Complete Analysis Pipeline
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+   # Option 1: Automated complete analysis
+   python3 analysis/run_full_analysis.py --quiet
+
+   # Option 2: Focused analysis for specific research question
+   python3 analysis/run_full_analysis.py --game hex --model llama3 --plots-dir hex_llama_analysis
+
+**Automated pipeline handles:**
+* Database discovery and merging
+* Data filtering (if specified)
+* Reasoning categorization
+* All visualizations generation
+* Organized output structure
+
+Game-Specific Research Workflow
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+   # Research question: "How do different models approach HEX strategy?"
+
+   # Step 1: Collect HEX data with multiple models
+   python3 scripts/runner.py --config configs/multi_model_hex.yaml
+
+   # Step 2: Analyze HEX-specific patterns
+   python3 analysis/run_full_analysis.py --game hex
+
+   # Results in: plots/game_hex/
+   # - HEX-specific reasoning categories
+   # - HEX move pattern heatmaps
+   # - HEX strategy word clouds
+
+Model Comparison Workflow
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+   # Research question: "How does Llama3 reasoning differ from GPT models?"
+
+   # Step 1: Analyze Llama3 family
+   python3 analysis/run_full_analysis.py --model llama3 --plots-dir llama3_analysis
+
+   # Step 2: Analyze GPT family
+   python3 analysis/run_full_analysis.py --model gpt --plots-dir gpt_analysis
+
+   # Step 3: Compare results in respective directories
+
+Manual Advanced Analysis
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
-   # Complete analysis pipeline
+   # For custom research requiring manual control
    import sys
    sys.path.append('analysis/')
    from reasoning_analysis import LLMReasoningAnalyzer
@@ -354,18 +568,20 @@ Example Analysis Workflow
    # Initialize analyzer
    analyzer = LLMReasoningAnalyzer("run_logs/llm_experiments.csv")
 
-   # Step 1: Categorize all reasoning
+   # Step 1: Apply custom filtering
+   hex_data = analyzer.df[analyzer.df['game_name'] == 'hex']
+   llama_hex = hex_data[hex_data['agent_model'].str.contains('llama3')]
+
+   # Step 2: Categorize filtered reasoning
+   analyzer.df = llama_hex  # Apply filter
    analyzer.categorize_reasoning()
 
-   # Step 2: Generate summary metrics
-   game_summary = analyzer.summarize_games("results/game_summary.csv")
+   # Step 3: Generate targeted visualizations
+   analyzer.compute_metrics(plot_dir="custom_analysis/")
+   analyzer.plot_wordclouds_by_agent("custom_analysis/")
+   analyzer.plot_entropy_trendlines("custom_analysis/")
 
-   # Step 3: Create all visualizations
-   analyzer.compute_metrics(plot_dir="analysis_plots/")
-   analyzer.plot_wordclouds_by_agent("analysis_plots/")
-   analyzer.plot_entropy_trendlines("analysis_plots/")
-
-   # Step 4: Save processed data
-   analyzer.save_output("processed_analysis.csv")
+   # Step 4: Export results
+   analyzer.save_output("llama3_hex_analysis.csv")
 
 For detailed analysis examples, see the :doc:`examples` section.

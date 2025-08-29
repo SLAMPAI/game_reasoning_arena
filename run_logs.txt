@@ -1,20 +1,25 @@
-2025-08-17 21:57:15,919 - __main__ - INFO - {'env_config': {'game_name': 'matrix_pd', 'max_game_rounds': 10}, 'num_episodes': True, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct'}, 'log_level': 'INFO'}
-2025-08-17 21:57:15,921 - __main__ - INFO - Ray disabled - using sequential execution
-2025-08-17 21:57:15,921 - __main__ - INFO - Using sequential execution (Ray disabled)
-2025-08-17 21:57:15,924 - simulate - INFO - Initializing environment for matrix_pd.
-2025-08-17 21:57:15,925 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for matrix_pd
-2025-08-17 21:57:15,925 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct)
-2025-08-17 21:57:15,925 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
-2025-08-17 21:57:15,931 - simulate - INFO - Episode 1 started with seed 42.
-2025-08-17 21:57:15,940 - LiteLLM - INFO - 
-LiteLLM completion() model= accounts/fireworks/models/kimi-k2-instruct; provider = fireworks_ai
-2025-08-17 21:57:20,491 - httpx - INFO - HTTP Request: POST https://api.fireworks.ai/inference/v1/chat/completions "HTTP/1.1 200 OK"
-2025-08-17 21:57:20,493 - LiteLLM - INFO - Wrapper: Completed Call, calling success_handler
-2025-08-17 21:57:20,499 - simulate - INFO - Board state: 
-Matrix game - Player 0
-2025-08-17 21:57:20,499 - simulate - INFO - Legal actions: [0, 1]
-2025-08-17 21:57:20,499 - simulate - INFO - Agent 0 (litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct) chose action: 1 with reasoning: This is a one-shot Prisoner's Dilemma. In the absence of any history, reputation effects, or future interactions, the strictly dominant strategy for a self-interested player is to Defect, because it yields a higher payoff regardless of what the opponent does. Cooperating risks the sucker's payoff if the opponent defects, while Defecting guarantees at least the same payoff and possibly a better one.
-2025-08-17 21:57:20,501 - simulate - INFO - Game status: terminated with rewards dict: {0: 10.0, 1: 0.0}
-2025-08-17 21:57:20,509 - simulate - INFO - Simulation for game matrix_pd, Episode 1 completed.
-2025-08-17 21:57:20,510 - __main__ - INFO - Sequential simulation results for matrix_pd completed
-2025-08-17 21:57:20,510 - __main__ - INFO - All simulations completed. Total results: 1
+2025-08-29 18:45:44,042 - LiteLLM - ERROR - Error occurred in getting api base - LLM Provider NOT provided. Pass in the LLM provider you are trying to call. You passed model=accounts/fireworks/models/kimi-k2-instruct
+ Pass model as E.g. For 'Huggingface' inference endpoints pass in `completion(model='huggingface/starcoder',..)` Learn more: https://docs.litellm.ai/docs/providers
+2025-08-29 18:45:44,052 - root - ERROR - Error with model litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct for player 0: LiteLLM inference failed for fireworks_ai/accounts/fireworks/models/kimi-k2-instruct: Fireworks_aiException - Error code: 429 - {'error': 'request rate limit exceeded'} 
+Model: accounts/fireworks/models/kimi-k2-instruct
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-29 18:45:47,306 - LiteLLM - ERROR - Error occurred in getting api base - LLM Provider NOT provided. Pass in the LLM provider you are trying to call. You passed model=accounts/fireworks/models/kimi-k2-instruct
+ Pass model as E.g. For 'Huggingface' inference endpoints pass in `completion(model='huggingface/starcoder',..)` Learn more: https://docs.litellm.ai/docs/providers
+2025-08-29 18:45:47,308 - root - ERROR - Error with model litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct for player 0: LiteLLM inference failed for fireworks_ai/accounts/fireworks/models/kimi-k2-instruct: Fireworks_aiException - Error code: 429 - {'error': 'request rate limit exceeded'} 
+Model: accounts/fireworks/models/kimi-k2-instruct
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-29 18:45:50,407 - LiteLLM - ERROR - Error occurred in getting api base - LLM Provider NOT provided. Pass in the LLM provider you are trying to call. You passed model=accounts/fireworks/models/kimi-k2-instruct
+ Pass model as E.g. For 'Huggingface' inference endpoints pass in `completion(model='huggingface/starcoder',..)` Learn more: https://docs.litellm.ai/docs/providers
+2025-08-29 18:45:50,408 - root - ERROR - Error with model litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct for player 0: LiteLLM inference failed for fireworks_ai/accounts/fireworks/models/kimi-k2-instruct: Fireworks_aiException - Error code: 429 - {'error': 'request rate limit exceeded'} 
+Model: accounts/fireworks/models/kimi-k2-instruct
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-29 18:45:57,155 - LiteLLM - ERROR - Error occurred in getting api base - LLM Provider NOT provided. Pass in the LLM provider you are trying to call. You passed model=accounts/fireworks/models/kimi-k2-instruct
+ Pass model as E.g. For 'Huggingface' inference endpoints pass in `completion(model='huggingface/starcoder',..)` Learn more: https://docs.litellm.ai/docs/providers
+2025-08-29 18:45:57,156 - root - ERROR - Error with model litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct for player 0: LiteLLM inference failed for fireworks_ai/accounts/fireworks/models/kimi-k2-instruct: Fireworks_aiException - Error code: 429 - {'error': 'request rate limit exceeded'} 
+Model: accounts/fireworks/models/kimi-k2-instruct
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-29 18:46:00,222 - LiteLLM - ERROR - Error occurred in getting api base - LLM Provider NOT provided. Pass in the LLM provider you are trying to call. You passed model=accounts/fireworks/models/kimi-k2-instruct
+ Pass model as E.g. For 'Huggingface' inference endpoints pass in `completion(model='huggingface/starcoder',..)` Learn more: https://docs.litellm.ai/docs/providers
+2025-08-29 18:46:00,222 - root - ERROR - Error with model litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct for player 0: LiteLLM inference failed for fireworks_ai/accounts/fireworks/models/kimi-k2-instruct: Fireworks_aiException - Error code: 429 - {'error': 'request rate limit exceeded'} 
+Model: accounts/fireworks/models/kimi-k2-instruct
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe

@@ -17,7 +17,7 @@ models:
   - litellm_groq/llama3-8b-8192
   - litellm_groq/llama3-70b-8192
   - litellm_groq/gemma2-9b-it
-  - litellm_groq/qwen3-32b
+  # Note: Qwen and Kimi models also available via Fireworks AI below
 
   # Together AI models
   # https://docs.litellm.ai/docs/providers/togetherai

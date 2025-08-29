@@ -89,31 +89,42 @@ python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_ran
 ___
 ### Game Examples
 ```bash
-# Play against the LLM in the terminal!
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml --override env_config.game_name=connect_four
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml --override env_config.game_name=kuhn_poker
+# Play against a random agent in the terminal (minimal output)
+python3 scripts/runner.py \
+  --override env_config.game_name=connect_four \
+  --override agents.player_0.type=human \
+  --override agents.player_1.type=random \
+  --override log_level=WARNING
+
+# Play against an LLM agent in the terminal
+python3 scripts/runner.py \
+  --override env_config.game_name=tic_tac_toe \
+  --override agents.player_0.type=human \
+  --override agents.player_1.type=llm \
+  --override agents.player_1.model=litellm_groq/llama3-8b-8192
 
 # LLM vs Random in a multi-episode tournament
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml --override \
-  agents.player_0.type=llm \
-  agents.player_0.model=litellm_groq/llama3-8b-8192 \
-  num_episodes=10
+python3 scripts/runner.py
+  --override env_config.game_name=tic_tac_toe
+  --override agents.player_0.type=llm
+  --override agents.player_0.model=litellm_groq/llama3-8b-8192
+  --override agents.player_1.type=random
+  --override num_episodes=10
 
-# LLM vs LLM with mixed backends (liteLLM vs vLLM)
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml --override \
-mode=llm_vs_llm \
-agents.player_0.model=litellm_groq/llama3-8b-8192 \
-agents.player_1.model=vllm_Qwen2-7B-Instruct
+# LLM vs LLM with mixed backends
+python3 scripts/runner.py
+  --override env_config.game_name=connect_four
+  --override mode=llm_vs_llm
+  --override agents.player_0.type=llm
+  --override agents.player_0.model=litellm_groq/llama3-8b-8192
+  --override agents.player_1.type=llm
+  --override agents.player_1.model=vllm_Qwen2-7B-Instruct
 ```
+
+**Log Levels:** Add `--override log_level=WARNING` for minimal output, or use `DEBUG`, `INFO` (default), `ERROR`, `CRITICAL`
 
 #### Game-Specific Examples
 ```bash
-# Tic-Tac-Toe: Quick strategy game
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/simple_tic_tac_toe.yaml --override \
-  env_config.game_name=tic_tac_toe \
-  agents.player_0.type=llm \
-  agents.player_0.model=litellm_groq/llama3-8b-8192 \
-  num_episodes=5
 
 # Connect Four: Longer strategic game
 python3 scripts/runner.py --config src/game_reasoning_arena/configs/hybrid_config.yaml --override \
@@ -279,6 +290,9 @@ python3 scripts/runner.py --config <config_file> [--override key=value ...]
 
 # Verify available games
 python3 -c "from src.game_reasoning_arena.arena.games.registry import registry; print('Available games:', list(registry._registry.keys()))"
+
+# Run focused analysis on specific games or models
+python3 analysis/run_full_analysis.py --game hex --model llama3
 ```
 
 ### Configuration Files
@@ -533,8 +547,37 @@ python3 show_reasoning_traces.py
 >
 > # Or use Python directly
 > python3 analysis/quick_analysis.py
+>
+> # 🎯 Game-specific and Model-specific Analysis
+> python3 analysis/run_full_analysis.py --game hex         # Analyze only HEX games
+> python3 analysis/run_full_analysis.py --model llama3     # Analyze only Llama3 models
+> python3 analysis/run_full_analysis.py --game hex --model llama3  # Combined filtering
 > ```
-> See [ANALYSIS_AUTOMATION.md](ANALYSIS_AUTOMATION.md) for details.
+> See [analysis/README.md](analysis/README.md) for detailed documentation.
+
+### 🎯 Focused Analysis
+
+The analysis pipeline now supports filtering for specific games and models, enabling targeted research:
+
+```bash
+# Game-specific analysis
+python3 analysis/run_full_analysis.py --game hex           # Focus on HEX strategy analysis
+python3 analysis/run_full_analysis.py --game tic_tac_toe   # Focus on Tic-Tac-Toe patterns
+python3 analysis/run_full_analysis.py --game connect_four  # Focus on Connect Four strategies
+
+# Model-specific analysis
+python3 analysis/run_full_analysis.py --model llama        # Compare all Llama variants
+python3 analysis/run_full_analysis.py --model gpt          # Compare all GPT models
+
+# Combined filtering for targeted research questions
+python3 analysis/run_full_analysis.py --game hex --model llama3  # "How does Llama3 approach HEX?"
+```
+
+**Benefits:**
+- ⚡ **Faster processing** by analyzing only relevant data
+- 📁 **Organized output** in game/model-specific directories (`plots/game_hex/`, `plots/model_llama/`)
+- 🎯 **Research-focused** analysis for specific questions
+- 💾 **Memory efficient** for large datasets
 
 #### 1. Extract Specific Traces
 ```bash

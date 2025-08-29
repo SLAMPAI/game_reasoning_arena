@@ -1,19 +1,22 @@
 # Config for running multiple games with multiple LLM models
+# Example command to run:
+# python3 scripts/runner.py --config src/game_reasoning_arena/configs/multi_game_multi_model.yaml
+
 
 # Use env_configs (plural) for multiple games as a list
 env_configs:
-  - game_name: kuhn_poker
-    max_game_rounds: null
-  - game_name: connect_four
-    max_game_rounds: null
-  # - game_name: hex  # not yet tested
+  # - game_name: kuhn_poker
   #   max_game_rounds: null
-  - game_name: tic_tac_toe
-    max_game_rounds: null
-  - game_name: matrix_rps
-    max_game_rounds: 10
-  - game_name: matrix_pd
-    max_game_rounds: 10
+  # - game_name: connect_four
+  #   max_game_rounds: null
+  # - game_name: tic_tac_toe
+  #   max_game_rounds: null
+  # - game_name: matrix_rps
+  #   max_game_rounds: 10
+  # - game_name: matrix_pd
+  #   max_game_rounds: 10
+  # - game_name: hex  #  takes too much time, run standalone
+  #  max_game_rounds: 50      # Limit HEX games to prevent infinite loops
 
 num_episodes: 1
 seed: 42
@@ -22,10 +25,9 @@ mode: llm_vs_random
 
 # To run all models, override agents.player_0.model in your script or loop over these models externally
 models:
-  - litellm_groq/llama3-8b-8192
-  - litellm_groq/llama3-70b-8192
-  - litellm_groq/gemma2-9b-it
-  - litellm_groq/qwen3-32b
+  - litellm_groq/llama3-8b-8192      # Fast, good performance
+  - litellm_groq/gemma2-9b-it        # Fast, reliable
+  # - litellm_groq/llama3-70b-8192   # SLOW - commented out for HEX
 #  - litellm_gpt-3.5-turbo
   - litellm_gpt-4
 #  - litellm_gpt-4-turbo
@@ -51,8 +53,8 @@ agents:
     type: random
 
 llm_backend:
-  max_tokens: 250
+  max_tokens: 150           # Reduced for faster responses
   temperature: 0.1
   default_model: litellm_groq/llama3-8b-8192
 
-log_level: INFO
+log_level: WARNING          # Reduced logging for speed

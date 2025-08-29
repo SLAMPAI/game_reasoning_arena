@@ -2,10 +2,18 @@
 LiteLLM backend for API-based inference.
 """
 
+import logging
 import os
+from typing import Any, Dict, Optional
+
 import litellm
-from typing import Any, Optional, Dict
+
 from .base_backend import BaseLLMBackend
+
+# Suppress LiteLLM verbose logging
+litellm.set_verbose = False
+logging.getLogger("LiteLLM").setLevel(logging.WARNING)
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 
 class LiteLLMBackend(BaseLLMBackend):

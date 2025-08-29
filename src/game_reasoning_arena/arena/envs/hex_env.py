@@ -20,7 +20,7 @@ class HexEnv(OpenSpielEnv):
         Args:
             game: The OpenSpiel game object.
             game_name: A string representing the name of the game.
-            player_types: A dictionary mapping player IDs to their types 
+            player_types: A dictionary mapping player IDs to their types
             (e.g., human, random).
             max_game_rounds: Maximum number of rounds
                              for iterated games (optional, default is None).
@@ -48,7 +48,9 @@ class HexEnv(OpenSpielEnv):
             str: Legal action numbers and a flattened board index layout.
         """
         legal = self.state.legal_actions(agent_id)
-        size = self.game.board_size  # Usually 11
+        # Get board size from observation tensor shape
+        obs_shape = self.game.observation_tensor_shape()
+        size = obs_shape[-1]  # Usually 11
 
         # Create a flat index grid (diagonal shape)
         grid = []
@@ -75,7 +77,9 @@ class HexEnv(OpenSpielEnv):
         raw = self.state.observation_string(agent_id)
         symbols = [char for char in raw if char in ("y", "o", ".")]
 
-        size = self.game.board_size  # typically 11
+        # Get board size from observation tensor shape
+        obs_shape = self.game.observation_tensor_shape()
+        size = obs_shape[-1]  # typically 11
         rows = []
         idx = 0
         for row in range(size):
