@@ -4,7 +4,7 @@ License
 Copyright Notice
 ----------------
    .. Copyright (c) 2025 Lucia Cipolina-Kun, Marianna Nezhurina,
-   and Jenia Jitsev
+   .. and Jenia Jitsev
 
 License Terms
 -------------

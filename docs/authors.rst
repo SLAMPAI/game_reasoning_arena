@@ -6,7 +6,7 @@ Names are ordered lexicographically.
 Game ReasoningArena Contributors
 --------------------------------
 
-- Lucia Cipolina-Kun
+.. - Lucia Cipolina-Kun
 
 Funding and Support
 -------------------
