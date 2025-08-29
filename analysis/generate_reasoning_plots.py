@@ -57,6 +57,10 @@ def clean_model_name(model_name: str) -> str:
     # Remove leading "llm_" prefix if present (common in database)
     if model_name.startswith("llm_"):
         model_name = model_name[4:]
+    
+    # Remove leading "human_" prefix if present (filtered out already)
+    if model_name.startswith("human_"):
+        model_name = model_name[6:]
 
     # GPT models - keep the GPT part
     if "gpt" in model_name.lower():

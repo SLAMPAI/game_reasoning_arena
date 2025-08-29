@@ -165,12 +165,16 @@ class AnalysisPipeline:
                 )
 
             db_files = list(self.results_dir.glob("*.db"))
+            # Filter out human player databases
+            db_files = [db for db in db_files
+                        if not db.stem.startswith("human")]
             if not db_files:
                 raise FileNotFoundError(
                     f"No .db files found in {self.results_dir}"
                 )
 
-            self.logger.info("Found %d database files to merge", len(db_files))
+            self.logger.info("Found %d database files to merge "
+                             "(excluding human player data)", len(db_files))
 
             # Merge databases
             merged_df = merge_sqlite_logs(str(self.results_dir))
@@ -439,8 +443,11 @@ class AnalysisPipeline:
         self.logger.info(f"{'='*60}")
 
         try:
-            # Find the latest database file
+            # Find the latest database file (excluding human player data)
             db_files = list(self.results_dir.glob("*.db"))
+            # Filter out human player databases
+            db_files = [db for db in db_files
+                        if not db.stem.startswith("human")]
             if not db_files:
                 self.logger.warning(
                     "No database files found for trace extraction")

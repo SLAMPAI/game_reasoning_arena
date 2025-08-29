@@ -20,14 +20,16 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 def list_available_databases():
     """List all available database files in the results directory"""
-    # Use absolute path to scripts/results directory
+    # Use absolute path to results directory
     project_root = Path(__file__).resolve().parent.parent
-    results_dir = project_root / "scripts" / "results"
+    results_dir = project_root / "results"
     if not results_dir.exists():
         print("No results directory found.")
         return []
 
     db_files = list(results_dir.glob("*.db"))
+    # Filter out human player databases
+    db_files = [db for db in db_files if not db.stem.startswith("human")]
     return db_files
 
 
