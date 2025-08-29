@@ -9,7 +9,8 @@ sys.path.insert(0, os.path.abspath('../src'))
 # -- Project information -----------------------------------------------------
 project = 'Game Reasoning Arena'
 copyright = '2025, Game Reasoning Arena Team'  # noqa: A001
-author = 'Lucia Cipolina-Kun'
+# author = 'Lucia Cipolina-Kun'  # Commented out for blind submission
+author = 'Anonymous'  # Placeholder for blind submission
 release = '1.0.0'
 
 # -- General configuration ---------------------------------------------------
