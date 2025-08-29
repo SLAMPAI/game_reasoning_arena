@@ -22,37 +22,87 @@ Where:
 
 ## 🔬 Entropy Methodology Calculation
 
-### **Data Aggregation Across Multiple Episodes**
+The entropy calculation in this system operates at **three distinct levels**, each providing different insights:
 
-The entropy calculation in this system **aggregates data across ALL games played by each LLM model**, not just a single game instance. Here's the detailed methodology:
+### **Level 1: Per Model, Per Game, Across Episodes (Turn-wise)**
 
-#### **1. Multi-Episode Data Structure**
-Each LLM model plays multiple episodes (games) of each game type. The entropy calculation groups data by:
-- **Agent Name**: The specific LLM model (e.g., `llama3-8b`, `gpt-4`)
-- **Game Type**: The specific game (e.g., `tic_tac_toe`, `connect_four`)
-- **Turn Position**: The turn number within each game (Turn 1, Turn 2, Turn 3, etc.)
+**What it calculates:** `entropy_trend_[agent]_[game].png`
 
-#### **2. Turn-Wise Aggregation Process**
 ```python
-# Conceptual representation of the calculation
-for each LLM model and game type:
-    Turn 1: [reasoning_types from ALL Episode 1 moves] → Calculate H₁
-    Turn 2: [reasoning_types from ALL Episode 2 moves] → Calculate H₂
-    Turn 3: [reasoning_types from ALL Episode 3 moves] → Calculate H₃
-    # Continue for all turns...
+# Groups by: (agent_name, game_name), then by turn
+for (agent, game), df_group in self.df.groupby(["agent_name", "game_name"]):
+    entropy_by_turn = df_group.groupby("turn")["reasoning_type"]
 ```
 
-#### **3. Cross-Episode Entropy Calculation**
-For each turn position, the entropy is calculated from the **combined reasoning types across all episodes**:
+**Aggregation:**
+- **Scope**: One specific model (e.g., GPT-4) playing one specific game (e.g., Tic-Tac-Toe)
+- **Across**: All episodes of that game played by that model
+- **Grouping**: By turn position (Turn 1, Turn 2, Turn 3, etc.)
 
-**Example**: If an LLM played 10 episodes of Tic-Tac-Toe:
-- **Turn 1 Entropy**: Uses reasoning types from Turn 1 of all 10 games
-- **Turn 2 Entropy**: Uses reasoning types from Turn 2 of all 10 games
-- **Turn 3 Entropy**: Uses reasoning types from Turn 3 of all 10 games
+**Example**: GPT-4 played 10 episodes of Tic-Tac-Toe:
+- **Turn 1 Entropy**: Reasoning types from Turn 1 across all 10 episodes → Calculate H₁
+- **Turn 2 Entropy**: Reasoning types from Turn 2 across all 10 episodes → Calculate H₂
+- **Turn 3 Entropy**: Reasoning types from Turn 3 across all 10 episodes → Calculate H₃
 
-This creates a **turn-wise entropy trend** that represents the LLM's reasoning diversity patterns across typical gameplay.
+**Purpose**: Shows how one specific model's reasoning diversity evolves during a specific game type.
 
-### **4. Scientific Value of This Methodology**
+### **Level 2: Across All Models, Per Game, Across Episodes (Turn-wise)**
+
+**What it calculates:** `entropy_by_turn_all_agents_[game].png`
+
+```python
+# Groups by: game_name, then by agent_name, then by turn
+for game, df_game in self.df.groupby("game_name"):
+    for agent, df_agent in df_game.groupby("agent_name"):
+        entropy_by_turn = df_agent.groupby("turn")["reasoning_type"]
+```
+
+**Aggregation:**
+- **Scope**: All models playing one specific game (e.g., Tic-Tac-Toe)
+- **Across**: All episodes of that game played by each model
+- **Grouping**: By turn position for each model separately, then plotted together
+
+**Purpose**: Compare how different models adapt their reasoning during the same game type.
+
+### **Level 3: Across All Models, Across All Games (Turn-wise)**
+
+**What it calculates:** `avg_entropy_all_games.png`
+
+```python
+# Groups by: turn only (all agents, all games combined)
+df_all = self.df[~self.df['agent_name'].str.startswith("random")]
+avg_entropy = df_all.groupby("turn")["reasoning_type"]
+```
+
+**Aggregation:**
+- **Scope**: ALL models playing ALL games
+- **Across**: Every episode, every game, every model
+- **Grouping**: By turn position only (mega-pool of all reasoning types)
+
+**Example**:
+- **Turn 1**: Combines reasoning types from Turn 1 of ALL episodes of ALL games from ALL models
+- **Turn 2**: Combines reasoning types from Turn 2 of ALL episodes of ALL games from ALL models
+
+**Purpose**: Shows global reasoning diversity trends across the entire dataset.
+
+### **4. Key Insights from Multi-Level Analysis**
+
+#### **Level 1 Insights: Individual Model Behavior**
+- **Model-specific adaptation patterns**: Does GPT-4 start broad and focus? Does Llama stay consistent?
+- **Game-specific strategies**: How does the same model behave differently in Chess vs. Tic-Tac-Toe?
+- **Learning curves**: Does the model's reasoning evolve predictably within game types?
+
+#### **Level 2 Insights: Model Comparisons**
+- **Relative adaptability**: Which models show more strategic flexibility during the same game?
+- **Convergent vs. divergent behavior**: Do all models follow similar reasoning patterns or are they distinct?
+- **Performance correlation**: Do models with better entropy patterns also win more games?
+
+#### **Level 3 Insights: Global Patterns**
+- **Universal reasoning trends**: Are there fundamental patterns of how AI reasoning should evolve during gameplay?
+- **Cross-game consistency**: Do optimal reasoning patterns transfer across different game types?
+- **Aggregate intelligence**: What does the "collective AI reasoning landscape" look like?
+
+### **5. Scientific Value of This Multi-Level Methodology**
 
 #### **Statistical Robustness**
 - **Reduces noise**: Single-game analysis can be misleading due to random factors
