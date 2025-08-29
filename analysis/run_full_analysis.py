@@ -41,6 +41,30 @@ import sys
 import time
 from pathlib import Path
 from typing import Optional
+import numpy as np
+
+
+def json_serializable(obj):
+    """Convert numpy types to Python native types for JSON serialization."""
+    if isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, dict):
+        # Convert both keys and values
+        return {
+            json_serializable(k): json_serializable(v)
+            for k, v in obj.items()
+        }
+    elif isinstance(obj, list):
+        return [json_serializable(v) for v in obj]
+    elif isinstance(obj, tuple):
+        return tuple(json_serializable(v) for v in obj)
+    else:
+        return obj
+
 
 # Add the parent directory to sys.path to import analysis modules
 sys.path.append(str(Path(__file__).parent))
@@ -195,13 +219,17 @@ class AnalysisPipeline:
             self.logger.info("Categorizing reasoning patterns...")
             analyzer.categorize_reasoning()
 
+            # Save the categorized data back to CSV for future use
+            self.logger.info("Saving categorized data back to CSV...")
+            analyzer.df.to_csv(merged_csv_path, index=False)
+
             # Generate metrics and plots
             self.logger.info(
                 "Computing metrics and generating visualizations...")
             analyzer.compute_metrics(plot_dir=str(self.plots_dir))
 
             # Generate additional visualizations (if enabled)
-            # HEATMAPS DISABLED 
+            # HEATMAPS DISABLED
             # try:
             #     self.logger.info("Generating heatmaps...")
             #     analyzer.plot_heatmaps_by_agent(output_dir=str(self.plots_dir))
@@ -284,11 +312,10 @@ class AnalysisPipeline:
             self.logger.info("Analyzing reasoning evolution patterns...")
             evolution_patterns = plotter.analyze_reasoning_evolution_patterns()
             # Save evolution pattern summary
-            import json
             evolution_summary_path = (
                 self.plots_dir / "reasoning_evolution_patterns.json")
-            with open(evolution_summary_path, "w") as f:
-                json.dump(evolution_patterns, f, indent=2)
+            with open(evolution_summary_path, "w", encoding='utf-8') as f:
+                json.dump(json_serializable(evolution_patterns), f, indent=2)
 
             # Optionally, describe evolution pattern for first model/game
             try:
@@ -431,7 +458,7 @@ class AnalysisPipeline:
 
         # Save detailed report
         with open(report_path, 'w') as f:
-            json.dump(self.pipeline_results, f, indent=2)
+            json.dump(json_serializable(self.pipeline_results), f, indent=2)
 
         self.logger.info("\n" + "="*60)
         self.logger.info("ANALYSIS PIPELINE SUMMARY")

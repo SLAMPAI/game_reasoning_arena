@@ -277,6 +277,19 @@ plotter.generate_model_plots('plots/')
 - `pie_reasoning_type_<model>_<game>.png` - Reasoning category distributions
 - `heatmap_<model>_<game>.png` - Move position preferences
 - `reasoning_bar_chart_<model>.png` - Model-specific reasoning breakdowns
+- `entropy_by_turn_all_agents_<game>.png` - Reasoning diversity over time
+- `reasoning_evolution_<model>_<game>.png` - How reasoning patterns change during games
+
+### ⚠️ Important Note: Short Game Limitations
+
+**Short games** (like Kuhn Poker, Matching Pennies, and Prisoner's Dilemma) may have limited or empty entropy/evolution visualizations due to:
+
+- **Few turns per game**: Games lasting only 1-2 turns provide insufficient data for meaningful entropy calculations
+- **Limited reasoning diversity**: With only 1-2 reasoning entries per agent per turn, entropy values are often zero
+- **No evolution patterns**: Reasoning evolution requires multiple turns to show meaningful progression
+- **Sparse data**: Individual agents may have too few data points for statistical analysis
+
+**Recommendation**: Focus on **longer games** (Tic-Tac-Toe, Connect Four) for entropy and evolution analysis. Short games are better suited for reasoning category distribution analysis (pie charts, bar charts).
 
 ## 🧪 Research Applications
 
@@ -345,6 +358,12 @@ pip install pandas matplotlib seaborn wordcloud transformers numpy
 - Ensure games were run with LLM agents (not just random agents)
 - Check that database files exist in `results/` directory
 - Verify model configuration was correct during game runs
+
+### Empty or Missing Entropy/Evolution Plots
+- **Short games** (Kuhn Poker, Matching Pennies, Prisoner's Dilemma) naturally produce sparse entropy data
+- Games with only 1-2 turns cannot show meaningful reasoning evolution
+- Consider focusing analysis on longer games (Tic-Tac-Toe, Connect Four) for temporal analysis
+- Use reasoning category distribution plots (pie/bar charts) for short games instead
 
 ### Memory Issues with Large Datasets
 - Process data in chunks using pandas `chunksize` parameter
