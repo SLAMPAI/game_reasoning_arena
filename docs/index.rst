@@ -81,5 +81,4 @@ Available Games
    :caption: Extra Information
    :maxdepth: 2
 
-   changelog
 .. license  # Commented out for blind conference submission
