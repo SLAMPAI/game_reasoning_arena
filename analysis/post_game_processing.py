@@ -39,7 +39,7 @@ def merge_sqlite_logs(log_dir: str = "results/") -> pd.DataFrame:
 
         # Extract agent name from the SQLite file name
         agent_name = db_file.stem
-        
+
         # Skip human player data files
         if agent_name.startswith("human"):
             print(f"Skipping human player data: {db_file.name}")
@@ -118,7 +118,7 @@ def merge_sqlite_logs(log_dir: str = "results/") -> pd.DataFrame:
             if col not in ["game_name", "agent_name"]
         ]
         df_full = df_full[column_order]
-        
+
         # Save to CSV with timestamp
         log_path = Path(log_dir)
         timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')

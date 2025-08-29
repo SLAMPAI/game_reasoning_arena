@@ -38,7 +38,7 @@ def clean_model_name(model_name: str) -> str:
     # Remove leading "llm_" prefix if present (common in database)
     if model_name.startswith("llm_"):
         model_name = model_name[4:]
-    
+
     # Remove leading "human_" prefix if present (filtered out already)
     if model_name.startswith("human_"):
         model_name = model_name[6:]
@@ -645,7 +645,16 @@ class LLMReasoningAnalyzer:
         """
         Path(output_dir).mkdir(parents=True, exist_ok=True)
         for game, df_game in self.df.groupby("game_name"):
-            plt.figure(figsize=(10, 6))
+            # Count the number of agents to determine figure height
+            agents = [agent for agent in df_game["agent_name"].unique()
+                      if not agent.startswith("random")]
+            agent_count = len(agents)
+
+            # Adjust figure size based on number of agents
+            # Base height of 8, plus significant extra space for legend
+            height = max(10, 8 + (agent_count * 0.5))
+            plt.figure(figsize=(14, height))
+
             for agent, df_agent in df_game.groupby("agent_name"):
                 if agent.startswith("random"):
                     continue
@@ -663,14 +672,22 @@ class LLMReasoningAnalyzer:
             )
             plt.xlabel("Turn")
             plt.ylabel("Entropy")
-            plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.1), ncol=3)
+
+            # Improve legend layout based on number of agents
+            ncol = min(4, max(2, agent_count // 3))  # More columns
+            plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.12),
+                       ncol=ncol, fontsize=9)
             plt.grid(True)
-            plt.tight_layout()
-            plt.subplots_adjust(bottom=0.2)
+
+            # Adjust layout with much more aggressive bottom margin
+            bottom_margin = 0.25 + (agent_count * 0.025)  # Much more space
+            plt.subplots_adjust(bottom=bottom_margin)
+
             out_path = os.path.join(
                 output_dir, f"entropy_by_turn_all_agents_{game}.png"
             )
-            plt.savefig(out_path)
+            # Use bbox_inches='tight' to ensure legend is included
+            plt.savefig(out_path, bbox_inches='tight', dpi=300)
             plt.close()
 
     def plot_avg_entropy_across_games(self, output_dir: str = "plots") -> None:
@@ -697,7 +714,7 @@ class LLMReasoningAnalyzer:
         plt.grid(True)
         plt.tight_layout()
         out_path = os.path.join(output_dir, "avg_entropy_all_games.png")
-        plt.savefig(out_path)
+        plt.savefig(out_path, bbox_inches='tight', dpi=300)
         plt.close()
 
     def save_output(self, path: str) -> None:
