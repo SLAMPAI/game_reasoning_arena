@@ -21,26 +21,25 @@ Learn the basics by running a simple Connect Four experiment.
 .. code-block:: yaml
 
    # tutorial_1.yaml
-   game:
-     name: "connect_four"
-     num_episodes: 10
+   env_config:
+     game_name: "connect_four"
+
+   num_episodes: 10
 
    agents:
-     - type: "llm"
-       model: "gpt-3.5-turbo"
-       name: "GPT_Player"
-     - type: "random"
-       name: "Random_Player"
+     player_0:
+       type: "llm"
+       model: "litellm_openai/gpt-3.5-turbo"
+     player_1:
+       type: "random"
 
-   logging:
-     save_reasoning: true
-     output_dir: "tutorial_results"
+   log_level: "INFO"
 
 **Step 3**: Run the experiment
 
 .. code-block:: bash
 
-   python scripts/simulate.py --config tutorial_1.yaml
+   python scripts/runner.py --config src/game_reasoning_arena/configs/tutorial_1.yaml
 
 **Step 4**: Analyze results
 
@@ -61,20 +60,19 @@ Compare agent performance across different games.
 .. code-block:: yaml
 
    # tutorial_2.yaml
-   games:
-     - name: "connect_four"
-       num_episodes: 20
-     - name: "tic_tac_toe"
-       num_episodes: 20
-     - name: "kuhn_poker"
-       num_episodes: 50
+   env_configs:
+     - game_name: "connect_four"
+     - game_name: "tic_tac_toe"
+     - game_name: "kuhn_poker"
+
+   num_episodes: 20
 
    agents:
-     - type: "llm"
-       model: "gpt-3.5-turbo"
-       name: "GPT_Player"
-     - type: "random"
-       name: "Random_Player"
+     player_0:
+       type: "llm"
+       model: "litellm_openai/gpt-3.5-turbo"
+     player_1:
+       type: "random"
 
 Tutorial 3: Custom Agent Development
 ------------------------------------
@@ -88,7 +86,7 @@ Create your own agent type.
 .. code-block:: python
 
    # custom_agents/heuristic_agent.py
-   from game_reasoning_arena.arena.agents.base_agent import BaseAgent
+   from src.game_reasoning_arena.arena.agents.base_agent import BaseAgent
 
    class HeuristicAgent(BaseAgent):
        def __init__(self, name="HeuristicAgent"):
@@ -110,7 +108,7 @@ Create your own agent type.
 .. code-block:: python
 
    # Add to agent registry
-   from game_reasoning_arena.arena.agents.agent_registry import register_agent
+   from src.game_reasoning_arena.arena.agents.agent_registry import register_agent
    register_agent("heuristic", HeuristicAgent)
 
 **Step 3**: Use in configuration
@@ -118,8 +116,10 @@ Create your own agent type.
 .. code-block:: yaml
 
    agents:
-     - type: "heuristic"
-       name: "Heuristic_Player"
+     player_0:
+       type: "heuristic"
+     player_1:
+       type: "random"
 
 Tutorial 4: Large-Scale Experiments
 -----------------------------------
@@ -133,35 +133,36 @@ Run experiments with many games and statistical analysis.
 .. code-block:: yaml
 
    # large_experiment.yaml
-   experiment:
-     name: "statistical_study"
-     replications: 5  # Run entire experiment 5 times
+   env_config:
+     game_name: "connect_four"
 
-   game:
-     name: "connect_four"
-     num_episodes: 200  # 200 games per replication
+   num_episodes: 200
 
    agents:
-     - type: "llm"
-       model: "gpt-4"
-       temperature: 0.3
-     - type: "llm"
-       model: "gpt-3.5-turbo"
-       temperature: 0.3
+     player_0:
+       type: "llm"
+       model: "litellm_openai/gpt-4"
+     player_1:
+       type: "llm"
+       model: "litellm_openai/gpt-3.5-turbo"
+
+   llm_backend:
+     temperature: 0.3
+
+   use_ray: true
+   parallel_episodes: true
 
 **Analysis**:
 
 .. code-block:: python
 
-   from game_reasoning_arena.analysis import statistical_analysis
+   from analysis import reasoning_analysis
 
-   results = statistical_analysis.load_experiment("statistical_study")
+   # Load and analyze results
+   results = reasoning_analysis.load_results_from_directory("results/")
 
-   # Calculate confidence intervals
-   ci = results.confidence_interval(metric="win_rate", confidence=0.95)
-
-   # Test for significant differences
-   p_value = results.significance_test("gpt-4", "gpt-3.5-turbo")
+   # Generate statistical summaries
+   summary = reasoning_analysis.generate_summary_statistics(results)
 
 Tutorial 5: Distributed Computing
 ----------------------------------
@@ -178,19 +179,29 @@ Scale up using Ray for parallel execution.
 
 .. code-block:: yaml
 
-   execution:
-     backend: "ray"
-     num_workers: 4
+   env_config:
+     game_name: "connect_four"
 
-   game:
-     name: "connect_four"
-     num_episodes: 1000  # Will be distributed across workers
+   num_episodes: 1000
+
+   agents:
+     player_0:
+       type: "llm"
+       model: "litellm_groq/llama3-8b-8192"
+     player_1:
+       type: "random"
+
+   use_ray: true
+   parallel_episodes: true
+   ray_config:
+     num_cpus: 4
 
 **Monitor progress**:
 
 .. code-block:: bash
 
-   ray dashboard  # Open Ray dashboard in browser
+   # Check Ray status
+   ray status
 
 Next Steps
 ----------
