@@ -81,10 +81,6 @@ run_analysis() {
             if [[ $total_plots -gt 5 ]]; then
                 echo "  ... and $((total_plots - 5)) more plot files"
             fi
-
-            if [[ -f "plots/analysis_summary_report.json" ]]; then
-                echo "  📋 plots/analysis_summary_report.json"
-            fi
         fi
     else
         echo

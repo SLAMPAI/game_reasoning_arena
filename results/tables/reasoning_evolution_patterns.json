@@ -1,0 +1,5748 @@
+{
+  "models": {
+    "llm_litellm_together_ai_meta_llama_Meta_Llama_3.1_8B_Instruct_Turbo": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Positional",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "2": {
+              "category": "Winning Logic",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "6": {
+              "category": "Uncategorized",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "8": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "10": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Evolution: Positional \u2192 ... \u2192 Blocking (progresses through 4 categories)"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Opponent Modeling",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "4": {
+              "category": "Positional",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "8": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Evolution: Opponent Modeling \u2192 ... \u2192 Blocking (progresses through 3 categories)"
+        }
+      }
+    },
+    "llm_litellm_groq_llama3_70b_8192": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Positional",
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
+            },
+            "2": {
+              "category": "Positional",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 5,
+              "total": 5
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 5,
+              "total": 5
+            },
+            "8": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 5,
+              "total": 5
+            },
+            "10": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            }
+          },
+          "pattern": "Evolution: Positional \u2192 ... \u2192 Blocking (progresses through 2 categories)"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 4,
+              "total": 4
+            },
+            "2": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 4,
+              "total": 4
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 4,
+              "total": 4
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 4,
+              "total": 4
+            }
+          },
+          "pattern": "Evolution: Uncategorized \u2192 ... \u2192 Blocking (progresses through 2 categories)"
+        },
+        "hex": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30,
+            32,
+            34,
+            36,
+            38,
+            40,
+            42,
+            44,
+            46,
+            48,
+            50,
+            52,
+            54,
+            56,
+            58,
+            60,
+            62,
+            64,
+            66,
+            68,
+            70,
+            72,
+            74,
+            76,
+            78,
+            80,
+            82,
+            84,
+            86,
+            88,
+            90,
+            92,
+            94,
+            96,
+            98,
+            100,
+            102,
+            104,
+            106,
+            108,
+            110,
+            112,
+            114,
+            116
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 5,
+              "total": 5
+            },
+            "2": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 5,
+              "total": 5
+            },
+            "4": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 5,
+              "total": 5
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 5,
+              "total": 5
+            },
+            "8": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 5,
+              "total": 5
+            },
+            "10": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 5,
+              "total": 5
+            },
+            "12": {
+              "category": "Opponent Modeling",
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
+            },
+            "14": {
+              "category": "Rule-Based",
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
+            },
+            "16": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 4,
+              "total": 4
+            },
+            "18": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 4,
+              "total": 4
+            },
+            "20": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 4,
+              "total": 4
+            },
+            "22": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "24": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "26": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "28": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "30": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "32": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "34": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "36": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "38": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "40": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "42": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "44": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "46": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "48": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "50": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "52": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "54": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "56": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "58": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "60": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "62": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "64": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "66": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "68": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "70": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "72": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "74": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "76": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "78": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "80": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "82": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "84": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "86": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "88": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "90": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "92": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "94": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "96": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "98": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "100": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "102": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "104": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "106": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "108": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "110": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "112": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "114": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "116": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Evolution: Opponent Modeling \u2192 ... \u2192 Uncategorized (progresses through 4 categories)"
+        }
+      }
+    },
+    "llm_litellm_gpt_3.5_turbo": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "2": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "8": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "10": {
+              "category": "Heuristic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "12": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Evolution: Positional \u2192 ... \u2192 Blocking (progresses through 5 categories)"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "2": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "6": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Mixed pattern with 3 categories"
+        }
+      }
+    },
+    "llm_litellm_fireworks_ai_accounts_fireworks_models_kimi_k2_instruct": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Winning Logic",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "2": {
+              "category": "Positional",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "4": {
+              "category": "Opponent Modeling",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "8": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Mixed pattern with 4 categories"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Uncategorized",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "2": {
+              "category": "Positional",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "4": {
+              "category": "Opponent Modeling",
+              "proportion": 0.3333333333333333,
+              "count": 1,
+              "total": 3
+            },
+            "6": {
+              "category": "Winning Logic",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            }
+          },
+          "pattern": "Evolution: Uncategorized \u2192 ... \u2192 Winning Logic (progresses through 4 categories)"
+        },
+        "hex": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30,
+            32,
+            34,
+            36,
+            38,
+            40,
+            42,
+            44,
+            46,
+            48
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "2": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "6": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "8": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "10": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "12": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "14": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "16": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "18": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "20": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "22": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "24": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "26": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "28": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "30": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "32": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "34": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "36": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "38": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "40": {
+              "category": "Heuristic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "42": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "44": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "46": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "48": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Mixed pattern with 7 categories"
+        }
+      }
+    },
+    "llm_litellm_fireworks_ai_accounts_fireworks_models_glm_4p5_air": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "2": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "4": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "6": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "8": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "10": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "12": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "14": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "16": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "18": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "20": {
+              "category": "Winning Logic",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "22": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "24": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "26": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            }
+          },
+          "pattern": "Evolution: Winning Logic \u2192 ... \u2192 Random/Unjustified (progresses through 3 categories)"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        },
+        "hex": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30,
+            32,
+            34,
+            36,
+            38,
+            40,
+            42,
+            44,
+            46,
+            48
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "4": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "6": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "8": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "10": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "12": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "14": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "16": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "18": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "20": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "22": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "24": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "26": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "28": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "30": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "32": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "34": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "36": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "38": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "40": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "42": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "44": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "46": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "48": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Mixed pattern with 3 categories"
+        }
+      }
+    },
+    "llm_litellm_fireworks_ai_accounts_fireworks_models_llama_v3_8b_instruct": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "10": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "12": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "14": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "16": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "18": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "20": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "22": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "24": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "26": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "28": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "30": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        }
+      }
+    },
+    "llm_litellm_fireworks_ai_accounts_fireworks_models_qwen3_235b_a22b_thinking_2507": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "2": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "4": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "6": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "8": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "10": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "12": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "14": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "16": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "18": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "20": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "22": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "24": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Evolution: Winning Logic \u2192 ... \u2192 Random/Unjustified (progresses through 2 categories)"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Uncategorized",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "2": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "4": {
+              "category": "Uncategorized",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "6": {
+              "category": "Uncategorized",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "8": {
+              "category": "Uncategorized",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            }
+          },
+          "pattern": "Consistent Uncategorized throughout"
+        },
+        "hex": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30,
+            32,
+            34,
+            36,
+            38,
+            40,
+            42,
+            44,
+            46,
+            48
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Rule-Based",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "2": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "4": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "6": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "8": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "10": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "12": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "14": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "16": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "18": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "20": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "22": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "24": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "26": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "28": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "30": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "32": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "34": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "36": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "38": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "40": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "42": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "44": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "46": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "48": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Evolution: Rule-Based \u2192 ... \u2192 Random/Unjustified (progresses through 3 categories)"
+        }
+      }
+    },
+    "llm_litellm_gpt_o4_mini": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "10": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "12": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "14": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "16": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "18": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "20": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "22": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "24": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "26": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "28": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "30": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        },
+        "hex": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30,
+            32,
+            34,
+            36,
+            38,
+            40,
+            42,
+            44,
+            46,
+            48
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "10": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "12": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "14": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "16": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "18": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "20": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "22": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "24": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "26": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "28": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "30": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "32": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "34": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "36": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "38": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "40": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "42": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "44": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "46": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "48": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        }
+      }
+    },
+    "llm_litellm_fireworks_ai_accounts_fireworks_models_llama_v3_70b_instruct": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "10": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "12": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "14": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "16": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "18": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "20": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "22": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "24": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "26": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "28": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "30": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        }
+      }
+    },
+    "llm_litellm_gpt_5": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "10": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "12": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "14": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "16": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "18": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "20": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "22": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "24": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "26": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "28": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "30": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        },
+        "hex": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30,
+            32,
+            34,
+            36,
+            38,
+            40,
+            42,
+            44,
+            46,
+            48
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "10": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "12": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "14": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "16": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "18": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "20": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "22": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "24": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "26": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "28": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "30": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "32": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "34": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "36": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "38": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "40": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "42": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "44": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "46": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "48": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        }
+      }
+    },
+    "llm_litellm_gpt_4": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Uncategorized",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "2": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "6": {
+              "category": "Opponent Modeling",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "8": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "10": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "12": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "14": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "16": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Evolution: Uncategorized \u2192 ... \u2192 Winning Logic (progresses through 5 categories)"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "6": {
+              "category": "Opponent Modeling",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            }
+          },
+          "pattern": "Mixed pattern with 2 categories"
+        },
+        "hex": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30,
+            32,
+            34,
+            36,
+            38,
+            40,
+            42,
+            44,
+            46,
+            48
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "2": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "8": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "10": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "12": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "14": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "16": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "18": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "20": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "22": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "24": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "26": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "28": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "30": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "32": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "34": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "36": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "38": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "40": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "42": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "44": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "46": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "48": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Evolution: Opponent Modeling \u2192 ... \u2192 Blocking (progresses through 5 categories)"
+        }
+      }
+    },
+    "llm_litellm_groq_llama_3.1_8b_instant": {
+      "games": {
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Opponent Modeling",
+              "proportion": 0.7142857142857143,
+              "count": 10,
+              "total": 14
+            },
+            "2": {
+              "category": "Positional",
+              "proportion": 0.5,
+              "count": 7,
+              "total": 14
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 0.8571428571428571,
+              "count": 12,
+              "total": 14
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 0.8461538461538461,
+              "count": 11,
+              "total": 13
+            }
+          },
+          "pattern": "Evolution: Opponent Modeling \u2192 ... \u2192 Blocking (progresses through 3 categories)"
+        }
+      }
+    },
+    "llm_litellm_gpt_4_turbo": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "2": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "4": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "6": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Evolution: Positional \u2192 ... \u2192 Winning Logic (progresses through 3 categories)"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "2": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "6": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Mixed pattern with 3 categories"
+        }
+      }
+    },
+    "llm_litellm_groq_qwen3_32b": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "10": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "12": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "14": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "16": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "18": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "20": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "22": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "24": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "26": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "28": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "30": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        },
+        "hex": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30,
+            32,
+            34,
+            36,
+            38,
+            40,
+            42,
+            44,
+            46,
+            48,
+            50,
+            52,
+            54,
+            56,
+            58,
+            60,
+            62,
+            64,
+            66,
+            68,
+            70,
+            72,
+            74,
+            76,
+            78,
+            80,
+            82,
+            84,
+            86,
+            88,
+            90,
+            92,
+            94,
+            96,
+            98,
+            100
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "10": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "12": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "14": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "16": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "18": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "20": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "22": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "24": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "26": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "28": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "30": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "32": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "34": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "36": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "38": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "40": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "42": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "44": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "46": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "48": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "50": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "52": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "54": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "56": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "58": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "60": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "62": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "64": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "66": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "68": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "70": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "72": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "74": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "76": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "78": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "80": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "82": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "84": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "86": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "88": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "90": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "92": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "94": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "96": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "98": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "100": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        }
+      }
+    },
+    "llm_litellm_groq_llama3_8b_8192": {
+      "games": {
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            1,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Opponent Modeling",
+              "proportion": 0.9848484848484849,
+              "count": 65,
+              "total": 66
+            },
+            "1": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "2": {
+              "category": "Positional",
+              "proportion": 0.7575757575757576,
+              "count": 50,
+              "total": 66
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 66,
+              "total": 66
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 0.8,
+              "count": 8,
+              "total": 10
+            },
+            "8": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 5,
+              "total": 5
+            }
+          },
+          "pattern": "Evolution: Opponent Modeling \u2192 ... \u2192 Blocking (progresses through 4 categories)"
+        },
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 6,
+              "total": 6
+            },
+            "2": {
+              "category": "Opponent Modeling",
+              "proportion": 0.3333333333333333,
+              "count": 2,
+              "total": 6
+            },
+            "4": {
+              "category": "Opponent Modeling",
+              "proportion": 0.8333333333333334,
+              "count": 5,
+              "total": 6
+            },
+            "6": {
+              "category": "Opponent Modeling",
+              "proportion": 0.5,
+              "count": 3,
+              "total": 6
+            },
+            "8": {
+              "category": "Opponent Modeling",
+              "proportion": 0.5,
+              "count": 3,
+              "total": 6
+            },
+            "10": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 4,
+              "total": 6
+            }
+          },
+          "pattern": "Mixed pattern with 2 categories"
+        },
+        "hex": {
+          "turns_analyzed": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30,
+            32,
+            34,
+            36,
+            38,
+            40,
+            42,
+            44,
+            46,
+            48,
+            50,
+            52,
+            54,
+            56,
+            58,
+            60,
+            62,
+            64,
+            66,
+            68,
+            70,
+            72,
+            74,
+            76,
+            78,
+            80,
+            82,
+            84,
+            86,
+            88,
+            90,
+            92,
+            94,
+            96,
+            98,
+            100,
+            102,
+            104,
+            106,
+            108,
+            110,
+            112,
+            114,
+            116,
+            118,
+            120
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 0.55,
+              "count": 11,
+              "total": 20
+            },
+            "1": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 0.55,
+              "count": 11,
+              "total": 20
+            },
+            "3": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 0.5789473684210527,
+              "count": 11,
+              "total": 19
+            },
+            "5": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 0.5789473684210527,
+              "count": 11,
+              "total": 19
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 0.5789473684210527,
+              "count": 11,
+              "total": 19
+            },
+            "10": {
+              "category": "Random/Unjustified",
+              "proportion": 0.5789473684210527,
+              "count": 11,
+              "total": 19
+            },
+            "12": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7368421052631579,
+              "count": 14,
+              "total": 19
+            },
+            "14": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7368421052631579,
+              "count": 14,
+              "total": 19
+            },
+            "16": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7368421052631579,
+              "count": 14,
+              "total": 19
+            },
+            "18": {
+              "category": "Random/Unjustified",
+              "proportion": 0.6842105263157895,
+              "count": 13,
+              "total": 19
+            },
+            "20": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7368421052631579,
+              "count": 14,
+              "total": 19
+            },
+            "22": {
+              "category": "Random/Unjustified",
+              "proportion": 0.6842105263157895,
+              "count": 13,
+              "total": 19
+            },
+            "24": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7368421052631579,
+              "count": 14,
+              "total": 19
+            },
+            "26": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7368421052631579,
+              "count": 14,
+              "total": 19
+            },
+            "28": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7368421052631579,
+              "count": 14,
+              "total": 19
+            },
+            "30": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7368421052631579,
+              "count": 14,
+              "total": 19
+            },
+            "32": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7368421052631579,
+              "count": 14,
+              "total": 19
+            },
+            "34": {
+              "category": "Random/Unjustified",
+              "proportion": 0.6842105263157895,
+              "count": 13,
+              "total": 19
+            },
+            "36": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7368421052631579,
+              "count": 14,
+              "total": 19
+            },
+            "38": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7368421052631579,
+              "count": 14,
+              "total": 19
+            },
+            "40": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7368421052631579,
+              "count": 14,
+              "total": 19
+            },
+            "42": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7368421052631579,
+              "count": 14,
+              "total": 19
+            },
+            "44": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7368421052631579,
+              "count": 14,
+              "total": 19
+            },
+            "46": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7368421052631579,
+              "count": 14,
+              "total": 19
+            },
+            "48": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7368421052631579,
+              "count": 14,
+              "total": 19
+            },
+            "50": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7777777777777778,
+              "count": 14,
+              "total": 18
+            },
+            "52": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7777777777777778,
+              "count": 14,
+              "total": 18
+            },
+            "54": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7777777777777778,
+              "count": 14,
+              "total": 18
+            },
+            "56": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7777777777777778,
+              "count": 14,
+              "total": 18
+            },
+            "58": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7647058823529411,
+              "count": 13,
+              "total": 17
+            },
+            "60": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7647058823529411,
+              "count": 13,
+              "total": 17
+            },
+            "62": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7647058823529411,
+              "count": 13,
+              "total": 17
+            },
+            "64": {
+              "category": "Random/Unjustified",
+              "proportion": 0.7647058823529411,
+              "count": 13,
+              "total": 17
+            },
+            "66": {
+              "category": "Random/Unjustified",
+              "proportion": 0.8125,
+              "count": 13,
+              "total": 16
+            },
+            "68": {
+              "category": "Random/Unjustified",
+              "proportion": 0.8125,
+              "count": 13,
+              "total": 16
+            },
+            "70": {
+              "category": "Random/Unjustified",
+              "proportion": 0.8666666666666667,
+              "count": 13,
+              "total": 15
+            },
+            "72": {
+              "category": "Random/Unjustified",
+              "proportion": 0.8666666666666667,
+              "count": 13,
+              "total": 15
+            },
+            "74": {
+              "category": "Random/Unjustified",
+              "proportion": 0.8666666666666667,
+              "count": 13,
+              "total": 15
+            },
+            "76": {
+              "category": "Random/Unjustified",
+              "proportion": 0.8666666666666667,
+              "count": 13,
+              "total": 15
+            },
+            "78": {
+              "category": "Random/Unjustified",
+              "proportion": 0.8666666666666667,
+              "count": 13,
+              "total": 15
+            },
+            "80": {
+              "category": "Random/Unjustified",
+              "proportion": 0.8666666666666667,
+              "count": 13,
+              "total": 15
+            },
+            "82": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 13,
+              "total": 13
+            },
+            "84": {
+              "category": "Random/Unjustified",
+              "proportion": 0.9230769230769231,
+              "count": 12,
+              "total": 13
+            },
+            "86": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 12,
+              "total": 12
+            },
+            "88": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 12,
+              "total": 12
+            },
+            "90": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 12,
+              "total": 12
+            },
+            "92": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 12,
+              "total": 12
+            },
+            "94": {
+              "category": "Random/Unjustified",
+              "proportion": 0.9166666666666666,
+              "count": 11,
+              "total": 12
+            },
+            "96": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 12,
+              "total": 12
+            },
+            "98": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 12,
+              "total": 12
+            },
+            "100": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 12,
+              "total": 12
+            },
+            "102": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 12,
+              "total": 12
+            },
+            "104": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 12,
+              "total": 12
+            },
+            "106": {
+              "category": "Random/Unjustified",
+              "proportion": 0.9090909090909091,
+              "count": 10,
+              "total": 11
+            },
+            "108": {
+              "category": "Random/Unjustified",
+              "proportion": 0.8888888888888888,
+              "count": 8,
+              "total": 9
+            },
+            "110": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 9,
+              "total": 9
+            },
+            "112": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 9,
+              "total": 9
+            },
+            "114": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 9,
+              "total": 9
+            },
+            "116": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 7,
+              "total": 7
+            },
+            "118": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 5,
+              "total": 5
+            },
+            "120": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            }
+          },
+          "pattern": "Mixed pattern with 3 categories"
+        }
+      }
+    },
+    "llm_litellm_groq_gemma_7b_it": {
+      "games": {
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        }
+      }
+    },
+    "llm_litellm_groq_gemma2_9b_it": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 4,
+              "total": 4
+            },
+            "2": {
+              "category": "Positional",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "4": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 4,
+              "total": 4
+            },
+            "6": {
+              "category": "Uncategorized",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            }
+          },
+          "pattern": "Evolution: Positional \u2192 ... \u2192 Uncategorized (progresses through 2 categories)"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 4,
+              "total": 4
+            },
+            "2": {
+              "category": "Blocking",
+              "proportion": 0.75,
+              "count": 3,
+              "total": 4
+            },
+            "4": {
+              "category": "Winning Logic",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 4,
+              "total": 4
+            }
+          },
+          "pattern": "Evolution: Uncategorized \u2192 ... \u2192 Blocking (progresses through 3 categories)"
+        },
+        "hex": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30,
+            32,
+            34,
+            36,
+            38,
+            40,
+            42,
+            44,
+            46,
+            48,
+            50,
+            52,
+            54,
+            56,
+            58,
+            60,
+            62,
+            64,
+            66,
+            68,
+            70,
+            72,
+            74,
+            76,
+            78,
+            80,
+            82,
+            84,
+            86,
+            88,
+            90,
+            92,
+            94,
+            96,
+            98,
+            100,
+            102,
+            104,
+            106,
+            108,
+            110,
+            112,
+            114,
+            116
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Uncategorized",
+              "proportion": 0.8571428571428571,
+              "count": 6,
+              "total": 7
+            },
+            "2": {
+              "category": "Uncategorized",
+              "proportion": 0.8571428571428571,
+              "count": 6,
+              "total": 7
+            },
+            "4": {
+              "category": "Opponent Modeling",
+              "proportion": 0.7142857142857143,
+              "count": 5,
+              "total": 7
+            },
+            "6": {
+              "category": "Uncategorized",
+              "proportion": 0.5714285714285714,
+              "count": 4,
+              "total": 7
+            },
+            "8": {
+              "category": "Uncategorized",
+              "proportion": 0.42857142857142855,
+              "count": 3,
+              "total": 7
+            },
+            "10": {
+              "category": "Uncategorized",
+              "proportion": 0.7142857142857143,
+              "count": 5,
+              "total": 7
+            },
+            "12": {
+              "category": "Uncategorized",
+              "proportion": 0.5714285714285714,
+              "count": 4,
+              "total": 7
+            },
+            "14": {
+              "category": "Opponent Modeling",
+              "proportion": 0.42857142857142855,
+              "count": 3,
+              "total": 7
+            },
+            "16": {
+              "category": "Opponent Modeling",
+              "proportion": 0.5714285714285714,
+              "count": 4,
+              "total": 7
+            },
+            "18": {
+              "category": "Opponent Modeling",
+              "proportion": 0.7142857142857143,
+              "count": 5,
+              "total": 7
+            },
+            "20": {
+              "category": "Blocking",
+              "proportion": 0.8571428571428571,
+              "count": 6,
+              "total": 7
+            },
+            "22": {
+              "category": "Uncategorized",
+              "proportion": 0.7142857142857143,
+              "count": 5,
+              "total": 7
+            },
+            "24": {
+              "category": "Opponent Modeling",
+              "proportion": 0.42857142857142855,
+              "count": 3,
+              "total": 7
+            },
+            "26": {
+              "category": "Blocking",
+              "proportion": 0.5714285714285714,
+              "count": 4,
+              "total": 7
+            },
+            "28": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 3,
+              "total": 6
+            },
+            "30": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 3,
+              "total": 6
+            },
+            "32": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 4,
+              "total": 6
+            },
+            "34": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 4,
+              "total": 6
+            },
+            "36": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 4,
+              "total": 6
+            },
+            "38": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 4,
+              "total": 6
+            },
+            "40": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 4,
+              "total": 6
+            },
+            "42": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 4,
+              "total": 6
+            },
+            "44": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 3,
+              "total": 6
+            },
+            "46": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 3,
+              "total": 6
+            },
+            "48": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 4,
+              "total": 6
+            },
+            "50": {
+              "category": "Blocking",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "52": {
+              "category": "Blocking",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "54": {
+              "category": "Blocking",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "56": {
+              "category": "Blocking",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "58": {
+              "category": "Blocking",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "60": {
+              "category": "Random/Unjustified",
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
+            },
+            "62": {
+              "category": "Blocking",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "64": {
+              "category": "Random/Unjustified",
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
+            },
+            "66": {
+              "category": "Random/Unjustified",
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
+            },
+            "68": {
+              "category": "Blocking",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "70": {
+              "category": "Random/Unjustified",
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
+            },
+            "72": {
+              "category": "Blocking",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "74": {
+              "category": "Random/Unjustified",
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
+            },
+            "76": {
+              "category": "Random/Unjustified",
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
+            },
+            "78": {
+              "category": "Blocking",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "80": {
+              "category": "Random/Unjustified",
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
+            },
+            "82": {
+              "category": "Random/Unjustified",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "84": {
+              "category": "Random/Unjustified",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "86": {
+              "category": "Random/Unjustified",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "88": {
+              "category": "Random/Unjustified",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "90": {
+              "category": "Random/Unjustified",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "92": {
+              "category": "Random/Unjustified",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "94": {
+              "category": "Random/Unjustified",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "96": {
+              "category": "Random/Unjustified",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "98": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "100": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "102": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "104": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "106": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "108": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "110": {
+              "category": "Random/Unjustified",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "112": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "114": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "116": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Evolution: Uncategorized \u2192 ... \u2192 Random/Unjustified (progresses through 4 categories)"
+        }
+      }
+    },
+    "llm_litellm_together_ai_mistralai_Mixtral_8x7B_Instruct_v0.1": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30,
+            32
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Rule-Based",
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
+            },
+            "2": {
+              "category": "Winning Logic",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "4": {
+              "category": "Uncategorized",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "6": {
+              "category": "Winning Logic",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "8": {
+              "category": "Winning Logic",
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
+            },
+            "10": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "12": {
+              "category": "Opponent Modeling",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "14": {
+              "category": "Winning Logic",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "16": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "18": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "20": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "22": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "24": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "26": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "28": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "30": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "32": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Evolution: Rule-Based \u2192 ... \u2192 Winning Logic (progresses through 6 categories)"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 5,
+              "total": 5
+            },
+            "2": {
+              "category": "Rule-Based",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "4": {
+              "category": "Uncategorized",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "6": {
+              "category": "Opponent Modeling",
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
+            },
+            "8": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Evolution: Positional \u2192 ... \u2192 Opponent Modeling (progresses through 4 categories)"
+        },
+        "hex": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30,
+            32,
+            34,
+            36,
+            38,
+            40,
+            42,
+            44,
+            46,
+            48,
+            50,
+            52,
+            54,
+            56,
+            58,
+            60,
+            62,
+            64,
+            66,
+            68,
+            70,
+            72,
+            74,
+            76,
+            78,
+            80,
+            82,
+            84,
+            86,
+            88,
+            90,
+            92,
+            94,
+            96,
+            98,
+            100,
+            102,
+            104,
+            106,
+            108,
+            110,
+            112,
+            114
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Uncategorized",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "2": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Uncategorized",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "8": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "10": {
+              "category": "Winning Logic",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "12": {
+              "category": "Winning Logic",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "14": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "16": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "18": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "20": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "22": {
+              "category": "Opponent Modeling",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "24": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "26": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "28": {
+              "category": "Uncategorized",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "30": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "32": {
+              "category": "Winning Logic",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "34": {
+              "category": "Uncategorized",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "36": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "38": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "40": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "42": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "44": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "46": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "48": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "50": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "52": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "54": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "56": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "58": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "60": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "62": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "64": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "66": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "68": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "70": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "72": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "74": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "76": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "78": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "80": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "82": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "84": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "86": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "88": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "90": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "92": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "94": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "96": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "98": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "100": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "102": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "104": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "106": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "108": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "110": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "112": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "114": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Evolution: Uncategorized \u2192 ... \u2192 Winning Logic (progresses through 5 categories)"
+        }
+      }
+    },
+    "llm_litellm_gpt_5_mini": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "10": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "12": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "14": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "16": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "18": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "20": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "22": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "24": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "26": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "28": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "30": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        },
+        "hex": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30,
+            32,
+            34,
+            36,
+            38,
+            40,
+            42,
+            44,
+            46,
+            48
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "10": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "12": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "14": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "16": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "18": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "20": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "22": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "24": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "26": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "28": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "30": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "32": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "34": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "36": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "38": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "40": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "42": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "44": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "46": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "48": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        }
+      }
+    },
+    "llm_litellm_together_ai_meta_llama_Meta_Llama_3.1_70B_Instruct_Turbo": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "6": {
+              "category": "Uncategorized",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "8": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "10": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "12": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "14": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "16": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Evolution: Winning Logic \u2192 ... \u2192 Uncategorized (progresses through 4 categories)"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Winning Logic",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            }
+          },
+          "pattern": "Evolution: Opponent Modeling \u2192 ... \u2192 Blocking (progresses through 4 categories)"
+        }
+      }
+    },
+    "llm_vllm_Qwen2_7B_Instruct": {
+      "games": {
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            1,
+            3
+          ],
+          "dominant_by_turn": {
+            "1": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "3": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        }
+      }
+    }
+  },
+  "summary": {
+    "total_models": 21,
+    "evolution_patterns": []
+  }
+}

@@ -14,15 +14,14 @@ src/game_reasoning_arena.egg-info/PKG-INFO
 # Ignore TensorFlow event files
 *.event
 *.tfevents.*
-results/
+
+# Ignore heavy files
 plots/
 tests/
+*.db
 game_reasoning_arena_blog_post.md
 slurm_jobs/run_simulation.sh
 board_game_arena_blog_post.md
 
 # Ignore open_spiel directory (external repository)
 open_spiel/
-
-
-

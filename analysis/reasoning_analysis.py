@@ -443,7 +443,7 @@ class LLMReasoningAnalyzer:
         plt.close()
 
     def compute_agent_metrics(
-        self, output_csv: str = "results/agent_metrics_summary.csv"
+        self, output_csv: str = "results/tables/agent_metrics_summary.csv"
     ) -> pd.DataFrame:
         """Compute metrics for each agent and game combination.
 
@@ -506,7 +506,7 @@ class LLMReasoningAnalyzer:
             self._create_agent_aggregate_heatmap(df_agent, agent, plot_dir)
 
     def compute_metrics(
-        self, output_csv: str = "results/agent_metrics_summary.csv",
+        self, output_csv: str = "results/tables/agent_metrics_summary.csv",
         plot_dir: str = "plots"
     ) -> None:
         """Compute metrics and generate visualizations for each agent and game.

@@ -262,8 +262,8 @@ python3 analysis/run_full_analysis.py --game hex --model llama  # Combined
 
 **Generated Output:**
 - `plots/*.png` - All visualization files
-- `plots/analysis_summary_report.json` - Detailed pipeline results
 - `results/merged_logs_*.csv` - Consolidated data files
+- `results/tables/*.csv` - Performance tables and metrics
 
 All execution details are displayed in the console output.
 

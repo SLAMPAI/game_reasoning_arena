@@ -74,6 +74,7 @@ try:
     from post_game_processing import (merge_sqlite_logs,
                                       compute_summary_statistics)
     from reasoning_analysis import LLMReasoningAnalyzer
+    from performance_tables import PerformanceTableGenerator
 except ImportError as e:
     print(f"Error importing analysis modules: {e}")
     print("Make sure you're running this from the project root directory")
@@ -372,9 +373,10 @@ class AnalysisPipeline:
 
             self.logger.info("Analyzing reasoning evolution patterns...")
             evolution_patterns = plotter.analyze_reasoning_evolution_patterns()
-            # Save evolution pattern summary
+            # Save evolution pattern summary to tables directory
             evolution_summary_path = (
-                self.plots_dir / "reasoning_evolution_patterns.json")
+                self.results_dir / "tables" /
+                "reasoning_evolution_patterns.json")
             with open(evolution_summary_path, "w", encoding='utf-8') as f:
                 json.dump(json_serializable(evolution_patterns), f, indent=2)
 
@@ -435,8 +437,53 @@ class AnalysisPipeline:
             self.logger.error(f"Plot generation failed: {e}")
             return False
 
-    def step_4_extract_sample_traces(self) -> bool:
-        """Step 4: Extract and export sample reasoning traces."""
+    def step_5_generate_performance_tables(self, merged_csv_path: str) -> bool:
+        """Step 5: Generate comprehensive performance tables."""
+        step_name = "Performance Tables Generation"
+        self.logger.info(f"\n{'='*60}")
+        self.logger.info(f"STEP 5: {step_name}")
+        self.logger.info(f"{'='*60}")
+
+        try:
+            self.logger.info(
+                "Generating performance tables from data: %s", merged_csv_path)
+
+            # Initialize the performance table generator
+            table_generator = PerformanceTableGenerator(merged_csv_path)
+
+            # Generate all performance tables in results/tables
+            summary = table_generator.generate_all_performance_tables(
+                str(self.results_dir))
+
+            # Add to pipeline results (tables are in results/tables/)
+            self.pipeline_results["files_generated"].extend([
+                str(self.results_dir / "tables" / table_file.split('/')[-1])
+                for table_file in summary["tables_generated"]
+            ])
+
+            self.pipeline_results["summary"]["performance_tables"] = {
+                "total_models": summary["total_models"],
+                "total_games": summary["total_games"],
+                "top_performer": summary["top_performer"],
+                "top_win_rate": summary["top_win_rate"],
+                "tables_generated": len(summary["tables_generated"])
+            }
+
+            self.log_step(
+                step_name, "COMPLETED",
+                f"Generated {len(summary['tables_generated'])} performance "
+                f"tables. Top performer: {summary['top_performer']} "
+                f"({summary['top_win_rate']})"
+            )
+
+            return True
+
+        except Exception as e:
+            self.log_step(step_name, "FAILED", str(e))
+            return False
+
+    def step_4_extract_reasoning_traces(self) -> bool:
+        """Step 4: Extract and export reasoning traces."""
         step_name = "Trace Extraction"
         self.logger.info(f"\n{'='*60}")
         self.logger.info(f"STEP 4: {step_name}")
@@ -455,11 +502,11 @@ class AnalysisPipeline:
 
             latest_db = max(db_files, key=lambda x: x.stat().st_mtime)
 
-            # Create sample exports directory
-            exports_dir = self.plots_dir / "sample_exports"
+            # Create reasoning exports directory
+            exports_dir = self.results_dir / "reasoning_exports"
             exports_dir.mkdir(exist_ok=True)
 
-            # Export sample traces to different formats
+            # Export reasoning traces to different formats
             sample_csv = exports_dir / "sample_reasoning_traces.csv"
             sample_txt = exports_dir / "detailed_reasoning_report.txt"
 
@@ -476,12 +523,12 @@ class AnalysisPipeline:
                     export_traces_csv(df, str(sample_csv))
                     export_traces_txt(df, str(sample_txt))
                     self.logger.info(
-                        "Sample trace files generated in %s", exports_dir)
+                        "Reasoning trace files generated in %s", exports_dir)
                     self.pipeline_results["files_generated"].extend(
                         [str(sample_csv), str(sample_txt)])
                     self.log_step(
                         step_name, "COMPLETED",
-                        f"Sample traces extracted to {exports_dir}")
+                        f"Reasoning traces extracted to {exports_dir}")
                     return True
                 else:
                     self.logger.warning("No traces extracted from database.")
@@ -501,12 +548,10 @@ class AnalysisPipeline:
 
     def generate_summary_report(self) -> str:
         """Generate a comprehensive summary report of the analysis."""
-        report_path = self.plots_dir / "analysis_summary_report.json"
-
         self.pipeline_results["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S")
 
         # Add pipeline statistics
-        total_steps = 4
+        total_steps = 5
         completed_steps = len(self.pipeline_results["steps_completed"])
         failed_steps = len(self.pipeline_results["steps_failed"])
 
@@ -520,10 +565,6 @@ class AnalysisPipeline:
             )
         }
 
-        # Save detailed report
-        with open(report_path, 'w') as f:
-            json.dump(json_serializable(self.pipeline_results), f, indent=2)
-
         self.logger.info("\n" + "="*60)
         self.logger.info("ANALYSIS PIPELINE SUMMARY")
         self.logger.info("="*60)
@@ -536,7 +577,6 @@ class AnalysisPipeline:
             len(self.pipeline_results['files_generated'])
         )
         self.logger.info("Output directory: %s", self.plots_dir)
-        self.logger.info("Detailed report: %s", report_path)
 
         if failed_steps > 0:
             self.logger.warning(
@@ -544,7 +584,7 @@ class AnalysisPipeline:
         else:
             self.logger.info("✅ All analysis steps completed successfully!")
 
-        return str(report_path)
+        return ""
 
     def run_full_pipeline(self) -> bool:
         """Run the complete analysis pipeline."""
@@ -572,8 +612,14 @@ class AnalysisPipeline:
         if merged_csv and not self.step_3_generate_plots(merged_csv):
             self.logger.warning("⚠️  Step 3 (Plot Generation) had issues")
         # Step 4: Extract sample traces (continue regardless)
-        if not self.step_4_extract_sample_traces():
+        if not self.step_4_extract_reasoning_traces():
             self.logger.warning("⚠️  Step 4 (Trace Extraction) had issues")
+
+        # Step 5: Generate performance tables (continue regardless)
+        if merged_csv and not self.step_5_generate_performance_tables(
+                merged_csv):
+            self.logger.warning("⚠️  Step 5 (Performance Tables) had issues")
+
         # Generate summary report
         self.generate_summary_report()
         return success
