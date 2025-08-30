@@ -44,6 +44,8 @@ import subprocess
 import time
 import os
 import sys
+import tempfile
+import yaml
 from pathlib import Path
 from typing import List, Dict, Any, Tuple
 import ray
@@ -74,7 +76,7 @@ def run_single_model_all_games(
 
     Args:
         model: Model identifier (e.g., "litellm_groq/llama3-8b-8192")
-        config: Full configuration dictionary
+        config: Full configuration dictionary to use for this model
         model_index: Index of this model (for progress tracking)
         total_models: Total number of models being run
 
@@ -95,66 +97,135 @@ def run_single_model_all_games(
         f"{project_root}{os.pathsep}{src_dir}{os.pathsep}{current_pythonpath}"
     )
 
-    # Use a temporary config approach or direct runner invocation
-    command_parts = [
-        sys.executable, "scripts/runner.py",
-        "--config", "src/game_reasoning_arena/configs/ray_multi_model.yaml",
-        # Override the model for this specific run
-        "--override", f"agents.player_0.model={model}",
-        "--override", f"llm_backend.default_model={model}",
-        # Ensure Ray is enabled with reduced CPU allocation per model
-        "--override", "use_ray=true",
-        "--override", "parallel_episodes=true",
-        "--override", "ray_config.num_cpus=3",  # Limit per model
-    ]
+    # Create a model-specific config with safe defaults
+    # Start with a robust default configuration
+    default_config = {
+        "use_ray": True,
+        "parallel_episodes": True,
+        "num_episodes": 5,
+        "agents": {
+            "player_0": {
+                "type": "llm",
+                "model": model
+            },
+            "player_1": {
+                "type": "random"
+            }
+        },
+        "ray_config": {
+            "num_cpus": 3,  # Limit per model to avoid conflicts
+            "include_dashboard": False
+        },
+        "env_configs": [
+            {"game_name": "tic_tac_toe"},
+            {"game_name": "kuhn_poker"},
+            {"game_name": "matrix_rps", "max_game_rounds": 10},
+            {"game_name": "matrix_pd", "max_game_rounds": 10},
+            {"game_name": "matching_pennies", "max_game_rounds": 10},
+            {"game_name": "connect_four"},
+            {"game_name": "hex"}
+        ]
+    }
 
-    command = " ".join(command_parts)
+    # Deep merge user config with defaults (user config takes precedence)
+    def deep_merge(default_dict, user_dict):
+        """Safely merge user config into default config."""
+        result = default_dict.copy()
+        for key, value in user_dict.items():
+            if (key in result and
+                    isinstance(result[key], dict) and
+                    isinstance(value, dict)):
+                result[key] = deep_merge(result[key], value)
+            else:
+                result[key] = value
+        return result
+
+    # Merge user config with defaults
+    model_config = deep_merge(default_config, config)
+
+    # Always override the model for this specific Ray task
+    model_config["agents"]["player_0"]["model"] = model
+    model_config["agents"]["player_0"]["type"] = "llm"
+
+    # Create temporary config file
+    with tempfile.NamedTemporaryFile(
+        mode='w', suffix='.yaml', delete=False
+    ) as f:
+        yaml.dump(model_config, f, default_flow_style=False)
+        temp_config_path = f.name
 
     try:
-        result = subprocess.run(
-            command,
-            shell=True,
-            check=True,
-            capture_output=True,
-            text=True,
-            cwd=os.getcwd(),
-            env=env,
-            timeout=1800  # 30 minute timeout per model
-        )
+        # Use the temporary config file
+        command_parts = [
+            sys.executable, "scripts/runner.py",
+            "--config", temp_config_path,
+        ]
 
-        duration = time.time() - start_time
-        print(f"✅ [{model_index+1}/{total_models}] {model_short} "
-              f"completed in {duration:.1f}s")
+        command = " ".join(command_parts)
 
-        return {
-            "model": model,
-            "model_short": model_short,
-            "success": True,
-            "duration": duration,
-            "output_lines": (
-                len(result.stdout.split('\n')) if result.stdout else 0
-            ),
-            "error": None
-        }
+        try:
+            result = subprocess.run(
+                command,
+                shell=True,
+                check=True,
+                capture_output=True,
+                text=True,
+                cwd=os.getcwd(),
+                env=env,
+                timeout=1800  # 30 minute timeout per model
+            )
 
-    except subprocess.TimeoutExpired:
-        duration = time.time() - start_time
-        error_msg = f"Timeout after {duration:.1f}s (limit: 1800s)"
-        print(f"⏰ [{model_index+1}/{total_models}] {model_short} timed out")
+            duration = time.time() - start_time
+            print(f"✅ [{model_index+1}/{total_models}] {model_short} "
+                  f"completed in {duration:.1f}s")
 
-        return {
-            "model": model,
-            "model_short": model_short,
-            "success": False,
-            "duration": duration,
-            "output_lines": 0,
-            "error": error_msg
-        }
+            return {
+                "model": model,
+                "model_short": model_short,
+                "success": True,
+                "duration": duration,
+                "output_lines": (
+                    len(result.stdout.split('\n')) if result.stdout else 0
+                ),
+                "error": None
+            }
 
-    except subprocess.CalledProcessError as e:
-        duration = time.time() - start_time
-        error_msg = f"Exit code {e.returncode}: {e.stderr[:200]}..."
-        print(f"❌ [{model_index+1}/{total_models}] {model_short} failed")
+        except subprocess.TimeoutExpired:
+            duration = time.time() - start_time
+            error_msg = f"Timeout after {duration:.1f}s (limit: 1800s)"
+            print(
+                f"⏰ [{model_index+1}/{total_models}] {model_short} timed out"
+            )
+
+            return {
+                "model": model,
+                "model_short": model_short,
+                "success": False,
+                "duration": duration,
+                "output_lines": 0,
+                "error": error_msg
+            }
+
+        except subprocess.CalledProcessError as e:
+            duration = time.time() - start_time
+            error_msg = f"Exit code {e.returncode}: {e.stderr[:200]}..."
+            print(f"❌ [{model_index+1}/{total_models}] {model_short} failed")
+
+            return {
+                "model": model,
+                "model_short": model_short,
+                "success": False,
+                "duration": duration,
+                "output_lines": 0,
+                "error": error_msg
+            }
+
+    finally:
+        # Clean up temporary config file
+        try:
+            os.unlink(temp_config_path)
+        except OSError:
+            pass  # Ignore cleanup errors
 
         return {
             "model": model,
