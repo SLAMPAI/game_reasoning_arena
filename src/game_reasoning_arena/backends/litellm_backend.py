@@ -126,18 +126,52 @@ class LiteLLMBackend(BaseLLMBackend):
             # Use backend config defaults if not provided
             inference_params = self.backend_config.get_inference_params()
 
-            response = litellm.completion(
-                model=model_name,
-                messages=[
-                    {"role": "user", "content": prompt}
-                ],
-                max_tokens=kwargs.get(
-                    "max_tokens", inference_params["max_tokens"]
-                ),
-                temperature=kwargs.get(
+            # Extract the actual model name without backend prefix
+            if model_name.startswith("litellm_"):
+                actual_model_name = model_name[8:]  # Remove "litellm_" prefix
+            else:
+                actual_model_name = model_name
+
+            # Determine if we need to use max_completion_tokens
+            # instead of max_tokens
+            # Newer OpenAI models (gpt-4o, gpt-5, etc.) require
+            # max_completion_tokens
+            max_tokens_value = kwargs.get(
+                "max_tokens", inference_params["max_tokens"]
+            )
+
+            # Check if this is a newer OpenAI model that requires
+            # max_completion_tokens
+            uses_max_completion_tokens = (
+                "gpt-5" in actual_model_name.lower() or
+                "gpt-4o" in actual_model_name.lower() or
+                "o1" in actual_model_name.lower()
+            )
+
+            # Some newer models don't support custom temperature
+            supports_temperature = not (
+                "gpt-5" in actual_model_name.lower() or
+                "o1" in actual_model_name.lower()
+            )
+
+            completion_params = {
+                "model": actual_model_name,
+                "messages": [{"role": "user", "content": prompt}],
+            }
+
+            # Add temperature only if the model supports it
+            if supports_temperature:
+                completion_params["temperature"] = kwargs.get(
                     "temperature", inference_params["temperature"]
                 )
-            )
+
+            # Use appropriate max tokens parameter based on model
+            if uses_max_completion_tokens:
+                completion_params["max_completion_tokens"] = max_tokens_value
+            else:
+                completion_params["max_tokens"] = max_tokens_value
+
+            response = litellm.completion(**completion_params)
             return response.choices[0].message.content
         except Exception as e:
             raise RuntimeError(
