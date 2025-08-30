@@ -367,3 +367,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# start tensorboard from the terminal:
+# tensorboard --logdir=runs
+
+# In the browser:
+# http://localhost:6006/
