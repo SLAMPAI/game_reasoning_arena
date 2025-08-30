@@ -5,6 +5,7 @@
 # python3 scripts/run_ray_multi_model.py --config src/game_reasoning_arena/configs/ray_multi_model.yaml
 
 # Games to run (including longer games with Ray parallelization)
+# Use env_configs (plural) for multiple games as a list
 env_configs:
   - game_name: tic_tac_toe
     max_game_rounds: null

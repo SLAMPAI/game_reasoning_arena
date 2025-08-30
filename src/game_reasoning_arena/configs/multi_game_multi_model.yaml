@@ -1,6 +1,6 @@
 # Config for running multiple games with multiple LLM models
 # Example command to run:
-# python3 scripts/runner.py --config src/game_reasoning_arena/configs/multi_game_multi_model.yaml
+# python3 scripts/run_multi_model_games.py --config src/game_reasoning_arena/configs/multi_game_multi_model.yaml
 
 # N.B. This config takes a while to run, there is a different script to run the same with Ray
 
