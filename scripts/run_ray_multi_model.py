@@ -131,7 +131,9 @@ def run_single_model_all_games(
             "model_short": model_short,
             "success": True,
             "duration": duration,
-            "output_lines": len(result.stdout.split('\n')) if result.stdout else 0,
+            "output_lines": (
+                len(result.stdout.split('\n')) if result.stdout else 0
+            ),
             "error": None
         }
 
@@ -217,7 +219,6 @@ def initialize_ray_cluster(config: Dict[str, Any]) -> None:
     print(f"📡 Ray cluster initialized:")
     print(f"   CPUs: {cpu_count}")
     print(f"   Memory: {memory_mb:.1f} MB")
-    print(f"   Object store: {ray_config.get('object_store_memory', 'default')}")
 
 
 def run_analysis_phase() -> bool:
@@ -228,7 +229,7 @@ def run_analysis_phase() -> bool:
 
     try:
         # Run post-game processing
-        result1 = subprocess.run(
+        subprocess.run(
             [sys.executable, "analysis/post_game_processing.py"],
             capture_output=True,
             text=True,
@@ -238,7 +239,7 @@ def run_analysis_phase() -> bool:
         print("✅ Post-game processing completed")
 
         # Run full analysis
-        result2 = subprocess.run(
+        subprocess.run(
             [sys.executable, "analysis/run_full_analysis.py"],
             capture_output=True,
             text=True,
@@ -274,7 +275,10 @@ def main():
     models, num_games, num_episodes = extract_config_info(config)
 
     print(f"📊 Execution Plan:")
-    print(f"   Models: {len(models)} ({', '.join([m.split('/')[-1] for m in models])})")
+    print(
+        f"   Models: {len(models)} "
+        f"({', '.join([m.split('/')[-1] for m in models])})"
+    )
     print(f"   Games per model: {num_games}")
     print(f"   Episodes per game: {num_episodes}")
     print(f"   Total combinations: {len(models) * num_games * num_episodes}")
@@ -312,9 +316,15 @@ def main():
     print(f"\n{'='*60}")
     print("🏁 PARALLEL EXECUTION COMPLETED!")
     print(f"{'='*60}")
-    print(f"⏱️  Total wall time: {total_duration:.1f}s ({total_duration/60:.1f} min)")
+    print(
+        f"⏱️  Total wall time: {total_duration:.1f}s "
+        f"({total_duration/60:.1f} min)"
+    )
     print(f"⚡ Average model time: {avg_duration:.1f}s")
-    print(f"🚀 Speedup vs sequential: ~{avg_duration * len(models) / total_duration:.1f}x")
+    print(
+        f"🚀 Speedup vs sequential: ~"
+        f"{avg_duration * len(models) / total_duration:.1f}x"
+    )
     print(f"✅ Successful: {successful}/{len(models)}")
     print(f"❌ Failed: {failed}/{len(models)}")
     print(f"📝 Total output lines: {total_output_lines}")
@@ -341,8 +351,8 @@ def main():
         else:
             print("\n⚠️  Analysis had issues, but model runs completed")
 
-    print(f"\n🎉 RAY PARALLEL EXECUTION COMPLETE! 🎉")
-    print(f"Effective parallelization: Models + Games + Episodes")
+    print("\n🎉 RAY PARALLEL EXECUTION COMPLETE! 🎉")
+    print("Effective parallelization: Models + Games + Episodes")
 
 
 if __name__ == "__main__":
