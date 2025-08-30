@@ -287,7 +287,7 @@ def initialize_ray_cluster(config: Dict[str, Any]) -> None:
     cpu_count = cluster_resources.get("CPU", "unknown")
     memory_mb = cluster_resources.get("memory", 0) / (1024 * 1024)
 
-    print(f"📡 Ray cluster initialized:")
+    print("📡 Ray cluster initialized:")
     print(f"   CPUs: {cpu_count}")
     print(f"   Memory: {memory_mb:.1f} MB")
 
@@ -345,7 +345,7 @@ def main():
     # Extract configuration information
     models, num_games, num_episodes = extract_config_info(config)
 
-    print(f"📊 Execution Plan:")
+    print("📊 Execution Plan:")
     print(
         f"   Models: {len(models)} "
         f"({', '.join([m.split('/')[-1] for m in models])})"
@@ -401,7 +401,7 @@ def main():
     print(f"📝 Total output lines: {total_output_lines}")
 
     # Detailed results
-    print(f"\n📊 Model Results:")
+    print("\n📊 Model Results:")
     print("-" * 50)
     for result in sorted(results, key=lambda x: x["duration"]):
         status = "✅" if result["success"] else "❌"
