@@ -63,8 +63,9 @@ class GameRegistration:
                          player_types: List[str],
                          max_game_rounds: Optional[int] = None,
                          seed: Optional[int] = None) -> Any:
+
         # Ensure loaders are imported and registered
-        self._ensure_loaders_imported() #TODO:check this is correct
+        self._ensure_loaders_imported() 
 
         if game_name not in self._registry:
             available = ", ".join(self._registry.keys())

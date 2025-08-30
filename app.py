@@ -72,7 +72,7 @@ from game_reasoning_arena.backends import (
 )
 
 # UI utilities
-from ui.utils import clean_model_name
+from ui.utils import clean_model_name, get_games_from_databases
 
 # =============================================================================
 # GLOBAL CONFIGURATION
@@ -137,11 +137,67 @@ try:
             name: cls for name, cls in games_registry._registry.items()
         }
         log.info("Successfully imported full arena - games are playable.")
+        log.info(
+            "Available games in registry: %s", list(GAMES_REGISTRY.keys())
+        )
+
+        # Debug: Check if hex is specifically missing and why
+        if "hex" not in GAMES_REGISTRY:
+            log.warning("HEX GAME NOT FOUND! Investigating...")
+            try:
+                # Try to manually import hex components
+                from game_reasoning_arena.arena.envs.hex_env import (  # noqa: F401
+                    HexEnv
+                )
+                log.info("✅ HexEnv import successful")
+            except Exception as hex_env_error:
+                log.error("❌ HexEnv import failed: %s", hex_env_error)
+
+            try:
+                import pyspiel
+                test_hex = pyspiel.load_game("hex")
+                log.info("✅ PySpiel hex game load successful")
+            except Exception as pyspiel_error:
+                log.error("❌ PySpiel hex game load failed: %s", pyspiel_error)
+        else:
+            log.info("✅ Hex game found in registry")
+
     else:
         GAMES_REGISTRY = {}
+        log.warning("games_registry is None - using fallback games")
 except Exception as e:
     log.warning("Failed to load games registry: %s", e)
     GAMES_REGISTRY = {}
+
+
+# Debug: Log games available in database files
+try:
+    db_games = get_games_from_databases()
+    log.info("Games found in database files: %s", sorted(list(db_games)))
+
+    if "hex" in db_games:
+        log.info("✅ Hex data found in databases")
+    else:
+        log.warning("❌ No hex data found in databases")
+
+    # Check for registry vs database mismatch
+    registry_games = set(GAMES_REGISTRY.keys())
+    missing_in_registry = db_games - registry_games
+    missing_in_db = registry_games - db_games
+
+    if missing_in_registry:
+        log.warning(
+            "Games in DB but missing from registry: %s",
+            sorted(list(missing_in_registry))
+        )
+    if missing_in_db:
+        log.info(
+            "Games in registry but missing from DB: %s",
+            sorted(list(missing_in_db))
+        )
+
+except Exception as e:
+    log.error("Error checking database games: %s", e)
 
 
 def _get_game_display_mapping() -> Dict[str, str]:
@@ -1173,6 +1229,13 @@ with gr.Blocks() as interface:
         )
         # Use the same display logic as Game Arena
         leaderboard_config = create_player_config(include_aggregated=True)
+
+        # Debug: Log the available games for troubleshooting
+        log.info(
+            "Leaderboard available games: %s",
+            leaderboard_config["available_games"]
+        )
+
         leaderboard_game_dropdown = gr.Dropdown(
             choices=leaderboard_config["available_games"],
             label="Select Game",

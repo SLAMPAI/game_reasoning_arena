@@ -5,6 +5,55 @@ This module contains utility functions for the Gradio interface,
 including model name cleaning and display formatting.
 """
 
+import os
+import sqlite3
+import glob
+from typing import Set
+import logging
+
+log = logging.getLogger(__name__)
+
+
+def get_games_from_databases() -> Set[str]:
+    """
+    Extract unique game names from all database files in the workspace.
+
+    Returns:
+        Set of game names found in database files
+    """
+    unique_games = set()
+
+    # Find all .db files in the workspace
+    db_files = glob.glob("**/*.db", recursive=True)
+
+    for db_file in db_files:
+        if not os.path.exists(db_file):
+            continue
+
+        try:
+            with sqlite3.connect(db_file) as conn:
+                cursor = conn.cursor()
+
+                # Check if game_results table exists and get unique game names
+                cursor.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table' "
+                    "AND name='game_results'"
+                )
+                if cursor.fetchone():
+                    cursor.execute(
+                        "SELECT DISTINCT game_name FROM game_results "
+                        "WHERE game_name IS NOT NULL"
+                    )
+                    games_in_db = cursor.fetchall()
+                    for (game_name,) in games_in_db:
+                        if game_name:  # Skip None/empty values
+                            unique_games.add(game_name)
+
+        except Exception as e:
+            log.warning("Error reading database %s: %s", db_file, e)
+
+    return unique_games
+
 
 def clean_model_name(model_name: str) -> str:
     """
