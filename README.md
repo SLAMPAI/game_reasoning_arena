@@ -178,7 +178,7 @@ Configuration files:
 
 ## Ray Integration for Parallel Execution
 
-The Board Game Arena supports **Ray** for distributed and parallel execution, allowing you to:
+The Board Game Arena supports Ray for distributed and parallel execution, allowing you to:
 
 - **Run multiple games in parallel** across different cores/machines
 - **Parallelize episodes within games** for faster data collection
@@ -225,6 +225,15 @@ python3 scripts/runner.py \
  --override use_ray=true parallel_episodes=true
 ```
 
+**Option 4: Maximum Parallelization (Multi-Model Ray)**
+```bash
+# Run multiple models in parallel with full Ray integration
+# Parallelizes: Models + Games + Episodes simultaneously
+python3 scripts/run_ray_multi_model.py \
+  --config src/game_reasoning_arena/configs/ray_multi_model.yaml \
+  --override use_ray=true
+```
+
 ### Ray Configuration Options
 
 The `ray_config.yaml` file contains only Ray-specific settings:
@@ -238,6 +247,17 @@ The `ray_config.yaml` file contains only Ray-specific settings:
 | `ray_config.include_dashboard` | Enable Ray dashboard | `false` |
 | `ray_config.dashboard_port` | Dashboard port | `8265` |
 | `ray_config.object_store_memory` | Object store memory limit | Auto |
+
+
+### Performance Comparison
+
+| Execution Mode | Parallelization Level | Best For | Expected Speedup |
+|----------------|----------------------|----------|-------------------|
+| `scripts/runner.py` (standard) | Episodes only | Single model, single game | ~N_episodes |
+| `scripts/runner.py` (Ray enabled) | Games + Episodes | Single model, multiple games | ~N_games × N_episodes |
+| `scripts/run_ray_multi_model.py` | Models + Games + Episodes | Multiple models, multiple games | ~N_models × N_games × N_episodes |
+
+**Recommendation**: Use `run_ray_multi_model.py` for multi-model experiments to achieve maximum speedup.
 
 
 **Debug Commands:**
@@ -283,6 +303,26 @@ The SLURM script (`slurm_jobs/run_simulation.sh`) handles:
 # Basic syntax
 python3 scripts/runner.py --config <config_file> [--override key=value ...]
 
+```
+
+### Available Scripts
+
+| Script | Purpose | Use Case |
+|--------|---------|----------|
+| `scripts/runner.py` | Standard single experiment runner | Single model, single/multiple games |
+| `scripts/run_ray_multi_model.py` | Ray-accelerated multi-model runner | Multiple models, maximum parallelization |
+| `scripts/run_multi_model_games.py` | Sequential multi-model runner | Multiple models, conservative resource usage |
+
+**Quick Start Commands:**
+```bash
+# Single experiment
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml
+
+# Multi-model experiment with maximum speed
+python3 scripts/run_ray_multi_model.py --config src/game_reasoning_arena/configs/ray_multi_model.yaml --override use_ray=true
+
+# Multi-model experiment (conservative)
+python3 scripts/run_multi_model_games.py --config src/game_reasoning_arena/configs/multi_game_multi_model.yaml
 ```
 
 **Common Commands:**
@@ -576,7 +616,6 @@ python3 analysis/run_full_analysis.py --game hex --model llama3  # "How does Lla
 **Benefits:**
 - ⚡ **Faster processing** by analyzing only relevant data
 - 📁 **Organized output** in game/model-specific directories (`plots/game_hex/`, `plots/model_llama/`)
-- 🎯 **Research-focused** analysis for specific questions
 - 💾 **Memory efficient** for large datasets
 
 #### 1. Extract Specific Traces
@@ -638,14 +677,6 @@ After running analysis, check the `plots/` directory for:
 - `pie_reasoning_type_<model>_<game>.png` - Distribution of reasoning categories
 - `heatmap_<model>_<game>.png` - Move position preferences
 
-### Use Cases
-
-- **Model Comparison**: Compare reasoning patterns between different LLMs
-- **Strategy Analysis**: Understand how LLMs approach different games
-- **Improvement Identification**: Find gaps in LLM strategic thinking
-- **Research**: Study AI decision-making and explainability
-- **Debugging**: Identify why models make specific moves
-
 ## TensorBoard Integration
 
 The Board Game Arena includes **TensorBoard integration** for real-time monitoring and visualization of agent performance metrics during experiments.
@@ -676,10 +707,7 @@ Logs are organized by game type:
 runs/
 ├── tic_tac_toe/           # Game-specific logs
 │   └── events.out.tfevents.*
-├── connect_four/
-│   └── events.out.tfevents.*
-└── kuhn_poker/
-    └── events.out.tfevents.*
+
 ```
 
 ### Example TensorBoard Metrics
@@ -687,22 +715,6 @@ runs/
 - **`Rewards/llm_litellm_groq_llama3_8b_8192`**: Reward progression for LLM agent
 - **`Rewards/random_None`**: Reward progression for Random agent
 - **`Rewards/llm_gpt_4`**: Reward progression for GPT-4 agent
-
-### Viewing Results
-
-1. **Scalars Tab**: View reward progressions and performance trends
-2. **Compare Agents**: Select multiple metrics to compare agent performance
-3. **Time Series**: Analyze performance over episode sequences
-4. **Distributions**: Examine reward distributions across experiments
-
-### Integration with Analysis
-
-TensorBoard complements other analysis tools:
-- **Real-time monitoring** during experiments
-- **Quick performance overviews** without database queries
-- **Visual comparison** of multiple agent configurations
-- **Export capabilities** for presentations and reports
-
 
 ---
 

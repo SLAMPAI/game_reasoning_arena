@@ -1,90 +1,500 @@
-2025-08-29 19:55:04,627 - __main__ - INFO - {'env_config': {'game_name': 'tic_tac_toe', 'max_game_rounds': None}, 'num_episodes': 1, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama3-8b-8192'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama3-8b-8192'}, 'log_level': 'DEBUG'}
-2025-08-29 19:55:04,628 - __main__ - INFO - Ray disabled - using sequential execution
-2025-08-29 19:55:04,628 - __main__ - INFO - Using sequential execution (Ray disabled)
-2025-08-29 19:55:04,632 - simulate - INFO - Initializing environment for tic_tac_toe.
-2025-08-29 19:55:04,632 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for tic_tac_toe
-2025-08-29 19:55:04,633 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama3-8b-8192)
-2025-08-29 19:55:04,633 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
-2025-08-29 19:55:04,641 - simulate - INFO - Episode 1 started with seed 42.
-2025-08-29 19:55:04,768 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'timeout': 600.0, 'files': None, 'json_data': {'messages': [{'role': 'user', 'content': "You are playing the game: tic_tac_toe\nand you are playing with the: x.\n\nthe current move number is: 0\nBoard state:\n\n...\n...\n... \n\nAvailable actions:[0, 1, 2, 3, 4, 5, 6, 7, 8] (cell indices)\n\n\nWhat action do you choose? Reply only with the available action number.\n\nFirst, think through the game strategy and explain your reasoning.\nOnly after that, decide on the best action to take.\n\nReply only in the following JSON format:\n{\n  'reasoning': <str>,\n  'action': <int>\n}"}], 'model': 'llama3-8b-8192', 'max_tokens': 250, 'temperature': 0.1}, 'extra_json': {}}
-2025-08-29 19:55:04,887 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api.groq.com/openai/v1/chat/completions
-2025-08-29 19:55:04,888 - httpcore.connection - DEBUG - connect_tcp.started host='api.groq.com' port=443 local_address=None timeout=600.0 socket_options=None
-2025-08-29 19:55:04,895 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7fddb2c17b20>
-2025-08-29 19:55:04,895 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x7fddb2bcfdc0> server_hostname='api.groq.com' timeout=600.0
-2025-08-29 19:55:04,908 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7fddb257d9a0>
-2025-08-29 19:55:04,908 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
-2025-08-29 19:55:04,909 - httpcore.http11 - DEBUG - send_request_headers.complete
-2025-08-29 19:55:04,909 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
-2025-08-29 19:55:04,909 - httpcore.http11 - DEBUG - send_request_body.complete
-2025-08-29 19:55:04,909 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
-2025-08-29 19:55:05,338 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Fri, 29 Aug 2025 18:55:05 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Content-Encoding', b'gzip'), (b'Cache-Control', b'private, max-age=0, no-store, no-cache, must-revalidate'), (b'vary', b'Origin'), (b'x-groq-region', b'fra'), (b'x-ratelimit-limit-requests', b'14400'), (b'x-ratelimit-limit-tokens', b'6000'), (b'x-ratelimit-remaining-requests', b'14396'), (b'x-ratelimit-remaining-tokens', b'5877'), (b'x-ratelimit-reset-requests', b'23.47s'), (b'x-ratelimit-reset-tokens', b'1.23s'), (b'x-request-id', b'req_01k3vjxvrbfs2s4hg2z1q16gqe'), (b'via', b'1.1 google'), (b'cf-cache-status', b'DYNAMIC'), (b'Set-Cookie', b'__cf_bm=R7DnD_8ihyoDpPN7ihmloaywcenJdiG6NKQuqb_bVq0-1756493705-1.0.1.1-Y.gvrSyQh_7h44xErKuMKPG88zF2DcqPMwLsaLKT9TyHnkJNH7dMUKw3ADCVN1S71znia6TqkWj_DL0M2p_fyAZ1.hc_IrMK7p1lYaLKZCY; path=/; expires=Fri, 29-Aug-25 19:25:05 GMT; domain=.groq.com; HttpOnly; Secure; SameSite=None'), (b'Server', b'cloudflare'), (b'CF-RAY', b'976e42b7cec7cd99-LHR'), (b'alt-svc', b'h3=":443"; ma=86400')])
-2025-08-29 19:55:05,339 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
-2025-08-29 19:55:05,340 - httpcore.http11 - DEBUG - receive_response_body.complete
-2025-08-29 19:55:05,340 - httpcore.http11 - DEBUG - response_closed.started
-2025-08-29 19:55:05,340 - httpcore.http11 - DEBUG - response_closed.complete
-2025-08-29 19:55:05,340 - openai._base_client - DEBUG - HTTP Response: POST https://api.groq.com/openai/v1/chat/completions "200 OK" Headers({'date': 'Fri, 29 Aug 2025 18:55:05 GMT', 'content-type': 'application/json', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'content-encoding': 'gzip', 'cache-control': 'private, max-age=0, no-store, no-cache, must-revalidate', 'vary': 'Origin', 'x-groq-region': 'fra', 'x-ratelimit-limit-requests': '14400', 'x-ratelimit-limit-tokens': '6000', 'x-ratelimit-remaining-requests': '14396', 'x-ratelimit-remaining-tokens': '5877', 'x-ratelimit-reset-requests': '23.47s', 'x-ratelimit-reset-tokens': '1.23s', 'x-request-id': 'req_01k3vjxvrbfs2s4hg2z1q16gqe', 'via': '1.1 google', 'cf-cache-status': 'DYNAMIC', 'set-cookie': '__cf_bm=R7DnD_8ihyoDpPN7ihmloaywcenJdiG6NKQuqb_bVq0-1756493705-1.0.1.1-Y.gvrSyQh_7h44xErKuMKPG88zF2DcqPMwLsaLKT9TyHnkJNH7dMUKw3ADCVN1S71znia6TqkWj_DL0M2p_fyAZ1.hc_IrMK7p1lYaLKZCY; path=/; expires=Fri, 29-Aug-25 19:25:05 GMT; domain=.groq.com; HttpOnly; Secure; SameSite=None', 'server': 'cloudflare', 'cf-ray': '976e42b7cec7cd99-LHR', 'alt-svc': 'h3=":443"; ma=86400'})
-2025-08-29 19:55:05,340 - openai._base_client - DEBUG - request_id: req_01k3vjxvrbfs2s4hg2z1q16gqe
-2025-08-29 19:55:05,353 - simulate - INFO - Board state: 
-...
-...
-...
-2025-08-29 19:55:05,353 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-2025-08-29 19:55:05,353 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: I choose to place my X in the center of the board, which is the most strategic position. This allows me to have the greatest flexibility for my next move and puts pressure on my opponent to respond accordingly.
-2025-08-29 19:55:05,367 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'timeout': 600.0, 'files': None, 'json_data': {'messages': [{'role': 'user', 'content': "You are playing the game: tic_tac_toe\nand you are playing with the: x.\n\nthe current move number is: 2\nBoard state:\n\n.o.\n.x.\n... \n\nAvailable actions:[0, 2, 3, 5, 6, 7, 8] (cell indices)\n\n\nWhat action do you choose? Reply only with the available action number.\n\nFirst, think through the game strategy and explain your reasoning.\nOnly after that, decide on the best action to take.\n\nReply only in the following JSON format:\n{\n  'reasoning': <str>,\n  'action': <int>\n}"}], 'model': 'llama3-8b-8192', 'max_tokens': 250, 'temperature': 0.1}, 'extra_json': {}}
-2025-08-29 19:55:05,368 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api.groq.com/openai/v1/chat/completions
-2025-08-29 19:55:05,368 - httpcore.connection - DEBUG - connect_tcp.started host='api.groq.com' port=443 local_address=None timeout=600.0 socket_options=None
-2025-08-29 19:55:05,374 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7fddd22748e0>
-2025-08-29 19:55:05,374 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x7fddb2bf48c0> server_hostname='api.groq.com' timeout=600.0
-2025-08-29 19:55:05,384 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7fddd22748b0>
-2025-08-29 19:55:05,385 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
-2025-08-29 19:55:05,385 - httpcore.http11 - DEBUG - send_request_headers.complete
-2025-08-29 19:55:05,385 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
-2025-08-29 19:55:05,385 - httpcore.http11 - DEBUG - send_request_body.complete
-2025-08-29 19:55:05,385 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
-2025-08-29 19:55:05,719 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Fri, 29 Aug 2025 18:55:05 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Content-Encoding', b'gzip'), (b'Cache-Control', b'private, max-age=0, no-store, no-cache, must-revalidate'), (b'vary', b'Origin'), (b'x-groq-region', b'fra'), (b'x-ratelimit-limit-requests', b'14400'), (b'x-ratelimit-limit-tokens', b'6000'), (b'x-ratelimit-remaining-requests', b'14395'), (b'x-ratelimit-remaining-tokens', b'5686'), (b'x-ratelimit-reset-requests', b'29.549999999s'), (b'x-ratelimit-reset-tokens', b'3.136s'), (b'x-request-id', b'req_01k3vjxw6cf2nvpb3t49evtwk7'), (b'via', b'1.1 google'), (b'cf-cache-status', b'DYNAMIC'), (b'Set-Cookie', b'__cf_bm=VtUH_mNzgsQWngjRuA6ERCgGUdORS0ByIeml6ZQRF64-1756493705-1.0.1.1-oT0HGVQ3R6xE_nqzPaKFz2cQK_dXnpGTs_6U4rac50dChlmW40E_fO.w9fBH2G_VzVXPaw0SS2DfWnHox1bY0PO6bg_wRLXefcqaGm2Tv5Y; path=/; expires=Fri, 29-Aug-25 19:25:05 GMT; domain=.groq.com; HttpOnly; Secure; SameSite=None'), (b'Server', b'cloudflare'), (b'CF-RAY', b'976e42babcc08657-LHR'), (b'alt-svc', b'h3=":443"; ma=86400')])
-2025-08-29 19:55:05,720 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
-2025-08-29 19:55:05,721 - httpcore.http11 - DEBUG - receive_response_body.complete
-2025-08-29 19:55:05,721 - httpcore.http11 - DEBUG - response_closed.started
-2025-08-29 19:55:05,721 - httpcore.http11 - DEBUG - response_closed.complete
-2025-08-29 19:55:05,721 - openai._base_client - DEBUG - HTTP Response: POST https://api.groq.com/openai/v1/chat/completions "200 OK" Headers({'date': 'Fri, 29 Aug 2025 18:55:05 GMT', 'content-type': 'application/json', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'content-encoding': 'gzip', 'cache-control': 'private, max-age=0, no-store, no-cache, must-revalidate', 'vary': 'Origin', 'x-groq-region': 'fra', 'x-ratelimit-limit-requests': '14400', 'x-ratelimit-limit-tokens': '6000', 'x-ratelimit-remaining-requests': '14395', 'x-ratelimit-remaining-tokens': '5686', 'x-ratelimit-reset-requests': '29.549999999s', 'x-ratelimit-reset-tokens': '3.136s', 'x-request-id': 'req_01k3vjxw6cf2nvpb3t49evtwk7', 'via': '1.1 google', 'cf-cache-status': 'DYNAMIC', 'set-cookie': '__cf_bm=VtUH_mNzgsQWngjRuA6ERCgGUdORS0ByIeml6ZQRF64-1756493705-1.0.1.1-oT0HGVQ3R6xE_nqzPaKFz2cQK_dXnpGTs_6U4rac50dChlmW40E_fO.w9fBH2G_VzVXPaw0SS2DfWnHox1bY0PO6bg_wRLXefcqaGm2Tv5Y; path=/; expires=Fri, 29-Aug-25 19:25:05 GMT; domain=.groq.com; HttpOnly; Secure; SameSite=None', 'server': 'cloudflare', 'cf-ray': '976e42babcc08657-LHR', 'alt-svc': 'h3=":443"; ma=86400'})
-2025-08-29 19:55:05,721 - openai._base_client - DEBUG - request_id: req_01k3vjxw6cf2nvpb3t49evtwk7
-2025-08-29 19:55:05,726 - simulate - INFO - Board state: 
-.o.
-.x.
-...
-2025-08-29 19:55:05,726 - simulate - INFO - Legal actions: [0, 2, 3, 5, 6, 7, 8]
-2025-08-29 19:55:05,726 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 5 with reasoning: I want to place my X in a position that will give me the highest chance of winning. Since the opponent has already placed an O in the top-left corner, I will place my X in the center of the board to put pressure on the opponent and create potential winning lines. Additionally, this move will also limit the opponent\
-2025-08-29 19:55:05,743 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'timeout': 600.0, 'files': None, 'json_data': {'messages': [{'role': 'user', 'content': "You are playing the game: tic_tac_toe\nand you are playing with the: x.\n\nthe current move number is: 4\nBoard state:\n\noo.\n.xx\n... \n\nAvailable actions:[2, 3, 6, 7, 8] (cell indices)\n\n\nWhat action do you choose? Reply only with the available action number.\n\nFirst, think through the game strategy and explain your reasoning.\nOnly after that, decide on the best action to take.\n\nReply only in the following JSON format:\n{\n  'reasoning': <str>,\n  'action': <int>\n}"}], 'model': 'llama3-8b-8192', 'max_tokens': 250, 'temperature': 0.1}, 'extra_json': {}}
-2025-08-29 19:55:05,743 - openai._base_client - DEBUG - Sending HTTP Request: POST https://api.groq.com/openai/v1/chat/completions
-2025-08-29 19:55:05,744 - httpcore.connection - DEBUG - connect_tcp.started host='api.groq.com' port=443 local_address=None timeout=600.0 socket_options=None
-2025-08-29 19:55:05,750 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7fddd2274250>
-2025-08-29 19:55:05,751 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x7fddb2bf47c0> server_hostname='api.groq.com' timeout=600.0
-2025-08-29 19:55:05,762 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x7fddd2274670>
-2025-08-29 19:55:05,762 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
-2025-08-29 19:55:05,763 - httpcore.http11 - DEBUG - send_request_headers.complete
-2025-08-29 19:55:05,763 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
-2025-08-29 19:55:05,763 - httpcore.http11 - DEBUG - send_request_body.complete
-2025-08-29 19:55:05,763 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
-2025-08-29 19:55:06,260 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Date', b'Fri, 29 Aug 2025 18:55:06 GMT'), (b'Content-Type', b'application/json'), (b'Transfer-Encoding', b'chunked'), (b'Connection', b'keep-alive'), (b'Content-Encoding', b'gzip'), (b'Cache-Control', b'private, max-age=0, no-store, no-cache, must-revalidate'), (b'vary', b'Origin'), (b'x-groq-region', b'fra'), (b'x-ratelimit-limit-requests', b'14400'), (b'x-ratelimit-limit-tokens', b'6000'), (b'x-ratelimit-remaining-requests', b'14394'), (b'x-ratelimit-remaining-tokens', b'5500'), (b'x-ratelimit-reset-requests', b'35.608999999s'), (b'x-ratelimit-reset-tokens', b'4.996s'), (b'x-request-id', b'req_01k3vjxwjff7hvrj18qqt1cce2'), (b'via', b'1.1 google'), (b'cf-cache-status', b'DYNAMIC'), (b'Set-Cookie', b'__cf_bm=6x8i0Mnrh.qgg6jimdPynrF04PPTZrYCZvXpf2oJCHU-1756493706-1.0.1.1-50eRlW3REeZUTVMAmt6YzmSwQY8Fyvbsy_kCdRf6dwRdMTIlxXdSQraH_ctDyaBQh6F7WOruYGpdLmLMCUmkjcc47aUb5SPflj8NHEqzid4; path=/; expires=Fri, 29-Aug-25 19:25:06 GMT; domain=.groq.com; HttpOnly; Secure; SameSite=None'), (b'Server', b'cloudflare'), (b'CF-RAY', b'976e42bd191077a2-LHR'), (b'alt-svc', b'h3=":443"; ma=86400')])
-2025-08-29 19:55:06,262 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
-2025-08-29 19:55:06,263 - httpcore.http11 - DEBUG - receive_response_body.complete
-2025-08-29 19:55:06,263 - httpcore.http11 - DEBUG - response_closed.started
-2025-08-29 19:55:06,264 - httpcore.http11 - DEBUG - response_closed.complete
-2025-08-29 19:55:06,264 - openai._base_client - DEBUG - HTTP Response: POST https://api.groq.com/openai/v1/chat/completions "200 OK" Headers({'date': 'Fri, 29 Aug 2025 18:55:06 GMT', 'content-type': 'application/json', 'transfer-encoding': 'chunked', 'connection': 'keep-alive', 'content-encoding': 'gzip', 'cache-control': 'private, max-age=0, no-store, no-cache, must-revalidate', 'vary': 'Origin', 'x-groq-region': 'fra', 'x-ratelimit-limit-requests': '14400', 'x-ratelimit-limit-tokens': '6000', 'x-ratelimit-remaining-requests': '14394', 'x-ratelimit-remaining-tokens': '5500', 'x-ratelimit-reset-requests': '35.608999999s', 'x-ratelimit-reset-tokens': '4.996s', 'x-request-id': 'req_01k3vjxwjff7hvrj18qqt1cce2', 'via': '1.1 google', 'cf-cache-status': 'DYNAMIC', 'set-cookie': '__cf_bm=6x8i0Mnrh.qgg6jimdPynrF04PPTZrYCZvXpf2oJCHU-1756493706-1.0.1.1-50eRlW3REeZUTVMAmt6YzmSwQY8Fyvbsy_kCdRf6dwRdMTIlxXdSQraH_ctDyaBQh6F7WOruYGpdLmLMCUmkjcc47aUb5SPflj8NHEqzid4; path=/; expires=Fri, 29-Aug-25 19:25:06 GMT; domain=.groq.com; HttpOnly; Secure; SameSite=None', 'server': 'cloudflare', 'cf-ray': '976e42bd191077a2-LHR', 'alt-svc': 'h3=":443"; ma=86400'})
-2025-08-29 19:55:06,265 - openai._base_client - DEBUG - request_id: req_01k3vjxwjff7hvrj18qqt1cce2
-2025-08-29 19:55:06,272 - simulate - INFO - Board state: 
-oo.
-.xx
-...
-2025-08-29 19:55:06,272 - simulate - INFO - Legal actions: [2, 3, 6, 7, 8]
-2025-08-29 19:55:06,272 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 3 with reasoning: I want to block the potential two o\
-2025-08-29 19:55:06,272 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
-2025-08-29 19:55:06,284 - simulate - INFO - Simulation for game tic_tac_toe, Episode 1 completed.
-2025-08-29 19:55:06,286 - __main__ - INFO - Sequential simulation results for tic_tac_toe completed
-2025-08-29 19:55:06,286 - __main__ - INFO - All simulations completed. Total results: 1
-2025-08-29 19:55:07,400 - httpcore.connection - DEBUG - close.started
-2025-08-29 19:55:07,401 - httpcore.connection - DEBUG - close.complete
-2025-08-29 19:55:07,401 - httpcore.connection - DEBUG - close.started
-2025-08-29 19:55:07,401 - httpcore.connection - DEBUG - close.complete
-2025-08-29 19:55:07,401 - httpcore.connection - DEBUG - close.started
-2025-08-29 19:55:07,402 - httpcore.connection - DEBUG - close.complete
+2025-08-30 13:38:27,708 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:28,023 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:28,214 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:28,426 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:28,685 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:28,914 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:29,268 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:29,435 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:29,612 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:29,825 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:30,148 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:30,453 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:30,678 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:30,857 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:31,141 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:31,396 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:31,573 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:31,801 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:31,975 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:32,158 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:32,408 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:32,622 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:32,845 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:33,023 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:33,235 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:33,472 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:33,678 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:33,894 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:34,159 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:34,393 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:34,584 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:34,786 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:35,031 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:35,221 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:35,420 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:35,662 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:35,900 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:36,110 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:36,294 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:36,469 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:36,732 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:36,920 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:37,111 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:37,367 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:37,588 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:37,817 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:38,050 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:38,269 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:38,791 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:38,966 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:39,193 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:39,440 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:39,627 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:39,916 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:40,231 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:40,533 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:40,714 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:40,889 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:41,055 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:41,263 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:41,466 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:41,660 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:41,854 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:42,044 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:42,264 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:42,460 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:42,624 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:42,808 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:43,010 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:43,299 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:43,562 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:43,780 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:43,996 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:44,161 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:44,427 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:44,595 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:44,804 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:45,022 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:45,248 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:45,464 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:45,683 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:45,925 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:46,155 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:46,344 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:46,531 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:46,732 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:46,954 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:47,186 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:47,808 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:48,015 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:48,235 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:48,471 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:48,835 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:49,029 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:49,191 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:49,373 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:49,534 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:49,745 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:49,941 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:50,182 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:50,361 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:50,539 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:50,738 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:50,911 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:51,131 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:51,307 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:51,483 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:51,684 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:51,856 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:52,037 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:52,255 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:52,453 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:52,663 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:52,878 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:53,099 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:53,309 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:53,519 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:53,702 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:54,050 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:54,351 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:54,551 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:54,735 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:54,926 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:55,116 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe
+2025-08-30 13:38:55,297 - root - ERROR - Error with model litellm_gpt-5 for player 0: LiteLLM inference failed for gpt-5: OpenAIException - Error code: 400 - {'error': {'message': "Unsupported parameter: 'max_tokens' is not supported with this model. Use 'max_completion_tokens' instead.", 'type': 'invalid_request_error', 'param': 'max_tokens', 'code': 'unsupported_parameter'}} 
+Model: gpt-5
+API Base: https://api.openai.com
+Messages: [{'role': 'user', 'content': "You are playing the game: hex\nand you are playing with the: x.\n\nthe

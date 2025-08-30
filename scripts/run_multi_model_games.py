@@ -255,6 +255,10 @@ def main():
             log_level = config.get("log_level", "INFO")
             max_tokens = llm_config.get("max_tokens", 250)
             temperature = llm_config.get("temperature", 0.1)
+            use_ray = config.get("use_ray", False)
+            parallel_episodes = config.get("parallel_episodes", False)
+
+            parallel_str = str(parallel_episodes).lower()
 
             command += (
                 f"--override agents.player_0.model={model} "
@@ -263,7 +267,8 @@ def main():
                 f"--override num_episodes={num_episodes} "
                 f"--override mode=llm_vs_random "
                 f"--override seed=42 "
-                f"--override use_ray=false "
+                f"--override use_ray={str(use_ray).lower()} "
+                f"--override parallel_episodes={parallel_str} "
                 f"--override log_level={log_level} "
                 f"--override llm_backend.max_tokens={max_tokens} "
                 f"--override llm_backend.temperature={temperature} "

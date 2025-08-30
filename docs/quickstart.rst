@@ -51,10 +51,27 @@ Try an LLM agent against a random player:
      agents.player_1.type=random \
      num_episodes=5
 
+Parallel Execution with Ray
+---------------------------
+
+For faster experiments, enable Ray parallelization:
+
+.. code-block:: bash
+
+   # Single model with parallel episodes and games
+   python scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml \
+     --override use_ray=true parallel_episodes=true
+
+   # Multiple models in parallel (maximum speed)
+   python scripts/run_ray_multi_model.py \
+     --config src/game_reasoning_arena/configs/ray_multi_model.yaml \
+     --override use_ray=true
+
 What's Next?
 ------------
 
 * Learn about :doc:`games` supported by the platform
 * Explore different :doc:`agents` types
+* Check out :doc:`experiments` for Ray parallelization details
 * Check out detailed :doc:`examples`
 * Read the full :doc:`api_reference`

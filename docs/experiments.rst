@@ -55,6 +55,16 @@ Configuration Options
    python3 scripts/runner.py --config src/game_reasoning_arena/configs/example_config.yaml \
      --override use_ray=true parallel_episodes=true
 
+**Option 4: Maximum Parallelization (Multi-Model Ray)**
+
+.. code-block:: bash
+
+   # Run multiple models in parallel with full Ray integration
+   # Parallelizes: Models + Games + Episodes simultaneously
+   python3 scripts/run_ray_multi_model.py \
+     --config src/game_reasoning_arena/configs/ray_multi_model.yaml \
+     --override use_ray=true
+
 Ray Configuration Parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -88,6 +98,32 @@ The ``ray_config.yaml`` file contains Ray-specific settings:
    * - ``ray_config.object_store_memory``
      - Object store memory limit
      - Auto
+
+Performance Comparison
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table:: Execution Modes Performance
+   :widths: 30 25 25 20
+   :header-rows: 1
+
+   * - Execution Mode
+     - Parallelization Level
+     - Best For
+     - Expected Speedup
+   * - ``scripts/runner.py`` (standard)
+     - Episodes only
+     - Single model, single game
+     - ~N_episodes
+   * - ``scripts/runner.py`` (Ray enabled)
+     - Games + Episodes
+     - Single model, multiple games
+     - ~N_games × N_episodes
+   * - ``scripts/run_ray_multi_model.py``
+     - Models + Games + Episodes
+     - Multiple models, multiple games
+     - ~N_models × N_games × N_episodes
+
+**Recommendation**: Use ``run_ray_multi_model.py`` for multi-model experiments to achieve maximum speedup.
 
 Configuration Merging Order
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

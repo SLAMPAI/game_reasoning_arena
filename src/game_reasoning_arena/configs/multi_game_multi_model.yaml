@@ -2,33 +2,37 @@
 # Example command to run:
 # python3 scripts/runner.py --config src/game_reasoning_arena/configs/multi_game_multi_model.yaml
 
+# N.B. This config takes a while to run, there is a different script to run the same with Ray
 
 # Use env_configs (plural) for multiple games as a list
 env_configs:
-  # - game_name: kuhn_poker
-  #   max_game_rounds: null
-  # - game_name: connect_four
-  #   max_game_rounds: null
-  # - game_name: tic_tac_toe
-  #   max_game_rounds: null
-  # - game_name: matrix_rps
-  #   max_game_rounds: 10
-  # - game_name: matrix_pd
-  #   max_game_rounds: 10
+  - game_name: kuhn_poker
+    max_game_rounds: null
+  - game_name: connect_four
+    max_game_rounds: null
+  - game_name: tic_tac_toe
+    max_game_rounds: null
+  - game_name: matrix_rps
+    max_game_rounds: 10
+  - game_name: matrix_pd
+    max_game_rounds: 10
+  - game_name: matching_pennies
+    max_game_rounds: 10
   # - game_name: hex  #  takes too much time, run standalone
-  #  max_game_rounds: 50      # Limit HEX games to prevent infinite loops
+  #   max_game_rounds: 50      # Limit HEX games to prevent infinite loops
 
 num_episodes: 1
 seed: 42
 use_ray: false
+parallel_episodes: true     # Parallelize episodes within games
 mode: llm_vs_random
 
-# To run all models, override agents.player_0.model in your script or loop over these models externally
+# To run all models, override agents.player_0.model in the script or loop over these models externally
 models:
   - litellm_groq/llama3-8b-8192      # Fast, good performance
   - litellm_groq/gemma2-9b-it        # Fast, reliable
-  # - litellm_groq/llama3-70b-8192   # SLOW - commented out for HEX
-#  - litellm_gpt-3.5-turbo
+  - litellm_groq/llama3-70b-8192   # SLOW - commented out for HEX
+  - litellm_gpt-3.5-turbo
   - litellm_gpt-4
 #  - litellm_gpt-4-turbo
   - litellm_gpt-o4-mini
@@ -48,7 +52,7 @@ models:
 agents:
   player_0:
     type: llm
-    model: litellm_groq/llama3-8b-8192  # Default, override as needed
+    model: litellm_groq/llama3-8b-8192  # Default (will be overridden per model)
   player_1:
     type: random
 

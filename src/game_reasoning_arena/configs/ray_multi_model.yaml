@@ -1,0 +1,68 @@
+# Ray-Optimized Multi-Model Configuration
+# This config is designed for maximum parallel throughput using Ray
+#
+# Usage:
+# python3 scripts/run_ray_multi_model.py --config src/game_reasoning_arena/configs/ray_multi_model.yaml
+
+# Games to run (including longer games with Ray parallelization)
+env_configs:
+  - game_name: tic_tac_toe
+    max_game_rounds: null
+  - game_name: kuhn_poker
+    max_game_rounds: null
+  - game_name: matrix_rps
+    max_game_rounds: 10
+  - game_name: matrix_pd
+    max_game_rounds: 10
+  - game_name: matching_pennies
+    max_game_rounds: 10
+  - game_name: connect_four
+    max_game_rounds: null
+  - game_name: hex
+    max_game_rounds: 50      # Limited rounds to prevent infinite games
+
+# Parallel execution settings
+num_episodes: 5              # More episodes for better statistics
+seed: 42
+use_ray: true               # Enable Ray distributed computing
+parallel_episodes: true     # Parallelize episodes within games
+mode: llm_vs_random
+
+# Models to test (carefully selected for speed/performance balance)
+models:
+  # Fast models for quick iteration
+  - litellm_groq/llama3-8b-8192      # Very fast
+  - litellm_groq/gemma2-9b-it        # Fast and reliable
+  - litellm_gpt-4o-mini              # Fast OpenAI model
+
+  # Premium models (slower but higher quality)
+  - litellm_gpt-4                    # Baseline GPT-4
+  - litellm_together_ai/mistralai/Mixtral-8x7B-Instruct-v0.1
+  - litellm_fireworks_ai/accounts/fireworks/models/glm-4p5-air
+
+  # Add more models as needed:
+  - litellm_groq/llama3-70b-8192   # Slower but more capable
+  - litellm_gpt-5                  # Latest models
+
+# Agent configuration
+agents:
+  player_0:
+    type: llm
+    model: litellm_groq/llama3-8b-8192  # Default (will be overridden per model)
+  player_1:
+    type: random
+
+# Ray configuration optimized for multi-model parallel execution
+ray_config:
+  # num_cpus: auto-detected by Ray (recommended)
+  # object_store_memory: auto-detected by Ray (recommended)
+  include_dashboard: false            # Disable for headless operation
+
+# LLM settings optimized for speed
+llm_backend:
+  max_tokens: 100                     # Reduced for faster responses
+  temperature: 0.1                    # Low temperature for consistency
+  default_model: litellm_groq/llama3-8b-8192
+
+# Logging optimized for parallel execution
+log_level: ERROR                      # Minimal logging to reduce overhead
