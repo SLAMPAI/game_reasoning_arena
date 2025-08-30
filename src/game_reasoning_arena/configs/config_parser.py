@@ -2,10 +2,12 @@
 Simple configuration system with YAML and key-value CLI overrides.
 """
 
-import os
 import argparse
-import yaml
+import os
 from typing import Any, Dict
+
+import yaml
+
 from ..arena.games.registry import registry
 
 
@@ -35,6 +37,7 @@ def default_simulation_config() -> Dict[str, Any]:
             "default_model": "litellm_groq/gemma-7b-it",
         },
         "log_level": "INFO",
+        "tensorboard_logging": False,  # Disabled by default for performance
     }
 
 

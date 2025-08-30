@@ -136,6 +136,14 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
         )
     writer = SummaryWriter(log_dir=f"runs/{game_name}")  # Tensorboard writer
 
+    # Initialize Tensorboard writer only if logging is enabled
+    writer = None
+    if config.get("tensorboard_logging", False):
+        writer = SummaryWriter(log_dir=f"runs/{game_name}")
+        logger.info(
+            "Tensorboard logging enabled - writing to runs/%s", game_name
+        )
+
     # Create player_to_agent mapping for RLLib-style action computation
     player_to_agent = {}
     for i, policy_name in enumerate(policies_dict.keys()):
@@ -303,16 +311,24 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
                     agent_model = value.get("model", "None")
                     break
 
-            tensorboard_key = f"{agent_type}_{agent_model.replace('-', '_')}"
-            writer.add_scalar(
-                f"Rewards/{tensorboard_key}", reward, episode + 1
-            )
+            # Tensorboard logging (only if enabled)
+            if writer is not None:
+                tensorboard_key = (
+                    f"{agent_type}_{agent_model.replace('-', '_')}"
+                )
+                writer.add_scalar(
+                    f"Rewards/{tensorboard_key}", reward, episode + 1
+                )
 
         logger.info(
             "Simulation for game %s, Episode %d completed.",
             game_name, episode + 1
         )
-    writer.close()
+
+    # Close Tensorboard writer if it was created
+    if writer is not None:
+        writer.close()
+
     return "Simulation Completed"
 
 # start tensorboard from the terminal:

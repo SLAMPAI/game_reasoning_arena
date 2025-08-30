@@ -247,6 +247,7 @@ The `ray_config.yaml` file contains only Ray-specific settings:
 | `ray_config.include_dashboard` | Enable Ray dashboard | `false` |
 | `ray_config.dashboard_port` | Dashboard port | `8265` |
 | `ray_config.object_store_memory` | Object store memory limit | Auto |
+| `tensorboard_logging` | Enable Tensorboard metric logging | `false` |
 
 
 ### Performance Comparison

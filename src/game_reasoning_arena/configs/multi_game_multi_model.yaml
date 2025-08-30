@@ -62,3 +62,4 @@ llm_backend:
   default_model: litellm_groq/llama3-8b-8192
 
 log_level: WARNING          # Reduced logging for speed
+tensorboard_logging: false # Disabled by default for performance

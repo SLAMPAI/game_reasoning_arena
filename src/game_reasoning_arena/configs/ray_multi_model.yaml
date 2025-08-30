@@ -66,3 +66,4 @@ llm_backend:
 
 # Logging optimized for parallel execution
 log_level: ERROR                      # Minimal logging to reduce overhead
+tensorboard_logging: false           # Disabled for performance during parallel runs

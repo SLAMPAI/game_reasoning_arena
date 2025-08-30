@@ -124,7 +124,8 @@ def run_single_model_all_games(
             {"game_name": "matching_pennies", "max_game_rounds": 10},
             {"game_name": "connect_four"},
             {"game_name": "hex"}
-        ]
+        ],
+        "tensorboard_logging": False  # Disabled by default for performance
     }
 
     # Deep merge user config with defaults (user config takes precedence)

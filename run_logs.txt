@@ -1,47 +1,31 @@
-2025-08-30 13:50:02,176 - __main__ - INFO - {'env_config': {'game_name': 'tic_tac_toe', 'max_game_rounds': None}, 'num_episodes': True, 'seed': 42, 'use_ray': False, 'mode': 'human_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_gpt-5'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama3-8b-8192'}, 'log_level': 'INFO', 'env_configs': {'0': {'game_name': 'tic_tac_toe'}}}
-2025-08-30 13:50:02,185 - __main__ - INFO - Ray disabled - using sequential execution
-2025-08-30 13:50:02,186 - __main__ - INFO - Using sequential execution (Ray disabled)
-2025-08-30 13:50:02,192 - simulate - INFO - Initializing environment for tic_tac_toe.
-2025-08-30 13:50:02,192 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for tic_tac_toe
-2025-08-30 13:50:02,193 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_gpt-5)
-2025-08-30 13:50:02,193 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
-2025-08-30 13:50:02,206 - simulate - INFO - Episode 1 started with seed 42.
-2025-08-30 13:50:05,320 - root - WARNING - No valid action found in response: '...' Using random fallback: 1
-2025-08-30 13:50:05,322 - simulate - INFO - Board state: 
+2025-08-30 14:11:57,926 - __main__ - INFO - {'env_config': {'game_name': 'tic_tac_toe', 'max_game_rounds': None}, 'num_episodes': True, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama3-8b-8192'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama3-8b-8192'}, 'log_level': 'INFO', 'tensorboard_logging': True, 'env_configs': {'0': {'game_name': 'tic_tac_toe'}}}
+2025-08-30 14:11:57,928 - __main__ - INFO - Ray disabled - using sequential execution
+2025-08-30 14:11:57,928 - __main__ - INFO - Using sequential execution (Ray disabled)
+2025-08-30 14:11:57,933 - simulate - INFO - Initializing environment for tic_tac_toe.
+2025-08-30 14:11:57,933 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for tic_tac_toe
+2025-08-30 14:11:57,933 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama3-8b-8192)
+2025-08-30 14:11:57,933 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
+2025-08-30 14:11:57,937 - simulate - INFO - Tensorboard logging enabled - writing to runs/tic_tac_toe
+2025-08-30 14:11:57,943 - simulate - INFO - Episode 1 started with seed 42.
+2025-08-30 14:11:58,291 - simulate - INFO - Board state: 
 ...
 ...
 ...
-2025-08-30 13:50:05,323 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-2025-08-30 13:50:05,323 - simulate - INFO - Agent 0 (litellm_gpt-5) chose action: 1 with reasoning: No reasoning provided
-2025-08-30 13:50:08,700 - root - WARNING - No valid action found in response: '...' Using random fallback: 0
-2025-08-30 13:50:08,704 - simulate - INFO - Board state: 
-.xo
+2025-08-30 14:11:58,291 - simulate - INFO - Legal actions: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+2025-08-30 14:11:58,291 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 4 with reasoning: I choose to place my X in the center of the board, which is the most strategic position. This allows me to have the most options for my next move and puts pressure on my opponent to respond. Additionally, placing my X in the center gives me the best chance to win the game by creating a potential row, column, or diagonal.
+2025-08-30 14:11:58,586 - simulate - INFO - Board state: 
+.o.
+.x.
 ...
+2025-08-30 14:11:58,586 - simulate - INFO - Legal actions: [0, 2, 3, 5, 6, 7, 8]
+2025-08-30 14:11:58,586 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 5 with reasoning: I want to place my X in a position that will give me the highest chance of winning. Since the opponent has already placed their O in the top-left corner, I will place my X in the center of the board to put pressure on their position and limit their options. This will also give me the opportunity to potentially create a winning line in the future.
+2025-08-30 14:11:58,800 - simulate - INFO - Board state: 
+oo.
+.xx
 ...
-2025-08-30 13:50:08,704 - simulate - INFO - Legal actions: [0, 3, 4, 5, 6, 7, 8]
-2025-08-30 13:50:08,704 - simulate - INFO - Agent 0 (litellm_gpt-5) chose action: 0 with reasoning: No reasoning provided
-2025-08-30 13:50:11,871 - root - WARNING - No valid action found in response: '...' Using random fallback: 6
-2025-08-30 13:50:11,873 - simulate - INFO - Board state: 
-xxo
-o..
-...
-2025-08-30 13:50:11,874 - simulate - INFO - Legal actions: [4, 5, 6, 7, 8]
-2025-08-30 13:50:11,874 - simulate - INFO - Agent 0 (litellm_gpt-5) chose action: 6 with reasoning: No reasoning provided
-2025-08-30 13:50:15,766 - root - WARNING - No valid action found in response: '...' Using random fallback: 4
-2025-08-30 13:50:15,769 - simulate - INFO - Board state: 
-xxo
-o..
-xo.
-2025-08-30 13:50:15,770 - simulate - INFO - Legal actions: [4, 5, 8]
-2025-08-30 13:50:15,770 - simulate - INFO - Agent 0 (litellm_gpt-5) chose action: 4 with reasoning: No reasoning provided
-2025-08-30 13:50:19,312 - root - WARNING - No valid action found in response: '...' Using random fallback: 8
-2025-08-30 13:50:19,316 - simulate - INFO - Board state: 
-xxo
-oxo
-xo.
-2025-08-30 13:50:19,316 - simulate - INFO - Legal actions: [8]
-2025-08-30 13:50:19,316 - simulate - INFO - Agent 0 (litellm_gpt-5) chose action: 8 with reasoning: No reasoning provided
-2025-08-30 13:50:19,316 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
-2025-08-30 13:50:19,324 - simulate - INFO - Simulation for game tic_tac_toe, Episode 1 completed.
-2025-08-30 13:50:19,325 - __main__ - INFO - Sequential simulation results for tic_tac_toe completed
-2025-08-30 13:50:19,325 - __main__ - INFO - All simulations completed. Total results: 1
+2025-08-30 14:11:58,801 - simulate - INFO - Legal actions: [2, 3, 6, 7, 8]
+2025-08-30 14:11:58,801 - simulate - INFO - Agent 0 (litellm_groq/llama3-8b-8192) chose action: 3 with reasoning: I want to block the potential two-in-a-row for O and also create a possibility for a future win. By playing in cell 3, I can block the potential win for O and also set up a potential win for myself. Additionally, playing in cell 3 will give me more options for my next move.
+2025-08-30 14:11:58,801 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
+2025-08-30 14:11:58,809 - simulate - INFO - Simulation for game tic_tac_toe, Episode 1 completed.
+2025-08-30 14:11:58,810 - __main__ - INFO - Sequential simulation results for tic_tac_toe completed
+2025-08-30 14:11:58,810 - __main__ - INFO - All simulations completed. Total results: 1
