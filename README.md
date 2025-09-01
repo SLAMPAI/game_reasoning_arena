@@ -594,7 +594,7 @@ python3 show_reasoning_traces.py
 > python3 analysis/run_full_analysis.py --model llama3     # Analyze only Llama3 models
 > python3 analysis/run_full_analysis.py --game hex --model llama3  # Combined filtering
 > ```
-> 
+>
 > **📚 Detailed Analysis Documentation:**
 > - **[Analysis How-To Guide](analysis/README_how_to.md)** - Comprehensive guide for running analysis pipelines and interpreting results
 > - **[Entropy Analysis Report](analysis/README_Entropy.md)** - Deep dive into reasoning diversity metrics and entropy calculations
