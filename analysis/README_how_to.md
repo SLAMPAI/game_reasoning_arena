@@ -405,10 +405,6 @@ pip install pandas matplotlib seaborn wordcloud transformers numpy
 
 ## 🐛 Troubleshooting
 
-### No Data Found
-- Ensure games were run with LLM agents (not just random agents)
-- Check that database files exist in `results/` directory
-- Verify model configuration was correct during game runs
 
 ### Empty or Missing Entropy/Evolution Plots
 - **Short games** (Kuhn Poker, Matching Pennies, Prisoner's Dilemma) naturally produce sparse entropy data
@@ -429,4 +425,3 @@ pip install pandas matplotlib seaborn wordcloud transformers numpy
 
 ---
 
-*This analysis module is part of the Game Reasoning Arena project for studying LLM decision-making in strategic games.*
