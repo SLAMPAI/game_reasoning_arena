@@ -28,7 +28,7 @@ python3 analysis/run_full_analysis.py                    # Default settings
 python3 analysis/run_full_analysis.py --quiet            # Less verbose
 python3 analysis/run_full_analysis.py --plots-dir custom_plots  # Custom output
 
-# 🎯 NEW: Game-specific and Model-specific Analysis
+# Game-specific and Model-specific Analysis
 python3 analysis/run_full_analysis.py --game hex         # Analyze only HEX games
 python3 analysis/run_full_analysis.py --model llama3     # Analyze only Llama3 models
 python3 analysis/run_full_analysis.py --game hex --model llama3  # Combined filtering
@@ -48,7 +48,7 @@ These automated solutions will:
 
 ---
 
-## 🎯 Game-Specific and Model-Specific Analysis (NEW!)
+## 🎯 Game-Specific and Model-Specific Analysis
 
 The analysis pipeline now supports filtering for specific games and models, allowing you to focus your analysis on particular scenarios.
 
@@ -230,7 +230,7 @@ summary_stats = compute_summary_statistics(merged_df)
 
 ## 🔄 Automated Analysis Workflow (RECOMMENDED)
 
-The new automated pipeline replaces the manual multi-step process below. Instead of running each script individually, you can now:
+The automated pipeline replaces the manual multi-step process below. Instead of running each script individually, you can now:
 
 ### Single Command Analysis
 ```bash
@@ -246,7 +246,7 @@ python3 analysis/run_full_analysis.py --game hex --model llama
 ```bash
 python3 analysis/run_full_analysis.py [options]
 
-# New filtering options:
+# Filtering options:
 python3 analysis/run_full_analysis.py --game hex      # HEX games only
 python3 analysis/run_full_analysis.py --model llama   # Llama models only
 python3 analysis/run_full_analysis.py --game hex --model llama  # Combined
@@ -419,12 +419,12 @@ pip install pandas matplotlib seaborn wordcloud transformers numpy
 ### Memory Issues with Large Datasets
 - Process data in chunks using pandas `chunksize` parameter
 - Filter data by game type or time period before analysis
-- **NEW:** Use `--game` and `--model` filters to analyze specific subsets
+- Use `--game` and `--model` filters to analyze specific subsets
 - Use SQLite queries to pre-filter before loading into memory
 
 ### Focused Analysis
-- **NEW:** Use `--game hex` to analyze only HEX games for faster processing
-- **NEW:** Use `--model llama` to compare only Llama model variants
+- Use `--game hex` to analyze only HEX games for faster processing
+- Use `--model llama` to compare only Llama model variants
 - Combine filters: `--game hex --model llama` for targeted research questions
 
 ---
