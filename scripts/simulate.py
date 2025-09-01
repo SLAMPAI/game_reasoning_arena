@@ -10,21 +10,19 @@ import logging
 import sys
 from pathlib import Path
 from typing import Dict, Any
-
-# Ensure the src directory is in the Python path
-current_dir = Path(__file__).parent
-src_dir = current_dir / ".." / "src"
-sys.path.insert(0, str(src_dir.resolve()))
-
-# pylint: disable=wrong-import-position
 from game_reasoning_arena.arena.utils.seeding import set_seed
-from game_reasoning_arena.arena.games.registry import registry  # Games registry
+from game_reasoning_arena.arena.games.registry import registry  # Gamesregistry
 from game_reasoning_arena.backends import initialize_llm_registry
 from game_reasoning_arena.arena.agents.policy_manager import (
     initialize_policies, policy_mapping_fn
 )
 from game_reasoning_arena.arena.utils.loggers import SQLiteLogger
 from torch.utils.tensorboard import SummaryWriter
+
+# Ensure the src directory is in the Python path
+current_dir = Path(__file__).parent
+src_dir = current_dir / ".." / "src"
+sys.path.insert(0, str(src_dir.resolve()))
 
 
 logger = logging.getLogger(__name__)
@@ -198,9 +196,10 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
                 if (chosen_action is None or
                         chosen_action not in observation["legal_actions"]):
                     logger.error(
-                        f"ILLEGAL MOVE DETECTED - Agent {agent_id}: "
-                        f"chosen_action={chosen_action} (type: {type(chosen_action)}), "
-                        f"legal_actions={observation['legal_actions']}"
+                        "ILLEGAL MOVE DETECTED - Agent %s: chosen_action=%s "
+                        "(type: %s), legal_actions=%s",
+                        agent_id, chosen_action, type(chosen_action),
+                        observation['legal_actions']
                     )
                     if agent_type == "llm":
                         log_llm_action(
@@ -231,7 +230,9 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
                         opp_agent_type = config['agents'][a_id]['type']
                         model = config['agents'][a_id].get('model', 'None')
                         model_clean = model.replace('-', '_')
-                        opponents_list.append(f"{opp_agent_type}_{model_clean}")
+                        opponents_list.append(
+                            f"{opp_agent_type}_{model_clean}"
+                        )
                 opponents = ", ".join(opponents_list)
 
                 agent_logger.log_move(

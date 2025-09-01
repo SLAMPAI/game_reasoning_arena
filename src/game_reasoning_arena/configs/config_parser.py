@@ -123,7 +123,6 @@ def parse_config(args: argparse.Namespace) -> Dict[str, Any]:
     # Start with default config
     config = default_simulation_config()
 
-
     # Merge base config first (if provided)
     if hasattr(args, 'base_config') and args.base_config:
         base_config = load_config(args.base_config)
