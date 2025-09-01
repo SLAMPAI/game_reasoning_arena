@@ -1,25 +1,16 @@
-2025-08-30 14:38:30,026 - root - WARNING - No valid action found in response: '...' Using random fallback: 81
-2025-08-30 14:38:32,938 - root - WARNING - No valid action found in response: '...' Using random fallback: 14
-2025-08-30 14:38:36,129 - root - WARNING - No valid action found in response: '...' Using random fallback: 3
-2025-08-30 14:38:40,921 - root - WARNING - No valid action found in response: '...' Using random fallback: 100
-2025-08-30 14:38:44,797 - root - WARNING - No valid action found in response: '...' Using random fallback: 39
-2025-08-30 14:38:47,345 - root - WARNING - No valid action found in response: '...' Using random fallback: 35
-2025-08-30 14:38:51,165 - root - WARNING - No valid action found in response: '...' Using random fallback: 32
-2025-08-30 14:38:55,148 - root - WARNING - No valid action found in response: '...' Using random fallback: 21
-2025-08-30 14:38:58,741 - root - WARNING - No valid action found in response: '...' Using random fallback: 110
-2025-08-30 14:39:01,665 - root - WARNING - No valid action found in response: '...' Using random fallback: 17
-2025-08-30 14:39:07,546 - root - WARNING - No valid action found in response: '...' Using random fallback: 104
-2025-08-30 14:39:10,830 - root - WARNING - No valid action found in response: '...' Using random fallback: 116
-2025-08-30 14:39:22,501 - root - WARNING - No valid action found in response: '...' Using random fallback: 85
-2025-08-30 14:39:25,672 - root - WARNING - No valid action found in response: '...' Using random fallback: 13
-2025-08-30 14:39:29,878 - root - WARNING - No valid action found in response: '...' Using random fallback: 95
-2025-08-30 14:39:34,897 - root - WARNING - No valid action found in response: '...' Using random fallback: 70
-2025-08-30 14:39:37,553 - root - WARNING - No valid action found in response: '...' Using random fallback: 6
-2025-08-30 14:39:40,113 - root - WARNING - No valid action found in response: '...' Using random fallback: 5
-2025-08-30 14:39:42,780 - root - WARNING - No valid action found in response: '...' Using random fallback: 25
-2025-08-30 14:39:46,055 - root - WARNING - No valid action found in response: '...' Using random fallback: 49
-2025-08-30 14:39:49,233 - root - WARNING - No valid action found in response: '...' Using random fallback: 53
-2025-08-30 14:39:53,221 - root - WARNING - No valid action found in response: '...' Using random fallback: 98
-2025-08-30 14:39:57,676 - root - WARNING - No valid action found in response: '...' Using random fallback: 9
-2025-08-30 14:40:01,309 - root - WARNING - No valid action found in response: '...' Using random fallback: 115
-2025-08-30 14:40:04,179 - root - WARNING - No valid action found in response: '...' Using random fallback: 51
+2025-09-01 22:34:43,491 - __main__ - INFO - {'env_config': {'game_name': 'kuhn_poker', 'max_game_rounds': None}, 'num_episodes': 1, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'litellm_groq/llama-3.1-8b-instant'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/llama-3.1-8b-instant'}, 'log_level': 'INFO', 'tensorboard_logging': False}
+2025-09-01 22:34:43,499 - __main__ - INFO - Ray disabled - using sequential execution
+2025-09-01 22:34:43,500 - __main__ - INFO - Using sequential execution (Ray disabled)
+2025-09-01 22:34:43,505 - simulate - INFO - Initializing environment for kuhn_poker.
+2025-09-01 22:34:43,505 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for kuhn_poker
+2025-09-01 22:34:43,505 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (litellm_groq/llama-3.1-8b-instant)
+2025-09-01 22:34:43,506 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
+2025-09-01 22:34:43,517 - simulate - INFO - Episode 1 started with seed 42.
+2025-09-01 22:34:43,929 - simulate - INFO - Board state: 
+111
+2025-09-01 22:34:43,930 - simulate - INFO - Legal actions: [0, 1]
+2025-09-01 22:34:43,930 - simulate - INFO - Agent 0 (litellm_groq/llama-3.1-8b-instant) chose action: 1 with reasoning: Since it\
+2025-09-01 22:34:43,933 - simulate - INFO - Game status: terminated with rewards dict: {0: 1.0, 1: -1.0}
+2025-09-01 22:34:43,941 - simulate - INFO - Simulation for game kuhn_poker, Episode 1 completed.
+2025-09-01 22:34:43,941 - __main__ - INFO - Sequential simulation results for kuhn_poker completed
+2025-09-01 22:34:43,942 - __main__ - INFO - All simulations completed. Total results: 1

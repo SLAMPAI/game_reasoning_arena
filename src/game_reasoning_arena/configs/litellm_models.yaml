@@ -14,8 +14,8 @@ models:
 
   # Groq models (fast inference)
   # https://docs.litellm.ai/docs/providers/groq
-  - litellm_groq/llama3-8b-8192
-  - litellm_groq/llama3-70b-8192
+  - litellm_groq/llama-3.1-8b-instant
+  - litellm_groq/llama-3.1-70b-versatile
   - litellm_groq/gemma2-9b-it
   # Note: Qwen and Kimi models also available via Fireworks AI below
 

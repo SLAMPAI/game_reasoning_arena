@@ -12,13 +12,13 @@ mode: llm_vs_random
 agents:
   player_0:
     type: llm
-    model: litellm_groq/llama3-8b-8192
+    model: litellm_groq/llama-3.1-8b-instant
   player_1:
     type: random
 
 llm_backend:
   max_tokens: 250
   temperature: 0.1
-  default_model: litellm_groq/llama3-8b-8192
+  default_model: litellm_groq/llama-3.1-8b-instant
 
 log_level: INFO
