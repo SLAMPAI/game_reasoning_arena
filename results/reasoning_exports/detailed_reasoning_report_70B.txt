@@ -1,0 +1,4557 @@
+🔍 Board Game Arena - Reasoning Traces Extractor
+=======================================================
+
+📊 Reasoning Analysis
+========================================
+Total moves analyzed: 289
+Games: 7
+Episodes: 32
+Moves with reasoning: 289/289 (100.0%)
+Moves with board state: 289/289 (100.0%)
+
+Agent types:
+  - llm: 289 moves
+
+Specific models:
+  - litellm_groq/llama3-70b-8192: 289 moves
+
+Games breakdown:
+                  Episodes  Total Moves
+game_name                              
+connect_four             5           54
+hex                      2          166
+kuhn_poker               5           10
+matching_pennies         5            5
+matrix_pd                5            9
+matrix_rps               5            9
+tic_tac_toe              5           36
+
+============================================================
+🎮 Game: connect_four | Episode: 1
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   .......
+   
+🎯 Action: 3
+🧠 Reasoning: In the initial move, I will place my x in the middle column (3) to have the highest flexibility for the next move and to potentially create two possible ways to win.
+⏰ Timestamp: 2025-08-12T23:57:49.822542
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   .......
+   
+🎯 Action: 3
+🧠 Reasoning: In the initial state of the game, the best strategy is to control the center column, as it provides the most flexibility for the next move. By placing my "x" in the center column, I can potentially create two possible ways to win, either horizontally or vertically. This also puts pressure on my opponent to respond in the center, which can limit their options.
+⏰ Timestamp: 2025-08-13T00:05:00.901745
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   .......
+   
+🎯 Action: 3
+🧠 Reasoning: In the initial state of the game, the best strategy is to control the center column, as it provides the most flexibility for the next move. By placing my "x" in the center column, I can potentially create two different ways to win, whereas placing it on the side columns would limit my options. Therefore, I will place my "x" in column 3.
+⏰ Timestamp: 2025-08-14T00:42:46.536698
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   .......
+   
+🎯 Action: 3
+🧠 Reasoning: In the initial move, I want to control the center of the board, which gives me the most flexibility for the next moves. The center column is the most important column in Connect Four, as it provides the most opportunities to create a winning line. By placing my "x" in the center column, I am maximizing my chances of winning.
+⏰ Timestamp: 2025-08-17T20:29:16.782138
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   .......
+   
+🎯 Action: 3
+🧠 Reasoning: In the initial move, I want to control the center of the board, which gives me the most flexibility for the next moves. The center column is the most important column in Connect Four, as it provides the most opportunities to create a winning line. By placing my "x" in the center column, I am maximizing my chances of winning.
+⏰ Timestamp: 2025-08-17T21:42:21.176197
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   .......
+   
+🎯 Action: 3
+🧠 Reasoning: In the initial move, I want to control the center of the board, which gives me the most flexibility for the next moves. The center column is the most important column in Connect Four, as it provides the most opportunities to create a winning line. By placing my "x" in the center column, I am maximizing my chances of winning.
+⏰ Timestamp: 2025-08-30T13:30:27.849698
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   ...x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: Since the opponent has placed their "o" in the bottom right corner, I want to block their potential three-in-a-row while also setting myself up for a potential win. I will place my "x" in column 3, which will give me the opportunity to create a horizontal or diagonal four-in-a-row in the future.
+⏰ Timestamp: 2025-08-12T23:57:50.434557
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   ...x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: Since it\
+⏰ Timestamp: 2025-08-13T00:05:01.534215
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   ...x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: Since it\
+⏰ Timestamp: 2025-08-14T00:42:47.143639
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   ...x.o.
+   
+🎯 Action: 5
+🧠 Reasoning: Since the opponent has placed their "o" in the bottom right corner, I want to block their potential three-in-a-row opportunity. I will place my "x" in the column to the left of their "o" to block their path and also create a possibility for me to get three "x"s in a row.
+⏰ Timestamp: 2025-08-17T20:29:17.349823
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   ...x.o.
+   
+🎯 Action: 5
+🧠 Reasoning: Since the opponent has placed their "o" in the bottom right corner, I want to block their potential three-in-a-row opportunity. I will place my "x" in the column to the left of their "o" to block their path and also create a possibility for me to get three "x"s in a row.
+⏰ Timestamp: 2025-08-17T21:42:21.652765
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   ...x.o.
+   
+🎯 Action: 5
+🧠 Reasoning: Since the opponent has placed their "o" in the bottom right corner, I want to block their potential three-in-a-row opportunity. I will place my "x" in the column to the left of their "o" to block their path and also create a possibility for me to get three "x"s in a row.
+⏰ Timestamp: 2025-08-30T13:30:28.481251
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   ...x...
+   o..x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent has two "o"s in a row, so I need to block their potential three in a row. I will place my "x" in column 3, which will block the opponent\
+⏰ Timestamp: 2025-08-12T23:57:51.146594
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   ...x...
+   o..x.o.
+   
+🎯 Action: 5
+🧠 Reasoning: I want to block the opponent from winning and create a potential opportunity to win myself. The opponent has two "o"s in a row, so I need to place my "x" in column 5 to block their potential win. This will also give me a chance to create a row of "x"s in the future.
+⏰ Timestamp: 2025-08-13T00:05:02.171547
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   ...x...
+   o..x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent has two "o"s in a row, so I need to block their potential three in a row. I will place my "x" in column 3, which will block the opponent\
+⏰ Timestamp: 2025-08-14T00:42:47.863660
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .....x.
+   o..x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent has two "o"s in the bottom row, which could potentially lead to a win. I will place my "x" in column 3 to block the opponent\
+⏰ Timestamp: 2025-08-17T20:29:17.854745
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .....x.
+   o..x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent has two "o"s in the bottom row, which could potentially lead to a win. I will place my "x" in column 3 to block the opponent\
+⏰ Timestamp: 2025-08-17T21:42:22.147918
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .....x.
+   o..x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent has two "o"s in the bottom row, which could potentially lead to a win. I will place my "x" in column 3 to block the opponent\
+⏰ Timestamp: 2025-08-30T13:30:29.018506
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   .......
+   .......
+   .......
+   ...x...
+   o..x...
+   o..x.o.
+   
+🎯 Action: 2
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent is trying to create a diagonal line from top-left to bottom-right. I will place my x in column 2 to block the opponent\
+⏰ Timestamp: 2025-08-12T23:57:51.768742
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   o..x.x.
+   o..x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent has two "o"s in a row, so I need to block their potential three "o"s in a row. I will place my "x" in column 3, which will block the opponent\
+⏰ Timestamp: 2025-08-13T00:05:02.838170
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   .......
+   .......
+   .......
+   ...x...
+   o..x...
+   o..x.o.
+   
+🎯 Action: 2
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent is trying to create a diagonal line from top-left to bottom-right. I will place my x in column 2 to block the opponent\
+⏰ Timestamp: 2025-08-14T00:42:48.476432
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   o..x.x.
+   o..x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent has two "o"s in a row, so I need to block their potential three "o"s in a row. I will place my "x" in column 3, which will block the opponent\
+⏰ Timestamp: 2025-08-17T20:29:18.403496
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   o..x.x.
+   o..x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent has two "o"s in a row, so I need to block their potential three "o"s in a row. I will place my "x" in column 3, which will block the opponent\
+⏰ Timestamp: 2025-08-17T21:42:22.807869
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   o..x.x.
+   o..x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent has two "o"s in a row, so I need to block their potential three "o"s in a row. I will place my "x" in column 3, which will block the opponent\
+⏰ Timestamp: 2025-08-30T13:30:29.706485
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   .......
+   .......
+   .......
+   ...x...
+   o..x.o.
+   o.xx.o.
+   
+🎯 Action: 2
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent is trying to create a diagonal line, but I can block it by placing my x in column 2. This will also give me a chance to create a horizontal line in the future.
+⏰ Timestamp: 2025-08-12T23:57:52.379610
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   .......
+   .......
+   .......
+   ...x.o.
+   o..x.x.
+   o..x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent is trying to create a diagonal line, but I can block it by placing my x in column 3. This will also give me a chance to create a horizontal line in the future.
+⏰ Timestamp: 2025-08-13T00:05:03.412499
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   .......
+   .......
+   .......
+   ...x...
+   o..x.o.
+   o.xx.o.
+   
+🎯 Action: 4
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent is close to winning, so I need to block their potential four-in-a-row. I will place my x in column 4, which will block the opponent\
+⏰ Timestamp: 2025-08-14T00:42:49.093079
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   .......
+   .......
+   .......
+   ...x.o.
+   o..x.x.
+   o..x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent is trying to create a diagonal line, but I can block it by placing my x in column 3. This will also give me a chance to create a horizontal line in the future.
+⏰ Timestamp: 2025-08-17T20:29:18.986005
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   .......
+   .......
+   .......
+   ...x.o.
+   o..x.x.
+   o..x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent is trying to create a diagonal line, but I can block it by placing my x in column 3. This will also give me a chance to create a horizontal line in the future.
+⏰ Timestamp: 2025-08-17T21:42:23.365935
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   .......
+   .......
+   .......
+   ...x.o.
+   o..x.x.
+   o..x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent is trying to create a diagonal line, but I can block it by placing my x in column 3. This will also give me a chance to create a horizontal line in the future.
+⏰ Timestamp: 2025-08-30T13:30:30.269865
+----------------------------------------
+
+🔄 Turn 10:
+📋 Board State:
+   .......
+   .......
+   .......
+   ..ox...
+   o.xx.o.
+   o.xx.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent is close to winning, but I can block their winning line by placing my x in column 3. This will also create a potential winning line for me, as I already have two x\
+⏰ Timestamp: 2025-08-12T23:57:52.994065
+----------------------------------------
+
+🔄 Turn 10:
+📋 Board State:
+   .......
+   .......
+   .......
+   ...x...
+   o.ox.o.
+   o.xxxo.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent is close to winning, but I can block their three "o"s in a row by placing my "x" in column 3. This will also give me a chance to create a row of four "x"s in the next move.
+⏰ Timestamp: 2025-08-14T00:42:49.809378
+----------------------------------------
+
+============================================================
+🎮 Game: connect_four | Episode: 2
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   .......
+   
+🎯 Action: 3
+🧠 Reasoning: In the initial move, I want to control the center of the board, which gives me the most flexibility for the next moves. The center column is the most important column in Connect Four, as it provides the most opportunities to create a winning line. By placing my "x" in the center column, I am maximizing my chances of winning.
+⏰ Timestamp: 2025-08-30T13:30:30.835284
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   ..ox...
+   
+🎯 Action: 3
+🧠 Reasoning: Since the opponent has already placed their "o" in the bottom row, my goal is to block their potential three-in-a-row while also setting myself up for a potential win. I will place my "x" in column 3, which is directly above the opponent\
+⏰ Timestamp: 2025-08-30T13:30:31.446888
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   ...x...
+   .oox...
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent has two "o"s in a row, so I need to block their potential three in a row. I will place my "x" in column 3 to block their winning chance and also create a possibility to win myself.
+⏰ Timestamp: 2025-08-30T13:30:32.059606
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   .......
+   .......
+   .......
+   ...x...
+   .o.x...
+   .oox...
+   
+🎯 Action: 2
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent is trying to build a diagonal line from top-left to bottom-right. I will place my x in column 2 to block the opponent\
+⏰ Timestamp: 2025-08-30T13:30:32.677839
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   .......
+   .......
+   .......
+   .o.x...
+   .oxx...
+   .oox...
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent is close to winning, so I need to block their three "o"s in a row. I will place my "x" in column 3 to block their winning chance and also create a potential winning opportunity for myself.
+⏰ Timestamp: 2025-08-30T13:30:33.235876
+----------------------------------------
+
+============================================================
+🎮 Game: connect_four | Episode: 3
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   .......
+   
+🎯 Action: 3
+🧠 Reasoning: In the initial move, I want to control the center of the board, which gives me the most flexibility for the next moves. The center column is the most important column in Connect Four, as it provides the most opportunities to create a winning line. By placing my "x" in the center column, I am maximizing my chances of winning.
+⏰ Timestamp: 2025-08-30T13:30:33.802150
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   ...x.o.
+   
+🎯 Action: 5
+🧠 Reasoning: Since the opponent has placed their "o" in the bottom right corner, I want to block their potential three-in-a-row opportunity. I will place my "x" in the column to the left of their "o" to block their path and also create a possibility for me to get three "x"s in a row.
+⏰ Timestamp: 2025-08-30T13:30:34.415032
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .....x.
+   o..x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent has two "o"s in the bottom row, which could potentially lead to a win. I will place my "x" in column 3 to block the opponent\
+⏰ Timestamp: 2025-08-30T13:30:35.029372
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   .......
+   .......
+   .......
+   .....o.
+   ...x.x.
+   o..x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent has two "o"s in a row, so I need to block their potential three "o"s in a row. I will place my "x" in column 3, which will block the opponent\
+⏰ Timestamp: 2025-08-30T13:30:35.750816
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   .......
+   .......
+   .....o.
+   ...x.o.
+   ...x.x.
+   o..x.o.
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. I notice that the opponent is trying to create a diagonal line from top-right to bottom-left. I will place my next "x" in column 3 to block this diagonal and also create a potential horizontal line for myself.
+⏰ Timestamp: 2025-08-30T13:30:36.251101
+----------------------------------------
+
+============================================================
+🎮 Game: connect_four | Episode: 4
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   .......
+   
+🎯 Action: 3
+🧠 Reasoning: In the initial move, I want to control the center of the board, which gives me the most flexibility for the next moves. The center column is the most important column in Connect Four, as it provides the most opportunities to create a winning line. By placing my "x" in the center column, I am maximizing my chances of winning.
+⏰ Timestamp: 2025-08-30T13:30:36.834012
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   ...xo..
+   
+🎯 Action: 3
+🧠 Reasoning: Since the opponent has placed their "o" in column 5, I want to place my "x" in a column that will give me the most possibilities to win. Placing my "x" in column 3 will allow me to potentially create a horizontal, vertical, or diagonal line, while also putting pressure on the opponent to respond. Additionally, it will make it harder for the opponent to create a line of their own.
+⏰ Timestamp: 2025-08-30T13:30:37.488940
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   ...x...
+   o..xo..
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent has two "o"s in a row, so I need to block their potential three in a row. I will place my "x" in column 3, which will block the opponent\
+⏰ Timestamp: 2025-08-30T13:30:38.205706
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   .......
+   .......
+   .......
+   ...x...
+   ...xo..
+   o..xo..
+   
+🎯 Action: 2
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent is trying to create a diagonal line from top-left to bottom-right. I will place my x in column 2 to block the opponent\
+⏰ Timestamp: 2025-08-30T13:30:38.755535
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   .......
+   .......
+   ...o...
+   ...x...
+   ...xo..
+   o.xxo..
+   
+🎯 Action: 2
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. I notice that the opponent is trying to create a diagonal line from top-right to bottom-left. I will place my next "x" in column 2 to block this diagonal and also create a potential horizontal line for myself.
+⏰ Timestamp: 2025-08-30T13:30:39.333151
+----------------------------------------
+
+🔄 Turn 10:
+📋 Board State:
+   .......
+   .......
+   ...o...
+   ...x...
+   o.xxo..
+   o.xxo..
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent is close to winning, but I can block their winning line by placing my x in column 3. This will also create a potential winning line for me in the future.
+⏰ Timestamp: 2025-08-30T13:30:39.946772
+----------------------------------------
+
+🔄 Turn 12:
+📋 Board State:
+   .......
+   ...x...
+   ...o...
+   o..x...
+   o.xxo..
+   o.xxo..
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. I notice that the opponent is close to winning, with three "o"s in a row in the bottom two rows. I need to block this by placing my "x" in column 3, which would also give me a chance to win if I can get another "x" in the same column. Additionally, placing an "x" in column 3 would put pressure on the opponent and limit their options.
+⏰ Timestamp: 2025-08-30T13:30:40.672337
+----------------------------------------
+
+============================================================
+🎮 Game: connect_four | Episode: 5
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   .......
+   
+🎯 Action: 3
+🧠 Reasoning: In the initial move, I want to control the center of the board, which gives me the most flexibility for the next moves. The center column is the most important column in Connect Four, as it provides the most opportunities to create a winning line. By placing my "x" in the center column, I am maximizing my chances of winning.
+⏰ Timestamp: 2025-08-30T13:30:41.237541
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   .......
+   .......
+   .......
+   .......
+   .......
+   .o.x...
+   
+🎯 Action: 1
+🧠 Reasoning: My opponent has placed their "o" in the bottom left corner. I want to block their potential three-in-a-row and create an opportunity for myself to win. I will place my "x" in the column directly above their "o" to limit their options and prepare for my next move.
+⏰ Timestamp: 2025-08-30T13:30:44.788106
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   .......
+   .......
+   .......
+   .o.....
+   .x.....
+   .o.x...
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent has two "o"s in a row, so I need to block their potential three in a row. I will place my "x" in column 3, which will block the opponent\
+⏰ Timestamp: 2025-08-30T13:30:47.524102
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   .......
+   .......
+   .......
+   .o.....
+   .x.x...
+   .o.xo..
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. The opponent has two "o"s in a row, so I need to block their potential three in a row. I will place my "x" in column 3, which will block the opponent\
+⏰ Timestamp: 2025-08-30T13:30:51.208874
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   .......
+   .......
+   .......
+   .o.x...
+   .x.xo..
+   .o.xo..
+   
+🎯 Action: 3
+🧠 Reasoning: My goal is to block the opponent from winning and create an opportunity to win myself. I notice that the opponent is trying to build a diagonal line from top-right to bottom-left. I will place my next "x" in column 3 to block this diagonal and also create a potential horizontal line for myself.
+⏰ Timestamp: 2025-08-30T13:30:53.871771
+----------------------------------------
+
+============================================================
+🎮 Game: hex | Episode: 1
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . . . . . . . 
+         . . . . . . . . . . . 
+          . . . . . . . . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 60
+🧠 Reasoning: In the game of Hex, the goal is to create a connected chain of stones from one side of the board to the other. Since this is the first move, I want to place my stone in a central location to maximize my options for the next move. Placing a stone in the center of the board also puts pressure on my opponent to respond in a way that blocks my potential connections. I choose action 60, which corresponds to the center of the board.
+⏰ Timestamp: 2025-08-29T16:48:59.957410
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . . . . . . . 
+         . . . . . . . . . . . 
+          . . . . . . . . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 60
+🧠 Reasoning: In the game of Hex, the goal is to create a connected chain of stones from one side of the board to the other. Since this is the first move, I want to place my stone in a central location to maximize my options for the next move. Placing a stone in the center of the board also puts pressure on my opponent to respond in a way that blocks my potential connections. I choose action 60, which corresponds to the center of the board.
+⏰ Timestamp: 2025-08-29T16:49:45.225326
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . . . . . . . 
+         . . . . . . . . . . . 
+          . . . . . . . . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 60
+🧠 Reasoning: In the game of Hex, the goal is to create a connected chain of stones from one side of the board to the other. Since this is the first move, I want to place my stone in a central location to maximize my options for the next move. Placing a stone in the center of the board also puts pressure on my opponent to respond in a way that blocks my potential connections. I choose action 60, which corresponds to the center of the board.
+⏰ Timestamp: 2025-08-29T17:01:27.084098
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . . . . . . . 
+         . . . . . . . . . . . 
+          . . . . . . . . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 60
+🧠 Reasoning: In the game of Hex, the goal is to create a connected chain of stones from one side of the board to the other. Since this is the first move, I want to place my stone in a central location to maximize my options for the next move. Placing a stone in the center of the board also puts pressure on my opponent to respond in a way that blocks my potential connections. I choose action 60, which corresponds to the center of the board.
+⏰ Timestamp: 2025-08-29T18:04:03.574333
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . . . . . . . 
+         . . . . . . . . . . . 
+          . . . . . . . . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 60
+🧠 Reasoning: In the game of Hex, the goal is to create a connected chain of stones from one side of the board to the other. Since this is the first move, I want to place my stone in a central location to maximize my options for the next move. Placing a stone in the center of the board also puts pressure on my opponent to respond in a way that blocks my potential connections. I choose action 60, which corresponds to the center of the board.
+⏰ Timestamp: 2025-08-29T18:20:11.507660
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . . . . . . . 
+         . . . . . . . . . . . 
+          . . . . . . . . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 60
+🧠 Reasoning: In the game of Hex, the goal is to create a connected chain of stones from one side of the board to the other. Since this is the first move, I want to place my stone in a central location to maximize my options for the next move. Placing a stone in the center of the board also puts pressure on my opponent to respond in a way that blocks my potential connections. I choose action 60, which corresponds to the center of the board.
+⏰ Timestamp: 2025-08-30T13:31:13.184829
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o . . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 83
+🧠 Reasoning: In the game of Hex, the goal is to create a connected chain of stones from one side of the board to the other. Since it\
+⏰ Timestamp: 2025-08-29T16:49:00.675719
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o . . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 83
+🧠 Reasoning: In the game of Hex, the goal is to create a connected chain of stones from one side of the board to the other. Since it\
+⏰ Timestamp: 2025-08-29T16:49:45.932908
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o . . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 83
+🧠 Reasoning: In the game of Hex, the goal is to create a connected chain of stones from one side of the board to the other. Since it\
+⏰ Timestamp: 2025-08-29T17:01:27.886441
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o . . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 83
+🧠 Reasoning: In the game of Hex, the goal is to create a connected chain of stones from one side of the board to the other. Since it\
+⏰ Timestamp: 2025-08-29T18:04:04.279031
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o . . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 83
+🧠 Reasoning: In the game of Hex, the goal is to create a connected chain of stones from one side of the board to the other. Since it\
+⏰ Timestamp: 2025-08-29T18:20:12.315053
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o . . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 83
+🧠 Reasoning: In the game of Hex, the goal is to create a connected chain of stones from one side of the board to the other. Since it\
+⏰ Timestamp: 2025-08-30T13:31:13.878521
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . o . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 45
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. Since my opponent has two "o" pieces on the board, I will place my "x" piece in a way that blocks their potential connection while creating my own. I will place my piece at position 45, which is in the center of the board and has the highest probability of being part of a winning connection.
+⏰ Timestamp: 2025-08-29T16:49:01.389688
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . o . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 45
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. Since my opponent has two "o" pieces on the board, I will place my "x" piece in a way that blocks their potential connection while creating my own. I will place my piece at position 45, which is in the center of the board and has the highest probability of being part of a winning connection.
+⏰ Timestamp: 2025-08-29T16:49:46.653847
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . o . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 45
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. Since my opponent has two "o" pieces on the board, I will place my "x" piece in a way that blocks their potential connection while creating my own. I will place my piece at position 45, which is in the center of the board and has the highest probability of being part of a winning connection.
+⏰ Timestamp: 2025-08-29T17:01:28.579263
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . o . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 45
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. Since my opponent has two "o" pieces on the board, I will place my "x" piece in a way that blocks their potential connection while creating my own. I will place my piece at position 45, which is in the center of the board and has the highest probability of being part of a winning connection.
+⏰ Timestamp: 2025-08-29T18:04:04.997001
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . o . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 45
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. Since my opponent has two "o" pieces on the board, I will place my "x" piece in a way that blocks their potential connection while creating my own. I will place my piece at position 45, which is in the center of the board and has the highest probability of being part of a winning connection.
+⏰ Timestamp: 2025-08-29T18:20:13.032910
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . o . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 45
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. Since my opponent has two "o" pieces on the board, I will place my "x" piece in a way that blocks their potential connection while creating my own. I will place my piece at position 45, which is in the center of the board and has the highest probability of being part of a winning connection.
+⏰ Timestamp: 2025-08-30T13:31:19.676038
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . x . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 16
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. Since the opponent has two "o" pieces on the left side, I will place my "x" piece in the center to block their potential connection and create a possibility for me to connect the top and bottom sides. This will also give me more flexibility for my next moves.
+⏰ Timestamp: 2025-08-29T16:49:02.004139
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . x . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 16
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. Since the opponent has two "o" pieces on the left side, I will place my "x" piece in the center to block their potential connection and create a possibility for me to connect the top and bottom sides. This will also give me more flexibility for my next moves.
+⏰ Timestamp: 2025-08-29T16:49:47.369695
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . x . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 16
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. Since the opponent has two "o" pieces on the left side, I will place my "x" piece in the center to block their potential connection and create a possibility for me to connect the top and bottom sides. This will also give me more flexibility for my next moves.
+⏰ Timestamp: 2025-08-29T17:01:29.277460
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . x . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 16
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. Since the opponent has two "o" pieces on the left side, I will place my "x" piece in the center to block their potential connection and create a possibility for me to connect the top and bottom sides. This will also give me more flexibility for my next moves.
+⏰ Timestamp: 2025-08-29T18:04:05.714538
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . x . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 16
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. Since the opponent has two "o" pieces on the left side, I will place my "x" piece in the center to block their potential connection and create a possibility for me to connect the top and bottom sides. This will also give me more flexibility for my next moves.
+⏰ Timestamp: 2025-08-29T18:20:13.753360
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . x . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 16
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. Since the opponent has two "o" pieces on the left side, I will place my "x" piece in the center to block their potential connection and create a possibility for me to connect the top and bottom sides. This will also give me more flexibility for my next moves.
+⏰ Timestamp: 2025-08-30T13:31:30.432178
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . x . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 46
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T16:49:02.822419
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . x . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 46
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T16:49:48.293626
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . x . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 46
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T17:01:30.141895
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . x . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 46
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:04:06.531897
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . x . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 46
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:20:14.674517
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . x . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 46
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:31:39.341755
+----------------------------------------
+
+🔄 Turn 10:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . . . . . o . . . . . 
+       . x x . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 47
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. I will place my X in a position that blocks my opponent\
+⏰ Timestamp: 2025-08-29T16:49:03.410875
+----------------------------------------
+
+🔄 Turn 10:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . . . . . o . . . . . 
+       . x x . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 47
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. I will place my X in a position that blocks my opponent\
+⏰ Timestamp: 2025-08-29T16:49:54.017684
+----------------------------------------
+
+🔄 Turn 10:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . . . . . o . . . . . 
+       . x x . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 47
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. I will place my X in a position that blocks my opponent\
+⏰ Timestamp: 2025-08-29T17:01:30.799482
+----------------------------------------
+
+🔄 Turn 10:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . . . . . o . . . . . 
+       . x x . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 47
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. I will place my X in a position that blocks my opponent\
+⏰ Timestamp: 2025-08-29T18:04:07.249879
+----------------------------------------
+
+🔄 Turn 10:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . . . . . o . . . . . 
+       . x x . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 47
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. I will place my X in a position that blocks my opponent\
+⏰ Timestamp: 2025-08-29T18:20:15.385390
+----------------------------------------
+
+🔄 Turn 10:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . . . . . o . . . . . 
+       . x x . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 47
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. I will place my X in a position that blocks my opponent\
+⏰ Timestamp: 2025-08-30T13:31:50.115187
+----------------------------------------
+
+🔄 Turn 12:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . o . . . o . . . . . 
+       . x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 4
+🧠 Reasoning: Error occurred, using random fallback: LiteLLM inference failed for groq/llama3-70b-8192: litellm.RateLimitError: RateLimitError: GroqException - {"error":{"message":"Rate limit reached for model `llama3-70b-8192` in organization `org_01k01xzyacf9rtfye9kvtkje1p` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5563, Requested 449. Please try again in 113.999999ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+⏰ Timestamp: 2025-08-29T16:49:03.483377
+----------------------------------------
+
+🔄 Turn 12:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . o . . . o . . . . . 
+       . x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 44
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. I will place my X in a position that blocks my opponent\
+⏰ Timestamp: 2025-08-29T16:50:03.957967
+----------------------------------------
+
+🔄 Turn 12:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . o . . . o . . . . . 
+       . x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 44
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. I will place my X in a position that blocks my opponent\
+⏰ Timestamp: 2025-08-29T17:01:31.419727
+----------------------------------------
+
+🔄 Turn 12:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . o . . . o . . . . . 
+       . x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 44
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. I will place my X in a position that blocks my opponent\
+⏰ Timestamp: 2025-08-29T18:04:07.863316
+----------------------------------------
+
+🔄 Turn 12:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . o . . . o . . . . . 
+       . x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 44
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. I will place my X in a position that blocks my opponent\
+⏰ Timestamp: 2025-08-29T18:20:16.017360
+----------------------------------------
+
+🔄 Turn 12:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . . 
+      . o . . . o . . . . . 
+       . x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 44
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. I will place my X in a position that blocks my opponent\
+⏰ Timestamp: 2025-08-30T13:31:58.902901
+----------------------------------------
+
+🔄 Turn 14:
+📋 Board State:
+   . . . o x . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . . o 
+      . o . . . o . . . . . 
+       . x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 108
+🧠 Reasoning: Error occurred, using random fallback: LiteLLM inference failed for groq/llama3-70b-8192: litellm.RateLimitError: RateLimitError: GroqException - {"error":{"message":"Rate limit reached for model `llama3-70b-8192` in organization `org_01k01xzyacf9rtfye9kvtkje1p` service tier `on_demand` on tokens per minute (TPM): Limit 6000, Used 5557, Requested 447. Please try again in 33ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing","type":"tokens","code":"rate_limit_exceeded"}}
+
+⏰ Timestamp: 2025-08-29T16:49:03.540322
+----------------------------------------
+
+🔄 Turn 14:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 96
+🧠 Reasoning: My strategy is to try to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T16:50:13.993813
+----------------------------------------
+
+🔄 Turn 14:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 96
+🧠 Reasoning: My strategy is to try to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T17:01:41.351527
+----------------------------------------
+
+🔄 Turn 14:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 96
+🧠 Reasoning: My strategy is to try to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:04:17.695437
+----------------------------------------
+
+🔄 Turn 14:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 96
+🧠 Reasoning: My strategy is to try to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:20:25.937031
+----------------------------------------
+
+🔄 Turn 14:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . . . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . . . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 96
+🧠 Reasoning: My strategy is to try to create a connected chain of x\
+⏰ Timestamp: 2025-08-30T13:32:08.832309
+----------------------------------------
+
+🔄 Turn 16:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 48
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T16:50:22.801336
+----------------------------------------
+
+🔄 Turn 16:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 48
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T17:01:51.148995
+----------------------------------------
+
+🔄 Turn 16:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 48
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:04:27.527243
+----------------------------------------
+
+🔄 Turn 16:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 48
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:20:35.871071
+----------------------------------------
+
+🔄 Turn 16:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 48
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:32:18.566516
+----------------------------------------
+
+🔄 Turn 18:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . . . . . 
+             . o . . . . . . . . . 
+🎯 Action: 49
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T16:50:32.521817
+----------------------------------------
+
+🔄 Turn 18:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . . . . . 
+             . o . . . . . . . . . 
+🎯 Action: 49
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T17:02:00.890905
+----------------------------------------
+
+🔄 Turn 18:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . . . . . 
+             . o . . . . . . . . . 
+🎯 Action: 49
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:04:37.561584
+----------------------------------------
+
+🔄 Turn 18:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . . . . . 
+             . o . . . . . . . . . 
+🎯 Action: 49
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:20:44.678638
+----------------------------------------
+
+🔄 Turn 18:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o . x . . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . . . . . 
+             . o . . . . . . . . . 
+🎯 Action: 49
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:32:27.367879
+----------------------------------------
+
+🔄 Turn 20:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x . . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . . . . . 
+             . o . . . . . . . . . 
+🎯 Action: 17
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T16:50:42.255668
+----------------------------------------
+
+🔄 Turn 20:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x . . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . . . . . 
+             . o . . . . . . . . . 
+🎯 Action: 17
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T17:02:09.675313
+----------------------------------------
+
+🔄 Turn 20:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x . . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . . . . . 
+             . o . . . . . . . . . 
+🎯 Action: 17
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:04:46.266072
+----------------------------------------
+
+🔄 Turn 20:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x . . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . . . . . 
+             . o . . . . . . . . . 
+🎯 Action: 17
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:20:54.404131
+----------------------------------------
+
+🔄 Turn 20:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x . . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . . . . . 
+             . o . . . . . . . . . 
+🎯 Action: 17
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:32:37.101359
+----------------------------------------
+
+🔄 Turn 22:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x x . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . o . . . 
+             . o . . . . . . . . . 
+🎯 Action: 18
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T17:02:19.504078
+----------------------------------------
+
+🔄 Turn 22:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x x . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . o . . . 
+             . o . . . . . . . . . 
+🎯 Action: 18
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:04:56.052937
+----------------------------------------
+
+🔄 Turn 22:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x x . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . o . . . 
+             . o . . . . . . . . . 
+🎯 Action: 18
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:21:03.233259
+----------------------------------------
+
+🔄 Turn 22:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x x . . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . o . . . 
+             . o . . . . . . . . . 
+🎯 Action: 18
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:32:45.909753
+----------------------------------------
+
+🔄 Turn 24:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x x x . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 19
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T17:02:28.521132
+----------------------------------------
+
+🔄 Turn 24:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x x x . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 19
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:05:05.011513
+----------------------------------------
+
+🔄 Turn 24:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x x x . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 19
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:21:13.141696
+----------------------------------------
+
+🔄 Turn 24:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x x x . o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . . . . . . . . x . . 
+            . . o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 19
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:32:55.790357
+----------------------------------------
+
+🔄 Turn 26:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x x x x o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . . o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 42
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T17:02:37.325880
+----------------------------------------
+
+🔄 Turn 26:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x x x x o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . . o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 42
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:05:13.815915
+----------------------------------------
+
+🔄 Turn 26:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x x x x o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . . o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 42
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:21:21.954980
+----------------------------------------
+
+🔄 Turn 26:
+📋 Board State:
+   . . . o . . . . . . . 
+    . . . o o x x x x o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . . . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . . o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 42
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:33:04.542002
+----------------------------------------
+
+🔄 Turn 28:
+📋 Board State:
+   . . . o . . . . . . . 
+    . o . o o x x x x o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . . o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 21
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:05:23.645764
+----------------------------------------
+
+🔄 Turn 28:
+📋 Board State:
+   . . . o . . . . . . . 
+    . o . o o x x x x o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . . o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 21
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:21:31.724213
+----------------------------------------
+
+🔄 Turn 28:
+📋 Board State:
+   . . . o . . . . . . . 
+    . o . o o x x x x o . 
+     . . . . . . . . . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . . o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 21
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:33:14.379805
+----------------------------------------
+
+🔄 Turn 30:
+📋 Board State:
+   . . . o . . . . . . . 
+    . o . o o x x x x o x 
+     . . . . . . . . . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 28
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:05:32.435466
+----------------------------------------
+
+🔄 Turn 30:
+📋 Board State:
+   . . . o . . . . . . . 
+    . o . o o x x x x o x 
+     . . . . . . . . . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 28
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:21:40.484755
+----------------------------------------
+
+🔄 Turn 30:
+📋 Board State:
+   . . . o . . . . . . . 
+    . o . o o x x x x o x 
+     . . . . . . . . . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 28
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:33:23.180101
+----------------------------------------
+
+🔄 Turn 32:
+📋 Board State:
+   . . . o . . . . . . . 
+    . o . o o x x x x o x 
+     . . . . . . x . . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 29
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:05:41.263057
+----------------------------------------
+
+🔄 Turn 32:
+📋 Board State:
+   . . . o . . . . . . . 
+    . o . o o x x x x o x 
+     . . . . . . x . . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 29
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:21:49.292499
+----------------------------------------
+
+🔄 Turn 32:
+📋 Board State:
+   . . . o . . . . . . . 
+    . o . o o x x x x o x 
+     . . . . . . x . . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 29
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:33:31.986127
+----------------------------------------
+
+🔄 Turn 34:
+📋 Board State:
+   . . . o . o . . . . . 
+    . o . o o x x x x o x 
+     . . . . . . x x . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 25
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:05:50.273885
+----------------------------------------
+
+🔄 Turn 34:
+📋 Board State:
+   . . . o . o . . . . . 
+    . o . o o x x x x o x 
+     . . . . . . x x . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 25
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:21:57.996402
+----------------------------------------
+
+🔄 Turn 34:
+📋 Board State:
+   . . . o . o . . . . . 
+    . o . o o x x x x o x 
+     . . . . . . x x . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 25
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:33:40.796018
+----------------------------------------
+
+🔄 Turn 36:
+📋 Board State:
+   . . . o o o . . . . . 
+    . o . o o x x x x o x 
+     . . . x . . x x . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 27
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:05:59.081482
+----------------------------------------
+
+🔄 Turn 36:
+📋 Board State:
+   . . . o o o . . . . . 
+    . o . o o x x x x o x 
+     . . . x . . x x . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 27
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:22:06.803045
+----------------------------------------
+
+🔄 Turn 36:
+📋 Board State:
+   . . . o o o . . . . . 
+    . o . o o x x x x o x 
+     . . . x . . x x . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 27
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:33:49.496444
+----------------------------------------
+
+🔄 Turn 38:
+📋 Board State:
+   . . . o o o . . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 35
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:06:07.825770
+----------------------------------------
+
+🔄 Turn 38:
+📋 Board State:
+   . . . o o o . . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 35
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:22:15.615864
+----------------------------------------
+
+🔄 Turn 38:
+📋 Board State:
+   . . . o o o . . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o . . . o . . . x . 
+       x x x x x x . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 35
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:33:58.197512
+----------------------------------------
+
+🔄 Turn 40:
+📋 Board State:
+   . . . o o o . . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x . . o . . . x . 
+       x x x x x x . . . . . 
+        p . . . . x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 36
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:06:16.690826
+----------------------------------------
+
+🔄 Turn 40:
+📋 Board State:
+   . . . o o o . . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x . . o . . . x . 
+       x x x x x x . . . . . 
+        p . . . . x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 36
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:22:24.522481
+----------------------------------------
+
+🔄 Turn 40:
+📋 Board State:
+   . . . o o o . . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x . . o . . . x . 
+       x x x x x x . . . . . 
+        p . . . . x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 36
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:34:07.013650
+----------------------------------------
+
+🔄 Turn 42:
+📋 Board State:
+   . . . o o o . . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x . o . . . x . 
+       x x x x x x . . . . . 
+        p . . . o x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 37
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:06:25.468907
+----------------------------------------
+
+🔄 Turn 42:
+📋 Board State:
+   . . . o o o . . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x . o . . . x . 
+       x x x x x x . . . . . 
+        p . . . o x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 37
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:22:33.326972
+----------------------------------------
+
+🔄 Turn 42:
+📋 Board State:
+   . . . o o o . . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x . o . . . x . 
+       x x x x x x . . . . . 
+        p . . . o x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . . . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 37
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:34:15.815296
+----------------------------------------
+
+🔄 Turn 44:
+📋 Board State:
+   . . . o o o . . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o . . . x . 
+       x x x x x x . . . . . 
+        p . . . o x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . o . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 39
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:06:34.226362
+----------------------------------------
+
+🔄 Turn 44:
+📋 Board State:
+   . . . o o o . . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o . . . x . 
+       x x x x x x . . . . . 
+        p . . . o x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . o . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 39
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:22:42.132619
+----------------------------------------
+
+🔄 Turn 44:
+📋 Board State:
+   . . . o o o . . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o . . . x . 
+       x x x x x x . . . . . 
+        p . . . o x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . o . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 39
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:34:24.631121
+----------------------------------------
+
+🔄 Turn 46:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . . x . 
+       x x x x x x . . . . . 
+        p . . . o x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . o . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 43
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:06:41.984197
+----------------------------------------
+
+🔄 Turn 46:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . . x . 
+       x x x x x x . . . . . 
+        p . . . o x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . o . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 43
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:22:49.887256
+----------------------------------------
+
+🔄 Turn 46:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . . x . 
+       x x x x x x . . . . . 
+        p . . . o x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . o . o . . . 
+             . o . . . . . o . . . 
+🎯 Action: 43
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:34:33.436295
+----------------------------------------
+
+🔄 Turn 48:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . . x x 
+       x x x x x x . . . . . 
+        p . . . o x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . o . o . . . 
+             . o . . . . . o o . . 
+🎯 Action: 58
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:06:50.790341
+----------------------------------------
+
+🔄 Turn 48:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . . x x 
+       x x x x x x . . . . . 
+        p . . . o x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . o . o . . . 
+             . o . . . . . o o . . 
+🎯 Action: 58
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:22:58.723919
+----------------------------------------
+
+🔄 Turn 48:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . . x x 
+       x x x x x x . . . . . 
+        p . . . o x . . . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . o . o . . . 
+             . o . . . . . o o . . 
+🎯 Action: 58
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:34:41.211794
+----------------------------------------
+
+🔄 Turn 50:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . . x x 
+       x x x x x x . . . . . 
+        p . . x o x . o . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . o . o . . . 
+             . o . . . . . o o . . 
+🎯 Action: 50
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:06:58.580219
+----------------------------------------
+
+🔄 Turn 50:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . . x x 
+       x x x x x x . . . . . 
+        p . . x o x . o . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . o . o . . . 
+             . o . . . . . o o . . 
+🎯 Action: 50
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:23:06.506933
+----------------------------------------
+
+🔄 Turn 52:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . . x x 
+       x x x x x x x . . . . 
+        p . . x o x . o . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . o . o . . . 
+             . o . . . . . o o . q 
+🎯 Action: 52
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:07:07.383068
+----------------------------------------
+
+🔄 Turn 52:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . . x x 
+       x x x x x x x . . . . 
+        p . . x o x . o . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . . 
+            . o o . . o . o . . . 
+             . o . . . . . o o . q 
+🎯 Action: 52
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:23:15.417170
+----------------------------------------
+
+🔄 Turn 54:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . . x x 
+       x x x x x x x . x . . 
+        p . . x o x . o . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . q 
+            . o o . . o . o . . . 
+             . o . . . . . o o . q 
+🎯 Action: 41
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:07:15.140618
+----------------------------------------
+
+🔄 Turn 54:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . . x x 
+       x x x x x x x . x . . 
+        p . . x o x . o . . . 
+         . . . . . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . q 
+            . o o . . o . o . . . 
+             . o . . . . . o o . q 
+🎯 Action: 41
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:23:23.198652
+----------------------------------------
+
+🔄 Turn 56:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x . . 
+        p . . x o x . o . . . 
+         . . . o . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . q 
+            . o o . . o . o . . . 
+             . o . . . . . o o . q 
+🎯 Action: 56
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:07:23.851042
+----------------------------------------
+
+🔄 Turn 56:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x . . 
+        p . . x o x . o . . . 
+         . . . o . . . . . . q 
+          . . . . . o x . . . . 
+           . o . . . . . . x . q 
+            . o o . . o . o . . . 
+             . o . . . . . o o . q 
+🎯 Action: 56
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:23:30.982590
+----------------------------------------
+
+🔄 Turn 58:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x . . 
+        p x . x o x . o . . . 
+         . . . o . . . . . . q 
+          . . . . . o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o . o . . . 
+             p p . . . . . o o . q 
+🎯 Action: 105
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:07:31.757794
+----------------------------------------
+
+🔄 Turn 58:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x . . 
+        p x . x o x . o . . . 
+         . . . o . . . . . . q 
+          . . . . . o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o . o . . . 
+             p p . . . . . o o . q 
+🎯 Action: 105
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:23:39.899602
+----------------------------------------
+
+🔄 Turn 60:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x . . 
+        p x . x o x . o . . . 
+         . . . o . . . . . . q 
+          . . . . o o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o x o . . . 
+             p p . . . . . o o . q 
+🎯 Action: 57
+🧠 Reasoning: My strategy is to block player 0\
+⏰ Timestamp: 2025-08-29T18:07:39.541767
+----------------------------------------
+
+🔄 Turn 60:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x . . 
+        p x . x o x . o . . . 
+         . . . o . . . . . . q 
+          . . . . o o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o x o . . . 
+             p p . . . . . o o . q 
+🎯 Action: 57
+🧠 Reasoning: My strategy is to block player 0\
+⏰ Timestamp: 2025-08-29T18:23:47.877697
+----------------------------------------
+
+🔄 Turn 62:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o . 
+        p x x x o x . o . . . 
+         . . . o . . . . . . q 
+          . . . . o o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o x o . . . 
+             p p . . . . . o o . q 
+🎯 Action: 54
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:07:47.321765
+----------------------------------------
+
+🔄 Turn 62:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o . 
+        p x x x o x . o . . . 
+         . . . o . . . . . . q 
+          . . . . o o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o x o . . . 
+             p p . . . . . o o . q 
+🎯 Action: 54
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:23:54.640316
+----------------------------------------
+
+🔄 Turn 64:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o . . . 
+         . . . o . . . . . . q 
+          . . . . o o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o x o . . q 
+             p p . . . . . o o . q 
+🎯 Action: 63
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:07:55.074463
+----------------------------------------
+
+🔄 Turn 64:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o . . . 
+         . . . o . . . . . . q 
+          . . . . o o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o x o . . q 
+             p p . . . . . o o . q 
+🎯 Action: 63
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:24:02.416866
+----------------------------------------
+
+🔄 Turn 66:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x . . 
+         . . . o . . . . . . q 
+          . . . . o o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o x q . . q 
+             p p . . . . . q q q q 
+🎯 Action: 68
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:08:02.782331
+----------------------------------------
+
+🔄 Turn 66:
+📋 Board State:
+   . . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x . . 
+         . . . o . . . . . . q 
+          . . . . o o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o x q . . q 
+             p p . . . . . q q q q 
+🎯 Action: 68
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:24:10.031770
+----------------------------------------
+
+🔄 Turn 68:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x . . 
+         . . x o . . . . . . q 
+          . . . . o o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o x q . . q 
+             p p . . . . . q q q q 
+🎯 Action: 67
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:08:10.664819
+----------------------------------------
+
+🔄 Turn 68:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x . . 
+         . . x o . . . . . . q 
+          . . . . o o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o x q . . q 
+             p p . . . . . q q q q 
+🎯 Action: 67
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:24:17.988770
+----------------------------------------
+
+🔄 Turn 70:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x . . 
+         . x x o . . . . . . q 
+          . . . . o o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o x q . . q 
+             p p . o . . . q q q q 
+🎯 Action: 64
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:08:17.635663
+----------------------------------------
+
+🔄 Turn 70:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x . x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x . . 
+         . x x o . . . . . . q 
+          . . . . o o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o x q . . q 
+             p p . o . . . q q q q 
+🎯 Action: 64
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:24:25.976149
+----------------------------------------
+
+🔄 Turn 72:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x o x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x x . 
+         . x x o . . . . . . q 
+          . . . . o o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o x q . . q 
+             p p . o . . . q q q q 
+🎯 Action: 65
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:08:25.514866
+----------------------------------------
+
+🔄 Turn 72:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x o x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x x . 
+         . x x o . . . . . . q 
+          . . . . o o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o x q . . q 
+             p p . o . . . q q q q 
+🎯 Action: 65
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:24:33.761457
+----------------------------------------
+
+🔄 Turn 74:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x o x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x x x 
+         . x x o . . . . . . q 
+          . . . . o o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o x q . . q 
+             p p p p . . . q q q q 
+🎯 Action: 95
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:08:32.376836
+----------------------------------------
+
+🔄 Turn 74:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x o x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x x x 
+         . x x o . . . . . . q 
+          . . . . o o x . . . . 
+           . p . . . . . . x . q 
+            . p p . . o x q . . q 
+             p p p p . . . q q q q 
+🎯 Action: 95
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:24:40.616188
+----------------------------------------
+
+🔄 Turn 76:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x o x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x x x 
+         . x x o . . . . . . q 
+          . . . . o o x o . . . 
+           . p . . . . . x x . q 
+            . p p . . o x q . . q 
+             p p p p . . . q q q q 
+🎯 Action: 97
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:08:40.264998
+----------------------------------------
+
+🔄 Turn 76:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x o x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x x x 
+         . x x o . . . . . . q 
+          . . . . o o x o . . . 
+           . p . . . . . x x . q 
+            . p p . . o x q . . q 
+             p p p p . . . q q q q 
+🎯 Action: 97
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:24:48.399948
+----------------------------------------
+
+🔄 Turn 78:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x o x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x x x 
+         . x x o . . . . o . q 
+          . . . . o o x o . . . 
+           . p . . . . . x x x q 
+            . p p . . o x q . . q 
+             p p p p . . . q q q q 
+🎯 Action: 73
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:08:47.024015
+----------------------------------------
+
+🔄 Turn 78:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x o x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x x x 
+         . x x o . . . . o . q 
+          . . . . o o x o . . . 
+           . p . . . . . x x x q 
+            . p p . . o x q . . q 
+             p p p p . . . q q q q 
+🎯 Action: 73
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:24:55.148507
+----------------------------------------
+
+🔄 Turn 80:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x o x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x x x 
+         . x x o o . . x o . q 
+          . . . . o o x o . . . 
+           . p . . . . . x x x q 
+            . p p . . o x q . . q 
+             p p p p . . . q q q q 
+🎯 Action: 71
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:08:54.734402
+----------------------------------------
+
+🔄 Turn 80:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o . x o x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x x x 
+         . x x o o . . x o . q 
+          . . . . o o x o . . . 
+           . p . . . . . x x x q 
+            . p p . . o x q . . q 
+             p p p p . . . q q q q 
+🎯 Action: 71
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-29T18:25:01.888682
+----------------------------------------
+
+🔄 Turn 82:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o o x o x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x . x o x 
+        p x x x o x . o x x x 
+         . x x o o x . x o . q 
+          . . . . o o x o . . . 
+           . p . . . . . x x x q 
+            . p p . . o x q . . q 
+             p p p p . . . q q q q 
+🎯 Action: 114
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:09:01.567135
+----------------------------------------
+
+🔄 Turn 84:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o o x o x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x o x o x 
+        p x x x o x . o x x x 
+         . x x o o x . x o . q 
+          . . . . o o x o . . . 
+           . p . . . . . x x x q 
+            . p p . . o x q . . q 
+             p p p p z . . q q q q 
+🎯 Action: 87
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:09:08.324375
+----------------------------------------
+
+🔄 Turn 86:
+📋 Board State:
+   p . . o o o o . . . . 
+    . o . o o x x x x o x 
+     . o o x o x x x . o . 
+      . o x x x o x . x x x 
+       x x x x x x x o x o x 
+        p x x x o x . o x x x 
+         . x x o o x . x o . q 
+          . . . . o o x o o . x 
+           . p . . . . . x x x q 
+            . p p . . o x q . . q 
+             p p p p z . . q q q q 
+🎯 Action: 78
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:09:15.108071
+----------------------------------------
+
+🔄 Turn 88:
+📋 Board State:
+   p . . p p p p . . . . 
+    p p . p p x x x x o x 
+     . p p x p x x x . o . 
+      . p x x x o x . x x x 
+       x x x x x x x o x o x 
+        p x x x o x . o x x x 
+         . x x o o x . x o . q 
+          . x . . o o x o o . x 
+           . p . . . . . x x x q 
+            . p p . . o x q . . q 
+             p p p p z . . q q q q 
+🎯 Action: 88
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:09:21.870704
+----------------------------------------
+
+🔄 Turn 90:
+📋 Board State:
+   p . . p p p p . . . q 
+    p p . p p x x x x q x 
+     . p p x p x x x . q . 
+      . p x x x o x . x x x 
+       x x x x x x x o x o x 
+        p x x x o x . o x x x 
+         . x x o o x . x o . q 
+          . x . . o o x o o . x 
+           x p . . . . . x x x q 
+            . p p . . o x q . . q 
+             p p p p z . . q q q q 
+🎯 Action: 90
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:09:28.701650
+----------------------------------------
+
+🔄 Turn 92:
+📋 Board State:
+   p . . p p p p . . . q 
+    p p . p p x x x x q x 
+     . p p x p x x x . q . 
+      . p x x x o x . x x x 
+       x x x x x x x o x o x 
+        p x x x o x . o x x x 
+         p x x o o x . x o . q 
+          . x . . o o x o o . x 
+           x p x . . . . x x x q 
+            . p p . . o x q . . q 
+             p p p p z . . q q q q 
+🎯 Action: 2
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:09:35.564508
+----------------------------------------
+
+🔄 Turn 94:
+📋 Board State:
+   p . y p p p p . . q q 
+    p p . p p x x x x q x 
+     . p p x p x x x . q . 
+      . p x x x o x . x x x 
+       x x x x x x x o x o x 
+        p x x x o x . o x x x 
+         p x x o o x . x o . q 
+          . x . . o o x o o . x 
+           x p x . . . . x x x q 
+            . p p . . o x q . . q 
+             p p p p z . . q q q q 
+🎯 Action: 108
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:09:42.528816
+----------------------------------------
+
+🔄 Turn 96:
+📋 Board State:
+   p . y p p p p . . q q 
+    p p . p p x x x x q x 
+     . p p x p x x x . q . 
+      . p x x x o x . x x x 
+       x x x x x x x o x o x 
+        p x x x o x . o x x x 
+         p x x o o x . x q q q 
+          . x . . o o x q q . x 
+           x p x . . . . x x x q 
+            . p p . . o x q . x q 
+             p p p p z . . q q q q 
+🎯 Action: 7
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:09:48.463852
+----------------------------------------
+
+🔄 Turn 98:
+📋 Board State:
+   p . y p p p p y . q q 
+    p p . p p y y y y q x 
+     . p p y p y y y . q . 
+      . p y y y o y . x x x 
+       y y y y y y y o x o x 
+        p y y y p y . o x x x 
+         p y y p p y . x q q q 
+          . y p . p p x q q . x 
+           y p x . . . . x x x q 
+            . p p . . o x q . x q 
+             p p p p z . . q q q q 
+🎯 Action: 77
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:09:55.401456
+----------------------------------------
+
+🔄 Turn 100:
+📋 Board State:
+   p . y p p p p y . q q 
+    p p . p p y y y y q x 
+     . p p y p y y y . q . 
+      . p y y y o y . x x x 
+       y y y y y y y o x o x 
+        p y y y p y . o x x x 
+         p y y p p y . x q q q 
+          y y p . p p x q q . x 
+           y p x . . . . x x x q 
+            . p p . . o x q q x q 
+             p p p p z . . q q q q 
+🎯 Action: 86
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:10:02.388810
+----------------------------------------
+
+🔄 Turn 102:
+📋 Board State:
+   p . y p p p p y . q q 
+    p p . p p y y y y q x 
+     . p p y p y y y . q . 
+      . p y y y o y . x x x 
+       y y y y y y y o x o x 
+        p y y y p y o o x x x 
+         p y y p p y . x q q q 
+          y y p . p p x q q x x 
+           y p x . . . . x x x q 
+            . p p . . o x q q x q 
+             p p p p z . . q q q q 
+🎯 Action: 32
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:10:09.323689
+----------------------------------------
+
+🔄 Turn 104:
+📋 Board State:
+   p . y p p p p y q q q 
+    p p . p p y y y y q x 
+     . p p y p y y y . q x 
+      . p y y y o y . x x x 
+       y y y y y y y o x o x 
+        p y y y p y o o x x x 
+         p y y p p y . x q q q 
+          y y p . p p x q q x x 
+           y p x . . . . x x x q 
+            . p p . . o x q q x q 
+             p p p p z . . q q q q 
+🎯 Action: 103
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:10:15.296579
+----------------------------------------
+
+🔄 Turn 106:
+📋 Board State:
+   p . y p p p p y q q q 
+    p p . p p y y y y q x 
+     . p p y p y y y . q x 
+      . p y y y o y . x x x 
+       y y y y y y y o x o x 
+        p y y y p y o o x x x 
+         p y y p p y . x q q q 
+          y y p . p p x q q x x 
+           y p x . . . . x x x q 
+            . p p . z o x q q x q 
+             p p p p z o . q q q q 
+🎯 Action: 102
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:10:22.228139
+----------------------------------------
+
+🔄 Turn 108:
+📋 Board State:
+   p . y p p p p y q q q 
+    p p . p p y y y y q x 
+     . p p y p y y y . q x 
+      . p y y y o y . x x x 
+       y y y y y y y o x o x 
+        p y y y p y o o x x x 
+         p y y p p y . x q q q 
+          y y p . p p x q q x x 
+           y p x p . . . x x x q 
+            . p p z z o x q q x q 
+             p p p p z o . q q q q 
+🎯 Action: 93
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:10:28.073017
+----------------------------------------
+
+🔄 Turn 110:
+📋 Board State:
+   p . y p p p p y q q q 
+    p p p p p y y y y q z 
+     . p p y p y y y . q z 
+      . p y y y o y . z z z 
+       y y y y y y y o z o z 
+        p y y y p y o o z z z 
+         p y y p p y . z q q q 
+          y y p . p p z q q x x 
+           y p x p . z . x x x q 
+            . p p z z o x q q x q 
+             p p p p z o . q q q q 
+🎯 Action: 92
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:10:35.146959
+----------------------------------------
+
+🔄 Turn 112:
+📋 Board State:
+   p . y p p p p y q q q 
+    p p p p p y y y y q z 
+     . p p y p y y y . q z 
+      . p y y y o y . z z z 
+       y y y y y y y o z o z 
+        p y y y p y o o z z z 
+         p y y p p y . z q q q 
+          y y p p p p z q q x x 
+           y p x p z z . x x x q 
+            . p p z z o x q q x q 
+             p p p p z o . q q q q 
+🎯 Action: 94
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:10:41.002096
+----------------------------------------
+
+🔄 Turn 114:
+📋 Board State:
+   p . y p p p p y q q q 
+    p p p p p y y y y q z 
+     p p p y p y y y . q z 
+      . p y y y o y . z z z 
+       y y y y y y y o z o z 
+        p y y y p y o o z z z 
+         p y y p p y . z q q q 
+          y y p p p p z q q z z 
+           y p x p z z z z z z q 
+            . p p z z o z q q z q 
+             p p p p z o . q q q q 
+🎯 Action: 99
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:10:46.840102
+----------------------------------------
+
+🔄 Turn 116:
+📋 Board State:
+   p . y p p p p y q q q 
+    p p p p p y y y y q z 
+     p p p y p y y y . q z 
+      . p y y y o y . z z z 
+       y y y y y y y p z o z 
+        p y y y p y p p z z z 
+         p y y p p y p z q q q 
+          y y p p p p z q q z z 
+           y p x p z z z z z z q 
+            y p p z z o z q q z q 
+             p p p p z o . q q q q 
+🎯 Action: 40
+🧠 Reasoning: My goal is to create a connected chain of x\
+⏰ Timestamp: 2025-08-29T18:10:52.679279
+----------------------------------------
+
+============================================================
+🎮 Game: hex | Episode: 2
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . . . . . . . 
+         . . . . . . . . . . . 
+          . . . . . . . . . . . 
+           . . . . . . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 60
+🧠 Reasoning: In the game of Hex, the goal is to create a connected chain of stones from one side of the board to the other. Since this is the first move, I want to place my stone in a central location to maximize my options for the next move. Placing a stone in the center of the board also puts pressure on my opponent to respond in a way that blocks my potential connections. I choose action 60, which corresponds to the center of the board.
+⏰ Timestamp: 2025-08-30T13:34:50.026553
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . . . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . . . . . . . 
+           . . . . o . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 53
+🧠 Reasoning: In the game of Hex, the goal is to create a connected chain of stones from one side of the board to the other. Since I\
+⏰ Timestamp: 2025-08-30T13:35:00.956229
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   . . . . . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . x . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . . . . o . . 
+           . . . . o . . . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 3
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. Since my opponent has placed their "o" in the bottom-right corner, I will place my "x" in the center of the board to limit their expansion and create opportunities for myself. This move will also put pressure on their position and force them to respond.
+⏰ Timestamp: 2025-08-30T13:35:10.709716
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   . . . y . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . x . 
+        . . . . . x . . . . . 
+         . . . . . . . . . . . 
+          . . . . . . . . o . . 
+           . . . . o . o . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 2
+🧠 Reasoning: My strategy is to control the center of the board and create a potential connection between the top and bottom sides. Since the opponent has two stones on the bottom left, I will place my stone on the top left to create a possibility of connecting to the top side and also putting pressure on the opponent\
+⏰ Timestamp: 2025-08-30T13:35:20.453647
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   . . y y . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . x . 
+        . . . . . x . . . . . 
+         . . . . . . . o . . . 
+          . . . . . . . . o . . 
+           . . . . o . o . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 61
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:35:30.270018
+----------------------------------------
+
+🔄 Turn 10:
+📋 Board State:
+   . . y y . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . . . . 
+      . . . . . . . . . . . 
+       . . . . . . . . . x . 
+        . o . . . x x . . . . 
+         . . . . . . . o . . . 
+          . . . . . . . . o . . 
+           . . . . o . o . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 44
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:35:40.096804
+----------------------------------------
+
+🔄 Turn 12:
+📋 Board State:
+   . . y y . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . . o . . 
+      . . . . . . . . . . . 
+       x . . . . . . . . x . 
+        . o . . . x x . . . . 
+         . . . . . . . o . . . 
+          . . . . . . . . o . . 
+           . . . . o . o . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 29
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:35:49.827126
+----------------------------------------
+
+🔄 Turn 14:
+📋 Board State:
+   . . y y . . . . . . . 
+    . . . . . . . . . . . 
+     . . . . . . . x o . . 
+      . . . . . . . . . . . 
+       x . . . . . . . . x . 
+        . p . . . x x . . . . 
+         p . . . . . . o . . . 
+          . . . . . . . . o . . 
+           . . . . o . o . . . . 
+            . . . . . . . . . . . 
+             . . . . . . . . . . . 
+🎯 Action: 28
+🧠 Reasoning: My strategy is to block the opponent\
+⏰ Timestamp: 2025-08-30T13:35:58.632467
+----------------------------------------
+
+============================================================
+🎮 Game: kuhn_poker | Episode: 1
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   111
+🎯 Action: 1
+🧠 Reasoning: In Kuhn Poker, the private card Q is a relatively strong hand, especially since the betting history is still in the first round. Since I contributed 1 chip to the pot, I have a good chance of winning the pot with a call. Folding would give up my chance to win the pot, so I choose to call to see what the opponent does next.
+⏰ Timestamp: 2025-08-12T23:57:37.739033
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   111
+🎯 Action: 1
+🧠 Reasoning: In Kuhn Poker, the goal is to maximize expected value. Since this is the first round of betting, my opponent has not provided any information about their hand. With a Queen, I have a relatively strong hand, as there are only three cards higher than me (Ace, King, and Jack). Folding would give up my chance to win the pot, and calling would allow me to see my opponent\
+⏰ Timestamp: 2025-08-13T00:04:48.391122
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   111
+🎯 Action: 1
+🧠 Reasoning: In Kuhn Poker, the private card Q is a relatively strong hand, especially since it is the highest card that is not an Ace. Since this is the first round of betting, the opponent has not given away any information about their hand yet. Therefore, I will choose to call, hoping to get more information about the opponent\
+⏰ Timestamp: 2025-08-14T00:42:33.744316
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   111
+🎯 Action: 1
+🧠 Reasoning: In Kuhn Poker, the private card Q is a relatively strong hand, especially since it is the highest card in the deck. Since this is the first round of betting, the opponent has not provided any information about their hand yet. Therefore, I will choose to call, hoping to get more information about the opponent\
+⏰ Timestamp: 2025-08-17T20:28:56.662556
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   111
+🎯 Action: 1
+🧠 Reasoning: In Kuhn Poker, the private card Q is a relatively strong hand, especially since it is the highest card in the deck. Since this is the first round of betting, the opponent has not provided any information about their hand yet. Therefore, I will choose to call, hoping to get more information about the opponent\
+⏰ Timestamp: 2025-08-17T21:42:08.474693
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   111
+🎯 Action: 1
+🧠 Reasoning: In Kuhn Poker, the private card Q is a relatively strong hand, especially since it is the highest card in the deck. Since this is the first round of betting, the opponent has not provided any information about their hand yet. Therefore, I will choose to call, hoping to get more information about the opponent\
+⏰ Timestamp: 2025-08-30T13:29:01.164980
+----------------------------------------
+
+============================================================
+🎮 Game: kuhn_poker | Episode: 2
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   011
+🎯 Action: 1
+🧠 Reasoning: In Kuhn Poker, the Jack is a relatively strong hand, and since this is the first round of betting, I don\
+⏰ Timestamp: 2025-08-30T13:29:01.739787
+----------------------------------------
+
+============================================================
+🎮 Game: kuhn_poker | Episode: 3
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   211
+🎯 Action: 1
+🧠 Reasoning: In Kuhn Poker, with a private card of K, I have a strong hand. Since it\
+⏰ Timestamp: 2025-08-30T13:29:02.460289
+----------------------------------------
+
+============================================================
+🎮 Game: kuhn_poker | Episode: 4
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+🎯 Action: 1
+🧠 Reasoning: In Kuhn Poker, the key strategy is to bluff occasionally to make our bets more credible. Since I have a King, which is a strong hand, I want to bet to build the pot and put pressure on my opponent. However, betting too aggressively can make my bluffs more transparent, so I need to balance my betting frequency. In this case, I will bet to take advantage of my strong hand and to test my opponent\
+⏰ Timestamp: 2025-08-30T13:29:03.274581
+----------------------------------------
+
+============================================================
+🎮 Game: kuhn_poker | Episode: 5
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   111
+🎯 Action: 1
+🧠 Reasoning: In Kuhn Poker, the private card Q is a relatively strong hand, especially since it is the highest card in the deck. Since this is the first round of betting, the opponent has not provided any information about their hand yet. Therefore, I will choose to call, hoping to get more information about the opponent\
+⏰ Timestamp: 2025-08-30T13:29:03.800094
+----------------------------------------
+
+============================================================
+🎮 Game: matching_pennies | Episode: 1
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 0
+🧠 Reasoning: In the matching pennies game, the goal is to match the opponent\
+⏰ Timestamp: 2025-08-30T13:30:04.217317
+----------------------------------------
+
+============================================================
+🎮 Game: matching_pennies | Episode: 2
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 0
+🧠 Reasoning: In the matching pennies game, the goal is to match the opponent\
+⏰ Timestamp: 2025-08-30T13:30:04.729732
+----------------------------------------
+
+============================================================
+🎮 Game: matching_pennies | Episode: 3
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 0
+🧠 Reasoning: In the matching pennies game, the goal is to match the opponent\
+⏰ Timestamp: 2025-08-30T13:30:05.333547
+----------------------------------------
+
+============================================================
+🎮 Game: matching_pennies | Episode: 4
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 0
+🧠 Reasoning: In the matching pennies game, the goal is to match the opponent\
+⏰ Timestamp: 2025-08-30T13:30:05.866830
+----------------------------------------
+
+============================================================
+🎮 Game: matching_pennies | Episode: 5
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 0
+🧠 Reasoning: In the matching pennies game, the goal is to match the opponent\
+⏰ Timestamp: 2025-08-30T13:30:06.460002
+----------------------------------------
+
+============================================================
+🎮 Game: matrix_pd | Episode: 1
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 1
+🧠 Reasoning: In the Prisoner\
+⏰ Timestamp: 2025-08-13T00:05:40.453568
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 1
+🧠 Reasoning: In the Prisoner\
+⏰ Timestamp: 2025-08-14T00:43:28.932351
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 1
+🧠 Reasoning: In the Prisoner\
+⏰ Timestamp: 2025-08-17T20:30:17.322417
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 1
+🧠 Reasoning: In the Prisoner\
+⏰ Timestamp: 2025-08-17T21:43:02.432722
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 1
+🧠 Reasoning: In the Prisoner\
+⏰ Timestamp: 2025-08-30T13:29:43.729572
+----------------------------------------
+
+============================================================
+🎮 Game: matrix_pd | Episode: 2
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 1
+🧠 Reasoning: In the Prisoner\
+⏰ Timestamp: 2025-08-30T13:29:44.242126
+----------------------------------------
+
+============================================================
+🎮 Game: matrix_pd | Episode: 3
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 1
+🧠 Reasoning: In the Prisoner\
+⏰ Timestamp: 2025-08-30T13:29:44.849726
+----------------------------------------
+
+============================================================
+🎮 Game: matrix_pd | Episode: 4
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 1
+🧠 Reasoning: In the Prisoner\
+⏰ Timestamp: 2025-08-30T13:29:45.470881
+----------------------------------------
+
+============================================================
+🎮 Game: matrix_pd | Episode: 5
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 1
+🧠 Reasoning: In the Prisoner\
+⏰ Timestamp: 2025-08-30T13:29:46.085831
+----------------------------------------
+
+============================================================
+🎮 Game: matrix_rps | Episode: 1
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 0
+🧠 Reasoning: Since this is the first move, there is no prior information about the opponent\
+⏰ Timestamp: 2025-08-13T00:05:28.632496
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 0
+🧠 Reasoning: Since this is the first move, there is no prior information about the opponent\
+⏰ Timestamp: 2025-08-14T00:43:16.431935
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 0
+🧠 Reasoning: Since this is the first move, I have no information about the opponent\
+⏰ Timestamp: 2025-08-17T20:29:57.287915
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 0
+🧠 Reasoning: Since this is the first move, I have no information about the opponent\
+⏰ Timestamp: 2025-08-17T21:42:49.962285
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 0
+🧠 Reasoning: Since this is the first move, I have no information about the opponent\
+⏰ Timestamp: 2025-08-30T13:29:22.644785
+----------------------------------------
+
+============================================================
+🎮 Game: matrix_rps | Episode: 2
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 0
+🧠 Reasoning: Since this is the first move, I have no information about the opponent\
+⏰ Timestamp: 2025-08-30T13:29:23.348902
+----------------------------------------
+
+============================================================
+🎮 Game: matrix_rps | Episode: 3
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 0
+🧠 Reasoning: Since this is the first move, I have no information about the opponent\
+⏰ Timestamp: 2025-08-30T13:29:24.063631
+----------------------------------------
+
+============================================================
+🎮 Game: matrix_rps | Episode: 4
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 0
+🧠 Reasoning: Since this is the first move, I have no information about the opponent\
+⏰ Timestamp: 2025-08-30T13:29:24.780419
+----------------------------------------
+
+============================================================
+🎮 Game: matrix_rps | Episode: 5
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   Matrix game - Player 0
+🎯 Action: 0
+🧠 Reasoning: Since this is the first move, I have no information about the opponent\
+⏰ Timestamp: 2025-08-30T13:29:25.394256
+----------------------------------------
+
+============================================================
+🎮 Game: tic_tac_toe | Episode: 1
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   ...
+   ...
+   ...
+🎯 Action: 4
+🧠 Reasoning: I will place my X in the center of the board (index 4) to control the most possible moves and have the highest flexibility for the next move.
+⏰ Timestamp: 2025-08-13T00:05:15.009241
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   ...
+   ...
+   ...
+🎯 Action: 4
+🧠 Reasoning: I will place my X in the center of the board (cell index 4) to control the most possible moves and have the highest flexibility for the next move.
+⏰ Timestamp: 2025-08-14T00:43:02.096949
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   ...
+   ...
+   ...
+🎯 Action: 4
+🧠 Reasoning: I will place my X in the center of the board (cell index 4) to control the most possible moves and have the highest flexibility for the next move.
+⏰ Timestamp: 2025-08-17T20:29:37.936494
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   ...
+   ...
+   ...
+🎯 Action: 4
+🧠 Reasoning: I will place my X in the center of the board (cell index 4) to control the most possible moves and have the highest flexibility for the next move.
+⏰ Timestamp: 2025-08-17T21:42:35.924151
+----------------------------------------
+
+🔄 Turn 0:
+📋 Board State:
+   ...
+   ...
+   ...
+🎯 Action: 4
+🧠 Reasoning: I will place my X in the center of the board (cell index 4) to control the most possible moves and have the highest flexibility for the next move.
+⏰ Timestamp: 2025-08-30T13:28:34.458329
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   .o.
+   .x.
+   ...
+🎯 Action: 2
+🧠 Reasoning: I will place my X in position 2 to block the potential two-way win for O and also set up a potential two-way win for myself.
+⏰ Timestamp: 2025-08-13T00:05:15.421133
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   .o.
+   .x.
+   ...
+🎯 Action: 2
+🧠 Reasoning: I will place my X in position 2 to block the potential two-way win for O and also set up a potential win for myself. This move will also force O to respond to my move, giving me an opportunity to control the center of the board.
+⏰ Timestamp: 2025-08-14T00:43:02.714763
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   .o.
+   .x.
+   ...
+🎯 Action: 2
+🧠 Reasoning: I will place my X in position 2 to block the potential two-way win for O and create a possibility for a two-way win for myself.
+⏰ Timestamp: 2025-08-17T20:29:38.309566
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   .o.
+   .x.
+   ...
+🎯 Action: 2
+🧠 Reasoning: I will place my X in position 2 to block the potential two-way win for O and create a possibility for a two-way win for myself.
+⏰ Timestamp: 2025-08-17T21:42:36.336473
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   .o.
+   .x.
+   ...
+🎯 Action: 2
+🧠 Reasoning: I will place my X in position 2 to block the potential two-way win for O and create a possibility for a two-way win for myself.
+⏰ Timestamp: 2025-08-30T13:28:34.885309
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   oox
+   .x.
+   ...
+🎯 Action: 5
+🧠 Reasoning: I will place my X in position 5 to block the potential three-in-a-row of O\
+⏰ Timestamp: 2025-08-13T00:05:16.041335
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   oox
+   .x.
+   ...
+🎯 Action: 5
+🧠 Reasoning: I will place my X in position 5 to block the potential three-in-a-row of O\
+⏰ Timestamp: 2025-08-14T00:43:03.210487
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   oox
+   .x.
+   ...
+🎯 Action: 5
+🧠 Reasoning: I will place my X in position 5 to block the potential three-in-a-row of O\
+⏰ Timestamp: 2025-08-17T20:29:38.851509
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   oox
+   .x.
+   ...
+🎯 Action: 5
+🧠 Reasoning: I will place my X in position 5 to block the potential three-in-a-row of O\
+⏰ Timestamp: 2025-08-17T21:42:36.835968
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   oox
+   .x.
+   ...
+🎯 Action: 5
+🧠 Reasoning: I will place my X in position 5 to block the potential three-in-a-row of O\
+⏰ Timestamp: 2025-08-30T13:28:35.359460
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   oox
+   .xx
+   .o.
+🎯 Action: 6
+🧠 Reasoning: I will place my X in position 6 to block the opponent\
+⏰ Timestamp: 2025-08-13T00:05:16.451848
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   oox
+   .xx
+   .o.
+🎯 Action: 6
+🧠 Reasoning: I will place my X in position 6 to block the opponent\
+⏰ Timestamp: 2025-08-14T00:43:03.741492
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   oox
+   .xx
+   .o.
+🎯 Action: 6
+🧠 Reasoning: I will place my X in position 6 to block the opponent\
+⏰ Timestamp: 2025-08-17T20:29:39.228358
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   oox
+   .xx
+   .o.
+🎯 Action: 6
+🧠 Reasoning: I will place my X in position 6 to block the opponent\
+⏰ Timestamp: 2025-08-17T21:42:37.354122
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   oox
+   .xx
+   .o.
+🎯 Action: 6
+🧠 Reasoning: I will place my X in position 6 to block the opponent\
+⏰ Timestamp: 2025-08-30T13:28:35.829910
+----------------------------------------
+
+============================================================
+🎮 Game: tic_tac_toe | Episode: 2
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   ...
+   ...
+   ...
+🎯 Action: 4
+🧠 Reasoning: I will place my X in the center of the board (cell index 4) to control the most possible moves and have the highest flexibility for the next move.
+⏰ Timestamp: 2025-08-30T13:28:36.342172
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   ...
+   ox.
+   ...
+🎯 Action: 2
+🧠 Reasoning: I will place my X in position 2, which is the center of the board. This is a strategic move as it gives me the most flexibility for my next move and puts pressure on the opponent to respond. By controlling the center, I increase my chances of winning.
+⏰ Timestamp: 2025-08-30T13:28:36.860229
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   .ox
+   ox.
+   ...
+🎯 Action: 5
+🧠 Reasoning: I will place my X in position 5 to block the opponent\
+⏰ Timestamp: 2025-08-30T13:28:37.365369
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   .ox
+   oxx
+   o..
+🎯 Action: 8
+🧠 Reasoning: I will place my X in position 8 to block O from winning and create a potential opportunity to win. Currently, O has two possible ways to win, but by placing X in position 8, I can block one of those possibilities and force O to regroup. This move also sets me up for a potential win if I can get two more X\
+⏰ Timestamp: 2025-08-30T13:28:37.947944
+----------------------------------------
+
+============================================================
+🎮 Game: tic_tac_toe | Episode: 3
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   ...
+   ...
+   ...
+🎯 Action: 4
+🧠 Reasoning: I will place my X in the center of the board (cell index 4) to control the most possible moves and have the highest flexibility for the next move.
+⏰ Timestamp: 2025-08-30T13:28:38.493238
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   .o.
+   .x.
+   ...
+🎯 Action: 2
+🧠 Reasoning: I will place my X in position 2 to block the potential two-way win for O and create a possibility for a two-way win for myself.
+⏰ Timestamp: 2025-08-30T13:28:38.901247
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   .ox
+   .x.
+   ..o
+🎯 Action: 5
+🧠 Reasoning: I will place my X in position 5, which is the center of the right column. This move will give me the opportunity to potentially create two different ways to win, either horizontally or vertically. It also puts pressure on the opponent to respond to this move, making it harder for them to create their own winning opportunities.
+⏰ Timestamp: 2025-08-30T13:28:39.516996
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   oox
+   .xx
+   ..o
+🎯 Action: 7
+🧠 Reasoning: I will place my X in position 7 to block the opponent\
+⏰ Timestamp: 2025-08-30T13:28:39.884512
+----------------------------------------
+
+🔄 Turn 8:
+📋 Board State:
+   oox
+   .xx
+   oxo
+🎯 Action: 3
+🧠 Reasoning: I will place my X in position 3 to block the opponent\
+⏰ Timestamp: 2025-08-30T13:28:40.340248
+----------------------------------------
+
+============================================================
+🎮 Game: tic_tac_toe | Episode: 4
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   ...
+   ...
+   ...
+🎯 Action: 4
+🧠 Reasoning: I will place my X in the center of the board (cell index 4) to control the most possible moves and have the highest flexibility for the next move.
+⏰ Timestamp: 2025-08-30T13:28:40.852736
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   o..
+   .x.
+   ...
+🎯 Action: 5
+🧠 Reasoning: I will place my X in position 5, which is the center of the board. This is a strategic move because it gives me the most flexibility for my next move and puts pressure on my opponent to respond in a way that blocks my potential winning lines.
+⏰ Timestamp: 2025-08-30T13:28:41.359044
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   oo.
+   .xx
+   ...
+🎯 Action: 2
+🧠 Reasoning: I will place my X in position 2 to block the potential two "o"s in a row and create an opportunity to win. This move also puts pressure on the opponent to respond to the potential threat.
+⏰ Timestamp: 2025-08-30T13:28:41.871262
+----------------------------------------
+
+🔄 Turn 6:
+📋 Board State:
+   oox
+   oxx
+   ...
+🎯 Action: 7
+🧠 Reasoning: I will place my X in position 7 to block the opponent\
+⏰ Timestamp: 2025-08-30T13:28:42.386906
+----------------------------------------
+
+============================================================
+🎮 Game: tic_tac_toe | Episode: 5
+🤖 Agent: llm (litellm_groq/llama3-70b-8192)
+============================================================
+
+🔄 Turn 0:
+📋 Board State:
+   ...
+   ...
+   ...
+🎯 Action: 4
+🧠 Reasoning: I will place my X in the center of the board (cell index 4) to control the most possible moves and have the highest flexibility for the next move.
+⏰ Timestamp: 2025-08-30T13:28:42.804219
+----------------------------------------
+
+🔄 Turn 2:
+📋 Board State:
+   ...
+   ox.
+   ...
+🎯 Action: 2
+🧠 Reasoning: I will place my X in position 2, which is the center of the board. This is a strategic move as it gives me the most flexibility for my next move and puts pressure on the opponent to respond. By controlling the center, I increase my chances of winning.
+⏰ Timestamp: 2025-08-30T13:28:43.294225
+----------------------------------------
+
+🔄 Turn 4:
+📋 Board State:
+   ..x
+   ox.
+   .o.
+🎯 Action: 6
+🧠 Reasoning: I will place my X in position 6 to block O\
+⏰ Timestamp: 2025-08-30T13:28:43.714546
+----------------------------------------
+
+✨ Extraction complete! Found 289 reasoning traces.
