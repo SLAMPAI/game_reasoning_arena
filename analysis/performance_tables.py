@@ -612,7 +612,8 @@ def group_models_by_organization(model_name: str) -> str:
 
 def create_publication_ready_overall_table(generator) -> pd.DataFrame:
     """
-    Overall Model Performance table with organization grouping and normalized rewards.
+    Overall Model Performance table with organization grouping
+    and normalized rewards.
 
     Args:
         generator: PerformanceTableGenerator instance
@@ -690,7 +691,9 @@ def create_publication_ready_pivot_table(generator) -> pd.DataFrame:
     )
 
     # Clean up game names for display
-    pivot_table.columns = [display_game_name(col) for col in pivot_table.columns]
+    pivot_table.columns = [
+        display_game_name(col) for col in pivot_table.columns
+    ]
 
     # Sort by overall performance (average across games)
     pivot_table['Overall'] = pivot_table.mean(axis=1)
