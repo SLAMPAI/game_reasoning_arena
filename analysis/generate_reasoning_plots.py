@@ -38,7 +38,7 @@ def clean_model_name(model_name: str) -> str:
 
     Args:
         model_name: Full model name from database
-                   (e.g., "llm_litellm_together_ai_meta_llama_Meta_Llama_3.1...")
+             (e.g., "llm_litellm_together_ai_meta_llama_Meta_Llama_3.1...")
 
     Returns:
         Cleaned model name (e.g., "Meta-Llama-3.1-8B-Instruct-Turbo")

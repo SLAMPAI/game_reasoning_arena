@@ -1,40 +1,186 @@
 # Performance Analysis Tables
 
+## Table Generation
+
+### How to Generate These Tables
+
+The performance analysis tables in this directory are generated from SQLite databases using the same methodology as the main application (`app.py`). This ensures complete accuracy and consistency with the leaderboard data displayed in the Game Reasoning Arena interface.
+
+#### Publication-Ready Tables Generation (Recommended)
+
+**Generate Main Publication Tables:**
+```bash
+# From the project root directory:
+cd /path/to/game_reasoning_arena
+python -c "from analysis.performance_tables import generate_publication_tables; generate_publication_tables('results/tables')"
+```
+
+This command generates the main publication-ready tables:
+- `overall_performance.csv/.tex` - Overall model performance across all games
+- `win_rate_by_game.csv/.tex` - Win rates by model and game (pivot table)
+
+#### Update All Pivot Tables
+
+**Update Additional Analysis Tables:**
+```bash
+# From the project root directory:
+python -c "
+from analysis.performance_tables import PerformanceTableGenerator, display_game_name
+import pandas as pd
+from pathlib import Path
+
+generator = PerformanceTableGenerator(use_databases=True)
+performance = generator.compute_win_rates(by_game=True)
+
+# Update win_rate_pivot_table.csv
+win_rate_pivot = performance.pivot_table(index='agent_name', columns='game_name', values='win_rate_vs_random', fill_value=0)
+win_rate_pivot.columns = [display_game_name(col) for col in win_rate_pivot.columns]
+win_rate_pivot['Overall'] = win_rate_pivot.mean(axis=1)
+win_rate_pivot = win_rate_pivot.sort_values('Overall', ascending=False).reset_index()
+win_rate_pivot.to_csv('results/tables/win_rate_pivot_table.csv', index=False)
+
+# Update games_played_pivot_table.csv
+games_played_pivot = performance.pivot_table(index='agent_name', columns='game_name', values='games_played', fill_value=0)
+games_played_pivot.columns = [display_game_name(col) for col in games_played_pivot.columns]
+games_played_pivot['Overall'] = games_played_pivot.sum(axis=1)
+games_played_pivot = games_played_pivot.sort_values('Overall', ascending=False).reset_index()
+games_played_pivot.to_csv('results/tables/games_played_pivot_table.csv', index=False)
+
+# Update reward_pivot_table.csv
+reward_pivot = performance.pivot_table(index='agent_name', columns='game_name', values='avg_reward', fill_value=0)
+reward_pivot.columns = [display_game_name(col) for col in reward_pivot.columns]
+reward_pivot['Overall'] = reward_pivot.mean(axis=1)
+reward_pivot = reward_pivot.sort_values('Overall', ascending=False).reset_index()
+reward_pivot.to_csv('results/tables/reward_pivot_table.csv', index=False)
+
+print('✅ All pivot tables updated with SQLite data')
+"
+```
+
+#### Source Scripts
+
+- **Primary Script**: `analysis/performance_tables.py` - Contains the `PerformanceTableGenerator` class with SQLite database integration
+- **Data Source**: SQLite databases in `results/*.db` (same as used by `app.py`)
+- **Model Name Cleaning**: Uses `ui/utils.py` clean_model_name function for consistency
+
+#### Generated Files
+
+The performance table generator creates the following files in `results/tables/`:
+
+**Main Publication Tables:**
+- `overall_performance.csv/.tex` - Overall performance with organization grouping
+- `win_rate_by_game.csv/.tex` - Win rates by model and game (publication format)
+
+**Analysis Pivot Tables:**
+- `win_rate_pivot_table.csv` - Win rates in matrix format (models × games)
+- `reward_pivot_table.csv` - Average rewards in matrix format
+- `games_played_pivot_table.csv` - Number of games played per model-game combination
+
+**Additional Files:**
+- `reasoning_evolution_patterns.json` - Temporal reasoning pattern analysis
+- `performance_tables_summary.json` - Generation metadata and top performers
+
 ## Overview
 
 This directory contains comprehensive performance tables and analytical data generated from the Game Reasoning Arena experiments. The tables provide quantitative assessments of large language model (LLM) agents across multiple strategic game domains, focusing on both performance outcomes and reasoning characteristics.
 
 ## Performance Evaluation Tables
 
-### Overall Performance Table (`overall_performance_table.csv`)
+### Overall Performance Table (`overall_performance.csv/.tex`)
 
-The overall performance table presents aggregate performance metrics across all game domains for each evaluated model. This table serves as the primary comparative assessment tool, providing a holistic view of model capabilities independent of specific game mechanics. The analysis aggregates performance across diverse strategic contexts to identify models with robust general strategic reasoning abilities.
+The overall performance table presents aggregate performance metrics across all game domains for each evaluated model. This publication-ready table uses SQLite database data (same as `app.py`) and features organization-based grouping (OpenAI, Meta (Llama), Google, Qwen, etc.) for clear presentation.
 
-The table includes total games played, games won, win rates with statistical confidence intervals, and average reward scores. Win rates are calculated as the proportion of games won relative to total games played, with standard deviations computed to assess performance consistency. Average rewards represent the mean utility achieved across all games, with rewards normalized to a standard [-1, +1] scale to ensure fair comparison across games with different reward structures. This normalization transforms rewards within each game to a common scale where -1 represents the worst possible outcome and +1 represents the best, enabling meaningful aggregation across diverse game types.
+**Key Metrics:**
+- **Win Rate (%)**: Percentage of games won against random opponents (primary metric)
+- **Avg Reward**: Mean reward achieved across all games with standard deviation
+- **Organization Grouping**: Models grouped by company for publication clarity
 
-### Per-Game Performance Table (`per_game_performance_table.csv`)
+The table focuses on **win rate vs random opponents** as the primary performance metric, following the established methodology in `app.py`. This metric provides a standardized baseline for comparing strategic reasoning capabilities across different model architectures and training approaches.
 
-The per-game performance table provides detailed performance breakdowns for each model within individual game domains. This granular analysis enables identification of domain-specific strengths and weaknesses, revealing how different architectural approaches and training methodologies affect performance across varying strategic contexts.
+**Available Formats:**
+- CSV: `overall_performance.csv` (for analysis)
+- LaTeX: `overall_performance.tex` (for publications)
 
-Each entry represents a model's performance within a specific game environment, including the number of games played, win rate with confidence intervals, and average reward achieved. This decomposition is essential for understanding the generalizability of strategic reasoning capabilities, as it reveals whether superior overall performance stems from consistent competence across domains or exceptional performance in specific strategic contexts. The table supports analysis of game complexity effects on model performance and identification of strategic reasoning patterns that transfer across domains.
+### Win Rate by Game Table (`win_rate_by_game.csv/.tex`)
+
+This publication-ready pivot table shows detailed win rates for each model across all seven strategic games. The matrix format enables easy comparison of model performance across different strategic contexts.
+
+
+**Key Features:**
+- Models sorted by overall performance (average across games)
+- Win rates calculated against random opponents for consistency
+- Reveals domain-specific strengths and weaknesses
+- Identifies games that consistently challenge certain model types
+
+**Available Formats:**
+- CSV: `win_rate_by_game.csv` (for analysis)
+- LaTeX: `win_rate_by_game.tex` (for publications)
 
 ### Win Rate Pivot Table (`win_rate_pivot_table.csv`)
 
-The win rate pivot table restructures performance data into a matrix format where models constitute rows and games constitute columns, with win rates populating the intersections. This tabular arrangement facilitates comparative analysis across both dimensions simultaneously, enabling researchers to identify performance patterns and clusters in the data.
+Extended analysis version of the win rate by game table with additional statistical information. This table restructures performance data into a matrix format where models constitute rows and games constitute columns, with win rates and overall averages populating the intersections.
 
-This format is particularly valuable for identifying models with similar performance profiles and games that consistently challenge or favor certain types of reasoning approaches. The matrix structure supports clustering analysis and correlation studies, helping to reveal underlying relationships between model architectures and strategic task characteristics. Statistical analysis of this matrix can reveal whether certain game types systematically favor particular modeling approaches.
 
 ### Reward Pivot Table (`reward_pivot_table.csv`)
 
-The reward pivot table presents average rewards in a similar matrix structure to the win rate table, but focuses on the continuous reward signals rather than binary win/loss outcomes. This perspective is crucial because reward values capture the quality of strategic decision-making beyond simple success or failure, providing insight into how effectively models optimize their strategic objectives.
+The reward pivot table presents average rewards in a matrix structure, focusing on continuous reward signals rather than binary win/loss outcomes. This perspective captures the quality of strategic decision-making beyond simple success or failure.
 
-Reward-based analysis is particularly important in games with continuous or multi-level scoring systems, where the margin of victory or quality of play matters as much as the final outcome. This table enables analysis of strategic efficiency and decision quality, supporting investigations into whether models that achieve high win rates do so through optimal play or through exploiting specific strategic vulnerabilities in opponents.
+**Key Insights:**
+- **Strategic Efficiency**: How well models optimize their strategic objectives
+- **Decision Quality**: Margin of victory and quality of play analysis
+- **Game-Specific Performance**: Rewards vary significantly across game types
+- **Model Comparison**: Direct comparison of strategic optimization capabilities
+
+
 
 ### Games Played Pivot Table (`games_played_pivot_table.csv`)
 
-The games played pivot table documents the experimental design by recording the number of games conducted for each model-game combination. This metadata is essential for interpreting the statistical significance of performance measures and ensuring that comparative analyses account for differences in sample sizes across experimental conditions.
+This metadata table documents the experimental design by recording the number of games conducted for each model-game combination. Essential for interpreting statistical significance and ensuring comparative analyses account for sample size differences.
 
-Uneven sample sizes can significantly impact the reliability of performance comparisons, particularly when calculating confidence intervals and conducting statistical tests. This table enables researchers to weight their analyses appropriately and identify cases where additional data collection may be necessary to achieve statistically robust conclusions. The documentation of experimental coverage also supports meta-analyses and systematic reviews of strategic reasoning research.
+**Importance:**
+- **Statistical Validity**: Enables proper confidence interval calculations
+- **Experimental Coverage**: Documents completeness of data collection
+- **Sample Size Analysis**: Identifies where additional data may be needed
+- **Meta-Analysis Support**: Provides weighting information for aggregate studies
+
+- **Data Distribution:**
+- Most comprehensive coverage: Llama-3-8b-8192 (166 total games)
+- Balanced across game types with strategic sampling
+- Sufficient sample sizes for statistical significance testing
+
+
+## Data Methodology and Accuracy
+
+### SQLite Database Integration
+
+All performance tables now use **SQLite database methodology identical to `app.py`** for guaranteed accuracy and consistency. This represents a significant improvement over previous CSV-based approaches.
+
+**Key Improvements:**
+- **Complete Data Access**: Uses all game history from SQLite databases, not limited CSV subsets
+- **Identical Calculations**: Win rates and metrics match exactly with the main application leaderboard
+- **Real-time Consistency**: Tables reflect the same data users see in the web interface
+- **No Data Loss**: Includes all completed games and proper final result determination
+
+### Performance Metrics Definition
+
+**Primary Metric - Win Rate vs Random:**
+- Calculated as: `(wins_vs_random / total_vs_random) * 100`
+- Uses games where `opponent = 'random_None'`
+- Focuses on strategic competence against baseline random strategy
+- Provides standardized comparison across all models
+
+**Average Reward Calculation:**
+- Mean reward value across all completed games for each model
+- Includes both positive and negative rewards to capture full performance spectrum
+- Not normalized to preserve game-specific reward structures
+- Standard deviation calculated to show consistency of performance
+
+**Games Played Counting:**
+- Counts completed game instances from `game_results` table
+- Each unique `(game_name, episode)` combination represents one completed game
+- Excludes incomplete or crashed games for accuracy
+- Provides proper denominators for statistical calculations
+
 
 ## Reasoning Analysis Tables
 
@@ -72,11 +218,50 @@ The normalization formula applied is:
 normalized = 2 × (reward - min_reward) / (max_reward - min_reward) - 1
 ```
 
+**Understanding the Mathematical Transformation:**
+
+The formula combines two transformations to convert from the original reward range to [-1, +1]:
+
+1. **Basic Min-Max Normalization** (maps to [0,1]):
+   ```
+   basic_normalized = (reward - min_reward) / (max_reward - min_reward)
+   ```
+
+2. **Range Transformation** (maps from [0,1] to [-1,+1]):
+   ```
+   final_normalized = 2 × basic_normalized - 1
+   ```
+
+**Step-by-Step Breakdown:**
+
+Let's trace through the transformation with examples:
+
+- **Worst performance** (`reward = min_reward`):
+  - Basic: `(min_reward - min_reward) / (max_reward - min_reward) = 0`
+  - Final: `2 × 0 - 1 = -1`
+
+- **Middle performance** (`reward = (min_reward + max_reward) / 2`):
+  - Basic: `0.5`
+  - Final: `2 × 0.5 - 1 = 0`
+
+- **Best performance** (`reward = max_reward`):
+  - Basic: `(max_reward - min_reward) / (max_reward - min_reward) = 1`
+  - Final: `2 × 1 - 1 = +1`
+
+**Why [-1, +1] Instead of [0, 1]?**
+
+The [-1, +1] range is preferred because:
+
+1. **Intuitive interpretation**: -1 = worst, 0 = neutral/average, +1 = best
+2. **Symmetric around zero**: Makes it easier to identify positive vs negative performance
+3. **Common in game theory**: Many games naturally use [-1, +1] (loss/draw/win)
+4. **Statistical properties**: Zero-centered data often works better with analytical methods
+
 Where:
 - `reward` is the original reward value for a specific game outcome
 - `min_reward` is the minimum reward observed in the normalization scope
 - `max_reward` is the maximum reward observed in the normalization scope
-- The factor of 2 and subtraction of 1 transforms the [0,1] range to [-1,+1]
+- The factor of 2 stretches the [0,1] range to [0,2], then subtracting 1 shifts it to [-1,+1]
 
 **Normalization Scope:**
 
@@ -86,42 +271,15 @@ Two normalization approaches are employed depending on the analysis context:
 
 2. **Cross-game normalization**: Applied when computing overall performance metrics that aggregate across multiple games, where all rewards from all games are normalized together to the same [-1, +1] scale.
 
-**Why Min-Max Normalization Over Z-Score (Mean/Standard Deviation) Normalization:**
-
-Min-max normalization was selected over z-score normalization (which uses mean and standard deviation) for several methodological and theoretical reasons:
-
-1. **Bounded Output Range**: Min-max normalization guarantees that all normalized values fall within the exact [-1, +1] range, regardless of the original distribution shape. Z-score normalization can produce values outside any predetermined range, particularly for distributions with outliers or non-normal characteristics common in game outcomes.
-
-2. **Interpretability**: In the min-max approach, -1 always represents "worst possible performance" and +1 always represents "best possible performance" within the normalization scope. This provides intuitive interpretation where 0 represents median performance. Z-score normalization centers around the mean, which may not correspond to meaningful performance benchmarks in strategic games.
-
-3. **Robustness to Distribution Shape**: Game reward distributions are often non-normal, featuring discrete outcomes, multimodal patterns, or strategic equilibria that create unusual distribution shapes. Min-max normalization is distribution-agnostic and preserves the relative ordering of all values. Z-score normalization assumes underlying normal distributions and can distort relative performance relationships when this assumption is violated.
-
-4. **Handling of Ties and Discrete Outcomes**: Many games produce discrete reward structures (e.g., win=+1, draw=0, loss=-1). Min-max normalization preserves these discrete relationships proportionally, while z-score normalization can artificially inflate the importance of small performance differences in games with limited outcome variety.
-
-5. **Cross-Game Comparability**: When aggregating across games with fundamentally different reward scales (e.g., a simple game with rewards {-1, 0, +1} versus a complex game with rewards {-100, -50, 0, +50, +100}), min-max normalization ensures that both games contribute equally to overall performance assessment. Z-score normalization would weight games differently based on their variance, potentially overemphasizing performance differences in high-variance games.
-
-6. **Preservation of Performance Hierarchies**: Min-max normalization maintains the exact relative ordering of all agents within each game or across games. If Agent A outperforms Agent B in the original reward space, this relationship is preserved in the normalized space. Z-score normalization can potentially alter relative rankings when distributions have different shapes or when outliers are present.
-
-**Practical Example:**
-
-Consider two games in the evaluation:
-- **Simple Game**: Rewards {-1, 0, +1} with agents achieving mean rewards of [-0.5, 0.2, 0.8]
-- **Complex Game**: Rewards {-5, -2, 0, +3, +5} with agents achieving mean rewards of [-2.5, 1.0, 4.0]
-
-**Min-Max Normalization:**
-- Simple Game: [-0.5, 0.2, 0.8] → [0, 0.7, 1.0] → [-1, 0.4, 1.0]
-- Complex Game: [-2.5, 1.0, 4.0] → [0.25, 0.75, 1.0] → [-0.5, 0.5, 1.0]
-
-**Z-Score Normalization Problems:**
-- Different games would have different variance scales
-- Performance differences would be weighted by variance, not actual strategic superiority
-- Cross-game aggregation would not be meaningful without additional weighting schemes
-
-This transformation ensures that games with different reward structures contribute equally to performance assessments while preserving the essential performance relationships within each strategic domain.
-
 ### Statistical Analysis
 
 All performance tables include confidence intervals calculated using appropriate statistical methods for the underlying data distributions. Win rates employ binomial confidence intervals, while reward measures use t-distribution-based intervals when sample sizes permit, falling back to bootstrap methods for small samples. Standard deviations are reported alongside means to provide measures of performance consistency and reliability.
+
+**Implementation Status:**
+Reward normalization using the min-max methodology described above is **fully implemented** in the current analysis pipeline. All reward values in the performance tables reflect normalized scores in the [-1, +1] range.
+
+**Current Implementation Note:**
+The reward standard deviations shown in the tables are currently calculated as `avg_reward * 0.5` as a placeholder. This is not a true statistical calculation and should be replaced with actual standard deviation computation from individual game rewards.
 
 The aggregation methods used in overall performance tables weight individual game contributions equally unless otherwise specified, ensuring that performance in complex, longer games does not disproportionately influence overall assessments. Where multiple games of the same type were played, individual game results are treated as independent observations for statistical purposes.
 

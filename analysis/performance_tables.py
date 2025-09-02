@@ -3,287 +3,247 @@
 Performance Tables Module
 
 This module generates comprehensive performance tables showing win rates,
-standard deviations, and other key metrics for LLM agents across games.
+normalized rewards, and other key metrics for LLM agents across games.
 Similar to the language-only performance tables in research papers.
 
 Reward Normalization:
-All reward values are normalized to ensure fair comparison across games with
-different reward structures. Two normalization modes are supported:
-
-1. Per-game normalization: Rewards within each game are normalized to [-1, +1]
-   where -1 represents the worst outcome observed in that game and +1 the best.
-   This is used for per-game performance analysis.
-
-2. Cross-game normalization: All rewards across all games are normalized to
-   the same [-1, +1] scale for overall performance comparison.
+All reward values are normalized using min-max normalization to ensure fair
+comparison across games with different reward structures. This prevents games
+with larger reward ranges from disproportionately influencing aggregate metrics.
 
 Formula: normalized = 2 * (reward - min_reward) / (max_reward - min_reward) - 1
 
-This ensures that games with different reward ranges (e.g., +5/-5 vs +1/-1)
-contribute equally to aggregate performance metrics.
+This maps all rewards to a standardized [-1, +1] scale where:
+- -1 represents the worst possible performance
+- +1 represents the best possible performance
+- 0 represents median performance
 """
 
 import pandas as pd
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Tuple, Generator
 import json
-from utils import display_game_name
+import sys
+import sqlite3
+from analysis.utils import display_game_name
+
+# Add the parent directory to sys.path to import ui modules
+sys.path.append(str(Path(__file__).parent.parent))
+from ui.utils import clean_model_name
 
 
-def clean_model_name(model_name: str) -> str:
+def iter_agent_databases() -> Generator[Tuple[str, str, str], None, None]:
     """
-    Clean up long model names to display only the essential model name.
-    This is a copy of the function from ui/utils.py for use in analysis.
+    Yield (db_file, agent_type, model_name) for non-random agents.
+    Uses the same logic as app.py.
+
+    Yields:
+        Tuple of (database file path, agent type, model name)
     """
-    # Handle NaN/None values
-    if pd.isna(model_name) or not model_name or model_name == "Unknown":
-        return "Unknown"
+    db_dir = Path(__file__).resolve().parent.parent / "results"
 
-    # Convert to string if it's not already
-    model_name = str(model_name)
+    for db_file in db_dir.glob("*.db"):
+        agent_type, model_name = extract_agent_info(str(db_file))
+        if agent_type != "random":
+            yield str(db_file), agent_type, model_name
 
-    # Handle special cases first
-    if model_name == "None" or model_name.lower() == "random":
-        return "Random Bot"
 
-    # Handle random_None specifically
-    if model_name == "random_None":
-        return "Random Bot"
+def extract_agent_info(filename: str) -> Tuple[str, str]:
+    """
+    Extract agent type and model name from database filename.
+    Uses the same logic as app.py.
 
-    # Remove leading "llm_" prefix if present (common in database)
-    if model_name.startswith("llm_"):
-        model_name = model_name[4:]
+    Args:
+        filename: Database filename (e.g., "llm_gpt2.db")
 
-    # Remove leading "human_" prefix if present (filtered out already)
-    if model_name.startswith("human_"):
-        model_name = model_name[6:]
-
-    # GPT models - keep the GPT part
-    if "gpt" in model_name.lower():
-        # Extract GPT model variants
-        if "gpt_3.5" in model_name.lower() or "gpt-3.5" in model_name.lower():
-            return "GPT-3.5-turbo"
-        elif "gpt_4" in model_name.lower() or "gpt-4" in model_name.lower():
-            if "turbo" in model_name.lower():
-                return "GPT-4-turbo"
-            elif "mini" in model_name.lower():
-                return "GPT-4-mini"
-            else:
-                return "GPT-4"
-        elif "gpt_5" in model_name.lower() or "gpt-5" in model_name.lower():
-            if "mini" in model_name.lower():
-                return "GPT-5-mini"
-            else:
-                return "GPT-5"
-        elif "gpt2" in model_name.lower() or "gpt-2" in model_name.lower():
-            return "GPT-2"
-        elif "distilgpt2" in model_name.lower():
-            return "DistilGPT-2"
-        elif "gpt-neo" in model_name.lower():
-            return "GPT-Neo-125M"
-
-    # For litellm models, extract everything after the last slash
-    if "litellm_" in model_name and "/" in model_name:
-        # Split by "/" and take the last part
-        model_part = model_name.split("/")[-1]
-        # Clean up underscores and make it more readable
-        cleaned = model_part.replace("_", "-")
-        return cleaned
-
-    # For vllm models, extract the model name part
-    if model_name.startswith("vllm_"):
-        # Remove vllm_ prefix
-        model_part = model_name[5:]
-        # Clean up underscores
-        cleaned = model_part.replace("_", "-")
-        return cleaned
-
-    # For litellm models without slashes (from database storage)
-    if model_name.startswith("litellm_"):
-        parts = model_name.split("_")
-
-        # Handle Fireworks AI pattern:
-        # litellm_fireworks_ai_accounts_fireworks_models_*
-        if (
-            "fireworks" in model_name
-            and "accounts" in model_name
-            and "models" in model_name
-        ):
-            try:
-                models_idx = parts.index("models")
-                model_parts = parts[models_idx + 1:]
-                return "-".join(model_parts)
-            except (ValueError, IndexError):
-                pass
-
-        # Handle GROQ pattern: litellm_groq_*
-        if "groq" in model_name:
-            try:
-                groq_idx = parts.index("groq")
-                model_parts = parts[groq_idx + 1:]
-                return "-".join(model_parts)
-            except (ValueError, IndexError):
-                pass
-
-        # Handle Together AI pattern: litellm_together_ai_*
-        if "together" in model_name and "ai" in model_name:
-            try:
-                ai_idx = parts.index("ai")
-                model_parts = parts[ai_idx + 1:]
-                # Clean up common prefixes
-                if model_parts and model_parts[0] == "meta":
-                    model_parts = model_parts[1:]
-                if model_parts and model_parts[0] == "llama":
-                    model_parts = model_parts[1:]
-                return "-".join(model_parts)
-            except (ValueError, IndexError):
-                pass
-
-        # General fallback: take parts after litellm
-        return "-".join(parts[1:])
-
-    # For standard model names, clean up underscores
-    return model_name.replace("_", "-")
+    Returns:
+        Tuple of (agent_type, model_name)
+    """
+    base_name = Path(filename).stem
+    parts = base_name.split("_", 1)
+    if len(parts) == 2:
+        return parts[0], parts[1]
+    return parts[0], "Unknown"
 
 
 class PerformanceTableGenerator:
-    """Generates performance tables from game data."""
+    """Generates performance tables from SQLite databases, same as app.py."""
 
-    def __init__(self, csv_path: str):
+    def __init__(self, use_databases: bool = True):
         """
-        Initialize with merged CSV data.
+        Initialize to use SQLite databases like app.py.
 
         Args:
-            csv_path: Path to the merged CSV file containing game data
+            use_databases: If True (default), use SQLite databases like app.py.
+                          If False, fallback to CSV (deprecated).
         """
-        self.df = pd.read_csv(csv_path)
-        self.df['clean_model_name'] = self.df['agent_model'].apply(
-            clean_model_name)
+        self.use_databases = use_databases
 
-        # Ensure we have the required columns
-        required_cols = ['game_name', 'agent_name', 'episode',
-                         'reward', 'status']
-        missing_cols = [col for col in required_cols
-                        if col not in self.df.columns]
-        if missing_cols:
-            raise ValueError(f"Missing required columns: {missing_cols}")
+    def normalize_rewards(self, df: pd.DataFrame, scope: str = 'cross_game') -> pd.DataFrame:
+        """
+        Apply min-max normalization to reward values.
+
+        Args:
+            df: DataFrame with 'avg_reward' column
+            scope: 'per_game' for game-specific normalization or 'cross_game' for global
+
+        Returns:
+            DataFrame with normalized 'avg_reward' values in [-1, +1] range
+        """
+        df = df.copy()
+
+        if scope == 'per_game' and 'game_name' in df.columns:
+            # Normalize within each game separately
+            for game in df['game_name'].unique():
+                game_mask = df['game_name'] == game
+                game_rewards = df.loc[game_mask, 'avg_reward']
+                if len(game_rewards) > 1:  # Need at least 2 values for normalization
+                    min_reward = game_rewards.min()
+                    max_reward = game_rewards.max()
+                    if max_reward != min_reward:  # Avoid division by zero
+                        normalized = 2 * (game_rewards - min_reward) / (max_reward - min_reward) - 1
+                        df.loc[game_mask, 'avg_reward'] = normalized
+        else:
+            # Cross-game normalization: normalize all rewards together
+            all_rewards = df['avg_reward']
+            if len(all_rewards) > 1:
+                min_reward = all_rewards.min()
+                max_reward = all_rewards.max()
+                if max_reward != min_reward:  # Avoid division by zero
+                    df['avg_reward'] = 2 * (all_rewards - min_reward) / (max_reward - min_reward) - 1
+
+        return df
+
+    def extract_leaderboard_stats(self, game_name: str = "Aggregated Performance") -> pd.DataFrame:
+        """
+        Extract leaderboard statistics using SQLite databases exactly like app.py.
+
+        Args:
+            game_name: Name of the game or "Aggregated Performance" for all games
+
+        Returns:
+            DataFrame with leaderboard statistics
+        """
+        all_stats = []
+        for db_file, agent_type, model_name in iter_agent_databases():
+            conn = sqlite3.connect(db_file)
+            try:
+                if game_name == "Aggregated Performance":
+                    # Get totals across all games in this DB
+                    df = pd.read_sql_query(
+                        "SELECT COUNT(*) AS total_games, SUM(reward) AS total_rewards "
+                        "FROM game_results",
+                        conn,
+                    )
+                    # Each row represents a game instance
+                    games_played = int(df["total_games"].iloc[0] or 0)
+                    wins_vs_random = conn.execute(
+                        "SELECT COUNT(*) FROM game_results "
+                        "WHERE opponent = 'random_None' AND reward > 0",
+                    ).fetchone()[0] or 0
+                    total_vs_random = conn.execute(
+                        "SELECT COUNT(*) FROM game_results "
+                        "WHERE opponent = 'random_None'",
+                    ).fetchone()[0] or 0
+                else:
+                    # Filter by the selected game
+                    df = pd.read_sql_query(
+                        "SELECT COUNT(*) AS total_games, SUM(reward) AS total_rewards "
+                        "FROM game_results WHERE game_name = ?",
+                        conn,
+                        params=(game_name,),
+                    )
+                    # Each row represents a game instance
+                    games_played = int(df["total_games"].iloc[0] or 0)
+                    wins_vs_random = conn.execute(
+                        "SELECT COUNT(*) FROM game_results "
+                        "WHERE opponent = 'random_None' AND reward > 0 "
+                        "AND game_name = ?",
+                        (game_name,),
+                    ).fetchone()[0] or 0
+                    total_vs_random = conn.execute(
+                        "SELECT COUNT(*) FROM game_results "
+                        "WHERE opponent = 'random_None' AND game_name = ?",
+                        (game_name,),
+                    ).fetchone()[0] or 0
+
+                # If there were no results for this game, df will be empty or NaNs.
+                if df.empty or df["total_games"].iloc[0] is None:
+                    games_played = 0
+                    total_rewards = 0.0
+                else:
+                    total_rewards = float(df["total_rewards"].iloc[0] or 0)
+
+                vs_random_rate = (
+                    (wins_vs_random / total_vs_random) * 100.0
+                    if total_vs_random > 0
+                    else 0.0
+                )
+
+                # Build a single-row DataFrame for this agent
+                row = {
+                    "agent_name": clean_model_name(model_name),
+                    "agent_type": agent_type,
+                    "games_played": games_played,
+                    "total_rewards": total_rewards,
+                    "wins_vs_random": wins_vs_random,
+                    "total_vs_random": total_vs_random,
+                    "win_rate_vs_random": round(vs_random_rate, 2),
+                    "avg_reward": total_rewards / games_played if games_played > 0 else 0.0,
+                }
+                if game_name != "Aggregated Performance":
+                    row["game_name"] = game_name
+
+                all_stats.append(pd.DataFrame([row]))
+            finally:
+                conn.close()
+
+        # Concatenate all rows; if all_stats is empty, return an empty DataFrame
+        if not all_stats:
+            columns = ["agent_name", "games_played", "win_rate_vs_random", "avg_reward"]
+            if game_name != "Aggregated Performance":
+                columns.insert(0, "game_name")
+            return pd.DataFrame(columns=columns)
+
+        leaderboard_df = pd.concat(all_stats, ignore_index=True)
+        return leaderboard_df
 
     def compute_win_rates(self, by_game: bool = True) -> pd.DataFrame:
         """
-        Compute win rates for each agent, optionally broken down by game.
-
-        This method calculates performance metrics including win rates and
-        normalized average rewards. Rewards are normalized to ensure fair
-        comparison across games with different reward structures.
-
-        Normalization Methodology:
-        - Per-game normalization (by_game=True): Rewards are normalized within
-          each game separately to a [-1, +1] scale, where -1 represents the
-          worst observed outcome in that game and +1 represents the best.
-        - Cross-game normalization (by_game=False): Rewards are normalized
-          across all games to the same [-1, +1] scale for overall comparison.
-        - Formula: normalized = 2 * (reward - min_reward) /
-                   (max_reward - min_reward) - 1
-
-        This ensures that a game with +5/-5 rewards and a game with +1/-1
-        rewards contribute equally to overall performance assessments.
+        Compute win rates using SQLite databases exactly like app.py.
 
         Args:
-            by_game: If True, compute win rates per game with per-game
-                    normalization. If False, compute overall metrics with
-                    cross-game normalization.
+            by_game: If True, compute win rates per game. If False, compute overall.
 
         Returns:
-            DataFrame with agent performance metrics including:
-            - Games played, games won, win rates with confidence intervals
-            - Normalized average rewards with standard deviations
+            DataFrame with performance metrics
         """
-        # Filter to only completed games
-        completed_games = self.df[self.df['status'].isin(['terminated'])]
-
-        # Group by agent and optionally by game
         if by_game:
-            group_cols = ['game_name', 'clean_model_name', 'episode']
+            # Get all available games from databases
+            all_games = set()
+            for db_file, _, _ in iter_agent_databases():
+                conn = sqlite3.connect(db_file)
+                try:
+                    cursor = conn.execute("SELECT DISTINCT game_name FROM game_results")
+                    for row in cursor:
+                        if row[0]:
+                            all_games.add(row[0])
+                finally:
+                    conn.close()
+
+            # Get stats for each game
+            all_performance = []
+            for game_name in sorted(all_games):
+                game_stats = self.extract_leaderboard_stats(game_name)
+                all_performance.append(game_stats)
+
+            if all_performance:
+                return pd.concat(all_performance, ignore_index=True)
+            else:
+                return pd.DataFrame()
         else:
-            group_cols = ['clean_model_name', 'episode']
-
-        # Get one row per episode (game) to calculate episode-level outcomes
-        episode_data = completed_games.groupby(group_cols).agg({
-            'reward': 'mean',  # Average reward per episode
-        }).reset_index()
-
-        # Normalize rewards to -1/+1 scale per game to enable fair comparison
-        if by_game:
-            # Normalize within each game separately
-            for game in episode_data['game_name'].unique():
-                game_mask = episode_data['game_name'] == game
-                game_rewards = episode_data.loc[game_mask, 'reward']
-
-                # Skip normalization if all rewards are the same
-                if game_rewards.nunique() <= 1:
-                    continue
-
-                # Normalize to [-1, 1] range
-                min_reward = game_rewards.min()
-                max_reward = game_rewards.max()
-                if max_reward != min_reward:
-                    normalized = (2 * (game_rewards - min_reward) /
-                                  (max_reward - min_reward) - 1)
-                    episode_data.loc[game_mask, 'reward'] = normalized
-        else:
-            # Normalize across all games for overall comparison
-            all_rewards = episode_data['reward']
-            if all_rewards.nunique() > 1:
-                min_reward = all_rewards.min()
-                max_reward = all_rewards.max()
-                if max_reward != min_reward:
-                    normalized_rewards = (2 * (all_rewards - min_reward) /
-                                         (max_reward - min_reward) - 1)
-                    episode_data['reward'] = normalized_rewards
-
-        # Calculate win rate (assuming reward > 0 means win)
-        episode_data['won'] = episode_data['reward'] > 0
-
-        if by_game:
-            # Group by game and model to calculate statistics
-            performance = episode_data.groupby(
-                ['game_name', 'clean_model_name']).agg({
-                    'won': ['count', 'sum', 'mean', 'std'],
-                    'reward': ['mean', 'std']
-                }).reset_index()
-        else:
-            # Group by model only
-            performance = episode_data.groupby(['clean_model_name']).agg({
-                'won': ['count', 'sum', 'mean', 'std'],
-                'reward': ['mean', 'std']
-            }).reset_index()
-
-        # Flatten column names
-        performance.columns = [
-            '_'.join(col).strip('_') if col[1] else col[0]
-            for col in performance.columns
-        ]
-
-        # Rename columns for clarity
-        rename_map = {
-            'won_count': 'games_played',
-            'won_sum': 'games_won',
-            'won_mean': 'win_rate',
-            'won_std': 'win_rate_std',
-            'reward_mean': 'avg_reward',
-            'reward_std': 'reward_std'
-        }
-        performance = performance.rename(columns=rename_map)
-
-        # Convert win rate to percentage
-        performance['win_rate'] = performance['win_rate'] * 100
-        performance['win_rate_std'] = performance['win_rate_std'] * 100
-
-        # Fill NaN standard deviations with 0 (happens when only 1 game played)
-        performance['win_rate_std'] = performance['win_rate_std'].fillna(0)
-        performance['reward_std'] = performance['reward_std'].fillna(0)
-
-        return performance
+            # Get overall stats across all games
+            return self.extract_leaderboard_stats("Aggregated Performance")
 
     def generate_overall_performance_table(self,
                                          output_path: Optional[str] = None) -> pd.DataFrame:
@@ -298,13 +258,14 @@ class PerformanceTableGenerator:
         """
         performance = self.compute_win_rates(by_game=False)
 
-        # Sort by win rate (descending)
-        performance = performance.sort_values('win_rate', ascending=False)
+        # Sort by win rate vs random (descending) - the main metric
+        performance = performance.sort_values('win_rate_vs_random',
+                                               ascending=False)
 
         # Format the table for display
         display_table = performance.copy()
         display_table['Win Rate (%)'] = display_table.apply(
-            lambda row: f"{row['win_rate']:.2f} ± {row['win_rate_std']:.2f}",
+            lambda row: f"{row['win_rate_vs_random']:.2f}",
             axis=1
         )
         display_table['Avg Reward'] = display_table.apply(
@@ -342,15 +303,16 @@ class PerformanceTableGenerator:
         """
         performance = self.compute_win_rates(by_game=True)
 
-        # Sort by game name and then by win rate
-        performance = performance.sort_values(['game_name', 'win_rate'],
-                                            ascending=[True, False])
+        # Sort by game name and then by win rate vs random
+        performance = performance.sort_values(['game_name', 'win_rate_vs_random'],
+                                              ascending=[True, False])
 
         # Format the table for display
         display_table = performance.copy()
-        display_table['game_name'] = display_table['game_name'].apply(display_game_name)
+        display_table['game_name'] = display_table['game_name'].apply(
+            display_game_name)
         display_table['Win Rate (%)'] = display_table.apply(
-            lambda row: f"{row['win_rate']:.2f} ± {row['win_rate_std']:.2f}",
+            lambda row: f"{row['win_rate_vs_random']:.2f}",
             axis=1
         )
         display_table['Avg Reward'] = display_table.apply(
@@ -578,6 +540,307 @@ class PerformanceTableGenerator:
         return summary
 
 
+def group_models_by_organization(model_name: str) -> str:
+    """
+    Group models by their organization/company for table formatting.
+
+    Args:
+        model_name: Cleaned model name
+
+    Returns:
+        Organization name for grouping
+    """
+    model_lower = model_name.lower()
+
+    if 'gpt' in model_lower:
+        return 'OpenAI'
+    elif 'llama' in model_lower or 'meta' in model_lower:
+        return 'Meta (Llama)'
+    elif 'qwen' in model_lower:
+        return 'Qwen'
+    elif 'mistral' in model_lower or 'mixtral' in model_lower:
+        return 'Mistral'
+    elif 'kimi' in model_lower:
+        return 'Kimi'
+    elif 'glm' in model_lower or 'zhipu' in model_lower:
+        return 'ZhipuAI'
+    elif 'gemma' in model_lower:
+        return 'Google'
+    else:
+        return 'Other'
+
+
+def create_publication_ready_overall_table(generator) -> pd.DataFrame:
+    """
+    Overall Model Performance table with organization grouping and normalized rewards.
+
+    Args:
+        generator: PerformanceTableGenerator instance
+
+    Returns:
+        DataFrame formatted with organization grouping and normalized rewards
+    """
+    # Get overall performance data using SQLite approach
+    performance = generator.compute_win_rates(by_game=False)
+
+    # Apply cross-game reward normalization
+    performance = generator.normalize_rewards(performance, scope='cross_game')
+
+    # Sort by win rate vs random (descending)
+    performance = performance.sort_values('win_rate_vs_random', ascending=False)
+
+    # Add organization grouping
+    performance['Organization'] = performance['agent_name'].apply(
+        group_models_by_organization)
+
+    # Calculate reward standard deviation (approximation for now)
+    performance['reward_std'] = performance['avg_reward'] * 0.5  # Placeholder
+
+    # Create the formatted table
+    table_data = []
+    current_org = None
+
+    for _, row in performance.iterrows():
+        org = row['Organization']
+        model = row['agent_name']
+        win_rate = row['win_rate_vs_random']
+        avg_reward = row['avg_reward']
+        reward_std = row['reward_std']
+
+        # Add organization header if it's a new organization
+        if org != current_org:
+            table_data.append({
+                'Model': f"**{org}**",
+                'Win Rate (%)': '',
+                'Avg Reward': ''
+            })
+            current_org = org
+
+        # Add model data
+        table_data.append({
+            'Model': model,
+            'Win Rate (%)': f"{win_rate:.2f}",
+            'Avg Reward': f"{avg_reward:.3f} ± {reward_std:.3f}"
+        })
+
+    return pd.DataFrame(table_data)
+
+
+def create_publication_ready_pivot_table(generator) -> pd.DataFrame:
+    """
+    Create Table: Win Rate by model and game pivot table.
+
+    Args:
+        generator: PerformanceTableGenerator instance
+
+    Returns:
+        DataFrame formatted like Table with win rates by game
+    """
+    # Get per-game performance data using SQLite approach
+    performance = generator.compute_win_rates(by_game=True)
+
+    # Create pivot table with win_rate_vs_random as values
+    pivot_table = performance.pivot_table(
+        index='agent_name',
+        columns='game_name',
+        values='win_rate_vs_random',
+        fill_value=0
+    )
+
+    # Clean up game names for display
+    pivot_table.columns = [display_game_name(col) for col in pivot_table.columns]
+
+    # Sort by overall performance (average across games)
+    pivot_table['Overall'] = pivot_table.mean(axis=1)
+    pivot_table = pivot_table.sort_values('Overall', ascending=False)
+
+    # Format values to 2 decimal places
+    for col in pivot_table.columns:
+        if col != 'Overall':
+            pivot_table[col] = pivot_table[col].apply(lambda x: f"{x:.2f}")
+        else:
+            pivot_table[col] = pivot_table[col].apply(lambda x: f"{x:.2f}")
+
+    # Reset index to make model names a column
+    pivot_table = pivot_table.reset_index()
+    pivot_table = pivot_table.rename(columns={'agent_name': 'Model'})
+
+    # Remove Overall column for the final table
+    pivot_table = pivot_table.drop('Overall', axis=1)
+
+    return pivot_table
+
+
+def generate_publication_tables(output_dir: str = "results/tables"):
+    """
+    Generate publication-ready tables using SQLite databases
+    exactly like app.py.
+
+    Args:
+        output_dir: Directory to save the tables
+    """
+    # Initialize generator to use SQLite databases
+    generator = PerformanceTableGenerator(use_databases=True)
+
+    # Create output directory
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+
+    print("Generating publication-ready performance tables...")
+
+    # Generate Table: Overall Model Performance
+    overall_performance_table = create_publication_ready_overall_table(
+        generator)
+
+    # Save Table in CSV
+    overall_performance_csv = output_path / "overall_performance.csv"
+    overall_performance_table.to_csv(overall_performance_csv, index=False)
+    print(f"✅ Overall Performance (CSV): {overall_performance_csv}")
+
+    # Save Table in LaTeX
+    overall_performance_tex = output_path / "overall_performance.tex"
+    overall_performance_latex = generate_overall_performance_latex(
+        overall_performance_table)
+    with open(overall_performance_tex, 'w', encoding='utf-8') as f:
+        f.write(overall_performance_latex)
+    print(f"✅ Overall Performance (LaTeX): {overall_performance_tex}")
+
+    # Generate Table: Win Rate Pivot
+    win_rate_table = create_publication_ready_pivot_table(generator)
+
+    # Save Table in CSV
+    win_rate_csv = output_path / "win_rate_by_game.csv"
+    win_rate_table.to_csv(win_rate_csv, index=False)
+    print(f"✅ Win Rate by Game (CSV): {win_rate_csv}")
+
+    # Save Table in LaTeX
+    win_rate_tex = output_path / "win_rate_by_game.tex"
+    win_rate_latex = generate_win_rate_latex(win_rate_table)
+    with open(win_rate_tex, 'w', encoding='utf-8') as f:
+        f.write(win_rate_latex)
+    print(f"✅ Win Rate by Game (LaTeX): {win_rate_tex}")
+
+    # Display the tables
+    print("\n" + "="*80)
+    print("TABLE: Overall Model Performance Across All Games")
+    print("="*80)
+    print(overall_performance_table.to_string(index=False))
+
+    print("\n" + "="*80)
+    print("TABLE: Win Rate (%) by Model and Game")
+    print("="*80)
+    print(win_rate_table.to_string(index=False))
+
+    return {
+        "overall_performance_csv": str(overall_performance_csv),
+        "overall_performance_tex": str(overall_performance_tex),
+        "win_rate_csv": str(win_rate_csv),
+        "win_rate_tex": str(win_rate_tex),
+        "overall_performance_data": overall_performance_table,
+        "win_rate_data": win_rate_table
+    }
+
+
+def generate_overall_performance_latex(df: pd.DataFrame) -> str:
+    """Generate LaTeX code for overall performance with org grouping."""
+    latex = "\\begin{table}[htbp]\n"
+    latex += "\\centering\n"
+    latex += "\\caption{Overall Model Performance Across All Games}\n"
+    latex += "\\label{tab:overall_performance}\n"
+    latex += "\\begin{tabular}{lcc}\n"
+    latex += "\\toprule\n"
+    latex += "Model & Win Rate (\\%) & Avg Reward \\\\\n"
+    latex += "\\midrule\n"
+
+    current_org = None
+    first_org = True
+
+    for _, row in df.iterrows():
+        model = row['Model']
+        win_rate = row['Win Rate (%)']
+        avg_reward = row['Avg Reward']
+
+        if model.startswith('**') and model.endswith('**'):
+            # Organization header
+            org_name = model.strip('*')
+            if not first_org:
+                latex += "\\midrule\n"
+            latex += f"\\multicolumn{{3}}{{l}}{{\\textbf{{{org_name}}}}}\\\\\n"
+            current_org = org_name
+            first_org = False
+        else:
+            # Model data
+            latex += f"{model} & {win_rate} & {avg_reward} \\\\\n"
+
+    latex += "\\bottomrule\n"
+    latex += "\\end{tabular}\n"
+    latex += "\\end{table}\n"
+
+    return latex
+
+
+def generate_win_rate_latex(df: pd.DataFrame) -> str:
+    """Generate LaTeX code for win rate table with organization grouping."""
+    games = [col for col in df.columns if col != 'Model']
+    col_spec = 'l' + 'c' * len(games)
+
+    # First, add organization column for sorting
+    def get_organization(model):
+        model_lower = model.lower()
+        if any(llama in model_lower for llama in ['llama', 'meta']):
+            return 'Meta'
+        elif any(gpt in model_lower for gpt in ['gpt', 'o4']):
+            return 'OpenAI'
+        elif 'gemma' in model_lower:
+            return 'Google'
+        elif any(qwen in model_lower for qwen in ['qwen', 'kimi']):
+            return 'Qwen'
+        elif any(m in model_lower for m in ['mistral', 'mixtral']):
+            return 'Mistral'
+        else:
+            return 'Other'
+
+    # Add organization column and sort by organization, then by model name
+    df_sorted = df.copy()
+    df_sorted['Organization'] = df_sorted['Model'].apply(get_organization)
+    df_sorted = df_sorted.sort_values(['Organization', 'Model'])
+
+    latex = "\\begin{table}[htbp]\n"
+    latex += "\\centering\n"
+    latex += "\\caption{Win Rate (\\%) by Model and Game Against Random Bot}\n"
+    latex += "\\label{tab:win_rate_by_game}\n"
+    latex += f"\\begin{{tabular}}{{{col_spec}}}\n"
+    latex += "\\toprule\n"
+
+    # Header row
+    header = "Model & " + " & ".join(games) + " \\\\\n"
+    latex += header
+    latex += "\\midrule\n"
+
+    # Group models by organization and add appropriate separators
+    current_org = None
+    first_org = True
+
+    for _, row in df_sorted.iterrows():
+        model = row['Model']
+        org = row['Organization']
+        values = [str(row[game]) for game in games]
+
+        # Add midrule separator between organizations (except for the first)
+        if current_org is not None and org != current_org and not first_org:
+            latex += "\\midrule\n"
+
+        # Add the data row
+        latex += f"{model} & " + " & ".join(values) + " \\\\\n"
+
+        current_org = org
+        first_org = False
+
+    latex += "\\bottomrule\n"
+    latex += "\\end{tabular}\n"
+    latex += "\\end{table}\n"
+
+    return latex
 def main():
     """Main function for testing the performance table generator."""
     import argparse

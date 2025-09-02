@@ -55,7 +55,7 @@ def get_games_from_databases() -> Set[str]:
     return unique_games
 
 
-def clean_model_name(model_name: str) -> str:
+def clean_model_name(model_name) -> str:
     """
     Clean up long model names to display only the essential model name.
 
@@ -87,8 +87,16 @@ def clean_model_name(model_name: str) -> str:
         >>> clean_model_name("litellm_gpt-4-turbo")
         "GPT-4-turbo"
     """
-    if not model_name or model_name == "Unknown":
-        return model_name
+    # Handle NaN, None, and float values
+    import pandas as pd
+    if pd.isna(model_name) or model_name is None:
+        return "Unknown"
+
+    # Convert to string if it's not already
+    model_name = str(model_name)
+
+    if not model_name or model_name == "Unknown" or model_name == "nan":
+        return "Unknown"
 
     # Handle special cases first
     if model_name == "None" or model_name.lower() == "random":
