@@ -222,6 +222,76 @@ def get_reasoning_colors(reasoning_types):
             for rtype in reasoning_types]
 
 
+def generate_agent_colors_and_styles(agent_names):
+    """Generate distinct colors and line styles for multiple agents.
+    
+    This function ensures that each agent gets a unique visual representation
+    by combining colors with different line styles and markers when there are
+    more agents than available colors.
+    
+    Args:
+        agent_names: List of agent names
+        
+    Returns:
+        dict: Dictionary mapping agent_name to (color, linestyle, marker) tuple
+    """
+    # Extended color palette with more distinct colors
+    colors = [
+        '#1f77b4',  # blue
+        '#ff7f0e',  # orange
+        '#2ca02c',  # green
+        '#d62728',  # red
+        '#9467bd',  # purple
+        '#8c564b',  # brown
+        '#e377c2',  # pink
+        '#7f7f7f',  # gray
+        '#bcbd22',  # olive
+        '#17becf',  # cyan
+        '#aec7e8',  # light blue
+        '#ffbb78',  # light orange
+        '#98df8a',  # light green
+        '#ff9896',  # light red
+        '#c5b0d5',  # light purple
+        '#c49c94',  # light brown
+        '#f7b6d3',  # light pink
+        '#c7c7c7',  # light gray
+        '#dbdb8d',  # light olive
+        '#9edae5',  # light cyan
+        # Additional distinct colors
+        '#1a55FF',  # bright blue
+        '#FF1a55',  # bright red-pink
+        '#55FF1a',  # bright green
+        '#FF551a',  # bright orange-red
+        '#551aFF',  # bright purple
+        '#1aFF55',  # bright green-cyan
+        '#FF1a55',  # bright magenta
+        '#FFAA1a',  # bright yellow-orange
+        '#1aAAFF',  # bright sky blue
+        '#AA1aFF',  # bright violet
+    ]
+    
+    # Different line styles to further distinguish lines
+    line_styles = ['-', '--', '-.', ':', '-', '--', '-.', ':']
+    
+    # Different markers for additional distinction
+    markers = ['o', 's', '^', 'D', 'v', '<', '>', 'p', '*', 'h', 'H', '+', 'x']
+    
+    agent_styles = {}
+    
+    for i, agent in enumerate(agent_names):
+        color_idx = i % len(colors)
+        style_idx = (i // len(colors)) % len(line_styles)
+        marker_idx = (i // (len(colors) * len(line_styles))) % len(markers)
+        
+        agent_styles[agent] = (
+            colors[color_idx],
+            line_styles[style_idx],
+            markers[marker_idx]
+        )
+    
+    return agent_styles
+
+
 LLM_PROMPT_TEMPLATE = (
     "You are a reasoning classifier. Your job is to categorize a move "
     "explanation into one of the following types:\n"
@@ -650,6 +720,9 @@ class LLMReasoningAnalyzer:
                       if not agent.startswith("random")]
             agent_count = len(agents)
 
+            # Generate distinct colors and styles for all agents
+            agent_styles = generate_agent_colors_and_styles(agents)
+
             # Adjust figure size based on number of agents
             # Base height of 8, plus significant extra space for legend
             height = max(10, 8 + (agent_count * 0.5))
@@ -666,7 +739,20 @@ class LLMReasoningAnalyzer:
                         )
                     ))
                 )
-                entropy_by_turn.plot(label=clean_model_name(agent))
+                
+                # Get the color and style for this agent
+                color, linestyle, marker = agent_styles[agent]
+                
+                # Plot with distinct color, line style, and marker
+                entropy_by_turn.plot(
+                    label=clean_model_name(agent),
+                    color=color,
+                    linestyle=linestyle,
+                    marker=marker,
+                    markersize=6,
+                    linewidth=2
+                )
+                
             plt.title(
                 f"Entropy by Turn Across Agents - {display_game_name(game)}"
             )
