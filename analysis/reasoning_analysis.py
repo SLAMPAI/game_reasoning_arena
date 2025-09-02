@@ -522,7 +522,7 @@ class LLMReasoningAnalyzer:
         self.compute_agent_metrics(output_csv)
 
         # Generate visualizations
-        self.plot_reasoning_type_pie_charts(plot_dir)
+        # self.plot_reasoning_type_pie_charts(plot_dir)  # DISABLED
         self.plot_agent_aggregate_heatmaps(plot_dir)
 
     def plot_heatmaps_by_agent(self, output_dir: str = "plots") -> None:

@@ -661,14 +661,14 @@ class ReasoningPlotGenerator:
             )
             generated_files.append(str(bar_output))
 
-            # 2. Pie chart
-            pie_output = Path(output_dir) / f"reasoning_pie_{agent_name}.png"
-            plot_reasoning_pie_chart(
-                reasoning_percentages,
-                model_name,
-                str(pie_output)
-            )
-            generated_files.append(str(pie_output))
+            # 2. Pie chart - COMMENTED OUT
+            # pie_output = Path(output_dir) / f"reasoning_pie_{agent_name}.png"
+            # plot_reasoning_pie_chart(
+            #     reasoning_percentages,
+            #     model_name,
+            #     str(pie_output)
+            # )
+            # generated_files.append(str(pie_output))
 
             # 3. Stacked bar chart (if multiple games)
             games = agent_df['game_name'].unique()
@@ -738,7 +738,7 @@ class ReasoningPlotGenerator:
 
             print(f"Generated plots for {model_name}:")
             print(f"  - Bar chart: {bar_output.name}")
-            print(f"  - Pie chart: {pie_output.name}")
+            # print(f"  - Pie chart: {pie_output.name}")  # DISABLED
             if len(games) > 1:
                 print(f"  - Stacked bar: {stacked_output.name}")
 
@@ -817,7 +817,7 @@ def main():
     print(f"  - Evolution plots: {len(evolution_files)}")
     print("\nPlot types generated:")
     print("  - Horizontal bar charts: Show reasoning distribution percentages")
-    print("  - Pie charts: Visual reasoning type proportions")
+    # print("  - Pie charts: Visual reasoning type proportions")  # DISABLED
     print("  - Stacked bar charts: Reasoning percentages across games")
     print("  - Evolution plots: Reasoning changes over game turns")
 
