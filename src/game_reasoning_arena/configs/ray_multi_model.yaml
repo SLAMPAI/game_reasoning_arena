@@ -31,7 +31,9 @@ mode: llm_vs_random
 
 # Models to test (carefully selected for speed/performance balance)
 models:
-  - litellm_groq/llama3-8b-8192      # Fast, good performance
+ # - litellm_groq/llama3-8b-8192  HAS BEEN DECOMMISIONED Aug 30   # Fast, good performance
+  - litellm_groq/llama-3.1-8b-instant  # new models
+  - litellm_groq/llama-3.1-70b-versatile # new models
   - litellm_groq/gemma2-9b-it        # Fast, reliable
   - litellm_groq/llama3-70b-8192   # SLOW - commented out for HEX
   - litellm_gpt-3.5-turbo
