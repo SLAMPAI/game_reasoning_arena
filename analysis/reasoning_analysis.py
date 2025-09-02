@@ -500,7 +500,7 @@ class LLMReasoningAnalyzer:
         )
         plt.figure(figsize=(10, 6))
         sns.heatmap(pivot, cmap="YlGnBu", annot=True)
-        games = df_agent['game_name'].unique()
+        games = sorted(df_agent['game_name'].unique())
         plt.title(
             f"Reasoning Type by Turn - {clean_model_name(agent)}\n"
             f"Games:\n{', '.join(display_game_name(g) for g in games)}"

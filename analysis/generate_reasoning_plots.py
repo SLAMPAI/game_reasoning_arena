@@ -272,41 +272,59 @@ def plot_stacked_bar_chart(
         model_name: Name of the model for the title.
         output_path: File path to save the figure.
     """
-    df = pd.DataFrame(game_reasoning_percentages).T.fillna(0)
+    df = pd.DataFrame(game_reasoning_percentages).T.fillna(0).sort_index()
     colors = get_reasoning_colors(df.columns)
 
-    plt.figure(figsize=(12, 6))
-    ax = df.plot(kind='bar', stacked=True, color=colors)
+    fig, ax = plt.subplots(figsize=(12, 6))
+    df.plot(kind='bar', stacked=True, color=colors, ax=ax, width=0.8)
 
-    plt.ylabel("Percentage (%)", fontsize=14)
-    plt.xlabel("Game", fontsize=14)
-    plt.title(f"Reasoning Types per Game - {clean_model_name(model_name)}",
-              fontsize=16, fontweight='bold')
-    plt.legend(title="Reasoning Type",
-               bbox_to_anchor=(1.02, 0.5),
-               loc='center left', fontsize=12, title_fontsize=13,
-               borderaxespad=0.0, frameon=False)
-    # Use friendly game names on x-axis
+    ax.set_ylabel("Percentage (%)", fontsize=14)
+    ax.set_xlabel("Game", fontsize=14, labelpad=5)
+    ax.set_title(
+        f"Reasoning Types per Game - {clean_model_name(model_name)}",
+        fontsize=16, fontweight='bold'
+    )
+
+    # Legend well below the plot; increase ncol as needed
+    ax.legend(
+        title="Reasoning Type",
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.6),
+        ncol=min(4, len(df.columns)),
+        fontsize=12,
+        title_fontsize=13,
+        frameon=False,
+        borderaxespad=0.0
+    )
+
+    # Clean, aligned x-labels (no manual shifting)
     pretty_index = [display_game_name(g) for g in df.index]
-    ax.set_xticklabels(pretty_index, rotation=45, fontsize=12)
+    ax.set_xticks(range(len(df.index)))
+    ax.set_xticklabels(
+        pretty_index, rotation=45, ha='right', rotation_mode='anchor',
+        fontsize=12
+    )
+    ax.tick_params(axis='x', pad=6)
+    ax.margins(x=0.02)  # tiny side margins to avoid clipping
+
     plt.yticks(fontsize=12)
 
-    # Add percentage labels on stacked bars
+    # Percentage labels on stacked bars
     for i, game in enumerate(df.index):
-        cumulative = 0
+        cumulative = 0.0
         for reasoning_type in df.columns:
-            percentage = df.loc[game, reasoning_type]
-            if percentage > 5:  # Only show label if segment is large enough
-                plt.text(i, cumulative + percentage/2, f'{percentage:.0f}%',
-                         ha='center', va='center', fontweight='bold',
-                         fontsize=10)
+            percentage = float(df.loc[game, reasoning_type])
+            if percentage > 5:
+                ax.text(
+                    i, cumulative + percentage / 2, f'{percentage:.0f}%',
+                    ha='center', va='center', fontweight='bold', fontsize=10
+                )
             cumulative += percentage
 
-    plt.tight_layout()
-    # Reserve a consistent right margin for the legend (after tight_layout)
-    plt.subplots_adjust(right=0.82)
-    plt.savefig(output_path, dpi=300, bbox_inches='tight')
-    plt.close()
+    # Reserve bottom for legend (adjust if you have many legend entries)
+    fig.subplots_adjust(bottom=0.4)
+    fig.savefig(output_path, dpi=300, bbox_inches='tight')
+    plt.close(fig)
 
 
 def plot_reasoning_evolution_over_turns(
@@ -459,7 +477,7 @@ class ReasoningPlotGenerator:
             model_name = agent_name
             all_data[model_name] = {}
 
-            for game in agent_df['game_name'].unique():
+            for game in sorted(agent_df['game_name'].unique()):
                 game_df = agent_df[agent_df['game_name'] == game]
 
                 # Only include if there are multiple turns
@@ -642,7 +660,7 @@ class ReasoningPlotGenerator:
         for agent_name in non_random_df['agent_name'].unique():
             agent_df = non_random_df[non_random_df['agent_name'] == agent_name]
             model_name = agent_name
-            games = agent_df['game_name'].unique().tolist()
+            games = sorted(agent_df['game_name'].unique().tolist())
 
             # Calculate reasoning percentages
             reasoning_counts = agent_df['reasoning_type'].value_counts()
@@ -671,7 +689,7 @@ class ReasoningPlotGenerator:
             # generated_files.append(str(pie_output))
 
             # 3. Stacked bar chart (if multiple games)
-            games = agent_df['game_name'].unique()
+            games = sorted(agent_df['game_name'].unique())
             if len(games) > 1:
                 # Calculate game-reasoning percentages
                 game_reasoning_data = {}
@@ -756,36 +774,21 @@ class ReasoningPlotGenerator:
         return generated_files
 
     def print_data_summary(self):
-        """Print a summary of the data being used."""
+        """Print a minimal summary of the data being used."""
         non_random_df = self.df[
             ~self.df['agent_name'].str.startswith("random")
         ]
 
-        print("=== DATA SUMMARY ===")
-        print(f"Total moves: {len(non_random_df)}")
-        print(f"Models: {len(non_random_df['agent_name'].unique())}")
-        print(f"Games: {len(non_random_df['game_name'].unique())}")
-        print()
-
-        print("Models and their move counts:")
-        for agent_name in non_random_df['agent_name'].unique():
-            agent_df = non_random_df[non_random_df['agent_name'] == agent_name]
-            model_name = agent_name
-            print(f"  {model_name}: {len(agent_df)} moves")
-        print()
-
-        print("Overall reasoning distribution:")
-        reasoning_counts = non_random_df['reasoning_type'].value_counts()
-        total = reasoning_counts.sum()
-        for reasoning_type, count in reasoning_counts.items():
-            percentage = count / total * 100
-            print(f"  {reasoning_type}: {count} ({percentage:.1f}%)")
-        print()
+        num_moves = len(non_random_df)
+        num_models = len(non_random_df['agent_name'].unique())
+        num_games = len(non_random_df['game_name'].unique())
+        print(f"Processing {num_moves} moves from {num_models} models "
+              f"across {num_games} games...")
 
 
 def main():
     """Main function to generate model-specific plots."""
-    print("Generating model-specific reasoning plots...")
+    print("Generating reasoning plots...")
 
     # Find the latest merged log file
     latest_csv = LLMReasoningAnalyzer.find_latest_log("results")
@@ -807,7 +810,7 @@ def main():
     generated_files = plotter.generate_model_plots(output_dir)
 
     # Also generate all evolution plots in one batch
-    print("\nGenerating batch evolution plots...")
+    print("Generating evolution plots...")
     evolution_files = plotter.plot_all_reasoning_evolutions(output_dir)
     generated_files.extend(evolution_files)
 
@@ -817,7 +820,6 @@ def main():
     print(f"  - Evolution plots: {len(evolution_files)}")
     print("\nPlot types generated:")
     print("  - Horizontal bar charts: Show reasoning distribution percentages")
-    # print("  - Pie charts: Visual reasoning type proportions")  # DISABLED
     print("  - Stacked bar charts: Reasoning percentages across games")
     print("  - Evolution plots: Reasoning changes over game turns")
 

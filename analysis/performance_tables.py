@@ -9,7 +9,8 @@ Similar to the language-only performance tables in research papers.
 Reward Normalization:
 All reward values are normalized using min-max normalization to ensure fair
 comparison across games with different reward structures. This prevents games
-with larger reward ranges from disproportionately influencing aggregate metrics.
+with larger reward ranges from disproportionately
+influencing aggregate metrics.
 
 Formula: normalized = 2 * (reward - min_reward) / (max_reward - min_reward) - 1
 
@@ -79,13 +80,15 @@ class PerformanceTableGenerator:
         """
         self.use_databases = use_databases
 
-    def normalize_rewards(self, df: pd.DataFrame, scope: str = 'cross_game') -> pd.DataFrame:
+    def normalize_rewards(self, df: pd.DataFrame, scope: str = 'cross_game'
+                          ) -> pd.DataFrame:
         """
         Apply min-max normalization to reward values.
 
         Args:
             df: DataFrame with 'avg_reward' column
-            scope: 'per_game' for game-specific normalization or 'cross_game' for global
+            scope: 'per_game' for game-specific normalization or
+            'cross_game' for global
 
         Returns:
             DataFrame with normalized 'avg_reward' values in [-1, +1] range
@@ -94,14 +97,19 @@ class PerformanceTableGenerator:
 
         if scope == 'per_game' and 'game_name' in df.columns:
             # Normalize within each game separately
-            for game in df['game_name'].unique():
+            for game in sorted(df['game_name'].unique()):
                 game_mask = df['game_name'] == game
                 game_rewards = df.loc[game_mask, 'avg_reward']
-                if len(game_rewards) > 1:  # Need at least 2 values for normalization
+                # Need at least 2 values for normalization
+                if len(game_rewards) > 1:
                     min_reward = game_rewards.min()
                     max_reward = game_rewards.max()
                     if max_reward != min_reward:  # Avoid division by zero
-                        normalized = 2 * (game_rewards - min_reward) / (max_reward - min_reward) - 1
+                        normalized = (
+                            2 * (game_rewards - min_reward)
+                            / (max_reward - min_reward)
+                            - 1
+                        )
                         df.loc[game_mask, 'avg_reward'] = normalized
         else:
             # Cross-game normalization: normalize all rewards together
@@ -110,16 +118,25 @@ class PerformanceTableGenerator:
                 min_reward = all_rewards.min()
                 max_reward = all_rewards.max()
                 if max_reward != min_reward:  # Avoid division by zero
-                    df['avg_reward'] = 2 * (all_rewards - min_reward) / (max_reward - min_reward) - 1
+                    df['avg_reward'] = (
+                        2 * (all_rewards - min_reward)
+                        / (max_reward - min_reward)
+                        - 1
+                    )
 
         return df
 
-    def extract_leaderboard_stats(self, game_name: str = "Aggregated Performance") -> pd.DataFrame:
+    def extract_leaderboard_stats(
+        self,
+        game_name: str = "Aggregated Performance"
+    ) -> pd.DataFrame:
         """
-        Extract leaderboard statistics using SQLite databases exactly like app.py.
+        Extract leaderboard statistics using SQLite databases
+        exactly like app.py.
 
         Args:
-            game_name: Name of the game or "Aggregated Performance" for all games
+            game_name: Name of the game or "Aggregated Performance"
+            for all games
 
         Returns:
             DataFrame with leaderboard statistics
@@ -131,8 +148,10 @@ class PerformanceTableGenerator:
                 if game_name == "Aggregated Performance":
                     # Get totals across all games in this DB
                     df = pd.read_sql_query(
-                        "SELECT COUNT(*) AS total_games, SUM(reward) AS total_rewards "
-                        "FROM game_results",
+                        (
+                            "SELECT COUNT(*) AS total_games, SUM(reward) AS total_rewards "
+                            "FROM game_results"
+                        ),
                         conn,
                     )
                     # Each row represents a game instance
@@ -189,7 +208,10 @@ class PerformanceTableGenerator:
                     "wins_vs_random": wins_vs_random,
                     "total_vs_random": total_vs_random,
                     "win_rate_vs_random": round(vs_random_rate, 2),
-                    "avg_reward": total_rewards / games_played if games_played > 0 else 0.0,
+                    "avg_reward": (
+                        total_rewards / games_played
+                        if games_played > 0 else 0.0
+                    ),
                 }
                 if game_name != "Aggregated Performance":
                     row["game_name"] = game_name
@@ -200,7 +222,12 @@ class PerformanceTableGenerator:
 
         # Concatenate all rows; if all_stats is empty, return an empty DataFrame
         if not all_stats:
-            columns = ["agent_name", "games_played", "win_rate_vs_random", "avg_reward"]
+            columns = [
+                "agent_name",
+                "games_played",
+                "win_rate_vs_random",
+                "avg_reward"
+            ]
             if game_name != "Aggregated Performance":
                 columns.insert(0, "game_name")
             return pd.DataFrame(columns=columns)
@@ -213,7 +240,8 @@ class PerformanceTableGenerator:
         Compute win rates using SQLite databases exactly like app.py.
 
         Args:
-            by_game: If True, compute win rates per game. If False, compute overall.
+            by_game: If True, compute win rates per game.
+            If False, compute overall.
 
         Returns:
             DataFrame with performance metrics
@@ -224,7 +252,9 @@ class PerformanceTableGenerator:
             for db_file, _, _ in iter_agent_databases():
                 conn = sqlite3.connect(db_file)
                 try:
-                    cursor = conn.execute("SELECT DISTINCT game_name FROM game_results")
+                    cursor = conn.execute(
+                        "SELECT DISTINCT game_name FROM game_results"
+                    )
                     for row in cursor:
                         if row[0]:
                             all_games.add(row[0])
@@ -246,7 +276,8 @@ class PerformanceTableGenerator:
             return self.extract_leaderboard_stats("Aggregated Performance")
 
     def generate_overall_performance_table(self,
-                                         output_path: Optional[str] = None) -> pd.DataFrame:
+                                           output_path: Optional[str] = None
+                                           ) -> pd.DataFrame:
         """
         Generate an overall performance table across all games.
 
@@ -260,7 +291,7 @@ class PerformanceTableGenerator:
 
         # Sort by win rate vs random (descending) - the main metric
         performance = performance.sort_values('win_rate_vs_random',
-                                               ascending=False)
+                                              ascending=False)
 
         # Format the table for display
         display_table = performance.copy()
@@ -291,7 +322,8 @@ class PerformanceTableGenerator:
         return final_table
 
     def generate_per_game_performance_table(self,
-                                          output_path: Optional[str] = None) -> pd.DataFrame:
+                                            output_path: Optional[str] = None
+                                            ) -> pd.DataFrame:
         """
         Generate a performance table broken down by game.
 
@@ -304,7 +336,8 @@ class PerformanceTableGenerator:
         performance = self.compute_win_rates(by_game=True)
 
         # Sort by game name and then by win rate vs random
-        performance = performance.sort_values(['game_name', 'win_rate_vs_random'],
+        performance = performance.sort_values(['game_name',
+                                               'win_rate_vs_random'],
                                               ascending=[True, False])
 
         # Format the table for display
@@ -339,8 +372,9 @@ class PerformanceTableGenerator:
         return final_table
 
     def generate_pivot_performance_table(self,
-                                       metric: str = 'win_rate',
-                                       output_path: Optional[str] = None) -> pd.DataFrame:
+                                         metric: str = 'win_rate',
+                                         output_path: Optional[str] = None
+                                         ) -> pd.DataFrame:
         """
         Generate a pivot table with models as rows and games as columns.
 
@@ -354,7 +388,9 @@ class PerformanceTableGenerator:
         performance = self.compute_win_rates(by_game=True)
 
         if metric not in performance.columns:
-            raise ValueError(f"Metric '{metric}' not found in performance data")
+            raise ValueError(
+                f"Metric '{metric}' not found in performance data"
+                )
 
         # Create pivot table
         pivot_table = performance.pivot_table(
@@ -365,7 +401,9 @@ class PerformanceTableGenerator:
         )
 
         # Clean up game names for display
-        pivot_table.columns = [display_game_name(col) for col in pivot_table.columns]
+        pivot_table.columns = [
+            display_game_name(col) for col in pivot_table.columns
+        ]
 
         # Sort by overall performance (row means)
         pivot_table['Overall'] = pivot_table.mean(axis=1)
@@ -460,10 +498,12 @@ class PerformanceTableGenerator:
 
     def generate_all_performance_tables(self, results_dir: str = "results"):
         """
-        Generate all performance tables and save them to results/tables directory.
+        Generate all performance tables and save them to
+        results/tables directory.
 
         Args:
-            results_dir: Base results directory where tables subdirectory will be created
+            results_dir: Base results directory where tables
+            subdirectory will be created
         """
         results_path = Path(results_dir)
         results_path.mkdir(exist_ok=True)
@@ -587,7 +627,9 @@ def create_publication_ready_overall_table(generator) -> pd.DataFrame:
     performance = generator.normalize_rewards(performance, scope='cross_game')
 
     # Sort by win rate vs random (descending)
-    performance = performance.sort_values('win_rate_vs_random', ascending=False)
+    performance = performance.sort_values(
+        'win_rate_vs_random', ascending=False
+    )
 
     # Add organization grouping
     performance['Organization'] = performance['agent_name'].apply(
