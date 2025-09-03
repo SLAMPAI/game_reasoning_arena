@@ -14,7 +14,7 @@ import numpy as np
 import re
 import os
 from typing import Optional
-from transformers import pipeline
+# from transformers import pipeline  # DISABLED - rule-based analysis only
 from pathlib import Path
 from utils import display_game_name
 
@@ -316,9 +316,9 @@ class LLMReasoningAnalyzer:
         """
         self.df = pd.read_csv(csv_path)
         self._preprocess()
-        self.llm_pipe = pipeline(
-            "text2text-generation", model="google/flan-t5-small"
-        )
+        # self.llm_pipe = pipeline(  # DISABLED - using rule-based analysis
+        #     "text2text-generation", model="google/flan-t5-small"
+        # )
 
     @staticmethod
     def find_latest_log(folder: str) -> str:

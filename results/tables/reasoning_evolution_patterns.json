@@ -104,82 +104,54 @@
             4,
             6,
             8,
-            10
+            10,
+            12
           ],
           "dominant_by_turn": {
             "0": {
               "category": "Positional",
-              "proportion": 0.8,
-              "count": 4,
-              "total": 5
+              "proportion": 0.9,
+              "count": 9,
+              "total": 10
             },
             "2": {
               "category": "Positional",
               "proportion": 0.6,
-              "count": 3,
-              "total": 5
+              "count": 6,
+              "total": 10
             },
             "4": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 5,
-              "total": 5
+              "count": 10,
+              "total": 10
             },
             "6": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 5,
-              "total": 5
+              "count": 10,
+              "total": 10
             },
             "8": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 5,
-              "total": 5
+              "count": 10,
+              "total": 10
             },
             "10": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 3,
+              "total": 3
+            },
+            "12": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
             }
           },
           "pattern": "Evolution: Positional \u2192 ... \u2192 Blocking (progresses through 2 categories)"
-        },
-        "tic_tac_toe": {
-          "turns_analyzed": [
-            0,
-            2,
-            4,
-            6
-          ],
-          "dominant_by_turn": {
-            "0": {
-              "category": "Uncategorized",
-              "proportion": 1.0,
-              "count": 4,
-              "total": 4
-            },
-            "2": {
-              "category": "Blocking",
-              "proportion": 1.0,
-              "count": 4,
-              "total": 4
-            },
-            "4": {
-              "category": "Blocking",
-              "proportion": 1.0,
-              "count": 4,
-              "total": 4
-            },
-            "6": {
-              "category": "Blocking",
-              "proportion": 1.0,
-              "count": 4,
-              "total": 4
-            }
-          },
-          "pattern": "Evolution: Uncategorized \u2192 ... \u2192 Blocking (progresses through 2 categories)"
         },
         "hex": {
           "turns_analyzed": [
@@ -247,152 +219,152 @@
             "0": {
               "category": "Opponent Modeling",
               "proportion": 1.0,
-              "count": 5,
-              "total": 5
+              "count": 7,
+              "total": 7
             },
             "2": {
               "category": "Uncategorized",
               "proportion": 1.0,
-              "count": 5,
-              "total": 5
+              "count": 7,
+              "total": 7
             },
             "4": {
               "category": "Opponent Modeling",
-              "proportion": 1.0,
-              "count": 5,
-              "total": 5
+              "proportion": 0.8571428571428571,
+              "count": 6,
+              "total": 7
             },
             "6": {
               "category": "Blocking",
-              "proportion": 1.0,
-              "count": 5,
-              "total": 5
+              "proportion": 0.8571428571428571,
+              "count": 6,
+              "total": 7
             },
             "8": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 5,
-              "total": 5
+              "count": 7,
+              "total": 7
             },
             "10": {
               "category": "Opponent Modeling",
-              "proportion": 1.0,
-              "count": 5,
-              "total": 5
+              "proportion": 0.8571428571428571,
+              "count": 6,
+              "total": 7
             },
             "12": {
               "category": "Opponent Modeling",
-              "proportion": 0.8,
-              "count": 4,
-              "total": 5
+              "proportion": 0.7142857142857143,
+              "count": 5,
+              "total": 7
             },
             "14": {
               "category": "Rule-Based",
-              "proportion": 0.8,
-              "count": 4,
-              "total": 5
+              "proportion": 0.7142857142857143,
+              "count": 5,
+              "total": 7
             },
             "16": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 4,
-              "total": 4
+              "count": 5,
+              "total": 5
             },
             "18": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 4,
-              "total": 4
+              "count": 5,
+              "total": 5
             },
             "20": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 4,
-              "total": 4
+              "count": 5,
+              "total": 5
             },
             "22": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 3,
-              "total": 3
+              "count": 4,
+              "total": 4
             },
             "24": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 3,
-              "total": 3
+              "count": 4,
+              "total": 4
             },
             "26": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 3,
-              "total": 3
+              "count": 4,
+              "total": 4
             },
             "28": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 3,
+              "total": 3
             },
             "30": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 3,
+              "total": 3
             },
             "32": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 3,
+              "total": 3
             },
             "34": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 3,
+              "total": 3
             },
             "36": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 3,
+              "total": 3
             },
             "38": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 3,
+              "total": 3
             },
             "40": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 3,
+              "total": 3
             },
             "42": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 3,
+              "total": 3
             },
             "44": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 3,
+              "total": 3
             },
             "46": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 3,
+              "total": 3
             },
             "48": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 3,
+              "total": 3
             },
             "50": {
               "category": "Blocking",
@@ -600,6 +572,48 @@
             }
           },
           "pattern": "Evolution: Opponent Modeling \u2192 ... \u2192 Uncategorized (progresses through 4 categories)"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 9,
+              "total": 9
+            },
+            "2": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 6,
+              "total": 9
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 0.7777777777777778,
+              "count": 7,
+              "total": 9
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 8,
+              "total": 8
+            },
+            "8": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Evolution: Uncategorized \u2192 ... \u2192 Blocking (progresses through 2 categories)"
         }
       }
     },
@@ -741,41 +755,6 @@
             }
           },
           "pattern": "Mixed pattern with 4 categories"
-        },
-        "tic_tac_toe": {
-          "turns_analyzed": [
-            0,
-            2,
-            4,
-            6
-          ],
-          "dominant_by_turn": {
-            "0": {
-              "category": "Uncategorized",
-              "proportion": 0.6666666666666666,
-              "count": 2,
-              "total": 3
-            },
-            "2": {
-              "category": "Positional",
-              "proportion": 0.6666666666666666,
-              "count": 2,
-              "total": 3
-            },
-            "4": {
-              "category": "Opponent Modeling",
-              "proportion": 0.3333333333333333,
-              "count": 1,
-              "total": 3
-            },
-            "6": {
-              "category": "Winning Logic",
-              "proportion": 0.6666666666666666,
-              "count": 2,
-              "total": 3
-            }
-          },
-          "pattern": "Evolution: Uncategorized \u2192 ... \u2192 Winning Logic (progresses through 4 categories)"
         },
         "hex": {
           "turns_analyzed": [
@@ -958,6 +937,41 @@
             }
           },
           "pattern": "Mixed pattern with 7 categories"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Uncategorized",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "2": {
+              "category": "Positional",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "4": {
+              "category": "Opponent Modeling",
+              "proportion": 0.3333333333333333,
+              "count": 1,
+              "total": 3
+            },
+            "6": {
+              "category": "Winning Logic",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            }
+          },
+          "pattern": "Evolution: Uncategorized \u2192 ... \u2192 Winning Logic (progresses through 4 categories)"
         }
       }
     },
@@ -983,69 +997,69 @@
           "dominant_by_turn": {
             "0": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 3,
-              "total": 3
+              "proportion": 0.75,
+              "count": 6,
+              "total": 8
             },
             "2": {
               "category": "Uncategorized",
-              "proportion": 1.0,
-              "count": 3,
-              "total": 3
+              "proportion": 0.875,
+              "count": 7,
+              "total": 8
             },
             "4": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 3,
-              "total": 3
+              "proportion": 0.75,
+              "count": 6,
+              "total": 8
             },
             "6": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 3,
-              "total": 3
+              "proportion": 0.75,
+              "count": 6,
+              "total": 8
             },
             "8": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 3,
-              "total": 3
+              "proportion": 0.75,
+              "count": 6,
+              "total": 8
             },
             "10": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 3,
-              "total": 3
+              "proportion": 0.7142857142857143,
+              "count": 5,
+              "total": 7
             },
             "12": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 3,
-              "total": 3
+              "proportion": 0.5714285714285714,
+              "count": 4,
+              "total": 7
             },
             "14": {
               "category": "Winning Logic",
-              "proportion": 1.0,
+              "proportion": 0.5,
               "count": 3,
-              "total": 3
+              "total": 6
             },
             "16": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 3,
-              "total": 3
+              "proportion": 0.6666666666666666,
+              "count": 4,
+              "total": 6
             },
             "18": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "proportion": 0.75,
+              "count": 3,
+              "total": 4
             },
             "20": {
               "category": "Winning Logic",
-              "proportion": 0.5,
+              "proportion": 0.3333333333333333,
               "count": 1,
-              "total": 2
+              "total": 3
             },
             "22": {
               "category": "Random/Unjustified",
@@ -1067,48 +1081,6 @@
             }
           },
           "pattern": "Evolution: Winning Logic \u2192 ... \u2192 Random/Unjustified (progresses through 3 categories)"
-        },
-        "tic_tac_toe": {
-          "turns_analyzed": [
-            0,
-            2,
-            4,
-            6,
-            8
-          ],
-          "dominant_by_turn": {
-            "0": {
-              "category": "Random/Unjustified",
-              "proportion": 0.6666666666666666,
-              "count": 2,
-              "total": 3
-            },
-            "2": {
-              "category": "Random/Unjustified",
-              "proportion": 0.6666666666666666,
-              "count": 2,
-              "total": 3
-            },
-            "4": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 3,
-              "total": 3
-            },
-            "6": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 3,
-              "total": 3
-            },
-            "8": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 3,
-              "total": 3
-            }
-          },
-          "pattern": "Consistent Random/Unjustified throughout"
         },
         "hex": {
           "turns_analyzed": [
@@ -1141,156 +1113,219 @@
           "dominant_by_turn": {
             "0": {
               "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.6666666666666666,
+              "count": 4,
+              "total": 6
             },
             "2": {
               "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.8333333333333334,
+              "count": 5,
+              "total": 6
             },
             "4": {
               "category": "Uncategorized",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.5,
+              "count": 3,
+              "total": 6
             },
             "6": {
-              "category": "Uncategorized",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "category": "Random/Unjustified",
+              "proportion": 0.8333333333333334,
+              "count": 5,
+              "total": 6
             },
             "8": {
-              "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "category": "Random/Unjustified",
+              "proportion": 0.8333333333333334,
+              "count": 5,
+              "total": 6
             },
             "10": {
               "category": "Uncategorized",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.5,
+              "count": 3,
+              "total": 6
             },
             "12": {
-              "category": "Uncategorized",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "category": "Random/Unjustified",
+              "proportion": 0.6666666666666666,
+              "count": 4,
+              "total": 6
             },
             "14": {
-              "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "category": "Random/Unjustified",
+              "proportion": 0.5,
+              "count": 3,
+              "total": 6
             },
             "16": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.3333333333333333,
+              "count": 2,
+              "total": 6
             },
             "18": {
               "category": "Uncategorized",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.6666666666666666,
+              "count": 4,
+              "total": 6
             },
             "20": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.5,
+              "count": 3,
+              "total": 6
             },
             "22": {
-              "category": "Uncategorized",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "category": "Winning Logic",
+              "proportion": 0.6666666666666666,
+              "count": 4,
+              "total": 6
             },
             "24": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "category": "Uncategorized",
+              "proportion": 0.5,
+              "count": 3,
+              "total": 6
             },
             "26": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "category": "Winning Logic",
+              "proportion": 0.5,
+              "count": 3,
+              "total": 6
             },
             "28": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "category": "Winning Logic",
+              "proportion": 0.8333333333333334,
+              "count": 5,
+              "total": 6
             },
             "30": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "category": "Winning Logic",
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
             },
             "32": {
               "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
             },
             "34": {
               "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
             },
             "36": {
               "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
             },
             "38": {
               "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
             },
             "40": {
               "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
             },
             "42": {
               "category": "Random/Unjustified",
               "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "count": 5,
+              "total": 5
             },
             "44": {
               "category": "Random/Unjustified",
               "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "count": 5,
+              "total": 5
             },
             "46": {
               "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
             },
             "48": {
               "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 5,
+              "total": 5
+            }
+          },
+          "pattern": "Mixed pattern with 3 categories"
+        },
+        "kuhn_poker": {
+          "turns_analyzed": [
+            0,
+            2
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Uncategorized",
+              "proportion": 0.75,
+              "count": 6,
+              "total": 8
+            },
+            "2": {
+              "category": "Uncategorized",
               "proportion": 1.0,
               "count": 1,
               "total": 1
             }
           },
-          "pattern": "Mixed pattern with 3 categories"
+          "pattern": "Consistent Uncategorized throughout"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Rule-Based",
+              "proportion": 0.5,
+              "count": 4,
+              "total": 8
+            },
+            "2": {
+              "category": "Opponent Modeling",
+              "proportion": 0.5,
+              "count": 4,
+              "total": 8
+            },
+            "4": {
+              "category": "Uncategorized",
+              "proportion": 0.625,
+              "count": 5,
+              "total": 8
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 0.6666666666666666,
+              "count": 4,
+              "total": 6
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
+            }
+          },
+          "pattern": "Evolution: Rule-Based \u2192 ... \u2192 Random/Unjustified (progresses through 4 categories)"
         }
       }
     },
@@ -1559,48 +1594,6 @@
           },
           "pattern": "Evolution: Winning Logic \u2192 ... \u2192 Random/Unjustified (progresses through 2 categories)"
         },
-        "tic_tac_toe": {
-          "turns_analyzed": [
-            0,
-            2,
-            4,
-            6,
-            8
-          ],
-          "dominant_by_turn": {
-            "0": {
-              "category": "Uncategorized",
-              "proportion": 0.6666666666666666,
-              "count": 2,
-              "total": 3
-            },
-            "2": {
-              "category": "Uncategorized",
-              "proportion": 1.0,
-              "count": 3,
-              "total": 3
-            },
-            "4": {
-              "category": "Uncategorized",
-              "proportion": 0.6666666666666666,
-              "count": 2,
-              "total": 3
-            },
-            "6": {
-              "category": "Uncategorized",
-              "proportion": 0.6666666666666666,
-              "count": 2,
-              "total": 3
-            },
-            "8": {
-              "category": "Uncategorized",
-              "proportion": 0.6666666666666666,
-              "count": 2,
-              "total": 3
-            }
-          },
-          "pattern": "Consistent Uncategorized throughout"
-        },
         "hex": {
           "turns_analyzed": [
             0,
@@ -1782,6 +1775,48 @@
             }
           },
           "pattern": "Evolution: Rule-Based \u2192 ... \u2192 Random/Unjustified (progresses through 3 categories)"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Uncategorized",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "2": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "4": {
+              "category": "Uncategorized",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "6": {
+              "category": "Uncategorized",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "8": {
+              "category": "Uncategorized",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            }
+          },
+          "pattern": "Consistent Uncategorized throughout"
         }
       }
     },
@@ -1898,48 +1933,6 @@
               "total": 2
             },
             "30": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            }
-          },
-          "pattern": "Consistent Random/Unjustified throughout"
-        },
-        "tic_tac_toe": {
-          "turns_analyzed": [
-            0,
-            2,
-            4,
-            6,
-            8
-          ],
-          "dominant_by_turn": {
-            "0": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "2": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "4": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "6": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "8": {
               "category": "Random/Unjustified",
               "proportion": 1.0,
               "count": 2,
@@ -2126,6 +2119,48 @@
               "proportion": 1.0,
               "count": 1,
               "total": 1
+            }
+          },
+          "pattern": "Consistent Random/Unjustified throughout"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "2": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "4": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "6": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "8": {
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
             }
           },
           "pattern": "Consistent Random/Unjustified throughout"
@@ -2297,353 +2332,6 @@
         }
       }
     },
-    "llm_litellm_gpt_5": {
-      "games": {
-        "connect_four": {
-          "turns_analyzed": [
-            0,
-            2,
-            4,
-            6,
-            8,
-            10,
-            12,
-            14,
-            16,
-            18,
-            20,
-            22,
-            24,
-            26,
-            28,
-            30
-          ],
-          "dominant_by_turn": {
-            "0": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "2": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "4": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "6": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "8": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "10": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "12": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "14": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "16": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "18": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "20": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "22": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "24": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "26": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "28": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "30": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            }
-          },
-          "pattern": "Consistent Random/Unjustified throughout"
-        },
-        "tic_tac_toe": {
-          "turns_analyzed": [
-            0,
-            2,
-            4,
-            6,
-            8
-          ],
-          "dominant_by_turn": {
-            "0": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "2": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "4": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "6": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "8": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            }
-          },
-          "pattern": "Consistent Random/Unjustified throughout"
-        },
-        "hex": {
-          "turns_analyzed": [
-            0,
-            2,
-            4,
-            6,
-            8,
-            10,
-            12,
-            14,
-            16,
-            18,
-            20,
-            22,
-            24,
-            26,
-            28,
-            30,
-            32,
-            34,
-            36,
-            38,
-            40,
-            42,
-            44,
-            46,
-            48
-          ],
-          "dominant_by_turn": {
-            "0": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "2": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "4": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "6": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "8": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "10": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "12": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "14": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "16": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "18": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "20": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "22": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "24": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "26": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "28": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "30": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "32": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "34": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "36": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "38": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "40": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "42": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "44": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "46": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "48": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            }
-          },
-          "pattern": "Consistent Random/Unjustified throughout"
-        }
-      }
-    },
     "llm_litellm_gpt_4": {
       "games": {
         "connect_four": {
@@ -2656,100 +2344,100 @@
             10,
             12,
             14,
-            16
+            16,
+            18,
+            20,
+            22,
+            24,
+            26
           ],
           "dominant_by_turn": {
             "0": {
-              "category": "Uncategorized",
-              "proportion": 0.5,
-              "count": 1,
-              "total": 2
+              "category": "Winning Logic",
+              "proportion": 0.7142857142857143,
+              "count": 5,
+              "total": 7
             },
             "2": {
               "category": "Blocking",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "proportion": 0.42857142857142855,
+              "count": 3,
+              "total": 7
             },
             "4": {
               "category": "Blocking",
-              "proportion": 0.5,
-              "count": 1,
-              "total": 2
+              "proportion": 0.5714285714285714,
+              "count": 4,
+              "total": 7
             },
             "6": {
               "category": "Opponent Modeling",
-              "proportion": 0.5,
-              "count": 1,
-              "total": 2
+              "proportion": 0.2857142857142857,
+              "count": 2,
+              "total": 7
             },
             "8": {
-              "category": "Positional",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "category": "Blocking",
+              "proportion": 0.3333333333333333,
+              "count": 2,
+              "total": 6
             },
             "10": {
-              "category": "Blocking",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "category": "Winning Logic",
+              "proportion": 0.6666666666666666,
+              "count": 4,
+              "total": 6
             },
             "12": {
-              "category": "Opponent Modeling",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "category": "Winning Logic",
+              "proportion": 0.75,
+              "count": 3,
+              "total": 4
             },
             "14": {
               "category": "Blocking",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
             },
             "16": {
               "category": "Winning Logic",
               "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "18": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "20": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "22": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "24": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "26": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
               "count": 1,
               "total": 1
             }
           },
-          "pattern": "Evolution: Uncategorized \u2192 ... \u2192 Winning Logic (progresses through 5 categories)"
-        },
-        "tic_tac_toe": {
-          "turns_analyzed": [
-            0,
-            2,
-            4,
-            6
-          ],
-          "dominant_by_turn": {
-            "0": {
-              "category": "Opponent Modeling",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "2": {
-              "category": "Blocking",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "4": {
-              "category": "Blocking",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "6": {
-              "category": "Opponent Modeling",
-              "proportion": 0.5,
-              "count": 1,
-              "total": 2
-            }
-          },
-          "pattern": "Mixed pattern with 2 categories"
+          "pattern": "Evolution: Winning Logic \u2192 ... \u2192 Uncategorized (progresses through 4 categories)"
         },
         "hex": {
           "turns_analyzed": [
@@ -2783,62 +2471,277 @@
             "0": {
               "category": "Opponent Modeling",
               "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "count": 5,
+              "total": 5
             },
             "2": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
             },
             "4": {
               "category": "Blocking",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
             },
             "6": {
               "category": "Blocking",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
             },
             "8": {
               "category": "Blocking",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
             },
             "10": {
               "category": "Blocking",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
             },
             "12": {
-              "category": "Opponent Modeling",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "category": "Blocking",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
             },
             "14": {
               "category": "Opponent Modeling",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
             },
             "16": {
               "category": "Blocking",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
             },
             "18": {
               "category": "Blocking",
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
+            },
+            "20": {
+              "category": "Blocking",
               "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "count": 5,
+              "total": 5
+            },
+            "22": {
+              "category": "Uncategorized",
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
+            },
+            "24": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "26": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 4,
+              "total": 4
+            },
+            "28": {
+              "category": "Uncategorized",
+              "proportion": 0.75,
+              "count": 3,
+              "total": 4
+            },
+            "30": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "32": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 4,
+              "total": 4
+            },
+            "34": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 4,
+              "total": 4
+            },
+            "36": {
+              "category": "Blocking",
+              "proportion": 0.75,
+              "count": 3,
+              "total": 4
+            },
+            "38": {
+              "category": "Blocking",
+              "proportion": 0.75,
+              "count": 3,
+              "total": 4
+            },
+            "40": {
+              "category": "Positional",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "42": {
+              "category": "Blocking",
+              "proportion": 0.75,
+              "count": 3,
+              "total": 4
+            },
+            "44": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "46": {
+              "category": "Blocking",
+              "proportion": 0.75,
+              "count": 3,
+              "total": 4
+            },
+            "48": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 4,
+              "total": 4
+            }
+          },
+          "pattern": "Evolution: Opponent Modeling \u2192 ... \u2192 Blocking (progresses through 5 categories)"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Opponent Modeling",
+              "proportion": 1.0,
+              "count": 7,
+              "total": 7
+            },
+            "2": {
+              "category": "Blocking",
+              "proportion": 0.7142857142857143,
+              "count": 5,
+              "total": 7
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 0.8571428571428571,
+              "count": 6,
+              "total": 7
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 0.5714285714285714,
+              "count": 4,
+              "total": 7
+            },
+            "8": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            }
+          },
+          "pattern": "Evolution: Opponent Modeling \u2192 ... \u2192 Uncategorized (progresses through 3 categories)"
+        }
+      }
+    },
+    "llm_litellm_gpt_4o_mini": {
+      "games": {
+        "connect_four": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Positional",
+              "proportion": 1.0,
+              "count": 5,
+              "total": 5
+            },
+            "2": {
+              "category": "Blocking",
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
+            },
+            "8": {
+              "category": "Blocking",
+              "proportion": 0.75,
+              "count": 3,
+              "total": 4
+            },
+            "10": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "12": {
+              "category": "Winning Logic",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
+            },
+            "14": {
+              "category": "Winning Logic",
+              "proportion": 0.75,
+              "count": 3,
+              "total": 4
+            },
+            "16": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 4,
+              "total": 4
+            },
+            "18": {
+              "category": "Winning Logic",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
             },
             "20": {
               "category": "Blocking",
@@ -2847,91 +2750,237 @@
               "total": 1
             },
             "22": {
-              "category": "Uncategorized",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "24": {
-              "category": "Blocking",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "26": {
-              "category": "Blocking",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "28": {
-              "category": "Uncategorized",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "30": {
-              "category": "Uncategorized",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "32": {
-              "category": "Blocking",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "34": {
-              "category": "Blocking",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "36": {
-              "category": "Blocking",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "38": {
-              "category": "Blocking",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "40": {
-              "category": "Positional",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "42": {
-              "category": "Positional",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "44": {
-              "category": "Positional",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "46": {
-              "category": "Blocking",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "48": {
-              "category": "Blocking",
+              "category": "Winning Logic",
               "proportion": 1.0,
               "count": 1,
               "total": 1
             }
           },
-          "pattern": "Evolution: Opponent Modeling \u2192 ... \u2192 Blocking (progresses through 5 categories)"
+          "pattern": "Evolution: Positional \u2192 ... \u2192 Winning Logic (progresses through 3 categories)"
+        },
+        "hex": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20,
+            22,
+            24,
+            26,
+            28,
+            30,
+            32,
+            34,
+            36,
+            38,
+            40,
+            42,
+            44,
+            46,
+            48
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Winning Logic",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "2": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "6": {
+              "category": "Opponent Modeling",
+              "proportion": 0.3333333333333333,
+              "count": 1,
+              "total": 3
+            },
+            "8": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "10": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "12": {
+              "category": "Opponent Modeling",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "14": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "16": {
+              "category": "Winning Logic",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "18": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "20": {
+              "category": "Opponent Modeling",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "22": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "24": {
+              "category": "Opponent Modeling",
+              "proportion": 0.3333333333333333,
+              "count": 1,
+              "total": 3
+            },
+            "26": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "28": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "30": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "32": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "34": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "36": {
+              "category": "Winning Logic",
+              "proportion": 0.3333333333333333,
+              "count": 1,
+              "total": 3
+            },
+            "38": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "40": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 3,
+              "total": 3
+            },
+            "42": {
+              "category": "Opponent Modeling",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "44": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "46": {
+              "category": "Opponent Modeling",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "48": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            }
+          },
+          "pattern": "Evolution: Winning Logic \u2192 ... \u2192 Blocking (progresses through 3 categories)"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Positional",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
+            },
+            "2": {
+              "category": "Blocking",
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
+            },
+            "4": {
+              "category": "Winning Logic",
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
+            },
+            "6": {
+              "category": "Opponent Modeling",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            },
+            "8": {
+              "category": "Positional",
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
+            }
+          },
+          "pattern": "Mixed pattern with 4 categories"
         }
       }
     },
@@ -3161,48 +3210,6 @@
               "total": 2
             },
             "30": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            }
-          },
-          "pattern": "Consistent Random/Unjustified throughout"
-        },
-        "tic_tac_toe": {
-          "turns_analyzed": [
-            0,
-            2,
-            4,
-            6,
-            8
-          ],
-          "dominant_by_turn": {
-            "0": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "2": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "4": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "6": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "8": {
               "category": "Random/Unjustified",
               "proportion": 1.0,
               "count": 2,
@@ -3574,15 +3581,10 @@
             }
           },
           "pattern": "Consistent Random/Unjustified throughout"
-        }
-      }
-    },
-    "llm_litellm_groq_llama3_8b_8192": {
-      "games": {
+        },
         "tic_tac_toe": {
           "turns_analyzed": [
             0,
-            1,
             2,
             4,
             6,
@@ -3590,44 +3592,42 @@
           ],
           "dominant_by_turn": {
             "0": {
-              "category": "Opponent Modeling",
-              "proportion": 0.9848484848484849,
-              "count": 65,
-              "total": 66
-            },
-            "1": {
-              "category": "Uncategorized",
+              "category": "Random/Unjustified",
               "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "count": 2,
+              "total": 2
             },
             "2": {
-              "category": "Positional",
-              "proportion": 0.7575757575757576,
-              "count": 50,
-              "total": 66
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
             },
             "4": {
-              "category": "Blocking",
+              "category": "Random/Unjustified",
               "proportion": 1.0,
-              "count": 66,
-              "total": 66
+              "count": 2,
+              "total": 2
             },
             "6": {
-              "category": "Blocking",
-              "proportion": 0.8,
-              "count": 8,
-              "total": 10
+              "category": "Random/Unjustified",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
             },
             "8": {
-              "category": "Blocking",
+              "category": "Random/Unjustified",
               "proportion": 1.0,
-              "count": 5,
-              "total": 5
+              "count": 2,
+              "total": 2
             }
           },
-          "pattern": "Evolution: Opponent Modeling \u2192 ... \u2192 Blocking (progresses through 4 categories)"
-        },
+          "pattern": "Consistent Random/Unjustified throughout"
+        }
+      }
+    },
+    "llm_litellm_groq_llama3_8b_8192": {
+      "games": {
         "connect_four": {
           "turns_analyzed": [
             0,
@@ -3635,44 +3635,65 @@
             4,
             6,
             8,
-            10
+            10,
+            12,
+            14,
+            16
           ],
           "dominant_by_turn": {
             "0": {
               "category": "Blocking",
-              "proportion": 1.0,
-              "count": 6,
-              "total": 6
+              "proportion": 0.8666666666666667,
+              "count": 13,
+              "total": 15
             },
             "2": {
               "category": "Opponent Modeling",
-              "proportion": 0.3333333333333333,
-              "count": 2,
-              "total": 6
+              "proportion": 0.4,
+              "count": 6,
+              "total": 15
             },
             "4": {
               "category": "Opponent Modeling",
-              "proportion": 0.8333333333333334,
-              "count": 5,
-              "total": 6
+              "proportion": 0.5333333333333333,
+              "count": 8,
+              "total": 15
             },
             "6": {
-              "category": "Opponent Modeling",
-              "proportion": 0.5,
-              "count": 3,
-              "total": 6
+              "category": "Blocking",
+              "proportion": 0.6,
+              "count": 9,
+              "total": 15
             },
             "8": {
               "category": "Opponent Modeling",
-              "proportion": 0.5,
-              "count": 3,
-              "total": 6
+              "proportion": 0.4,
+              "count": 6,
+              "total": 15
             },
             "10": {
               "category": "Blocking",
+              "proportion": 0.5,
+              "count": 7,
+              "total": 14
+            },
+            "12": {
+              "category": "Blocking",
               "proportion": 0.6666666666666666,
-              "count": 4,
-              "total": 6
+              "count": 2,
+              "total": 3
+            },
+            "14": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 2,
+              "total": 2
+            },
+            "16": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
             }
           },
           "pattern": "Mixed pattern with 2 categories"
@@ -3747,9 +3768,9 @@
           "dominant_by_turn": {
             "0": {
               "category": "Random/Unjustified",
-              "proportion": 0.55,
+              "proportion": 0.44,
               "count": 11,
-              "total": 20
+              "total": 25
             },
             "1": {
               "category": "Positional",
@@ -3759,9 +3780,9 @@
             },
             "2": {
               "category": "Random/Unjustified",
-              "proportion": 0.55,
-              "count": 11,
-              "total": 20
+              "proportion": 0.48,
+              "count": 12,
+              "total": 25
             },
             "3": {
               "category": "Positional",
@@ -3771,9 +3792,9 @@
             },
             "4": {
               "category": "Random/Unjustified",
-              "proportion": 0.5789473684210527,
-              "count": 11,
-              "total": 19
+              "proportion": 0.5,
+              "count": 12,
+              "total": 24
             },
             "5": {
               "category": "Blocking",
@@ -3783,135 +3804,135 @@
             },
             "6": {
               "category": "Random/Unjustified",
-              "proportion": 0.5789473684210527,
-              "count": 11,
-              "total": 19
+              "proportion": 0.5833333333333334,
+              "count": 14,
+              "total": 24
             },
             "8": {
               "category": "Random/Unjustified",
-              "proportion": 0.5789473684210527,
-              "count": 11,
-              "total": 19
+              "proportion": 0.5833333333333334,
+              "count": 14,
+              "total": 24
             },
             "10": {
               "category": "Random/Unjustified",
-              "proportion": 0.5789473684210527,
-              "count": 11,
-              "total": 19
+              "proportion": 0.5833333333333334,
+              "count": 14,
+              "total": 24
             },
             "12": {
               "category": "Random/Unjustified",
-              "proportion": 0.7368421052631579,
-              "count": 14,
-              "total": 19
+              "proportion": 0.7083333333333334,
+              "count": 17,
+              "total": 24
             },
             "14": {
               "category": "Random/Unjustified",
-              "proportion": 0.7368421052631579,
-              "count": 14,
-              "total": 19
+              "proportion": 0.7083333333333334,
+              "count": 17,
+              "total": 24
             },
             "16": {
               "category": "Random/Unjustified",
-              "proportion": 0.7368421052631579,
-              "count": 14,
-              "total": 19
+              "proportion": 0.7391304347826086,
+              "count": 17,
+              "total": 23
             },
             "18": {
               "category": "Random/Unjustified",
-              "proportion": 0.6842105263157895,
-              "count": 13,
-              "total": 19
+              "proportion": 0.6956521739130435,
+              "count": 16,
+              "total": 23
             },
             "20": {
               "category": "Random/Unjustified",
-              "proportion": 0.7368421052631579,
-              "count": 14,
-              "total": 19
+              "proportion": 0.7391304347826086,
+              "count": 17,
+              "total": 23
             },
             "22": {
               "category": "Random/Unjustified",
-              "proportion": 0.6842105263157895,
-              "count": 13,
-              "total": 19
+              "proportion": 0.6956521739130435,
+              "count": 16,
+              "total": 23
             },
             "24": {
               "category": "Random/Unjustified",
-              "proportion": 0.7368421052631579,
-              "count": 14,
-              "total": 19
+              "proportion": 0.7391304347826086,
+              "count": 17,
+              "total": 23
             },
             "26": {
               "category": "Random/Unjustified",
-              "proportion": 0.7368421052631579,
-              "count": 14,
-              "total": 19
+              "proportion": 0.7391304347826086,
+              "count": 17,
+              "total": 23
             },
             "28": {
               "category": "Random/Unjustified",
-              "proportion": 0.7368421052631579,
-              "count": 14,
-              "total": 19
+              "proportion": 0.7391304347826086,
+              "count": 17,
+              "total": 23
             },
             "30": {
               "category": "Random/Unjustified",
-              "proportion": 0.7368421052631579,
-              "count": 14,
-              "total": 19
+              "proportion": 0.7391304347826086,
+              "count": 17,
+              "total": 23
             },
             "32": {
               "category": "Random/Unjustified",
-              "proportion": 0.7368421052631579,
-              "count": 14,
-              "total": 19
+              "proportion": 0.7391304347826086,
+              "count": 17,
+              "total": 23
             },
             "34": {
               "category": "Random/Unjustified",
-              "proportion": 0.6842105263157895,
-              "count": 13,
-              "total": 19
+              "proportion": 0.6956521739130435,
+              "count": 16,
+              "total": 23
             },
             "36": {
               "category": "Random/Unjustified",
-              "proportion": 0.7368421052631579,
-              "count": 14,
-              "total": 19
+              "proportion": 0.7391304347826086,
+              "count": 17,
+              "total": 23
             },
             "38": {
               "category": "Random/Unjustified",
-              "proportion": 0.7368421052631579,
-              "count": 14,
-              "total": 19
+              "proportion": 0.7391304347826086,
+              "count": 17,
+              "total": 23
             },
             "40": {
               "category": "Random/Unjustified",
-              "proportion": 0.7368421052631579,
-              "count": 14,
-              "total": 19
+              "proportion": 0.7391304347826086,
+              "count": 17,
+              "total": 23
             },
             "42": {
               "category": "Random/Unjustified",
-              "proportion": 0.7368421052631579,
-              "count": 14,
-              "total": 19
+              "proportion": 0.7391304347826086,
+              "count": 17,
+              "total": 23
             },
             "44": {
               "category": "Random/Unjustified",
-              "proportion": 0.7368421052631579,
-              "count": 14,
-              "total": 19
+              "proportion": 0.7391304347826086,
+              "count": 17,
+              "total": 23
             },
             "46": {
               "category": "Random/Unjustified",
-              "proportion": 0.7368421052631579,
-              "count": 14,
-              "total": 19
+              "proportion": 0.7391304347826086,
+              "count": 17,
+              "total": 23
             },
             "48": {
               "category": "Random/Unjustified",
-              "proportion": 0.7368421052631579,
-              "count": 14,
-              "total": 19
+              "proportion": 0.7391304347826086,
+              "count": 17,
+              "total": 23
             },
             "50": {
               "category": "Random/Unjustified",
@@ -4131,6 +4152,55 @@
             }
           },
           "pattern": "Mixed pattern with 3 categories"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            1,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Opponent Modeling",
+              "proportion": 0.9873417721518988,
+              "count": 78,
+              "total": 79
+            },
+            "1": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            },
+            "2": {
+              "category": "Positional",
+              "proportion": 0.759493670886076,
+              "count": 60,
+              "total": 79
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 79,
+              "total": 79
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 0.8571428571428571,
+              "count": 12,
+              "total": 14
+            },
+            "8": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 7,
+              "total": 7
+            }
+          },
+          "pattern": "Evolution: Opponent Modeling \u2192 ... \u2192 Blocking (progresses through 4 categories)"
         }
       }
     },
@@ -4187,70 +4257,70 @@
             0,
             2,
             4,
-            6
+            6,
+            8,
+            10,
+            12,
+            14,
+            16
           ],
           "dominant_by_turn": {
             "0": {
               "category": "Positional",
               "proportion": 1.0,
-              "count": 4,
-              "total": 4
+              "count": 9,
+              "total": 9
             },
             "2": {
               "category": "Positional",
-              "proportion": 0.5,
-              "count": 2,
-              "total": 4
+              "proportion": 0.5555555555555556,
+              "count": 5,
+              "total": 9
             },
             "4": {
               "category": "Uncategorized",
-              "proportion": 1.0,
-              "count": 4,
-              "total": 4
+              "proportion": 0.7777777777777778,
+              "count": 7,
+              "total": 9
             },
             "6": {
               "category": "Uncategorized",
+              "proportion": 0.5555555555555556,
+              "count": 5,
+              "total": 9
+            },
+            "8": {
+              "category": "Blocking",
               "proportion": 0.5,
-              "count": 2,
-              "total": 4
-            }
-          },
-          "pattern": "Evolution: Positional \u2192 ... \u2192 Uncategorized (progresses through 2 categories)"
-        },
-        "tic_tac_toe": {
-          "turns_analyzed": [
-            0,
-            2,
-            4,
-            6
-          ],
-          "dominant_by_turn": {
-            "0": {
+              "count": 1,
+              "total": 2
+            },
+            "10": {
               "category": "Uncategorized",
-              "proportion": 1.0,
-              "count": 4,
-              "total": 4
-            },
-            "2": {
-              "category": "Blocking",
-              "proportion": 0.75,
-              "count": 3,
-              "total": 4
-            },
-            "4": {
-              "category": "Winning Logic",
               "proportion": 0.5,
-              "count": 2,
-              "total": 4
+              "count": 1,
+              "total": 2
             },
-            "6": {
+            "12": {
+              "category": "Uncategorized",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            },
+            "14": {
               "category": "Blocking",
               "proportion": 1.0,
-              "count": 4,
-              "total": 4
+              "count": 1,
+              "total": 1
+            },
+            "16": {
+              "category": "Blocking",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
             }
           },
-          "pattern": "Evolution: Uncategorized \u2192 ... \u2192 Blocking (progresses through 3 categories)"
+          "pattern": "Evolution: Positional \u2192 ... \u2192 Blocking (progresses through 3 categories)"
         },
         "hex": {
           "turns_analyzed": [
@@ -4317,153 +4387,153 @@
           "dominant_by_turn": {
             "0": {
               "category": "Uncategorized",
-              "proportion": 0.8571428571428571,
-              "count": 6,
-              "total": 7
+              "proportion": 0.9,
+              "count": 9,
+              "total": 10
             },
             "2": {
               "category": "Uncategorized",
-              "proportion": 0.8571428571428571,
-              "count": 6,
-              "total": 7
+              "proportion": 0.8,
+              "count": 8,
+              "total": 10
             },
             "4": {
               "category": "Opponent Modeling",
-              "proportion": 0.7142857142857143,
-              "count": 5,
-              "total": 7
+              "proportion": 0.7,
+              "count": 7,
+              "total": 10
             },
             "6": {
-              "category": "Uncategorized",
-              "proportion": 0.5714285714285714,
-              "count": 4,
-              "total": 7
+              "category": "Opponent Modeling",
+              "proportion": 0.5,
+              "count": 5,
+              "total": 10
             },
             "8": {
-              "category": "Uncategorized",
-              "proportion": 0.42857142857142855,
-              "count": 3,
-              "total": 7
+              "category": "Opponent Modeling",
+              "proportion": 0.5,
+              "count": 5,
+              "total": 10
             },
             "10": {
               "category": "Uncategorized",
-              "proportion": 0.7142857142857143,
-              "count": 5,
-              "total": 7
+              "proportion": 0.7,
+              "count": 7,
+              "total": 10
             },
             "12": {
               "category": "Uncategorized",
-              "proportion": 0.5714285714285714,
-              "count": 4,
-              "total": 7
+              "proportion": 0.6,
+              "count": 6,
+              "total": 10
             },
             "14": {
               "category": "Opponent Modeling",
-              "proportion": 0.42857142857142855,
-              "count": 3,
-              "total": 7
+              "proportion": 0.5,
+              "count": 5,
+              "total": 10
             },
             "16": {
               "category": "Opponent Modeling",
-              "proportion": 0.5714285714285714,
-              "count": 4,
-              "total": 7
+              "proportion": 0.6,
+              "count": 6,
+              "total": 10
             },
             "18": {
               "category": "Opponent Modeling",
-              "proportion": 0.7142857142857143,
-              "count": 5,
-              "total": 7
+              "proportion": 0.8,
+              "count": 8,
+              "total": 10
             },
             "20": {
               "category": "Blocking",
-              "proportion": 0.8571428571428571,
-              "count": 6,
-              "total": 7
+              "proportion": 0.8,
+              "count": 8,
+              "total": 10
             },
             "22": {
               "category": "Uncategorized",
-              "proportion": 0.7142857142857143,
-              "count": 5,
-              "total": 7
+              "proportion": 0.7,
+              "count": 7,
+              "total": 10
             },
             "24": {
               "category": "Opponent Modeling",
-              "proportion": 0.42857142857142855,
-              "count": 3,
-              "total": 7
+              "proportion": 0.4,
+              "count": 4,
+              "total": 10
             },
             "26": {
               "category": "Blocking",
-              "proportion": 0.5714285714285714,
-              "count": 4,
-              "total": 7
+              "proportion": 0.5,
+              "count": 5,
+              "total": 10
             },
             "28": {
               "category": "Blocking",
-              "proportion": 0.5,
-              "count": 3,
-              "total": 6
+              "proportion": 0.5555555555555556,
+              "count": 5,
+              "total": 9
             },
             "30": {
               "category": "Blocking",
-              "proportion": 0.5,
-              "count": 3,
-              "total": 6
+              "proportion": 0.5555555555555556,
+              "count": 5,
+              "total": 9
             },
             "32": {
               "category": "Blocking",
               "proportion": 0.6666666666666666,
-              "count": 4,
-              "total": 6
+              "count": 6,
+              "total": 9
             },
             "34": {
               "category": "Blocking",
-              "proportion": 0.6666666666666666,
-              "count": 4,
-              "total": 6
+              "proportion": 0.7777777777777778,
+              "count": 7,
+              "total": 9
             },
             "36": {
               "category": "Blocking",
-              "proportion": 0.6666666666666666,
-              "count": 4,
-              "total": 6
+              "proportion": 0.7777777777777778,
+              "count": 7,
+              "total": 9
             },
             "38": {
               "category": "Blocking",
-              "proportion": 0.6666666666666666,
-              "count": 4,
-              "total": 6
+              "proportion": 0.7777777777777778,
+              "count": 7,
+              "total": 9
             },
             "40": {
               "category": "Blocking",
-              "proportion": 0.6666666666666666,
-              "count": 4,
-              "total": 6
+              "proportion": 0.7777777777777778,
+              "count": 7,
+              "total": 9
             },
             "42": {
               "category": "Blocking",
-              "proportion": 0.6666666666666666,
-              "count": 4,
-              "total": 6
+              "proportion": 0.7777777777777778,
+              "count": 7,
+              "total": 9
             },
             "44": {
               "category": "Blocking",
-              "proportion": 0.5,
-              "count": 3,
-              "total": 6
+              "proportion": 0.5555555555555556,
+              "count": 5,
+              "total": 9
             },
             "46": {
               "category": "Blocking",
-              "proportion": 0.5,
-              "count": 3,
-              "total": 6
+              "proportion": 0.5555555555555556,
+              "count": 5,
+              "total": 9
             },
             "48": {
               "category": "Blocking",
-              "proportion": 0.6666666666666666,
-              "count": 4,
-              "total": 6
+              "proportion": 0.7777777777777778,
+              "count": 7,
+              "total": 9
             },
             "50": {
               "category": "Blocking",
@@ -4671,6 +4741,69 @@
             }
           },
           "pattern": "Evolution: Uncategorized \u2192 ... \u2192 Random/Unjustified (progresses through 4 categories)"
+        },
+        "kuhn_poker": {
+          "turns_analyzed": [
+            0,
+            2
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Opponent Modeling",
+              "proportion": 0.8888888888888888,
+              "count": 8,
+              "total": 9
+            },
+            "2": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 1,
+              "total": 1
+            }
+          },
+          "pattern": "Transition: Opponent Modeling \u2192 Uncategorized"
+        },
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Uncategorized",
+              "proportion": 1.0,
+              "count": 9,
+              "total": 9
+            },
+            "2": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 6,
+              "total": 9
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 0.6666666666666666,
+              "count": 6,
+              "total": 9
+            },
+            "6": {
+              "category": "Blocking",
+              "proportion": 0.7777777777777778,
+              "count": 7,
+              "total": 9
+            },
+            "8": {
+              "category": "Positional",
+              "proportion": 0.5,
+              "count": 1,
+              "total": 2
+            }
+          },
+          "pattern": "Evolution: Uncategorized \u2192 ... \u2192 Positional (progresses through 3 categories)"
         }
       }
     },
@@ -4698,82 +4831,82 @@
           ],
           "dominant_by_turn": {
             "0": {
-              "category": "Rule-Based",
+              "category": "Positional",
               "proportion": 0.4,
-              "count": 2,
-              "total": 5
+              "count": 4,
+              "total": 10
             },
             "2": {
               "category": "Winning Logic",
               "proportion": 0.6,
-              "count": 3,
-              "total": 5
+              "count": 6,
+              "total": 10
             },
             "4": {
-              "category": "Uncategorized",
-              "proportion": 0.6,
-              "count": 3,
-              "total": 5
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 5,
+              "total": 10
             },
             "6": {
               "category": "Winning Logic",
-              "proportion": 0.6,
-              "count": 3,
-              "total": 5
+              "proportion": 0.5,
+              "count": 5,
+              "total": 10
             },
             "8": {
-              "category": "Winning Logic",
-              "proportion": 0.4,
-              "count": 2,
-              "total": 5
+              "category": "Blocking",
+              "proportion": 0.3333333333333333,
+              "count": 3,
+              "total": 9
             },
             "10": {
-              "category": "Blocking",
+              "category": "Winning Logic",
               "proportion": 0.5,
-              "count": 2,
-              "total": 4
+              "count": 4,
+              "total": 8
             },
             "12": {
               "category": "Opponent Modeling",
-              "proportion": 0.5,
-              "count": 1,
-              "total": 2
+              "proportion": 0.6666666666666666,
+              "count": 4,
+              "total": 6
             },
             "14": {
               "category": "Winning Logic",
               "proportion": 0.5,
-              "count": 1,
-              "total": 2
+              "count": 3,
+              "total": 6
             },
             "16": {
               "category": "Opponent Modeling",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
             },
             "18": {
-              "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "category": "Blocking",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
             },
             "20": {
-              "category": "Positional",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "category": "Winning Logic",
+              "proportion": 0.5,
+              "count": 2,
+              "total": 4
             },
             "22": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
+              "proportion": 0.6666666666666666,
+              "count": 2,
+              "total": 3
             },
             "24": {
               "category": "Blocking",
-              "proportion": 1.0,
+              "proportion": 0.5,
               "count": 1,
-              "total": 1
+              "total": 2
             },
             "26": {
               "category": "Opponent Modeling",
@@ -4800,49 +4933,7 @@
               "total": 1
             }
           },
-          "pattern": "Evolution: Rule-Based \u2192 ... \u2192 Winning Logic (progresses through 6 categories)"
-        },
-        "tic_tac_toe": {
-          "turns_analyzed": [
-            0,
-            2,
-            4,
-            6,
-            8
-          ],
-          "dominant_by_turn": {
-            "0": {
-              "category": "Positional",
-              "proportion": 1.0,
-              "count": 5,
-              "total": 5
-            },
-            "2": {
-              "category": "Rule-Based",
-              "proportion": 0.6,
-              "count": 3,
-              "total": 5
-            },
-            "4": {
-              "category": "Uncategorized",
-              "proportion": 0.6,
-              "count": 3,
-              "total": 5
-            },
-            "6": {
-              "category": "Opponent Modeling",
-              "proportion": 0.8,
-              "count": 4,
-              "total": 5
-            },
-            "8": {
-              "category": "Opponent Modeling",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            }
-          },
-          "pattern": "Evolution: Positional \u2192 ... \u2192 Opponent Modeling (progresses through 4 categories)"
+          "pattern": "Evolution: Positional \u2192 ... \u2192 Winning Logic (progresses through 5 categories)"
         },
         "hex": {
           "turns_analyzed": [
@@ -4908,153 +4999,153 @@
           "dominant_by_turn": {
             "0": {
               "category": "Uncategorized",
-              "proportion": 0.5,
-              "count": 1,
-              "total": 2
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
             },
             "2": {
               "category": "Positional",
-              "proportion": 1.0,
+              "proportion": 0.4,
               "count": 2,
-              "total": 2
+              "total": 5
             },
             "4": {
-              "category": "Uncategorized",
-              "proportion": 0.5,
-              "count": 1,
-              "total": 2
+              "category": "Winning Logic",
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
             },
             "6": {
-              "category": "Blocking",
-              "proportion": 0.5,
-              "count": 1,
-              "total": 2
+              "category": "Winning Logic",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
             },
             "8": {
-              "category": "Uncategorized",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "category": "Winning Logic",
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
             },
             "10": {
               "category": "Winning Logic",
-              "proportion": 0.5,
-              "count": 1,
-              "total": 2
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
             },
             "12": {
               "category": "Winning Logic",
-              "proportion": 0.5,
-              "count": 1,
-              "total": 2
+              "proportion": 0.4,
+              "count": 2,
+              "total": 5
             },
             "14": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
             },
             "16": {
               "category": "Winning Logic",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 5,
+              "total": 5
             },
             "18": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "proportion": 0.8,
+              "count": 4,
+              "total": 5
             },
             "20": {
               "category": "Opponent Modeling",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "proportion": 0.6,
+              "count": 3,
+              "total": 5
             },
             "22": {
-              "category": "Opponent Modeling",
+              "category": "Winning Logic",
               "proportion": 0.5,
-              "count": 1,
-              "total": 2
+              "count": 2,
+              "total": 4
             },
             "24": {
-              "category": "Blocking",
-              "proportion": 0.5,
-              "count": 1,
-              "total": 2
+              "category": "Winning Logic",
+              "proportion": 0.75,
+              "count": 3,
+              "total": 4
             },
             "26": {
               "category": "Opponent Modeling",
-              "proportion": 1.0,
+              "proportion": 0.5,
               "count": 2,
-              "total": 2
+              "total": 4
             },
             "28": {
-              "category": "Uncategorized",
-              "proportion": 0.5,
-              "count": 1,
-              "total": 2
+              "category": "Winning Logic",
+              "proportion": 0.75,
+              "count": 3,
+              "total": 4
             },
             "30": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "proportion": 0.75,
+              "count": 3,
+              "total": 4
             },
             "32": {
               "category": "Winning Logic",
-              "proportion": 0.5,
-              "count": 1,
-              "total": 2
+              "proportion": 0.75,
+              "count": 3,
+              "total": 4
             },
             "34": {
-              "category": "Uncategorized",
+              "category": "Winning Logic",
               "proportion": 0.5,
-              "count": 1,
-              "total": 2
+              "count": 2,
+              "total": 4
             },
             "36": {
               "category": "Opponent Modeling",
-              "proportion": 1.0,
+              "proportion": 0.5,
               "count": 2,
-              "total": 2
+              "total": 4
             },
             "38": {
               "category": "Winning Logic",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 4,
+              "total": 4
             },
             "40": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "proportion": 0.75,
+              "count": 3,
+              "total": 4
             },
             "42": {
               "category": "Winning Logic",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 4,
+              "total": 4
             },
             "44": {
               "category": "Winning Logic",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 4,
+              "total": 4
             },
             "46": {
               "category": "Winning Logic",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "proportion": 0.75,
+              "count": 3,
+              "total": 4
             },
             "48": {
               "category": "Winning Logic",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 4,
+              "total": 4
             },
             "50": {
               "category": "Winning Logic",
@@ -5256,129 +5347,27 @@
             }
           },
           "pattern": "Evolution: Uncategorized \u2192 ... \u2192 Winning Logic (progresses through 5 categories)"
-        }
-      }
-    },
-    "llm_litellm_gpt_5_mini": {
-      "games": {
-        "connect_four": {
+        },
+        "kuhn_poker": {
           "turns_analyzed": [
             0,
-            2,
-            4,
-            6,
-            8,
-            10,
-            12,
-            14,
-            16,
-            18,
-            20,
-            22,
-            24,
-            26,
-            28,
-            30
+            2
           ],
           "dominant_by_turn": {
             "0": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "category": "Opponent Modeling",
+              "proportion": 0.7,
+              "count": 7,
+              "total": 10
             },
             "2": {
-              "category": "Random/Unjustified",
+              "category": "Uncategorized",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "4": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "6": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "8": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "10": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "12": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "14": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "16": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "18": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "20": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "22": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "24": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "26": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "28": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
-            },
-            "30": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 1,
+              "total": 1
             }
           },
-          "pattern": "Consistent Random/Unjustified throughout"
+          "pattern": "Transition: Opponent Modeling \u2192 Uncategorized"
         },
         "tic_tac_toe": {
           "turns_analyzed": [
@@ -5390,219 +5379,37 @@
           ],
           "dominant_by_turn": {
             "0": {
-              "category": "Random/Unjustified",
+              "category": "Positional",
               "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "count": 10,
+              "total": 10
             },
             "2": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "category": "Rule-Based",
+              "proportion": 0.4,
+              "count": 4,
+              "total": 10
             },
             "4": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "category": "Uncategorized",
+              "proportion": 0.5,
+              "count": 5,
+              "total": 10
             },
             "6": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 2,
-              "total": 2
+              "category": "Opponent Modeling",
+              "proportion": 0.7777777777777778,
+              "count": 7,
+              "total": 9
             },
             "8": {
-              "category": "Random/Unjustified",
+              "category": "Opponent Modeling",
               "proportion": 1.0,
               "count": 2,
               "total": 2
             }
           },
-          "pattern": "Consistent Random/Unjustified throughout"
-        },
-        "hex": {
-          "turns_analyzed": [
-            0,
-            2,
-            4,
-            6,
-            8,
-            10,
-            12,
-            14,
-            16,
-            18,
-            20,
-            22,
-            24,
-            26,
-            28,
-            30,
-            32,
-            34,
-            36,
-            38,
-            40,
-            42,
-            44,
-            46,
-            48
-          ],
-          "dominant_by_turn": {
-            "0": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "2": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "4": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "6": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "8": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "10": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "12": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "14": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "16": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "18": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "20": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "22": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "24": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "26": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "28": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "30": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "32": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "34": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "36": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "38": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "40": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "42": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "44": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "46": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            },
-            "48": {
-              "category": "Random/Unjustified",
-              "proportion": 1.0,
-              "count": 1,
-              "total": 1
-            }
-          },
-          "pattern": "Consistent Random/Unjustified throughout"
+          "pattern": "Evolution: Positional \u2192 ... \u2192 Opponent Modeling (progresses through 4 categories)"
         }
       }
     },
@@ -5742,7 +5549,7 @@
     }
   },
   "summary": {
-    "total_models": 21,
+    "total_models": 20,
     "evolution_patterns": []
   }
 }

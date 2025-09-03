@@ -1,4 +1,4 @@
-Model,Connect Four,Hex,Kuhn Poker,Matching Pennies,Prisoner's Dilemma,Rock Paper Scissors,Tic Tac Toe,Overall
+agent_name,Connect Four,Hex,Kuhn Poker,Matching Pennies,Prisoner's Dilemma,Rock Paper Scissors,Tic Tac Toe,Overall
 Meta-Llama-3.1-70B-Instruct-Turbo,1.0,0.0,1.0,0.0,10.0,1.0,1.0,2.0
 Llama-3-70b-8192,0.8,0.5,1.1,0.6,9.0,0.556,0.778,1.905
 kimi-k2-instruct,1.0,0.0,1.0,0.0,10.0,0.0,1.0,1.857

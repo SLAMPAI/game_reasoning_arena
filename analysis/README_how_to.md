@@ -21,7 +21,7 @@ python3 analysis/quick_analysis.py
 ### Option 3: Full Pipeline with Options
 ```bash
 # From the project root directory:
-python3 analysis/run_full_analysis.py --help
+PYTHONPATH=. python3 analysis/run_full_analysis.py --help
 
 # Examples:
 python3 analysis/run_full_analysis.py                    # Default settings
@@ -424,4 +424,3 @@ pip install pandas matplotlib seaborn wordcloud transformers numpy
 - Combine filters: `--game hex --model llama` for targeted research questions
 
 ---
-

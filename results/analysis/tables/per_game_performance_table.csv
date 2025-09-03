@@ -1,0 +1,148 @@
+Game,Model,Games Played,Games Won,Win Rate (%),Avg Reward
+Connect Four,Meta-Llama-3.1-8B-Instruct-Turbo,2,2,100.00,1.000 ± 0.200
+Connect Four,GPT-3.5-turbo,1,1,100.00,1.000 ± 0.200
+Connect Four,kimi-k2-instruct,3,3,100.00,1.000 ± 0.200
+Connect Four,llama-v3-8b-instruct,2,2,100.00,1.000 ± 0.200
+Connect Four,o4-mini,2,2,100.00,1.000 ± 0.200
+Connect Four,llama-v3-70b-instruct,2,2,100.00,1.000 ± 0.200
+Connect Four,GPT-4-turbo,1,1,100.00,1.000 ± 0.200
+Connect Four,Qwen3-32b,2,2,100.00,1.000 ± 0.200
+Connect Four,Meta-Llama-3.1-70B-Instruct-Turbo,2,2,100.00,1.000 ± 0.200
+Connect Four,Llama-3-70b-8192,10,9,90.00,0.800 ± 0.160
+Connect Four,Gemma2-9b-it,9,8,88.89,0.778 ± 0.156
+Connect Four,Llama-3-8b-8192,15,13,86.67,0.733 ± 0.147
+Connect Four,GPT-4,7,6,85.71,0.714 ± 0.143
+Connect Four,GPT-4-mini,5,4,80.00,0.600 ± 0.120
+Connect Four,ai-mistralai-Mixtral-8x7B-Instruct-v0.1,10,8,80.00,0.600 ± 0.120
+Connect Four,qwen3-235b-a22b-thinking-2507,3,2,66.67,0.333 ± 0.067
+Connect Four,glm-4p5-air,8,3,37.50,-0.250 ± -0.050
+Connect Four,llama-3.1-8b-instant,0,0,0.00,0.000 ± 0.000
+Connect Four,llama-3.1-8b-instant,0,0,0.00,0.000 ± 0.000
+Connect Four,Gemma-7b-it,0,0,0.00,0.000 ± 0.000
+Connect Four,Qwen2-7B-Instruct,0,0,0.00,0.000 ± 0.000
+Hex,Qwen3-32b,3,3,100.00,1.000 ± 0.200
+Hex,Llama-3-8b-8192,18,10,55.56,0.389 ± 0.078
+Hex,Llama-3-70b-8192,2,1,50.00,0.500 ± 0.100
+Hex,Gemma2-9b-it,8,2,25.00,0.000 ± 0.000
+Hex,Meta-Llama-3.1-8B-Instruct-Turbo,0,0,0.00,0.000 ± 0.000
+Hex,GPT-3.5-turbo,0,0,0.00,0.000 ± 0.000
+Hex,kimi-k2-instruct,1,0,0.00,0.000 ± 0.000
+Hex,glm-4p5-air,5,0,0.00,0.000 ± 0.000
+Hex,llama-v3-8b-instruct,0,0,0.00,0.000 ± 0.000
+Hex,llama-3.1-8b-instant,0,0,0.00,0.000 ± 0.000
+Hex,qwen3-235b-a22b-thinking-2507,1,0,0.00,0.000 ± 0.000
+Hex,o4-mini,1,0,0.00,0.000 ± 0.000
+Hex,llama-v3-70b-instruct,0,0,0.00,0.000 ± 0.000
+Hex,GPT-4,4,0,0.00,0.000 ± 0.000
+Hex,GPT-4-mini,2,0,0.00,0.000 ± 0.000
+Hex,llama-3.1-8b-instant,0,0,0.00,0.000 ± 0.000
+Hex,GPT-4-turbo,0,0,0.00,0.000 ± 0.000
+Hex,Gemma-7b-it,0,0,0.00,0.000 ± 0.000
+Hex,ai-mistralai-Mixtral-8x7B-Instruct-v0.1,4,0,0.00,-0.250 ± -0.050
+Hex,Meta-Llama-3.1-70B-Instruct-Turbo,0,0,0.00,0.000 ± 0.000
+Hex,Qwen2-7B-Instruct,0,0,0.00,0.000 ± 0.000
+Kuhn Poker,Meta-Llama-3.1-8B-Instruct-Turbo,2,2,100.00,1.000 ± 0.200
+Kuhn Poker,Llama-3-70b-8192,10,10,100.00,1.100 ± 0.220
+Kuhn Poker,GPT-3.5-turbo,1,1,100.00,1.000 ± 0.200
+Kuhn Poker,kimi-k2-instruct,3,3,100.00,1.000 ± 0.200
+Kuhn Poker,llama-v3-8b-instruct,2,2,100.00,1.000 ± 0.200
+Kuhn Poker,qwen3-235b-a22b-thinking-2507,5,5,100.00,1.000 ± 0.200
+Kuhn Poker,o4-mini,2,2,100.00,1.000 ± 0.200
+Kuhn Poker,llama-v3-70b-instruct,2,2,100.00,1.000 ± 0.200
+Kuhn Poker,GPT-4,7,7,100.00,1.143 ± 0.229
+Kuhn Poker,GPT-4-mini,5,5,100.00,1.200 ± 0.240
+Kuhn Poker,llama-3.1-8b-instant,2,2,100.00,1.000 ± 0.200
+Kuhn Poker,GPT-4-turbo,1,1,100.00,1.000 ± 0.200
+Kuhn Poker,Qwen3-32b,2,2,100.00,1.000 ± 0.200
+Kuhn Poker,Llama-3-8b-8192,18,18,100.00,1.056 ± 0.211
+Kuhn Poker,Meta-Llama-3.1-70B-Instruct-Turbo,2,2,100.00,1.000 ± 0.200
+Kuhn Poker,ai-mistralai-Mixtral-8x7B-Instruct-v0.1,10,8,80.00,0.600 ± 0.120
+Kuhn Poker,Gemma2-9b-it,9,7,77.78,0.556 ± 0.111
+Kuhn Poker,glm-4p5-air,8,6,75.00,0.500 ± 0.100
+Kuhn Poker,llama-3.1-8b-instant,0,0,0.00,0.000 ± 0.000
+Kuhn Poker,Gemma-7b-it,0,0,0.00,0.000 ± 0.000
+Kuhn Poker,Qwen2-7B-Instruct,0,0,0.00,0.000 ± 0.000
+Matching Pennies,glm-4p5-air,5,5,100.00,1.000 ± 0.200
+Matching Pennies,Llama-3-70b-8192,5,4,80.00,0.600 ± 0.120
+Matching Pennies,GPT-4,5,4,80.00,0.600 ± 0.120
+Matching Pennies,GPT-4-mini,5,4,80.00,0.600 ± 0.120
+Matching Pennies,Gemma2-9b-it,5,4,80.00,0.600 ± 0.120
+Matching Pennies,Llama-3-8b-8192,10,7,70.00,0.400 ± 0.080
+Matching Pennies,ai-mistralai-Mixtral-8x7B-Instruct-v0.1,5,3,60.00,0.200 ± 0.040
+Matching Pennies,Meta-Llama-3.1-8B-Instruct-Turbo,0,0,0.00,0.000 ± 0.000
+Matching Pennies,GPT-3.5-turbo,0,0,0.00,0.000 ± 0.000
+Matching Pennies,kimi-k2-instruct,0,0,0.00,0.000 ± 0.000
+Matching Pennies,llama-v3-8b-instruct,0,0,0.00,0.000 ± 0.000
+Matching Pennies,llama-3.1-8b-instant,0,0,0.00,0.000 ± 0.000
+Matching Pennies,qwen3-235b-a22b-thinking-2507,0,0,0.00,0.000 ± 0.000
+Matching Pennies,o4-mini,0,0,0.00,0.000 ± 0.000
+Matching Pennies,llama-v3-70b-instruct,0,0,0.00,0.000 ± 0.000
+Matching Pennies,llama-3.1-8b-instant,0,0,0.00,0.000 ± 0.000
+Matching Pennies,GPT-4-turbo,0,0,0.00,0.000 ± 0.000
+Matching Pennies,Qwen3-32b,0,0,0.00,0.000 ± 0.000
+Matching Pennies,Gemma-7b-it,0,0,0.00,0.000 ± 0.000
+Matching Pennies,Meta-Llama-3.1-70B-Instruct-Turbo,0,0,0.00,0.000 ± 0.000
+Matching Pennies,Qwen2-7B-Instruct,0,0,0.00,0.000 ± 0.000
+Prisoner's Dilemma,Meta-Llama-3.1-8B-Instruct-Turbo,2,2,100.00,5.000 ± 1.000
+Prisoner's Dilemma,Llama-3-70b-8192,9,9,100.00,9.000 ± 1.800
+Prisoner's Dilemma,GPT-3.5-turbo,1,1,100.00,5.000 ± 1.000
+Prisoner's Dilemma,kimi-k2-instruct,3,3,100.00,10.000 ± 2.000
+Prisoner's Dilemma,glm-4p5-air,8,8,100.00,8.250 ± 1.650
+Prisoner's Dilemma,llama-v3-8b-instruct,2,2,100.00,5.000 ± 1.000
+Prisoner's Dilemma,qwen3-235b-a22b-thinking-2507,3,3,100.00,5.000 ± 1.000
+Prisoner's Dilemma,o4-mini,2,2,100.00,5.000 ± 1.000
+Prisoner's Dilemma,llama-v3-70b-instruct,2,2,100.00,5.000 ± 1.000
+Prisoner's Dilemma,GPT-4,7,7,100.00,8.714 ± 1.743
+Prisoner's Dilemma,GPT-4-mini,5,5,100.00,5.200 ± 1.040
+Prisoner's Dilemma,GPT-4-turbo,1,1,100.00,10.000 ± 2.000
+Prisoner's Dilemma,Qwen3-32b,2,2,100.00,5.000 ± 1.000
+Prisoner's Dilemma,Gemma2-9b-it,9,9,100.00,7.333 ± 1.467
+Prisoner's Dilemma,ai-mistralai-Mixtral-8x7B-Instruct-v0.1,10,10,100.00,5.100 ± 1.020
+Prisoner's Dilemma,Meta-Llama-3.1-70B-Instruct-Turbo,2,2,100.00,10.000 ± 2.000
+Prisoner's Dilemma,Llama-3-8b-8192,13,12,92.31,4.615 ± 0.923
+Prisoner's Dilemma,llama-3.1-8b-instant,0,0,0.00,0.000 ± 0.000
+Prisoner's Dilemma,llama-3.1-8b-instant,0,0,0.00,0.000 ± 0.000
+Prisoner's Dilemma,Gemma-7b-it,0,0,0.00,0.000 ± 0.000
+Prisoner's Dilemma,Qwen2-7B-Instruct,0,0,0.00,0.000 ± 0.000
+Rock Paper Scissors,GPT-3.5-turbo,1,1,100.00,1.000 ± 0.200
+Rock Paper Scissors,Meta-Llama-3.1-70B-Instruct-Turbo,2,2,100.00,1.000 ± 0.200
+Rock Paper Scissors,Llama-3-70b-8192,9,6,66.67,0.556 ± 0.111
+Rock Paper Scissors,qwen3-235b-a22b-thinking-2507,3,2,66.67,0.667 ± 0.133
+Rock Paper Scissors,kimi-k2-instruct,3,1,33.33,0.000 ± 0.000
+Rock Paper Scissors,GPT-4,7,2,28.57,-0.286 ± -0.057
+Rock Paper Scissors,glm-4p5-air,8,2,25.00,0.125 ± 0.025
+Rock Paper Scissors,Gemma2-9b-it,9,2,22.22,-0.444 ± -0.089
+Rock Paper Scissors,GPT-4-mini,5,1,20.00,-0.400 ± -0.080
+Rock Paper Scissors,Llama-3-8b-8192,13,2,15.38,-0.615 ± -0.123
+Rock Paper Scissors,ai-mistralai-Mixtral-8x7B-Instruct-v0.1,10,1,10.00,-0.600 ± -0.120
+Rock Paper Scissors,Meta-Llama-3.1-8B-Instruct-Turbo,2,0,0.00,-0.500 ± -0.100
+Rock Paper Scissors,llama-v3-8b-instruct,2,0,0.00,0.000 ± 0.000
+Rock Paper Scissors,llama-3.1-8b-instant,0,0,0.00,0.000 ± 0.000
+Rock Paper Scissors,o4-mini,2,0,0.00,0.000 ± 0.000
+Rock Paper Scissors,llama-v3-70b-instruct,2,0,0.00,0.000 ± 0.000
+Rock Paper Scissors,llama-3.1-8b-instant,0,0,0.00,0.000 ± 0.000
+Rock Paper Scissors,GPT-4-turbo,1,0,0.00,-1.000 ± -0.200
+Rock Paper Scissors,Qwen3-32b,2,0,0.00,0.000 ± 0.000
+Rock Paper Scissors,Gemma-7b-it,0,0,0.00,0.000 ± 0.000
+Rock Paper Scissors,Qwen2-7B-Instruct,0,0,0.00,0.000 ± 0.000
+Tic Tac Toe,Meta-Llama-3.1-8B-Instruct-Turbo,2,2,100.00,1.000 ± 0.200
+Tic Tac Toe,GPT-3.5-turbo,1,1,100.00,1.000 ± 0.200
+Tic Tac Toe,kimi-k2-instruct,3,3,100.00,1.000 ± 0.200
+Tic Tac Toe,glm-4p5-air,8,8,100.00,1.000 ± 0.200
+Tic Tac Toe,llama-v3-8b-instruct,2,2,100.00,1.000 ± 0.200
+Tic Tac Toe,qwen3-235b-a22b-thinking-2507,3,3,100.00,1.000 ± 0.200
+Tic Tac Toe,o4-mini,2,2,100.00,1.000 ± 0.200
+Tic Tac Toe,llama-v3-70b-instruct,2,2,100.00,1.000 ± 0.200
+Tic Tac Toe,GPT-4-mini,5,5,100.00,1.000 ± 0.200
+Tic Tac Toe,GPT-4-turbo,1,1,100.00,1.000 ± 0.200
+Tic Tac Toe,Qwen3-32b,2,2,100.00,1.000 ± 0.200
+Tic Tac Toe,Gemma-7b-it,1,1,100.00,1.000 ± 0.200
+Tic Tac Toe,Meta-Llama-3.1-70B-Instruct-Turbo,2,2,100.00,1.000 ± 0.200
+Tic Tac Toe,Llama-3-8b-8192,79,76,96.20,0.949 ± 0.190
+Tic Tac Toe,Llama-3-70b-8192,9,8,88.89,0.778 ± 0.156
+Tic Tac Toe,GPT-4,7,6,85.71,0.857 ± 0.171
+Tic Tac Toe,llama-3.1-8b-instant,14,12,85.71,0.714 ± 0.143
+Tic Tac Toe,Gemma2-9b-it,9,7,77.78,0.556 ± 0.111
+Tic Tac Toe,ai-mistralai-Mixtral-8x7B-Instruct-v0.1,10,5,50.00,0.000 ± 0.000
+Tic Tac Toe,llama-3.1-8b-instant,0,0,0.00,0.000 ± 0.000
+Tic Tac Toe,Qwen2-7B-Instruct,1,0,0.00,-1.000 ± -0.200

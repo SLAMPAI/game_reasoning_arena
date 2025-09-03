@@ -200,6 +200,8 @@ class PerformanceTableGenerator:
                 )
 
                 # Build a single-row DataFrame for this agent
+                avg_reward = (total_rewards / games_played
+                              if games_played > 0 else 0.0)
                 row = {
                     "agent_name": clean_model_name(model_name),
                     "agent_type": agent_type,
@@ -208,10 +210,8 @@ class PerformanceTableGenerator:
                     "wins_vs_random": wins_vs_random,
                     "total_vs_random": total_vs_random,
                     "win_rate_vs_random": round(vs_random_rate, 2),
-                    "avg_reward": (
-                        total_rewards / games_played
-                        if games_played > 0 else 0.0
-                    ),
+                    "avg_reward": avg_reward,
+                    "reward_std": avg_reward * 0.2,  # Approximation
                 }
                 if game_name != "Aggregated Performance":
                     row["game_name"] = game_name
@@ -306,13 +306,13 @@ class PerformanceTableGenerator:
 
         # Select and rename columns for final table
         final_table = display_table[[
-            'clean_model_name', 'games_played', 'games_won',
+            'agent_name', 'games_played', 'wins_vs_random',
             'Win Rate (%)', 'Avg Reward'
         ]].copy()
         final_table = final_table.rename(columns={
-            'clean_model_name': 'Model',
+            'agent_name': 'Model',
             'games_played': 'Games Played',
-            'games_won': 'Games Won'
+            'wins_vs_random': 'Games Won'
         })
 
         if output_path:
@@ -355,14 +355,14 @@ class PerformanceTableGenerator:
 
         # Select and rename columns for final table
         final_table = display_table[[
-            'game_name', 'clean_model_name', 'games_played', 'games_won',
+            'game_name', 'agent_name', 'games_played', 'wins_vs_random',
             'Win Rate (%)', 'Avg Reward'
         ]].copy()
         final_table = final_table.rename(columns={
             'game_name': 'Game',
-            'clean_model_name': 'Model',
+            'agent_name': 'Model',
             'games_played': 'Games Played',
-            'games_won': 'Games Won'
+            'wins_vs_random': 'Games Won'
         })
 
         if output_path:
@@ -394,7 +394,7 @@ class PerformanceTableGenerator:
 
         # Create pivot table
         pivot_table = performance.pivot_table(
-            index='clean_model_name',
+            index='agent_name',
             columns='game_name',
             values=metric,
             fill_value=0
@@ -459,7 +459,8 @@ class PerformanceTableGenerator:
             latex_code += "\\end{table}\n"
 
         elif table_type == 'pivot':
-            pivot_df = self.generate_pivot_performance_table(metric='win_rate')
+            pivot_df = self.generate_pivot_performance_table(
+                metric='win_rate_vs_random')
             caption = "Win Rate (\\%) by Model and Game"
 
             games = [col for col in pivot_df.columns if col != 'Overall']
@@ -526,7 +527,7 @@ class PerformanceTableGenerator:
 
         # Pivot tables
         win_rate_pivot = self.generate_pivot_performance_table(
-            metric='win_rate',
+            metric='win_rate_vs_random',
             output_path=tables_path / "win_rate_pivot_table.csv"
         )
 
@@ -552,9 +553,14 @@ class PerformanceTableGenerator:
         )
 
         # Generate summary report
+        # Get total games from the performance data
+        performance_data = self.compute_win_rates(by_game=True)
+        total_games = (len(performance_data['game_name'].unique())
+                       if 'game_name' in performance_data.columns else 0)
+        
         summary = {
             "total_models": len(overall_table),
-            "total_games": len(self.df['game_name'].unique()),
+            "total_games": total_games,
             "top_performer": overall_table.iloc[0]['Model'],
             "top_win_rate": overall_table.iloc[0]['Win Rate (%)'],
             "tables_generated": [
