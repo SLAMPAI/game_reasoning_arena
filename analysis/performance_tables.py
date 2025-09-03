@@ -557,7 +557,7 @@ class PerformanceTableGenerator:
         performance_data = self.compute_win_rates(by_game=True)
         total_games = (len(performance_data['game_name'].unique())
                        if 'game_name' in performance_data.columns else 0)
-        
+
         summary = {
             "total_models": len(overall_table),
             "total_games": total_games,
