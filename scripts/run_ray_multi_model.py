@@ -228,15 +228,6 @@ def run_single_model_all_games(
         except OSError:
             pass  # Ignore cleanup errors
 
-        return {
-            "model": model,
-            "model_short": model_short,
-            "success": False,
-            "duration": duration,
-            "output_lines": 0,
-            "error": error_msg
-        }
-
 
 def extract_config_info(config: Dict[str, Any]) -> Tuple[List[str], int, int]:
     """Extract models, games count, and episodes from config."""
