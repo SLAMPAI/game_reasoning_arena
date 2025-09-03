@@ -20,26 +20,26 @@ Connect Four,llama-3.1-8b-instant,15,5,33.33,-0.333 ± -0.067
 Connect Four,llama-3.1-8b-instant,0,0,0.00,0.000 ± 0.000
 Connect Four,Gemma-7b-it,0,0,0.00,0.000 ± 0.000
 Connect Four,Qwen2-7B-Instruct,0,0,0.00,0.000 ± 0.000
-Hex,Qwen3-32b,3,3,100.00,1.000 ± 0.200
-Hex,Llama-3-8b-8192,18,10,55.56,0.389 ± 0.078
-Hex,Gemma2-9b-it,27,2,7.41,0.000 ± 0.000
-Hex,Llama-3-70b-8192,17,1,5.88,0.059 ± 0.012
-Hex,Meta-Llama-3.1-8B-Instruct-Turbo,10,0,0.00,0.000 ± 0.000
-Hex,GPT-3.5-turbo,10,0,0.00,0.000 ± 0.000
-Hex,kimi-k2-instruct,11,0,0.00,0.000 ± 0.000
-Hex,glm-4p5-air,15,0,0.00,0.000 ± 0.000
-Hex,llama-v3-8b-instruct,10,0,0.00,0.000 ± 0.000
+Hex,kimi-k2-instruct,10,6,60.00,0.300 ± 0.060
+Hex,qwen3-235b-a22b-thinking-2507,10,5,50.00,0.000 ± 0.000
+Hex,Meta-Llama-3.1-8B-Instruct-Turbo,10,4,40.00,-0.100 ± -0.020
+Hex,GPT-3.5-turbo,10,4,40.00,-0.200 ± -0.040
+Hex,glm-4p5-air,10,4,40.00,-0.200 ± -0.040
+Hex,llama-v3-8b-instruct,10,4,40.00,-0.200 ± -0.040
+Hex,llama-v3-70b-instruct,10,4,40.00,-0.100 ± -0.020
+Hex,Llama-3-70b-8192,10,3,30.00,0.000 ± 0.000
+Hex,llama-3.1-8b-instant,10,3,30.00,-0.300 ± -0.060
+Hex,Meta-Llama-3.1-70B-Instruct-Turbo,4,1,25.00,-0.500 ± -0.100
+Hex,o4-mini,10,2,20.00,-0.600 ± -0.120
+Hex,Gemma2-9b-it,10,2,20.00,-0.600 ± -0.120
 Hex,llama-3.1-8b-instant,0,0,0.00,0.000 ± 0.000
-Hex,qwen3-235b-a22b-thinking-2507,11,0,0.00,0.000 ± 0.000
-Hex,o4-mini,21,0,0.00,0.000 ± 0.000
-Hex,llama-v3-70b-instruct,10,0,0.00,0.000 ± 0.000
-Hex,GPT-4,14,0,0.00,0.000 ± 0.000
-Hex,GPT-4-mini,2,0,0.00,0.000 ± 0.000
-Hex,llama-3.1-8b-instant,20,0,0.00,0.000 ± 0.000
-Hex,GPT-4-turbo,10,0,0.00,0.000 ± 0.000
+Hex,GPT-4,7,0,0.00,-1.000 ± -0.200
+Hex,GPT-4-mini,0,0,0.00,0.000 ± 0.000
+Hex,GPT-4-turbo,0,0,0.00,0.000 ± 0.000
+Hex,Qwen3-32b,0,0,0.00,0.000 ± 0.000
+Hex,Llama-3-8b-8192,0,0,0.00,0.000 ± 0.000
 Hex,Gemma-7b-it,0,0,0.00,0.000 ± 0.000
-Hex,ai-mistralai-Mixtral-8x7B-Instruct-v0.1,14,0,0.00,-0.071 ± -0.014
-Hex,Meta-Llama-3.1-70B-Instruct-Turbo,10,0,0.00,0.000 ± 0.000
+Hex,ai-mistralai-Mixtral-8x7B-Instruct-v0.1,4,0,0.00,-1.000 ± -0.200
 Hex,Qwen2-7B-Instruct,0,0,0.00,0.000 ± 0.000
 Kuhn Poker,GPT-4-mini,5,5,100.00,1.200 ± 0.240
 Kuhn Poker,Qwen3-32b,2,2,100.00,1.000 ± 0.200
