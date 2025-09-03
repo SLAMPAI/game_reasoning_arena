@@ -20,7 +20,7 @@ env_configs:
   # - game_name: connect_four
   #   max_game_rounds: null
   - game_name: hex
-    max_game_rounds: 50      # Limited rounds to prevent infinite games
+    max_game_rounds: 120      # Limited rounds to prevent infinite games
 
 # Parallel execution settings
 num_episodes: 5              # More episodes for better statistics

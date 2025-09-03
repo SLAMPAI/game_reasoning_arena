@@ -19,7 +19,7 @@ env_configs:
   - game_name: matching_pennies
     max_game_rounds: 10
   - game_name: hex  #  takes too much time, run standalone
-    max_game_rounds: 50      # Limit HEX games to prevent infinite loops
+    max_game_rounds: 120      # Limit HEX games to 120 to prevent infinite loops
 
 num_episodes: 1
 seed: 42
