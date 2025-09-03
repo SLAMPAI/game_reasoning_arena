@@ -6,7 +6,6 @@ This directory contains the Gradio interface components for the Board Game Arena
 
 - `gradio_config_generator.py` - Configuration generator that bridges Gradio UI with the game infrastructure
 - `utils.py` - Utility functions for UI display formatting (e.g., model name cleaning)
-- `test_utils.py` - Test cases for the utility functions
 - `__init__.py` - Package initialization
 
 ## Key Functions

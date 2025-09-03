@@ -481,7 +481,7 @@ class LLMReasoningAnalyzer:
         plt.ylabel("")
         plt.tight_layout()
         plt.savefig(
-            Path(plot_dir) / f"pie_reasoning_type_{agent}_{game}.png"
+            Path(plot_dir) / f"pie_reasoning_type_{agent}_{game}.pdf"
         )
         plt.close()
 
@@ -508,7 +508,7 @@ class LLMReasoningAnalyzer:
         plt.ylabel("Turn")
         plt.xlabel("Reasoning Type")
         plt.tight_layout()
-        out_path = os.path.join(plot_dir, f"heatmap_{agent}_all_games.png")
+        out_path = os.path.join(plot_dir, f"heatmap_{agent}_all_games.pdf")
         plt.savefig(out_path)
         plt.close()
 
@@ -593,7 +593,7 @@ class LLMReasoningAnalyzer:
 
         # Generate visualizations
         # self.plot_reasoning_type_pie_charts(plot_dir)  # DISABLED
-        self.plot_agent_aggregate_heatmaps(plot_dir)
+        # self.plot_agent_aggregate_heatmaps(plot_dir)  # DISABLED 
 
     def plot_heatmaps_by_agent(self, output_dir: str = "plots") -> None:
         """Plot per-agent heatmaps and one aggregated heatmap across
@@ -623,7 +623,7 @@ class LLMReasoningAnalyzer:
             plt.xlabel("Reasoning Type")
             plt.tight_layout()
             out_path = os.path.join(
-                output_dir, f"heatmap_{agent}_{game}.png"
+                output_dir, f"heatmap_{agent}_{game}.pdf"
             )
             plt.savefig(out_path)
             plt.close()
@@ -662,7 +662,7 @@ class LLMReasoningAnalyzer:
             plt.title(title)
             plt.tight_layout()
             out_path = os.path.join(
-                output_dir, f"wordcloud_{agent}_{game}.png"
+                output_dir, f"wordcloud_{agent}_{game}.pdf"
             )
             plt.savefig(out_path)
             plt.close()
@@ -699,7 +699,7 @@ class LLMReasoningAnalyzer:
             plt.grid(True)
             plt.tight_layout()
             out_path = os.path.join(
-                output_dir, f"entropy_trend_{agent}_{game}.png"
+                output_dir, f"entropy_trend_{agent}_{game}.pdf"
             )
             plt.savefig(out_path)
             plt.close()
@@ -770,7 +770,7 @@ class LLMReasoningAnalyzer:
             plt.subplots_adjust(bottom=bottom_margin)
 
             out_path = os.path.join(
-                output_dir, f"entropy_by_turn_all_agents_{game}.png"
+                output_dir, f"entropy_by_turn_all_agents_{game}.pdf"
             )
             # Use bbox_inches='tight' to ensure legend is included
             plt.savefig(out_path, bbox_inches='tight', dpi=300)
@@ -799,7 +799,7 @@ class LLMReasoningAnalyzer:
         plt.ylabel("Entropy")
         plt.grid(True)
         plt.tight_layout()
-        out_path = os.path.join(output_dir, "avg_entropy_all_games.png")
+        out_path = os.path.join(output_dir, "avg_entropy_all_games.pdf")
         plt.savefig(out_path, bbox_inches='tight', dpi=300)
         plt.close()
 

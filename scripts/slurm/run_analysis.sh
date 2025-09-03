@@ -73,11 +73,11 @@ run_analysis() {
         if [[ -d "plots" ]]; then
             echo
             print_info "Generated files include:"
-            find plots -name "*.png" -type f | head -5 | while read file; do
+            find plots -name "*.pdf" -type f | head -5 | while read file; do
                 echo "  📊 $file"
             done
 
-            total_plots=$(find plots -name "*.png" -type f | wc -l)
+            total_plots=$(find plots -name "*.pdf" -type f | wc -l)
             if [[ $total_plots -gt 5 ]]; then
                 echo "  ... and $((total_plots - 5)) more plot files"
             fi

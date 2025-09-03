@@ -7,7 +7,7 @@ scripts in the correct order automatically. No more manual script execution!
 
 Usage:
 
-    python3 analysis/run_full_analysis.py [options]
+    PYTHONPATH=. python3 analysis/run_full_analysis.py [options]
 
 Options:
     --results-dir DIR     Directory containing SQLite database files
@@ -18,7 +18,7 @@ Options:
     --skip-existing       Skip analysis steps if output files already exist
 
 Examples:
-    python3 analysis/run_full_analysis.py
+    PYTHONPATH=. python3 analysis/run_full_analysis.py
     python3 analysis/run_full_analysis.py --results-dir my_results \
         --plots-dir my_plots
     python3 analysis/run_full_analysis.py --quiet
@@ -321,7 +321,7 @@ class AnalysisPipeline:
                     "plot_avg_entropy_across_games failed: %s", e)
 
             # Count generated plot files
-            plot_files = list(self.plots_dir.glob("*.png"))
+            plot_files = list(self.plots_dir.glob("*.pdf"))
             self.pipeline_results["files_generated"].extend(
                 [str(f) for f in plot_files])
 

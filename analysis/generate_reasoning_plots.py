@@ -173,7 +173,7 @@ def clean_model_name(model_name: str) -> str:
 def plot_reasoning_bar_chart(
     reasoning_percentages: Dict[str, float],
     model_name: str,
-    output_path: str = "reasoning_bar_chart.png",
+    output_path: str = "reasoning_bar_chart.pdf",
     games_list: Optional[List[str]] = None
 ) -> None:
     """
@@ -222,7 +222,7 @@ def plot_reasoning_bar_chart(
 def plot_reasoning_pie_chart(
     reasoning_percentages: Dict[str, float],
     model_name: str,
-    output_path: str = "reasoning_pie_chart.png"
+    output_path: str = "reasoning_pie_chart.pdf"
 ) -> None:
     """
     Plots a pie chart showing the reasoning type distribution.
@@ -261,7 +261,7 @@ def plot_reasoning_pie_chart(
 def plot_stacked_bar_chart(
     game_reasoning_percentages: Dict[str, Dict[str, float]],
     model_name: str,
-    output_path: str = "reasoning_stacked_bar.png"
+    output_path: str = "reasoning_stacked_bar.pdf"
 ) -> None:
     """
     Plots a stacked bar chart showing reasoning type percentages per game.
@@ -331,7 +331,7 @@ def plot_reasoning_evolution_over_turns(
     reasoning_per_turn: Dict[int, Dict[str, int]],
     model_name: str,
     game_name: str,
-    output_path: str = "reasoning_evolution.png"
+    output_path: str = "reasoning_evolution.pdf"
 ) -> None:
     """
     Plots how reasoning type distribution changes over turns for a
@@ -405,7 +405,7 @@ def plot_reasoning_evolution_heatmap(
     reasoning_per_turn: Dict[int, Dict[str, int]],
     model_name: str,
     game_name: str,
-    output_path: str = "reasoning_evolution_heatmap.png"
+    output_path: str = "reasoning_evolution_heatmap.pdf"
 ) -> None:
     """
     Creates a heatmap showing reasoning evolution over turns.
@@ -510,7 +510,7 @@ class ReasoningPlotGenerator:
                 # Clean the model and game names for filename
                 clean_model = model_name.replace(" ", "_").replace(".", "_")
                 clean_game = game_name.replace(" ", "_").replace(".", "_")
-                filename = f"evolution_{clean_model}_{clean_game}.png".lower()
+                filename = f"evolution_{clean_model}_{clean_game}.pdf".lower()
                 output_path = Path(output_dir) / filename
 
                 plot_reasoning_evolution_over_turns(
@@ -544,7 +544,7 @@ class ReasoningPlotGenerator:
                 clean_game = game_name.replace(" ", "_").replace(".", "_")
 
                 # Generate standard evolution plot
-                filename = f"evolution_{clean_model}_{clean_game}.png".lower()
+                filename = f"evolution_{clean_model}_{clean_game}.pdf".lower()
                 output_path = Path(output_dir) / filename
 
                 plot_reasoning_evolution_over_turns(
@@ -670,7 +670,7 @@ class ReasoningPlotGenerator:
             ).to_dict()
 
             # 1. Aggregated horizontal bar chart (across all games)
-            bar_output = Path(output_dir) / f"reasoning_bar_{agent_name}.png"
+            bar_output = Path(output_dir) / f"reasoning_bar_{agent_name}.pdf"
             plot_reasoning_bar_chart(
                 reasoning_percentages,
                 model_name,
@@ -703,7 +703,7 @@ class ReasoningPlotGenerator:
                     game_reasoning_data[game] = game_percentages
 
                 stacked_output = Path(output_dir) / (
-                    f"reasoning_stacked_{agent_name}.png"
+                    f"reasoning_stacked_{agent_name}.pdf"
                 )
                 plot_stacked_bar_chart(
                     game_reasoning_data,
@@ -722,7 +722,7 @@ class ReasoningPlotGenerator:
                 ).to_dict()
 
                 game_bar_output = (
-                    Path(output_dir) / f"reasoning_bar_{agent_name}_{game}.png"
+                    Path(output_dir) / f"reasoning_bar_{agent_name}_{game}.pdf"
                 )
                 plot_reasoning_bar_chart(
                     game_reasoning_percentages,
@@ -744,7 +744,7 @@ class ReasoningPlotGenerator:
                         reasoning_per_turn[turn] = turn_counts.to_dict()
 
                     evolution_output = Path(output_dir) / (
-                        f"reasoning_evolution_{agent_name}_{game}.png"
+                        f"reasoning_evolution_{agent_name}_{game}.pdf"
                     )
                     plot_reasoning_evolution_over_turns(
                         reasoning_per_turn,

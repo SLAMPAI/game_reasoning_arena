@@ -8,17 +8,17 @@
 # Use env_configs (plural) for multiple games as a list
 env_configs:
   - game_name: tic_tac_toe
-    max_game_rounds: null
-  - game_name: kuhn_poker
-    max_game_rounds: null
-  - game_name: matrix_rps
-    max_game_rounds: 10
-  - game_name: matrix_pd
-    max_game_rounds: 10
+  #   max_game_rounds: null
+  # - game_name: kuhn_poker
+  #   max_game_rounds: null
+  # - game_name: matrix_rps
+  #   max_game_rounds: 10
+  # - game_name: matrix_pd
+    # max_game_rounds: 10
   - game_name: matching_pennies
     max_game_rounds: 10
-  - game_name: connect_four
-    max_game_rounds: null
+  # - game_name: connect_four
+  #   max_game_rounds: null
   - game_name: hex
     max_game_rounds: 50      # Limited rounds to prevent infinite games
 
