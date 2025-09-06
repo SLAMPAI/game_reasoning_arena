@@ -1,67 +1,45 @@
 # Performance Analysis Tables
 
-## Table Generation
+## Quick Table Updates
 
-### How to Generate These Tables
-
-The performance analysis tables in this directory are generated from SQLite databases using the same methodology as the main application (`app.py`). This ensures complete accuracy and consistency with the leaderboard data displayed in the Game Reasoning Arena interface.
-
-#### Publication-Ready Tables Generation (Recommended)
-
-**Generate Main Publication Tables:**
+### 📝 Latex Tables 
 ```bash
 # From the project root directory:
-cd /path/to/game_reasoning_arena
-python -c "from analysis.performance_tables import generate_publication_tables; generate_publication_tables('results/tables')"
+python -c "from analysis.performance_tables import generate_publication_tables; generate_publication_tables()"
 ```
+Generates: `overall_performance.csv/.tex` and `win_rate_by_game.csv/.tex`
 
-This command generates the main publication-ready tables:
-- `overall_performance.csv/.tex` - Overall model performance across all games
-- `win_rate_by_game.csv/.tex` - Win rates by model and game (pivot table)
-
-#### Update All Pivot Tables
-
-**Update Additional Analysis Tables:**
+### 📊 All Analysis Tables (Including Pivots)
 ```bash
 # From the project root directory:
 python -c "
-from analysis.performance_tables import PerformanceTableGenerator, display_game_name
-import pandas as pd
-from pathlib import Path
-
+from analysis.performance_tables import PerformanceTableGenerator
 generator = PerformanceTableGenerator(use_databases=True)
-performance = generator.compute_win_rates(by_game=True)
-
-# Update win_rate_pivot_table.csv
-win_rate_pivot = performance.pivot_table(index='agent_name', columns='game_name', values='win_rate_vs_random', fill_value=0)
-win_rate_pivot.columns = [display_game_name(col) for col in win_rate_pivot.columns]
-win_rate_pivot['Overall'] = win_rate_pivot.mean(axis=1)
-win_rate_pivot = win_rate_pivot.sort_values('Overall', ascending=False).reset_index()
-win_rate_pivot.to_csv('results/tables/win_rate_pivot_table.csv', index=False)
-
-# Update games_played_pivot_table.csv
-games_played_pivot = performance.pivot_table(index='agent_name', columns='game_name', values='games_played', fill_value=0)
-games_played_pivot.columns = [display_game_name(col) for col in games_played_pivot.columns]
-games_played_pivot['Overall'] = games_played_pivot.sum(axis=1)
-games_played_pivot = games_played_pivot.sort_values('Overall', ascending=False).reset_index()
-games_played_pivot.to_csv('results/tables/games_played_pivot_table.csv', index=False)
-
-# Update reward_pivot_table.csv
-reward_pivot = performance.pivot_table(index='agent_name', columns='game_name', values='avg_reward', fill_value=0)
-reward_pivot.columns = [display_game_name(col) for col in reward_pivot.columns]
-reward_pivot['Overall'] = reward_pivot.mean(axis=1)
-reward_pivot = reward_pivot.sort_values('Overall', ascending=False).reset_index()
-reward_pivot.to_csv('results/tables/reward_pivot_table.csv', index=False)
-
-print('✅ All pivot tables updated with SQLite data')
+generator.generate_all_performance_tables()
 "
 ```
+Generates all tables including pivot tables for detailed analysis.
+
+## Generated Files
+
+**Main Publication Tables:**
+- `overall_performance.csv/.tex` - Overall model performance across all games
+- `win_rate_by_game.csv/.tex` - Win rates by model and game (pivot table)
+
+**Analysis Tables:**
+- `win_rate_pivot_table.csv` - Win rates in matrix format (models × games)
+- `reward_pivot_table.csv` - Average rewards in matrix format
+- `games_played_pivot_table.csv` - Number of games played per model-game combination
+
+**Metadata:**
+- `performance_tables_summary.json` - Generation metadata and top performers
 
 #### Source Scripts
 
 - **Primary Script**: `analysis/performance_tables.py` - Contains the `PerformanceTableGenerator` class with SQLite database integration
 - **Data Source**: SQLite databases in `results/*.db` (same as used by `app.py`)
 - **Model Name Cleaning**: Uses `ui/utils.py` clean_model_name function for consistency
+
 
 #### Generated Files
 
@@ -112,9 +90,6 @@ This publication-ready pivot table shows detailed win rates for each model acros
 - Reveals domain-specific strengths and weaknesses
 - Identifies games that consistently challenge certain model types
 
-**Available Formats:**
-- CSV: `win_rate_by_game.csv` (for analysis)
-- LaTeX: `win_rate_by_game.tex` (for publications)
 
 ### Win Rate Pivot Table (`win_rate_pivot_table.csv`)
 

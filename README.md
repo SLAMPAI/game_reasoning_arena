@@ -615,13 +615,10 @@ python3 analysis/run_full_analysis.py --model llama        # Compare all Llama v
 python3 analysis/run_full_analysis.py --model gpt          # Compare all GPT models
 
 # Combined filtering for targeted research questions
+# Saved in dedicated folder, i.e. plots/game_hex/`, `plots/model_llama/
 python3 analysis/run_full_analysis.py --game hex --model llama3  # "How does Llama3 approach HEX?"
 ```
 
-**Benefits:**
-- ⚡ **Faster processing** by analyzing only relevant data
-- 📁 **Organized output** in game/model-specific directories (`plots/game_hex/`, `plots/model_llama/`)
-- 💾 **Memory efficient** for large datasets
 
 #### 1. Extract Specific Traces
 ```bash
