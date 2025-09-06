@@ -9,11 +9,21 @@ Description-Content-Type: text/markdown
 
 # Game Reasoning Arena
 
-A framework for evaluating Large Language Models (LLMs) through strategic game-playing using Google's OpenSpiel game library. Allows to test LLM decision-making capabilities in games like Tic-Tac-Toe, Connect Four, Poker, and more.
+A comprehensive framework for evaluating Large Language Models (LLMs) through strategic game-playing using Google's OpenSpiel library. Test LLM decision-making capabilities across 9+ games including Tic-Tac-Toe, Connect Four, Poker, and more.
 
-## Official Documentation
+<h3>
 
-For a detailed documentation guide, visit the [Game Reasoning Arena Documentation](https://game-reasoning-arena.readthedocs.io/en/latest/index.html).
+[📖 Extended Documentation](https://game-reasoning-arena.readthedocs.io/en/latest/index.html)
+
+
+</h3>
+
+[![Discord](https://img.shields.io/discord/1257951838322561075?color=%237289DA&label=Game%20Reasoning%20Arena&logo=discord&logoColor=white)](https://discord.gg/kyStERWq7y)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Documentation Status](https://readthedocs.org/projects/game-reasoning-arena/badge/?version=latest)](https://game-reasoning-arena.readthedocs.io/en/latest/?badge=latest)
+
+<img src="plots_paper/radar_comparison_llm_litellm_groq_llama3_70b_8192.png" alt="LLM Performance Radar Chart" width="600">
+
 
 ### Key Features
 - **Multi-Agent Testing**: LLMs vs Random, LLM vs LLM, Self-play
@@ -87,31 +97,42 @@ python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_ran
 ___
 ### Game Examples
 ```bash
-# Different games
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml --override env_config.game_name=connect_four
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml --override env_config.game_name=kuhn_poker
+# Play against a random agent in the terminal (minimal output)
+python3 scripts/runner.py \
+  --override env_config.game_name=connect_four \
+  --override agents.player_0.type=human \
+  --override agents.player_1.type=random \
+  --override log_level=WARNING
+
+# Play against an LLM agent in the terminal
+python3 scripts/runner.py \
+  --override env_config.game_name=tic_tac_toe \
+  --override agents.player_0.type=human \
+  --override agents.player_1.type=llm \
+  --override agents.player_1.model=litellm_groq/llama3-8b-8192
 
 # LLM vs Random in a multi-episode tournament
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml --override \
-  agents.player_0.type=llm \
-  agents.player_0.model=litellm_groq/llama3-8b-8192 \
-  num_episodes=10
+python3 scripts/runner.py
+  --override env_config.game_name=tic_tac_toe
+  --override agents.player_0.type=llm
+  --override agents.player_0.model=litellm_groq/llama3-8b-8192
+  --override agents.player_1.type=random
+  --override num_episodes=10
 
-# LLM vs LLM with mixed backends (liteLLM vs vLLM)
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml --override \
-mode=llm_vs_llm \
-agents.player_0.model=litellm_groq/llama3-8b-8192 \
-agents.player_1.model=vllm_Qwen2-7B-Instruct
+# LLM vs LLM with mixed backends
+python3 scripts/runner.py
+  --override env_config.game_name=connect_four
+  --override mode=llm_vs_llm
+  --override agents.player_0.type=llm
+  --override agents.player_0.model=litellm_groq/llama3-8b-8192
+  --override agents.player_1.type=llm
+  --override agents.player_1.model=vllm_Qwen2-7B-Instruct
 ```
+
+**Log Levels:** Add `--override log_level=WARNING` for minimal output, or use `DEBUG`, `INFO` (default), `ERROR`, `CRITICAL`
 
 #### Game-Specific Examples
 ```bash
-# Tic-Tac-Toe: Quick strategy game
-python3 scripts/runner.py --config src/game_reasoning_arena/configs/simple_tic_tac_toe.yaml --override \
-  env_config.game_name=tic_tac_toe \
-  agents.player_0.type=llm \
-  agents.player_0.model=litellm_groq/llama3-8b-8192 \
-  num_episodes=5
 
 # Connect Four: Longer strategic game
 python3 scripts/runner.py --config src/game_reasoning_arena/configs/hybrid_config.yaml --override \
@@ -165,7 +186,7 @@ Configuration files:
 
 ## Ray Integration for Parallel Execution
 
-The Board Game Arena supports **Ray** for distributed and parallel execution, allowing you to:
+The Board Game Arena supports Ray for distributed and parallel execution, allowing you to:
 
 - **Run multiple games in parallel** across different cores/machines
 - **Parallelize episodes within games** for faster data collection
@@ -212,6 +233,15 @@ python3 scripts/runner.py \
  --override use_ray=true parallel_episodes=true
 ```
 
+**Option 4: Maximum Parallelization (Multi-Model Ray)**
+```bash
+# Run multiple models in parallel with full Ray integration
+# Parallelizes: Models + Games + Episodes simultaneously
+python3 scripts/run_ray_multi_model.py \
+  --config src/game_reasoning_arena/configs/ray_multi_model.yaml \
+  --override use_ray=true
+```
+
 ### Ray Configuration Options
 
 The `ray_config.yaml` file contains only Ray-specific settings:
@@ -225,6 +255,18 @@ The `ray_config.yaml` file contains only Ray-specific settings:
 | `ray_config.include_dashboard` | Enable Ray dashboard | `false` |
 | `ray_config.dashboard_port` | Dashboard port | `8265` |
 | `ray_config.object_store_memory` | Object store memory limit | Auto |
+| `tensorboard_logging` | Enable Tensorboard metric logging | `false` |
+
+
+### Performance Comparison
+
+| Execution Mode | Parallelization Level | Best For | Expected Speedup |
+|----------------|----------------------|----------|-------------------|
+| `scripts/runner.py` (standard) | Episodes only | Single model, single game | ~N_episodes |
+| `scripts/runner.py` (Ray enabled) | Games + Episodes | Single model, multiple games | ~N_games × N_episodes |
+| `scripts/run_ray_multi_model.py` | Models + Games + Episodes | Multiple models, multiple games | ~N_models × N_games × N_episodes |
+
+**Recommendation**: Use `run_ray_multi_model.py` for multi-model experiments to achieve maximum speedup.
 
 
 **Debug Commands:**
@@ -272,11 +314,34 @@ python3 scripts/runner.py --config <config_file> [--override key=value ...]
 
 ```
 
+### Available Scripts
+
+| Script | Purpose | Use Case |
+|--------|---------|----------|
+| `scripts/runner.py` | Standard single experiment runner | Single model, single/multiple games |
+| `scripts/run_ray_multi_model.py` | Ray-accelerated multi-model runner | Multiple models, maximum parallelization |
+| `scripts/run_multi_model_games.py` | Sequential multi-model runner | Multiple models, conservative resource usage |
+
+**Quick Start Commands:**
+```bash
+# Single experiment
+python3 scripts/runner.py --config src/game_reasoning_arena/configs/human_vs_random_config.yaml
+
+# Multi-model experiment with maximum speed
+python3 scripts/run_ray_multi_model.py --config src/game_reasoning_arena/configs/ray_multi_model.yaml --override use_ray=true
+
+# Multi-model experiment (conservative)
+python3 scripts/run_multi_model_games.py --config src/game_reasoning_arena/configs/multi_game_multi_model.yaml
+```
+
 **Common Commands:**
 ```bash
 
 # Verify available games
 python3 -c "from src.game_reasoning_arena.arena.games.registry import registry; print('Available games:', list(registry._registry.keys()))"
+
+# Run focused analysis on specific games or models
+python3 analysis/run_full_analysis.py --game hex --model llama3
 ```
 
 ### Configuration Files
@@ -531,8 +596,37 @@ python3 show_reasoning_traces.py
 >
 > # Or use Python directly
 > python3 analysis/quick_analysis.py
+>
+> # 🎯 Game-specific and Model-specific Analysis
+> python3 analysis/run_full_analysis.py --game hex         # Analyze only HEX games
+> python3 analysis/run_full_analysis.py --model llama3     # Analyze only Llama3 models
+> python3 analysis/run_full_analysis.py --game hex --model llama3  # Combined filtering
 > ```
-> See [ANALYSIS_AUTOMATION.md](ANALYSIS_AUTOMATION.md) for details.
+>
+> **📚 Detailed Analysis Documentation:**
+> - **[Analysis How-To Guide](analysis/README_how_to.md)** - Comprehensive guide for running analysis pipelines and interpreting results
+> - **[Entropy Analysis Report](analysis/README_Entropy.md)** - Deep dive into reasoning diversity metrics and entropy calculations
+> - **[Performance Tables Documentation](results/tables/README_Analisis.md)** - Statistical methodology and interpretation guide for performance analysis
+
+### 🎯 Focused Analysis
+
+The analysis pipeline now supports filtering for specific games and models, enabling targeted research:
+
+```bash
+# Game-specific analysis
+python3 analysis/run_full_analysis.py --game hex           # Focus on HEX strategy analysis
+python3 analysis/run_full_analysis.py --game tic_tac_toe   # Focus on Tic-Tac-Toe patterns
+python3 analysis/run_full_analysis.py --game connect_four  # Focus on Connect Four strategies
+
+# Model-specific analysis
+python3 analysis/run_full_analysis.py --model llama        # Compare all Llama variants
+python3 analysis/run_full_analysis.py --model gpt          # Compare all GPT models
+
+# Combined filtering for targeted research questions
+# Saved in dedicated folder, i.e. plots/game_hex/`, `plots/model_llama/
+python3 analysis/run_full_analysis.py --game hex --model llama3  # "How does Llama3 approach HEX?"
+```
+
 
 #### 1. Extract Specific Traces
 ```bash
@@ -593,14 +687,6 @@ After running analysis, check the `plots/` directory for:
 - `pie_reasoning_type_<model>_<game>.png` - Distribution of reasoning categories
 - `heatmap_<model>_<game>.png` - Move position preferences
 
-### Use Cases
-
-- **Model Comparison**: Compare reasoning patterns between different LLMs
-- **Strategy Analysis**: Understand how LLMs approach different games
-- **Improvement Identification**: Find gaps in LLM strategic thinking
-- **Research**: Study AI decision-making and explainability
-- **Debugging**: Identify why models make specific moves
-
 ## TensorBoard Integration
 
 The Board Game Arena includes **TensorBoard integration** for real-time monitoring and visualization of agent performance metrics during experiments.
@@ -631,10 +717,7 @@ Logs are organized by game type:
 runs/
 ├── tic_tac_toe/           # Game-specific logs
 │   └── events.out.tfevents.*
-├── connect_four/
-│   └── events.out.tfevents.*
-└── kuhn_poker/
-    └── events.out.tfevents.*
+
 ```
 
 ### Example TensorBoard Metrics
@@ -642,22 +725,6 @@ runs/
 - **`Rewards/llm_litellm_groq_llama3_8b_8192`**: Reward progression for LLM agent
 - **`Rewards/random_None`**: Reward progression for Random agent
 - **`Rewards/llm_gpt_4`**: Reward progression for GPT-4 agent
-
-### Viewing Results
-
-1. **Scalars Tab**: View reward progressions and performance trends
-2. **Compare Agents**: Select multiple metrics to compare agent performance
-3. **Time Series**: Analyze performance over episode sequences
-4. **Distributions**: Examine reward distributions across experiments
-
-### Integration with Analysis
-
-TensorBoard complements other analysis tools:
-- **Real-time monitoring** during experiments
-- **Quick performance overviews** without database queries
-- **Visual comparison** of multiple agent configurations
-- **Export capabilities** for presentations and reports
-
 
 ---
 
@@ -690,12 +757,14 @@ ___
 If you found this work useful, please consider citing:
 
 ```
-@article{cipolina-kun2025game_reasoning_arena,
-    title={Board Game Arena: A Framework and Benchmark for Assessing Large Language Models},
-    author={Lucia Cipolina-Kun and  Marianna Nezhurina and Jenia Jitsev},
-    year={2025},
-    journal={arXiv},
-    url={https://arxiv.org/abs/2}
+@misc{cipolinakun2025gamereasoningarenaframework,
+      title={Game Reasoning Arena: A Framework and Benchmark for Assessing Reasoning Capabilities of Large Language Models via Game Play},
+      author={Lucia Cipolina-Kun and Marianna Nezhurina and Jenia Jitsev},
+      year={2025},
+      eprint={2508.03368},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2508.03368},
 }
 ```
 ___

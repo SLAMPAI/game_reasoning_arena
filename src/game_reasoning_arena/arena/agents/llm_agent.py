@@ -18,6 +18,19 @@ MAX_TOKENS = int(os.getenv("MAX_TOKENS", 250))
 TEMPERATURE = float(os.getenv("TEMPERATURE", 0.1))
 
 
+class LLMEndpointError(Exception):
+    """
+    Custom exception raised when LLM endpoint fails.
+    This allows the simulation to handle LLM errors differently
+    from other issues.
+    """
+    def __init__(self, message: str, original_error: Exception,
+                 model_name: str):
+        super().__init__(message)
+        self.original_error = original_error
+        self.model_name = model_name
+
+
 class LLMAgent(BaseAgent):
     """
     Agent that queries a language model (LLM) to pick an action.
@@ -69,11 +82,14 @@ class LLMAgent(BaseAgent):
                     {0: prompt},
                     {0: legal_actions}
                 )
+        except LLMEndpointError:
+            # Re-raise LLM endpoint errors immediately - don't mask them
+            raise
         except Exception as e:
             logging.warning(
-                f"Error in LLM inference (Ray: {ray.is_initialized()}): {e}"
+                "Error in Ray execution (Ray: %s): %s", ray.is_initialized(), e
             )
-            # Fallback to direct call if Ray fails
+            # Fallback to direct call if Ray fails (but not for LLM errors)
             action_dict = batch_llm_decide_moves(
                 {0: self.model_name},
                 {0: prompt},
@@ -82,7 +98,10 @@ class LLMAgent(BaseAgent):
 
         chosen_action = action_dict[0]["action"]
         reasoning = action_dict[0].get("reasoning", "N/A")
-        return {"action": chosen_action, "reasoning": reasoning}
+        return {
+            "action": chosen_action,
+            "reasoning": reasoning
+        }
 
 
 def batch_llm_decide_moves(
@@ -112,16 +131,14 @@ def batch_llm_decide_moves(
 
         except Exception as e:
             error_msg = f"Error with model {model_name} for player {player_id}"
-            logging.error(f"{error_msg}: {e}")
-            # Fallback: return random valid action
-            if legal_actions:
-                fallback_action = random.choice(legal_actions)
-            else:
-                fallback_action = 0
-            actions_dict[player_id] = {
-                'action': fallback_action,
-                'reasoning': f"Error occurred, using random fallback: {str(e)}"
-            }
+            logging.error("%s: %s", error_msg, e)
+            # Instead of fallback, raise LLMEndpointError to terminate game
+            # when an LLM endpoint fails.
+            raise LLMEndpointError(
+                f"LLM endpoint failed for {model_name}: {str(e)}",
+                e,
+                model_name
+            )
 
     return actions_dict
 

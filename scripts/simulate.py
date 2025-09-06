@@ -17,6 +17,7 @@ from game_reasoning_arena.arena.agents.policy_manager import (
     initialize_policies, policy_mapping_fn
 )
 from game_reasoning_arena.arena.utils.loggers import SQLiteLogger
+from game_reasoning_arena.arena.agents.llm_agent import LLMEndpointError
 from torch.utils.tensorboard import SummaryWriter
 
 # Ensure the src directory is in the Python path
@@ -68,6 +69,7 @@ def compute_actions(env, player_to_agent, observations):
                 agent.last_reasoning = agent_response["reasoning"]
             else:
                 agent.last_reasoning = "None"
+
             return agent_response.get("action", -1)
         else:
             # Fallback for unexpected response formats
@@ -167,6 +169,45 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
                 action_dict = compute_actions(
                     env, player_to_agent, observation_dict
                 )
+            except LLMEndpointError as e:
+                logger.error(
+                    "LLM endpoint error during action computation: %s", e
+                )
+                logger.error("Model: %s, Original error: %s",
+                             e.model_name, e.original_error)
+
+                # Log this as a specific termination reason
+                for agent_id in observation_dict.keys():
+                    policy_key = policy_mapping_fn(agent_id)
+                    agent_logger = agent_loggers_dict[policy_key]
+
+                    # Get agent config for logging
+                    agent_type = "unknown"
+                    agent_model = "None"
+                    player_key = f"player_{agent_id}"
+                    if player_key in config["agents"]:
+                        agent_config = config["agents"][player_key]
+                        agent_type = agent_config["type"]
+                        if agent_type == "llm":
+                            agent_model = agent_config.get("model", "None")
+
+                    # Log as a special illegal move for LLM endpoint failure
+                    if agent_type == "llm" and agent_model == e.model_name:
+                        agent_logger.log_illegal_move(
+                            game_name=game_name,
+                            episode=episode + 1,
+                            turn=turn,
+                            agent_id=agent_id,
+                            illegal_action=-999,  # Special marker
+                            reason=f"LLM endpoint failure: {str(e)}",
+                            board_state=observation_dict[agent_id].get(
+                                "state_string", ""
+                            )
+                        )
+                        break
+
+                truncated = True
+                break
             except Exception as e:
                 logger.error("Error computing actions: %s", e)
                 truncated = True

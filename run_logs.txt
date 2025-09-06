@@ -1,0 +1,17 @@
+2025-09-06 22:52:23,832 - __main__ - INFO - {'env_config': {'game_name': 'matrix_rps', 'max_game_rounds': None, 'episodes': 1, 'max_turns': 10, 'random_seed': 42}, 'num_episodes': 1, 'seed': 42, 'use_ray': False, 'mode': 'llm_vs_random', 'agents': {'player_0': {'type': 'llm', 'model': 'invalid_test_model'}, 'player_1': {'type': 'random'}}, 'llm_backend': {'max_tokens': 250, 'temperature': 0.1, 'default_model': 'litellm_groq/gemma-7b-it'}, 'log_level': 'INFO', 'tensorboard_logging': False}
+2025-09-06 22:52:23,843 - __main__ - INFO - Ray disabled - using sequential execution
+2025-09-06 22:52:23,843 - __main__ - INFO - Using sequential execution (Ray disabled)
+2025-09-06 22:52:23,848 - simulate - INFO - Initializing environment for matrix_rps.
+2025-09-06 22:52:23,849 - game_reasoning_arena.arena.agents.policy_manager - INFO - Initializing 2 agents for matrix_rps
+2025-09-06 22:52:23,849 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_0 -> LLM (invalid_test_model)
+2025-09-06 22:52:23,849 - game_reasoning_arena.arena.agents.policy_manager - INFO - Assigned: policy_1 -> RANDOM (None)
+2025-09-06 22:52:23,867 - simulate - INFO - Episode 1 started with seed 42.
+2025-09-06 22:52:23,867 - root - ERROR - Error with model invalid_test_model for player 0: Model name 'invalid_test_model' must start with 'litellm_', 'vllm_', or 'hf_' prefix.
+2025-09-06 22:52:23,867 - root - WARNING - Error in LLM inference (Ray: False): LLM endpoint failed for invalid_test_model: Model name 'invalid_test_model' must start with 'litellm_', 'vllm_', or 'hf_' prefix.
+2025-09-06 22:52:23,868 - root - ERROR - Error with model invalid_test_model for player 0: Model name 'invalid_test_model' must start with 'litellm_', 'vllm_', or 'hf_' prefix.
+2025-09-06 22:52:23,868 - simulate - ERROR - LLM endpoint error during action computation: LLM endpoint failed for invalid_test_model: Model name 'invalid_test_model' must start with 'litellm_', 'vllm_', or 'hf_' prefix.
+2025-09-06 22:52:23,868 - simulate - ERROR - Model: invalid_test_model, Original error: Model name 'invalid_test_model' must start with 'litellm_', 'vllm_', or 'hf_' prefix.
+2025-09-06 22:52:23,869 - simulate - INFO - Game status: truncated with rewards dict: {}
+2025-09-06 22:52:23,869 - simulate - INFO - Simulation for game matrix_rps, Episode 1 completed.
+2025-09-06 22:52:23,870 - __main__ - INFO - Sequential simulation results for matrix_rps completed
+2025-09-06 22:52:23,870 - __main__ - INFO - All simulations completed. Total results: 1
