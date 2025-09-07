@@ -95,6 +95,57 @@ This makes it easy to focus on specific research questions without processing al
 
 ---
 
+## 🔍 Model Filtering for Aggregate Plots
+
+When analyzing data from many models, aggregate plots can become cluttered and hard to interpret. The analysis pipeline includes intelligent model filtering to focus on representative models for "all models" aggregate plots.
+
+### Model Filtering Options
+
+```bash
+# Default filtering (max 7 priority models)
+python3 analysis/run_full_analysis.py
+
+# Custom limit of 5 models
+python3 analysis/run_full_analysis.py --max-models-aggregate 5
+
+# Show all models (no filtering)
+python3 analysis/run_full_analysis.py --no-model-filtering
+
+# Use custom priority configuration
+python3 analysis/run_full_analysis.py --priority-models-config my_models.yaml
+```
+
+### How Model Filtering Works
+
+**Automatic Selection**: When you have more than 7 models (default limit), the system automatically selects representative models from different families:
+- OpenAI models (GPT-4o-mini, etc.)
+- Meta Llama variants (3.1-8B, 3.1-70B, etc.)
+- Google models (Gemma, Gemini)
+- Qwen models
+- Mistral models
+
+**Priority Configuration**: Model priorities are defined in `src/game_reasoning_arena/configs/priority_models_config.yaml`. You can:
+- Adjust the maximum number of models for aggregate plots
+- Modify the priority model list
+- Add new model families
+- Configure fallback behavior
+
+**Smart Matching**: The system uses flexible name matching to handle different model naming conventions:
+- `meta-llama/llama-3.1-8b-instruct` matches `llama-3.1-8b-instruct`
+- `openai/gpt-4o-mini` matches `gpt-4o-mini`
+- Handles variations in separators (`-`, `_`, `/`)
+
+### Benefits
+
+- **Cleaner Visualizations**: Aggregate plots focus on representative models
+- **Better Readability**: Legends and labels remain manageable
+- **Preserved Coverage**: Individual model analysis remains unaffected
+- **Configurable**: Easy to customize for your specific research needs
+
+**Note**: Model filtering only affects aggregate plots that show "all models" together. Individual model analysis and specific model comparisons are never filtered.
+
+---
+
 ## �📁 Directory Contents
 
 ### Core Analysis Scripts

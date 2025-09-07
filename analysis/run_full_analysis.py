@@ -95,7 +95,10 @@ class AnalysisPipeline:
                  verbose: bool = True,
                  skip_existing: bool = False,
                  game_filter: Optional[str] = None,
-                 model_filter: Optional[str] = None):
+                 model_filter: Optional[str] = None,
+                 max_models_aggregate: Optional[int] = None,
+                 priority_models_config: Optional[str] = None,
+                 no_model_filtering: bool = False):
         """
         Initialize the analysis pipeline.
 
@@ -106,6 +109,9 @@ class AnalysisPipeline:
             skip_existing: Skip steps if output files already exist
             game_filter: Filter analysis for specific game (e.g., 'hex')
             model_filter: Filter analysis for specific model
+            max_models_aggregate: Max models to show in aggregate plots
+            priority_models_config: Path to priority models config file
+            no_model_filtering: Disable filtering for aggregate plots
         """
         self.results_dir = Path(results_dir)
         self.plots_dir = Path(plots_dir)
@@ -113,6 +119,9 @@ class AnalysisPipeline:
         self.skip_existing = skip_existing
         self.game_filter = game_filter
         self.model_filter = model_filter
+        self.max_models_aggregate = max_models_aggregate
+        self.priority_models_config = priority_models_config
+        self.no_model_filtering = no_model_filtering
 
         # Setup logging
         log_level = logging.INFO if verbose else logging.WARNING
@@ -311,16 +320,132 @@ class AnalysisPipeline:
             # Additional entropy plots
             try:
                 self.logger.info("Generating entropy by turn across models...")
-                analyzer.plot_entropy_by_turn_across_models(
-                    output_dir=str(self.plots_dir))
+                # Apply model filtering for aggregate plots if enabled
+                if not self.no_model_filtering:
+                    try:
+                        from model_filtering import (
+                            filter_models_for_aggregate_plot,
+                             load_priority_models_config
+                             )
+
+                        # Get all available models
+                        available_models = [
+                            agent
+                            for agent in analyzer.df["agent_name"].unique()
+                            if not agent.startswith("random")
+                        ]
+
+                        # Filter models for aggregate plot
+                        priority_config = load_priority_models_config(
+                            self.priority_models_config
+                        )
+                        max_models = (
+                            self.max_models_aggregate or
+                            priority_config.get("max_models_in_aggregate", 7)
+                        )
+
+                        if len(available_models) > max_models:
+                            filtered_models = filter_models_for_aggregate_plot(
+                                available_models,
+                                max_models=max_models,
+                                priority_config=priority_config
+                            )
+                            self.logger.info(
+                                "Filtering aggregate plots to %d priority models: %s",
+                                len(filtered_models),
+                                filtered_models
+                            )
+
+                            # Temporarily filter the dataframe for this plot
+                            original_df = analyzer.df.copy()
+                            analyzer.df = analyzer.df[
+                                analyzer.df["agent_name"].isin(
+                                    filtered_models + ["random"]
+                                )
+                            ]
+
+                            analyzer.plot_entropy_by_turn_across_models(
+                                output_dir=str(self.plots_dir)
+                            )
+
+                            # Restore original dataframe
+                            analyzer.df = original_df
+                        else:
+                            analyzer.plot_entropy_by_turn_across_models(
+                                output_dir=str(self.plots_dir)
+                            )
+                    except ImportError as e:
+                        self.logger.warning(
+                            "Model filtering not available: %s", e
+                        )
+                        analyzer.plot_entropy_by_turn_across_models(
+                            output_dir=str(self.plots_dir)
+                        )
+                else:
+                    analyzer.plot_entropy_by_turn_across_models(
+                        output_dir=str(self.plots_dir)
+                    )
             except Exception as e:
                 self.logger.warning(
                     "plot_entropy_by_turn_across_models failed: %s", e)
 
             try:
                 self.logger.info("Generating average entropy across games...")
-                analyzer.plot_avg_entropy_across_games(
-                    output_dir=str(self.plots_dir))
+                # Apply same model filtering for this aggregate plot
+                if not self.no_model_filtering:
+                    try:
+                        from model_filtering import (
+                            filter_models_for_aggregate_plot,
+                            load_priority_models_config
+                            )
+
+                        available_models = [
+                            agent
+                            for agent in analyzer.df["agent_name"].unique()
+                            if not agent.startswith("random")
+                        ]
+
+                        priority_config = load_priority_models_config(
+                            self.priority_models_config
+                        )
+                        max_models = (
+                            self.max_models_aggregate or
+                            priority_config.get("max_models_in_aggregate", 7)
+                        )
+
+                        if len(available_models) > max_models:
+                            filtered_models = filter_models_for_aggregate_plot(
+                                available_models,
+                                max_models=max_models,
+                                priority_config=priority_config
+                            )
+
+                            # Temporarily filter the dataframe
+                            original_df = analyzer.df.copy()
+                            analyzer.df = analyzer.df[
+                                analyzer.df["agent_name"].isin(
+                                    filtered_models + ["random"]
+                                )
+                            ]
+
+                            analyzer.plot_avg_entropy_across_games(
+                                output_dir=str(self.plots_dir)
+                            )
+
+                            # Restore original dataframe
+                            analyzer.df = original_df
+                        else:
+                            analyzer.plot_avg_entropy_across_games(
+                                output_dir=str(self.plots_dir)
+                            )
+                    except ImportError:
+                        analyzer.plot_avg_entropy_across_games(
+                            output_dir=str(self.plots_dir)
+                        )
+                else:
+                    analyzer.plot_avg_entropy_across_games(
+                        output_dir=str(self.plots_dir)
+                    )
             except Exception as e:
                 self.logger.warning(
                     "plot_avg_entropy_across_games failed: %s", e)
@@ -590,6 +715,16 @@ Examples:
     # Run analysis for HEX game with specific model
     python analysis/run_full_analysis.py --game hex --model llama3
 
+    # Limit aggregate plots to 5 models max
+    python analysis/run_full_analysis.py --max-models-aggregate 5
+
+    # Use custom priority models configuration
+    python analysis/run_full_analysis.py \
+        --priority-models-config my_config.yaml
+
+    # Show all models in aggregate plots (no filtering)
+    python analysis/run_full_analysis.py --no-model-filtering
+
     # Run in quiet mode
     python analysis/run_full_analysis.py --quiet
 
@@ -632,6 +767,26 @@ Examples:
         help="Filter analysis for a specific model (e.g., llama3, gpt-4)"
     )
 
+    parser.add_argument(
+        "--max-models-aggregate",
+        type=int,
+        default=None,
+        help=("Maximum number of models to show in aggregate plots "
+              "(default: from config)")
+    )
+
+    parser.add_argument(
+        "--priority-models-config",
+        default=None,
+        help="Path to priority models configuration file"
+    )
+
+    parser.add_argument(
+        "--no-model-filtering",
+        action="store_true",
+        help="Disable model filtering for aggregate plots (show all models)"
+    )
+
     args = parser.parse_args()
 
     # Initialize and run pipeline
@@ -641,7 +796,10 @@ Examples:
         verbose=not args.quiet,
         skip_existing=args.skip_existing,
         game_filter=args.game,
-        model_filter=args.model
+        model_filter=args.model,
+        max_models_aggregate=args.max_models_aggregate,
+        priority_models_config=args.priority_models_config,
+        no_model_filtering=args.no_model_filtering
     )
 
     success = pipeline.run_full_pipeline()

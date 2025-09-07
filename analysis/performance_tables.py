@@ -220,7 +220,8 @@ class PerformanceTableGenerator:
             finally:
                 conn.close()
 
-        # Concatenate all rows; if all_stats is empty, return an empty DataFrame
+        # Concatenate all rows; if all_stats is empty,
+        # return an empty DataFrame
         if not all_stats:
             columns = [
                 "agent_name",
@@ -464,7 +465,8 @@ class PerformanceTableGenerator:
             caption = "Win Rate (\\%) by Model and Game"
 
             games = [col for col in pivot_df.columns if col != 'Overall']
-            col_spec = 'l' + 'c' * len(games) + 'c'  # Left-align model names, center-align games
+            # Left-align model names, center-align games
+            col_spec = 'l' + 'c' * len(games) + 'c'
 
             latex_code = "\\begin{table}[htbp]\n"
             latex_code += "\\centering\n"
@@ -481,7 +483,11 @@ class PerformanceTableGenerator:
             for model, row in pivot_df.iterrows():
                 values = [f"{row[game]:.1f}" for game in games]
                 overall = f"{row['Overall']:.1f}"
-                latex_code += f"{model} & " + " & ".join(values) + f" & {overall} \\\\\n"
+                latex_code += (
+                    f"{model} & "
+                    + " & ".join(values)
+                    + f" & {overall} \\\\\n"
+                )
 
             latex_code += "\\bottomrule\n"
             latex_code += "\\end{tabular}\n"

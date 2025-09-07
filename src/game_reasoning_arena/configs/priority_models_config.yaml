@@ -1,0 +1,45 @@
+# Priority Models Configuration for Aggregate Plots
+# This config defines which models to include in "all models" aggregate plots
+# to avoid clutter and focus on representative models
+
+# Maximum number of models to show in aggregate plots
+max_models_in_aggregate: 7
+
+# Priority models list (in order of preference)
+# These are selected as representatives of different model families
+priority_models:
+  # OpenAI models (high performance baseline)
+  - "openai/gpt-4o-mini"
+  - "gpt-4o-mini"
+
+  # Meta Llama models (open source representatives)
+  - "meta-llama/llama-3.1-8b-instruct"
+  - "meta-llama/llama-3.1-70b-instruct"
+  - "llama-3.1-8b-instruct"
+  - "llama-3.1-70b-instruct"
+  - "llama3-8b-8192"  # Alternative naming patterns
+  - "llama3-70b-8192"
+
+  # Google models (competitive alternatives)
+  - "google/gemma-2-9b-it"
+  - "google/gemini-2.0-flash-exp"
+  - "gemma-2-9b-it"
+  - "gemini-2.0-flash-exp"
+
+
+  # Other strong performers
+  - "qwen/qwen-2.5-72b-instruct"
+  - "qwen-2.5-72b-instruct"
+  - "mistralai/mistral-7b-instruct"
+  - "mistral-7b-instruct"
+
+# Fallback behavior when no priority models are found
+# Options: "all" (show all models), "first_n" (show first N models alphabetically)
+fallback_behavior: "first_n"
+
+# Model name patterns to exclude from aggregate plots
+exclude_patterns:
+  - "random"
+  - "human"
+  - "test"
+  - "debug"
