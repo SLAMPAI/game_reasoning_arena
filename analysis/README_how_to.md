@@ -282,7 +282,7 @@ All execution details are displayed in the console output.
 ## 🔄 Typical Analysis Workflow
 
 ### 1. Data Collection
-Run games with LLM agents - reasoning traces are automatically collected:
+Run games with LLM models - reasoning traces are automatically collected:
 ```bash
 python scripts/runner.py --config configs/example_config.yaml --override \
   env_config.game_name=tic_tac_toe \
@@ -335,7 +335,7 @@ plotter.generate_model_plots('plots/')
 - Contains: game_name, episode, turn, action, reasoning, board_state, timestamp
 
 ### Merged CSV Files (`results/merged_logs_*.csv`)
-- Consolidated data from all agents
+- Consolidated data from all models
 - Ready for statistical analysis
 - Timestamped for version control
 
@@ -344,7 +344,7 @@ plotter.generate_model_plots('plots/')
 - `pie_reasoning_type_<model>_<game>.png` - Reasoning category distributions
 - `heatmap_<model>_<game>.png` - Move position preferences
 - `reasoning_bar_chart_<model>.png` - Model-specific reasoning breakdowns
-- `entropy_by_turn_all_agents_<game>.png` - Reasoning diversity over time
+- `entropy_by_turn_all_models_<game>.png` - Reasoning diversity over time
 - `reasoning_evolution_<model>_<game>.png` - How reasoning patterns change during games
 
 ### ⚠️ Important Note: Short Game Limitations
@@ -354,7 +354,7 @@ plotter.generate_model_plots('plots/')
 - **Few turns per game**: Games lasting only 1-2 turns provide insufficient data for meaningful entropy calculations
 - **Limited reasoning diversity**: With only 1-2 reasoning entries per agent per turn, entropy values are often zero
 - **No evolution patterns**: Reasoning evolution requires multiple turns to show meaningful progression
-- **Sparse data**: Individual agents may have too few data points for statistical analysis
+- **Sparse data**: Individual models may have too few data points for statistical analysis
 
 **Recommendation**: Focus on **longer games** (Tic-Tac-Toe, Connect Four) for entropy and evolution analysis. Short games are better suited for reasoning category distribution analysis (pie charts, bar charts).
 

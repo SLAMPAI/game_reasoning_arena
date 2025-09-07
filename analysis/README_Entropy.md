@@ -4,7 +4,7 @@
 
 **Entropy** in this context measures the **diversity** of reasoning types used by an AI agent during gameplay. It quantifies how varied or predictable an agent's reasoning patterns are.
 
-**Entropy measures reasoning DIVERSITY and ADAPTATION**. It reveals how flexible and context-aware an AI agent's strategic thinking is. The entropy graphs show whether agents are rigid rule-followers or adaptive strategists, providing crucial insights into the sophistication of their reasoning processes.
+**Entropy measures reasoning DIVERSITY and ADAPTATION**. It reveals how flexible and context-aware an AI model's strategic thinking is. The entropy graphs show whether models are rigid rule-followers or adaptive strategists, providing crucial insights into the sophistication of their reasoning processes.
 
 Higher entropy indicates more sophisticated reasoning **when it appears at appropriate times**, but the pattern and timing of entropy changes is more important than the absolute values.
 
@@ -48,7 +48,7 @@ for (agent, game), df_group in self.df.groupby(["agent_name", "game_name"]):
 
 ### **Level 2: Across All Models, Per Game, Across Episodes (Turn-wise)**
 
-**What it calculates:** `entropy_by_turn_all_agents_[game].png`
+**What it calculates:** `entropy_by_turn_all_models_[game].png`
 
 ```python
 # Groups by: game_name, then by agent_name, then by turn
@@ -69,7 +69,7 @@ for game, df_game in self.df.groupby("game_name"):
 **What it calculates:** `avg_entropy_all_games.png`
 
 ```python
-# Groups by: turn only (all agents, all games combined)
+# Groups by: turn only (all models, all games combined)
 df_all = self.df[~self.df['agent_name'].str.startswith("random")]
 avg_entropy = df_all.groupby("turn")["reasoning_type"]
 ```
@@ -142,15 +142,15 @@ This approach is **comprehensive** because it reveals whether LLMs have **consis
 - **Purpose**: Understand individual agent adaptation patterns
 - **Example**: `plots/entropy_trend_llm_litellm_groq_llama3_8b_8192_tic_tac_toe.png`
 
-### 2. Cross-Agent Entropy Comparison
-- **File**: `plots/entropy_by_turn_all_agents_[game].png`
-- **Shows**: Comparing entropy trends across different agents
+### 2. Cross-Model Entropy Comparison
+- **File**: `plots/entropy_by_turn_all_models_[game].png`
+- **Shows**: Comparing entropy trends across different models
 - **Purpose**: Identify which models are more adaptive
-- **Example**: `plots/entropy_by_turn_all_agents_tic_tac_toe.png`
+- **Example**: `plots/entropy_by_turn_all_models_tic_tac_toe.png`
 
 ### 3. Overall Entropy Trends
 - **File**: `plots/avg_entropy_all_games.png`
-- **Shows**: Average reasoning diversity across all agents and games
+- **Shows**: Average reasoning diversity across all models and games
 - **Purpose**: Global understanding of reasoning evolution
 
 
@@ -222,7 +222,7 @@ End: Lower entropy (focused execution)
 
 ### 3. **Training Insights**
 - Models with good entropy patterns may have better training
-- Can guide development of more adaptive AI agents
+- Can guide development of more adaptive AI models
 
 ### 4. **Behavioral Understanding**
 - Quantify the "intelligence" and "adaptability" of reasoning

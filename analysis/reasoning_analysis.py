@@ -417,7 +417,7 @@ class LLMReasoningAnalyzer:
     def summarize_games(
         self, output_csv: str = "results/game_summary.csv"
     ) -> pd.DataFrame:
-        """Summarize the reasoning data by game and agent."""
+        """Summarize the reasoning data by game and model."""
         # Ensure the results directory exists
         Path(output_csv).parent.mkdir(parents=True, exist_ok=True)
 
@@ -593,14 +593,14 @@ class LLMReasoningAnalyzer:
 
         # Generate visualizations
         # self.plot_reasoning_type_pie_charts(plot_dir)  # DISABLED
-        # self.plot_agent_aggregate_heatmaps(plot_dir)  # DISABLED 
+        # self.plot_agent_aggregate_heatmaps(plot_dir)  # DISABLED
 
-    def plot_heatmaps_by_agent(self, output_dir: str = "plots") -> None:
-        """Plot per-agent heatmaps and one aggregated heatmap across
+    def plot_heatmaps_by_model(self, output_dir: str = "plots") -> None:
+        """Plot per-model heatmaps and one aggregated heatmap across
         all games.
 
-        Individual heatmaps are saved per agent-game pair. This also
-        includes a general heatmap per agent showing all turns merged
+        Individual heatmaps are saved per model-game pair. This also
+        includes a general heatmap per model showing all turns merged
         across all games. Useful for seeing broad reasoning type patterns.
         """
         Path(output_dir).mkdir(parents=True, exist_ok=True)
@@ -628,12 +628,12 @@ class LLMReasoningAnalyzer:
             plt.savefig(out_path)
             plt.close()
 
-    def plot_wordclouds_by_agent(self, output_dir: str = "plots") -> None:
-        """Plot per-agent word clouds and one aggregated word cloud across
+    def plot_wordclouds_by_model(self, output_dir: str = "plots") -> None:
+        """Plot per-model word clouds and one aggregated word cloud across
         all games.
 
-        Word clouds are created per agent-game pair and also aggregated per
-        agent over all games. The full version helps summarize LLM behavior
+        Word clouds are created per model-game pair and also aggregated per
+        model over all games. The full version helps summarize LLM behavior
         globally.
 
         Note: WordCloud import is disabled at module level, so this function
@@ -704,28 +704,28 @@ class LLMReasoningAnalyzer:
             plt.savefig(out_path)
             plt.close()
 
-    def plot_entropy_by_turn_across_agents(self,
+    def plot_entropy_by_turn_across_models(self,
                                            output_dir: str = "plots"
                                            ) -> None:
-        """Plot entropy over turns across all agents per game.
+        """Plot entropy over turns across all models per game.
 
-        This compares how different LLM agents behave during the same game,
-        highlighting agents that adapt their reasoning more flexibly.
+        This compares how different LLM models behave during the same game,
+        highlighting models that adapt their reasoning more flexibly.
         Useful to detect which models generalize or explore more.
         """
         Path(output_dir).mkdir(parents=True, exist_ok=True)
         for game, df_game in self.df.groupby("game_name"):
-            # Count the number of agents to determine figure height
-            agents = [agent for agent in df_game["agent_name"].unique()
+            # Count the number of models to determine figure height
+            models = [agent for agent in df_game["agent_name"].unique()
                       if not agent.startswith("random")]
-            agent_count = len(agents)
+            model_count = len(models)
 
-            # Generate distinct colors and styles for all agents
-            agent_styles = generate_agent_colors_and_styles(agents)
+            # Generate distinct colors and styles for all models
+            agent_styles = generate_agent_colors_and_styles(models)
 
-            # Adjust figure size based on number of agents
+            # Adjust figure size based on number of models
             # Base height of 8, plus significant extra space for legend
-            height = max(10, 8 + (agent_count * 0.5))
+            height = max(10, 8 + (model_count * 0.5))
             plt.figure(figsize=(14, height))
 
             for agent, df_agent in df_game.groupby("agent_name"):
@@ -754,33 +754,33 @@ class LLMReasoningAnalyzer:
                 )
 
             plt.title(
-                f"Entropy by Turn Across Agents - {display_game_name(game)}"
+                f"Entropy by Turn Across Models - {display_game_name(game)}"
             )
             plt.xlabel("Turn")
             plt.ylabel("Entropy")
 
-            # Improve legend layout based on number of agents
-            ncol = min(4, max(2, agent_count // 3))  # More columns
+            # Improve legend layout based on number of models
+            ncol = min(4, max(2, model_count // 3))  # More columns
             plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.12),
                        ncol=ncol, fontsize=9)
             plt.grid(True)
 
             # Adjust layout with much more aggressive bottom margin
-            bottom_margin = 0.25 + (agent_count * 0.025)  # Much more space
+            bottom_margin = 0.25 + (model_count * 0.025)  # Much more space
             plt.subplots_adjust(bottom=bottom_margin)
 
             out_path = os.path.join(
-                output_dir, f"entropy_by_turn_all_agents_{game}.pdf"
+                output_dir, f"entropy_by_turn_all_models_{game}.pdf"
             )
             # Use bbox_inches='tight' to ensure legend is included
             plt.savefig(out_path, bbox_inches='tight', dpi=300)
             plt.close()
 
     def plot_avg_entropy_across_games(self, output_dir: str = "plots") -> None:
-        """Plot average entropy over time across all games and agents.
+        """Plot average entropy over time across all games and models.
 
         This reveals the general trend of reasoning diversity (entropy) per
-        turn for all agents collectively, helping to understand how LLM
+        turn for all models collectively, helping to understand how LLM
         reasoning evolves globally across gameplay.
         """
 
@@ -794,7 +794,7 @@ class LLMReasoningAnalyzer:
             ))
         )
         avg_entropy.plot(marker='o')
-        plt.title("Average Reasoning Entropy Across All Games and Agents")
+        plt.title("Average Reasoning Entropy Across All Games and Models")
         plt.xlabel("Turn")
         plt.ylabel("Entropy")
         plt.grid(True)
@@ -820,13 +820,13 @@ if __name__ == "__main__":
     # Remove limit for full analysis
 
     analyzer.compute_metrics(plot_dir="plots")
-    # analyzer.plot_heatmaps_by_agent(output_dir="plots")
+    # analyzer.plot_heatmaps_by_model(output_dir="plots")
     #   HEATMAP DISABLED
-    # analyzer.plot_wordclouds_by_agent(output_dir="plots")
+    # analyzer.plot_wordclouds_by_model(output_dir="plots")
     #   WORDCLOUD DISABLED
     # analyzer.plot_entropy_trendlines()
-    #   Individual entropy trends per agent-game pair
-    analyzer.plot_entropy_by_turn_across_agents()
+    #   Individual entropy trends per model-game pair
+    analyzer.plot_entropy_by_turn_across_models()
     analyzer.plot_avg_entropy_across_games(output_dir="plots")
 
     # Save augmented output to scripts/results directory

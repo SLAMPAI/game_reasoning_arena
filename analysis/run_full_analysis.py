@@ -310,12 +310,12 @@ class AnalysisPipeline:
                 self.logger.warning("Entropy trend generation failed: %s", e)
             # Additional entropy plots
             try:
-                self.logger.info("Generating entropy by turn across agents...")
-                analyzer.plot_entropy_by_turn_across_agents(
+                self.logger.info("Generating entropy by turn across models...")
+                analyzer.plot_entropy_by_turn_across_models(
                     output_dir=str(self.plots_dir))
             except Exception as e:
                 self.logger.warning(
-                    "plot_entropy_by_turn_across_agents failed: %s", e)
+                    "plot_entropy_by_turn_across_models failed: %s", e)
 
             try:
                 self.logger.info("Generating average entropy across games...")

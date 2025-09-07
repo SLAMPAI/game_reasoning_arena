@@ -3,7 +3,7 @@
 Performance Tables Module
 
 This module generates comprehensive performance tables showing win rates,
-normalized rewards, and other key metrics for LLM agents across games.
+normalized rewards, and other key metrics for LLM models across games.
 Similar to the language-only performance tables in research papers.
 
 Reward Normalization:
@@ -35,7 +35,7 @@ from ui.utils import clean_model_name
 
 def iter_agent_databases() -> Generator[Tuple[str, str, str], None, None]:
     """
-    Yield (db_file, agent_type, model_name) for non-random agents.
+    Yield (db_file, agent_type, model_name) for non-random models.
     Uses the same logic as app.py.
 
     Yields:

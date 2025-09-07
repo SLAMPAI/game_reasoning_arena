@@ -80,7 +80,7 @@ def merge_sqlite_logs(log_dir: str = "results/") -> pd.DataFrame:
 
         conn.close()
 
-    # Merge the same table across all agents
+    # Merge the same table across all models
     if all_moves:
         df_moves = pd.concat(all_moves, ignore_index=True)
     else:
