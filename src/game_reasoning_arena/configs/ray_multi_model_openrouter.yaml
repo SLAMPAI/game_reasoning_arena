@@ -23,7 +23,7 @@ env_configs:
   #   max_game_rounds: 120      # Limited rounds to prevent infinite games
 
 # Parallel execution settings
-num_episodes: 3              # More episodes for better statistics
+num_episodes: 5              # More episodes for better statistics
 seed: 42
 use_ray: true                 # Enable Ray distributed computing
 parallel_episodes: true       # Parallelize episodes within games
