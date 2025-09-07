@@ -34,6 +34,9 @@ The easiest way to get started with analysis is using the automated pipeline:
 * 📁 **Organized output** in game/model-specific directories
 * ⚡ **Error handling** with detailed logging
 
+.. note::
+   For detailed reasoning trace extraction, use the standalone tool: ``python3 analysis/extract_reasoning_traces.py``
+
 Focused Analysis
 -----------------------
 
@@ -45,7 +48,7 @@ Game-Specific Analysis
 .. code-block:: bash
 
    # Focus on specific game strategies
-   python3 analysis/run_full_analysis.py --game hex         
+   python3 analysis/run_full_analysis.py --game hex
 
 
 Model-Specific Analysis
@@ -153,10 +156,10 @@ Board Game Arena automatically captures LLM decision-making processes during gam
 
 .. code-block:: bash
 
-   # View all reasoning traces
-   python3 show_reasoning_traces.py
+   # Extract reasoning traces with filtering (standalone tool)
+   python3 analysis/extract_reasoning_traces.py --db results/llm_model.db
 
-   # Extract specific traces with filtering
+   # Filter by specific game and episode
    python3 analysis/extract_reasoning_traces.py --game tic_tac_toe --episode 1
    python3 analysis/extract_reasoning_traces.py --db results/llm_model.db --analyze-only
 

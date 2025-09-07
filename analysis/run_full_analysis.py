@@ -28,9 +28,14 @@ Features:
     - Automatic data processing and merging
     - Comprehensive reasoning analysis
     - All visualizations generation
+    - Performance tables and statistics
     - Configurable output directories
     - Progress tracking and logging
     - Error handling and recovery
+
+Note:
+    Detailed reasoning trace extraction is available as a separate tool:
+    python analysis/extract_reasoning_traces.py <database_file>
 """
 
 
@@ -437,11 +442,11 @@ class AnalysisPipeline:
             self.logger.error(f"Plot generation failed: {e}")
             return False
 
-    def step_5_generate_performance_tables(self, merged_csv_path: str) -> bool:
-        """Step 5: Generate comprehensive performance tables."""
+    def step_4_generate_performance_tables(self, merged_csv_path: str) -> bool:
+        """Step 4: Generate comprehensive performance tables."""
         step_name = "Performance Tables Generation"
         self.logger.info(f"\n{'='*60}")
-        self.logger.info(f"STEP 5: {step_name}")
+        self.logger.info(f"STEP 4: {step_name}")
         self.logger.info(f"{'='*60}")
 
         try:
@@ -482,76 +487,16 @@ class AnalysisPipeline:
             self.log_step(step_name, "FAILED", str(e))
             return False
 
-    def step_4_extract_reasoning_traces(self) -> bool:
-        """Step 4: Extract and export reasoning traces."""
-        step_name = "Trace Extraction"
-        self.logger.info(f"\n{'='*60}")
-        self.logger.info(f"STEP 4: {step_name}")
-        self.logger.info(f"{'='*60}")
-
-        try:
-            # Find the latest database file (excluding human player data)
-            db_files = list(self.results_dir.glob("*.db"))
-            # Filter out human player databases
-            db_files = [db for db in db_files
-                        if not db.stem.startswith("human")]
-            if not db_files:
-                self.logger.warning(
-                    "No database files found for trace extraction")
-                return True  # Not critical failure
-
-            latest_db = max(db_files, key=lambda x: x.stat().st_mtime)
-
-            # Create reasoning exports directory
-            exports_dir = self.results_dir / "reasoning_exports"
-            exports_dir.mkdir(exist_ok=True)
-
-            # Export reasoning traces to different formats
-            sample_csv = exports_dir / "sample_reasoning_traces.csv"
-            sample_txt = exports_dir / "detailed_reasoning_report.txt"
-
-            # Actually run extraction and export using
-            # extract_reasoning_traces.py functions
-            try:
-                from extract_reasoning_traces import (
-                    extract_reasoning_traces,
-                    export_traces_csv,
-                    export_traces_txt
-                )
-                df = extract_reasoning_traces(str(latest_db))
-                if df is not None:
-                    export_traces_csv(df, str(sample_csv))
-                    export_traces_txt(df, str(sample_txt))
-                    self.logger.info(
-                        "Reasoning trace files generated in %s", exports_dir)
-                    self.pipeline_results["files_generated"].extend(
-                        [str(sample_csv), str(sample_txt)])
-                    self.log_step(
-                        step_name, "COMPLETED",
-                        f"Reasoning traces extracted to {exports_dir}")
-                    return True
-                else:
-                    self.logger.warning("No traces extracted from database.")
-                    self.log_step(
-                        step_name, "FAILED",
-                        "No traces extracted from database."
-                    )
-                    return False
-            except Exception as e:
-                self.logger.error("Trace extraction failed: %s", e)
-                self.log_step(step_name, "FAILED", str(e))
-                return False
-
-        except Exception as e:
-            self.log_step(step_name, "FAILED", str(e))
-            return False
+    # Note: Reasoning trace extraction has been moved to a standalone tool
+    # Use: python analysis/extract_reasoning_traces.py <database_file>
+    # This keeps the main pipeline focused on analysis and visualization
 
     def generate_summary_report(self) -> str:
         """Generate a comprehensive summary report of the analysis."""
         self.pipeline_results["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S")
 
         # Add pipeline statistics
-        total_steps = 5
+        total_steps = 4  # Updated: removed reasoning trace extraction
         completed_steps = len(self.pipeline_results["steps_completed"])
         failed_steps = len(self.pipeline_results["steps_failed"])
 
@@ -611,14 +556,11 @@ class AnalysisPipeline:
         # Step 3: Generate additional plots (continue even if Step 2 failed)
         if merged_csv and not self.step_3_generate_plots(merged_csv):
             self.logger.warning("⚠️  Step 3 (Plot Generation) had issues")
-        # Step 4: Extract sample traces (continue regardless)
-        if not self.step_4_extract_reasoning_traces():
-            self.logger.warning("⚠️  Step 4 (Trace Extraction) had issues")
 
-        # Step 5: Generate performance tables (continue regardless)
-        if merged_csv and not self.step_5_generate_performance_tables(
+        # Step 4: Generate performance tables (continue regardless)
+        if merged_csv and not self.step_4_generate_performance_tables(
                 merged_csv):
-            self.logger.warning("⚠️  Step 5 (Performance Tables) had issues")
+            self.logger.warning("⚠️  Step 4 (Performance Tables) had issues")
 
         # Generate summary report
         self.generate_summary_report()

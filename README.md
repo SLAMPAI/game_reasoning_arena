@@ -529,11 +529,11 @@ Reasoning traces are **automatically collected** during LLM vs LLM or LLM vs Ran
 
 ### Viewing Reasoning Traces
 
-Use the built-in display script to view detailed reasoning traces:
+Use the extraction tool to view detailed reasoning traces:
 
 ```bash
 # Display all reasoning traces from recent games
-python3 show_reasoning_traces.py
+python3 analysis/extract_reasoning_traces.py --db results/llm_model.db
 ```
 
 ### Example Reasoning Trace Output

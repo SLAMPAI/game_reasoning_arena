@@ -61,7 +61,7 @@ Use the built-in display script to examine the collected traces:
 .. code-block:: bash
 
    # Display all reasoning traces from recent games
-   python3 show_reasoning_traces.py
+   python3 analysis/extract_reasoning_traces.py --db results/llm_model.db
 
 This will show detailed output like:
 
@@ -330,7 +330,7 @@ Analysis Workflow
 ~~~~~~~~~~~~~~~~~
 
 1. **Collect Data**: Run games with LLM agents
-2. **Initial Exploration**: Use ``show_reasoning_traces.py`` to understand the data
+2. **Initial Exploration**: Use ``python3 analysis/extract_reasoning_traces.py`` to understand the data
 3. **Pattern Analysis**: Apply reasoning categorization and generate visualizations
 4. **Custom Analysis**: Write specific queries for your research questions
 5. **Validation**: Manually verify automatic categorizations for accuracy

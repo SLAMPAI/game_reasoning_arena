@@ -138,8 +138,8 @@ analyzer.plot_wordclouds_by_agent(output_dir='plots')
 
 ---
 
-#### `extract_reasoning_traces.py` - Data Extraction Tool
-Comprehensive command-line tool for extracting and viewing reasoning traces from SQLite databases.
+#### `extract_reasoning_traces.py` - Data Extraction Tool (Standalone)
+Comprehensive command-line tool for extracting and viewing reasoning traces from SQLite databases. This tool runs independently and is not part of the automated pipeline, allowing for ad-hoc detailed trace inspection.
 
 **Key Features:**
 - **Database Discovery**: Automatically finds available database files
@@ -259,6 +259,11 @@ python3 analysis/run_full_analysis.py --game hex --model llama  # Combined
 4. **Error Handling**: Continues execution even if individual steps fail
 5. **Progress Tracking**: Provides detailed logging and progress updates
 6. **Summary Reporting**: Generates JSON reports with pipeline statistics
+
+**Note:** For detailed reasoning trace extraction, use the standalone tool:
+```bash
+python analysis/extract_reasoning_traces.py --db results/your_database.db
+```
 
 **Generated Output:**
 - `plots/*.png` - All visualization files
