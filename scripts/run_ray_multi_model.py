@@ -302,7 +302,7 @@ def run_analysis_phase() -> bool:
         # Run post-game processing
         env = os.environ.copy()
         env["PYTHONPATH"] = "."
-        
+
         subprocess.run(
             [sys.executable, "analysis/post_game_processing.py"],
             capture_output=True,
