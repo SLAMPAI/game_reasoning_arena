@@ -1,0 +1,773 @@
+🔍 Board Game Arena - Reasoning Traces Extractor
+=======================================================
+
+📊 Reasoning Analysis
+========================================
+Total moves analyzed: 70
+Games: 1
+Episodes: 10
+Moves with reasoning: 0/70 (0.0%)
+Moves with board state: 70/70 (100.0%)
+
+Agent types:
+  - random: 70 moves
+
+Specific models:
+  - None: 70 moves
+
+Games breakdown:
+             Episodes  Total Moves
+game_name                         
+tic_tac_toe        10           70
+
+============================================================
+🎮 Game: tic_tac_toe | Episode: 1
+🤖 Agent: random (None)
+============================================================
+
+🔄 Turn 1:
+📋 Board State:
+   x..
+   ...
+   ...
+🎯 Action: 2
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:46:02.311774
+----------------------------------------
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 1
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:52:29.041043
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   x.o
+   x..
+   ...
+🎯 Action: 1
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:46:07.133363
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   .o.
+   .xx
+   ...
+🎯 Action: 0
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:52:34.090765
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   xoo
+   x..
+   .x.
+🎯 Action: 6
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:46:09.863933
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   oox
+   .xx
+   ...
+🎯 Action: 7
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:52:37.165148
+----------------------------------------
+
+🔄 Turn 7:
+📋 Board State:
+   xoo
+   xx.
+   ox.
+🎯 Action: 5
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:46:12.098285
+----------------------------------------
+
+============================================================
+🎮 Game: tic_tac_toe | Episode: 2
+🤖 Agent: random (None)
+============================================================
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 3
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:46:21.734102
+----------------------------------------
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 3
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:52:40.636898
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   x..
+   ox.
+   ...
+🎯 Action: 2
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:46:24.423901
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   x..
+   ox.
+   ...
+🎯 Action: 2
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:52:43.102939
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   x.o
+   oxx
+   ...
+🎯 Action: 1
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:46:29.513205
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   x.o
+   oxx
+   ...
+🎯 Action: 6
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:52:46.081258
+----------------------------------------
+
+🔄 Turn 7:
+📋 Board State:
+   xoo
+   oxx
+   x..
+🎯 Action: 7
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:46:31.725521
+----------------------------------------
+
+============================================================
+🎮 Game: tic_tac_toe | Episode: 3
+🤖 Agent: random (None)
+============================================================
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 7
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:46:36.621600
+----------------------------------------
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 1
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:52:49.668242
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   x..
+   .x.
+   .o.
+🎯 Action: 1
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:46:39.388512
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   .ox
+   .x.
+   ...
+🎯 Action: 8
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:52:54.254590
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   xox
+   .x.
+   .o.
+🎯 Action: 3
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:46:42.091035
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   xox
+   .x.
+   ..o
+🎯 Action: 3
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:52:58.031411
+----------------------------------------
+
+🔄 Turn 7:
+📋 Board State:
+   xox
+   oxx
+   .o.
+🎯 Action: 6
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:46:43.805549
+----------------------------------------
+
+🔄 Turn 7:
+📋 Board State:
+   xox
+   oxx
+   ..o
+🎯 Action: 7
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:52:59.900394
+----------------------------------------
+
+============================================================
+🎮 Game: tic_tac_toe | Episode: 4
+🤖 Agent: random (None)
+============================================================
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 3
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:46:48.892918
+----------------------------------------
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 0
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:03.205177
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   x..
+   ox.
+   ...
+🎯 Action: 2
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:46:51.284130
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   o..
+   xx.
+   ...
+🎯 Action: 1
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:05.536006
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   x.o
+   oxx
+   ...
+🎯 Action: 1
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:46:53.447711
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   oo.
+   xx.
+   ..x
+🎯 Action: 2
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:07.384107
+----------------------------------------
+
+🔄 Turn 7:
+📋 Board State:
+   xoo
+   oxx
+   x..
+🎯 Action: 7
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:46:55.164012
+----------------------------------------
+
+============================================================
+🎮 Game: tic_tac_toe | Episode: 5
+🤖 Agent: random (None)
+============================================================
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 7
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:00.260618
+----------------------------------------
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 3
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:09.092944
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   x..
+   .x.
+   .o.
+🎯 Action: 2
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:03.731706
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   x..
+   ox.
+   ...
+🎯 Action: 2
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:11.668633
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   xxo
+   .x.
+   .o.
+🎯 Action: 8
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:07.367116
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   x.o
+   oxx
+   ...
+🎯 Action: 1
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:14.488976
+----------------------------------------
+
+🔄 Turn 7:
+📋 Board State:
+   xxo
+   xx.
+   .oo
+🎯 Action: 6
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:09.691471
+----------------------------------------
+
+🔄 Turn 7:
+📋 Board State:
+   xoo
+   oxx
+   x..
+🎯 Action: 7
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:17.186516
+----------------------------------------
+
+============================================================
+🎮 Game: tic_tac_toe | Episode: 6
+🤖 Agent: random (None)
+============================================================
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 0
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:12.002147
+----------------------------------------
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 7
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:19.969109
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   o..
+   xx.
+   ...
+🎯 Action: 2
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:14.761791
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   ...
+   xx.
+   .o.
+🎯 Action: 1
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:22.224553
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   oxo
+   xx.
+   ...
+🎯 Action: 8
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:16.758163
+----------------------------------------
+
+============================================================
+🎮 Game: tic_tac_toe | Episode: 7
+🤖 Agent: random (None)
+============================================================
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 6
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:19.927719
+----------------------------------------
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 8
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:26.024956
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   x..
+   .x.
+   o..
+🎯 Action: 3
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:22.851024
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   ...
+   xx.
+   ..o
+🎯 Action: 6
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:28.554411
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   xx.
+   ox.
+   o..
+🎯 Action: 5
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:27.412354
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   ..x
+   xx.
+   o.o
+🎯 Action: 5
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:30.017807
+----------------------------------------
+
+🔄 Turn 7:
+📋 Board State:
+   .xx
+   xxo
+   o.o
+🎯 Action: 0
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:31.958564
+----------------------------------------
+
+============================================================
+🎮 Game: tic_tac_toe | Episode: 8
+🤖 Agent: random (None)
+============================================================
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 3
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:31.698741
+----------------------------------------
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 2
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:35.584930
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   x..
+   ox.
+   ...
+🎯 Action: 5
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:34.305575
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   ..o
+   .xx
+   ...
+🎯 Action: 8
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:38.401677
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   xx.
+   oxo
+   ...
+🎯 Action: 2
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:38.249854
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   x.o
+   .xx
+   ..o
+🎯 Action: 7
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:40.346699
+----------------------------------------
+
+🔄 Turn 7:
+📋 Board State:
+   xxo
+   oxo
+   x..
+🎯 Action: 7
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:43.553897
+----------------------------------------
+
+============================================================
+🎮 Game: tic_tac_toe | Episode: 9
+🤖 Agent: random (None)
+============================================================
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 7
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:47.581571
+----------------------------------------
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 6
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:44.443943
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   ...
+   .x.
+   xo.
+🎯 Action: 0
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:51.571462
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   x..
+   .x.
+   o..
+🎯 Action: 3
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:47.314694
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   o..
+   xx.
+   xo.
+🎯 Action: 5
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:54.067762
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   xx.
+   ox.
+   o..
+🎯 Action: 5
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:56.221037
+----------------------------------------
+
+🔄 Turn 7:
+📋 Board State:
+   ox.
+   xxo
+   xo.
+🎯 Action: 8
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:47:56.358888
+----------------------------------------
+
+============================================================
+🎮 Game: tic_tac_toe | Episode: 10
+🤖 Agent: random (None)
+============================================================
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 5
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:48:01.393714
+----------------------------------------
+
+🔄 Turn 1:
+📋 Board State:
+   ...
+   .x.
+   ...
+🎯 Action: 3
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:53:59.711453
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   x..
+   .xo
+   ...
+🎯 Action: 1
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:48:03.485975
+----------------------------------------
+
+🔄 Turn 3:
+📋 Board State:
+   x..
+   ox.
+   ...
+🎯 Action: 5
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:54:02.119122
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   xo.
+   xxo
+   ...
+🎯 Action: 8
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:48:05.957157
+----------------------------------------
+
+🔄 Turn 5:
+📋 Board State:
+   xx.
+   oxo
+   ...
+🎯 Action: 2
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:54:04.902916
+----------------------------------------
+
+🔄 Turn 7:
+📋 Board State:
+   xxo
+   oxo
+   x..
+🎯 Action: 7
+🧠 Reasoning: [No reasoning provided]
+⏰ Timestamp: 2025-09-07T13:54:06.572498
+----------------------------------------
+
+✨ Extraction complete! Found 70 reasoning traces.

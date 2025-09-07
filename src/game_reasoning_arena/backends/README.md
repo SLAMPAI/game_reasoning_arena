@@ -1,310 +1,256 @@
-# LLM Inference Backends
+# LLM Backends
 
-This package provides a unified interface for LLM inference with multiple backends.
+This directory contains the backend implementations for different LLM providers and the unified model management system.
 
-**Model Naming Convention:**
-- LiteLLM models: `litellm_<model_name>` (e.g., `litellm_gpt-4`)
-- vLLM models: `vllm_<model_name>` (e.g., `vllm_Qwen2-7B-Instruct`)
+## Overview
 
-This prefix-based naming allows **automatic backend selection** and enables **multi-provider configurations** where different models use different backends within the same simulation.
+The Game Reasoning Arena supports multiple LLM backends with automatic routing based on model name prefixes:
 
-**Example: Multiple Providers in One Simulation**
-```json
-{
-  "agents": {
-    "player_0": {"type": "llm", "model": "litellm_groq/llama3-8b-8192"},
-    "player_1": {"type": "llm", "model": "litellm_openai/gpt-4"},
-    "player_2": {"type": "llm", "model": "vllm_Qwen2-7B-Instruct"}
-  }
-}
+- **OpenRouter**: Access to 300+ models via unified API (`openrouter_*`)
+- **LiteLLM**: Integration with 100+ providers (`litellm_*`)
+- **vLLM**: Local GPU inference (`vllm_*`)
+- **HuggingFace**: Direct transformers access (`hf_*`)
+
+## Backend Files
+
+- `base_backend.py` - Abstract base class for all backends
+- `openrouter_backend.py` - OpenRouter API integration with credit management
+- `litellm_backend.py` - LiteLLM provider integration
+- `vllm_backend.py` - Local vLLM inference
+- `huggingface_backend.py` - HuggingFace Transformers integration
+- `llm_registry.py` - Central model registry with automatic backend detection
+- `backend_config.py` - Configuration and API key management
+
+## 🔍 Model Validation
+
+Before running expensive multi-model experiments, use the model validator to check OpenRouter credits and ensure models are accessible.
+
+### Usage Examples
+
+```bash
+# Validate specific models
+python3 scripts/utils/model_validator.py --models litellm_groq/llama-3.1-8b-instant openrouter_openai/gpt-4o-mini
+
+# Validate from config file
+python3 scripts/utils/model_validator.py --config path/to/config.yaml
+
+# The runner scripts now automatically validate before starting:
+python3 scripts/run_ray_multi_model.py --config config.yaml
 ```
 
-## 🏗️ Architecture
+### What the Validator Checks
 
-```
-src/backends/
-├── __init__.py           # Main package interface
-├── base_backend.py       # Abstract base class for backends
-├── litellm_backend.py    # LiteLLM API backend
-├── vllm_backend.py       # vLLM local GPU backend
-├── llm_registry.py       # Central model registry
-├── config.py             # Configuration management
-├── example.py            # Usage example
-└── README.md             # This file
-```
+- **OpenRouter models**: API key existence and credit balance (shows warnings for low credits)
+- **Other models** (LiteLLM, vLLM, HuggingFace): Assumes valid (no detailed validation)
+
+### Credit Warnings
+
+The validator will warn you about:
+- Balance < $1.00: "Low balance" warning
+- Balance < $5.00: "Balance warning"
+- No API key: Validation failure
+
+### Pre-run Integration
+
+The validation is automatically integrated into runner scripts:
+
+1. **Ray Multi-Model Runner** (`scripts/run_ray_multi_model.py`)
+2. **Sequential Multi-Model Runner** (`scripts/run_multi_model_games.py`)
+
+The runners will:
+- ✅ Check OpenRouter credits before starting expensive experiments
+- ✅ Show credit balance and warnings
+- ❌ Fail fast if OpenRouter has no API key or insufficient access
+- ✅ Assume non-OpenRouter models are valid (no time wasted on complex validation)
 
 ## 🚀 Quick Start
 
 ```python
-import os
-from src.backends import initialize_llm_registry, generate_response
+from game_reasoning_arena.backends.llm_registry import generate_response
 
-# Set your preferred backend
-# No need to set INFERENCE_BACKEND - automatic detection based on model prefix
-
-# Initialize the system
-initialize_llm_registry()
-
-# Generate a response
+# Models are automatically routed to the correct backend
 response = generate_response(
-    model_name="litellm_gpt-3.5-turbo",
-    prompt="Hello, world!",
-    max_tokens=50,
+    model_name="openrouter_openai/gpt-4o-mini",
+    prompt="Explain the rules of tic-tac-toe",
+    max_tokens=200,
     temperature=0.1
 )
-print(response)
 ```
 
-## 1. LiteLLM (API-based) - Default
-**Recommended for most users**
+## Environment Setup
 
-- **Easy setup** - No GPU management needed
-- **Multiple providers** - OpenAI, Anthropic, Cohere, etc.
-- **No local storage** - Models hosted by providers
-- **Consistent API** - Same interface for all models
+Create a `.env` file in the project root:
 
-### Configuration
-Models are configured in `src/configs/litellm_models.json`:
-```json
-{
-  "models": [
-    "litellm_gpt-4",
-    "litellm_gpt-3.5-turbo",
-    "litellm_groq/llama3-8b-8192",
-    "litellm_together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"
-  ]
-}
-```
-
-### Usage
 ```bash
-# Default - automatic backend selection based on model prefixes
-python scripts/runner.py
+# OpenRouter (recommended - single API key for 300+ models)
+OPENROUTER_API_KEY=sk-or-v1-your-key-here
+
+# LiteLLM providers (optional - for direct provider access)
+OPENAI_API_KEY=sk-your-openai-key
+ANTHROPIC_API_KEY=sk-ant-your-key
+GROQ_API_KEY=gsk-your-groq-key
+TOGETHER_API_KEY=your-together-key
+FIREWORKS_API_KEY=fw-your-fireworks-key
+GEMINI_API_KEY=your-gemini-key
+MISTRAL_API_KEY=your-mistral-key
 ```
 
-## 2. vLLM (Local GPU) - Advanced
-**For users with local GPUs and models**
+## Backend Details
 
-- **Advanced setup** - Requires GPU configuration
-- **High performance** - Direct GPU inference
-- **Local models** - Full control over model files
-- **Customizable** - Fine-tune inference parameters
+### 1. OpenRouter Backend (Recommended)
+**Single API key, 300+ models, unified billing**
 
-### Prerequisites
-```bash
-# Install vLLM (requires CUDA)
-pip install vllm
+**Features:**
+- Access to OpenAI, Anthropic, Google, Meta, Mistral, and more
+- Competitive pricing with load balancing
+- Credit management with automatic warnings
+- Consistent API across all providers
 
-# Ensure models are downloaded locally
-```
-
-### Configuration
-Models are configured in `src/configs/vllm_models.yaml` with absolute paths to model directories:
-
+**Configuration:** `../configs/openrouter_models.yaml`
 ```yaml
 models:
-  - name: vllm_Qwen2-7B-Instruct
-    model_path: /path/to/models/Qwen/Qwen2-7B-Instruct
-    tokenizer_path: /path/to/models/Qwen/Qwen2-7B-Instruct  # Optional
-    description: Qwen2 7B Instruct model for local inference
 
-  - name: vllm_custom-model
-    model_path: /absolute/path/to/custom-model
-    description: Custom model
 ```
 
-**Configuration fields:**
-- `name`: Model identifier with `vllm_` prefix for automatic backend detection
-- `model_path`: **Absolute path** to model files (required)
-- `tokenizer_path`: **Absolute path** to tokenizer files (optional, defaults to model_path)
-- `description`: Human-readable description (optional)
+### 2. LiteLLM Backend
+**Direct provider access with individual API keys**
 
-### Usage
-```bash
-# Use vLLM models with automatic detection
-python scripts/runner.py --config config_with_vllm_models.json
-```
+**Features:**
+- Direct access to provider APIs
+- Fine-grained control over API settings
+- Support for provider-specific features
 
-## Environment Variables
+**Configuration:** `../configs/litellm_models.yaml`
 
-| Variable | Values | Default | Description |
-|----------|--------|---------|-------------|
-| `MAX_TOKENS` | Integer | `250` | Maximum tokens per response |
-| `TEMPERATURE` | Float 0.0-1.0 | `0.1` | Sampling temperature |
+### 3. vLLM Backend (Advanced)
+**Local GPU inference for self-hosted models**
 
-## Multi-Provider Configuration
-The system automatically uses both backends based on model prefixes:
-- Models starting with `litellm_` use the LiteLLM backend
-- Models starting with `vllm_` use the vLLM backend
+**Features:**
+- Complete control over model deployment
+- GPU-optimized inference
+- Privacy (no data leaves your infrastructure)
+- Cost control for heavy usage
 
-This allows you to mix multiple inference providers in the same configuration.
+**Requirements:**
+- NVIDIA GPU with CUDA support
+- Local model files
+- vLLM package installation
 
-## Adding New Providers and Models
-
-### Adding a New API Provider
-You can add new API providers in two ways:
-
-#### Method 1: Configuration File (Recommended)
-Edit `src/game_reasoning_arena/configs/api_providers.yaml`:
-
-```yaml
-providers:
-  # Existing providers...
-
-  # Add your new provider
-  my_custom_ai:
-    api_key_env: "MY_CUSTOM_AI_API_KEY"
-    description: "My Custom AI Provider"
-```
-
-Then set the environment variable:
-```bash
-export MY_CUSTOM_AI_API_KEY="your_api_key_here"
-```
-
-#### Method 2: Runtime Registration
-Add providers programmatically in your code:
-
-```python
-from game_reasoning_arena.backends.backend_config import config
-
-# Add a new provider at runtime
-config.add_provider(
-    provider_name="custom_ai",
-    api_key_env="CUSTOM_AI_API_KEY",
-    description="Custom AI Provider"
-)
-
-# Now you can use it
-api_key = config.get_api_key("custom_ai")
-```
-
-### Adding Models to LiteLLM Backend
-
-To add new LiteLLM models, edit `src/game_reasoning_arena/configs/litellm_models.yaml`:
-
+**Configuration:** `../configs/vllm_models.yaml`
 ```yaml
 models:
-  # Add new models with the litellm_ prefix
-  - litellm_my_custom_ai/my-model-v1
+  - name: vllm_llama-2-7b-chat
 ```
 
-### Adding Models to vLLM Backend
+### 4. HuggingFace Backend
+**Direct access to HuggingFace Transformers**
 
-To add new vLLM models, edit `src/game_reasoning_arena/configs/vllm_models.yaml`:
+**Features:**
+- No API keys required
+- Automatic model downloading
+- Good for experimentation
 
-```yaml
-models:
-  # Existing models...
+**Supported models:** `hf_gpt2`, `hf_distilgpt2`, etc.
 
-  # Add new models with absolute paths
-  - name: vllm_custom-model-7b
-    model_path: /home/user/models/custom-models/my-model-7b
-    description: My custom 7B model
+## Model Naming Convention
 
-  - name: vllm_Llama-2-13b-chat-hf
-    model_path: /home/user/models/meta-llama/Llama-2-13b-chat-hf
-    description: Llama2 13B Chat model
-```
-
-**Important for vLLM models**: Unlike API-based models, vLLM requires the actual model files to be downloaded and stored locally on your machine.
-
-#### Setting up Local Models
-
-1. **Choose a directory** for storing your models:
-```bash
-mkdir -p /home/user/models
-cd /home/user/models
-```
-
-2. **Download models using huggingface-hub**:
-```bash
-pip install huggingface-hub
-
-# Example: Download Llama-2-7b-chat-hf
-python -c "from huggingface_hub import snapshot_download; snapshot_download('meta-llama/Llama-2-7b-chat-hf', local_dir='./meta-llama/Llama-2-7b-chat-hf')"
-```
-
-3. **Update your configuration with the absolute paths**:
-```yaml
-models:
-  - name: vllm_Llama-2-7b-chat-hf
-    model_path: /home/user/models/meta-llama/Llama-2-7b-chat-hf
-    description: Llama2 7B Chat model
-```### Environment Variables for New Providers
-
-4. After adding a provider, set the corresponding environment variable:
+All models use prefixes for automatic backend routing:
 
 ```bash
-# In your .env file
-CUSTOM_AI_API_KEY="your_key_here""
+openrouter_<provider>/<model>    # → OpenRouter backend
+litellm_<provider>/<model>       # → LiteLLM backend
+vllm_<model>                     # → vLLM backend
+hf_<model>                       # → HuggingFace backend
 ```
 
-### Verifying New Providers
-You can check what providers are supported:
+**Examples:**
+- `openrouter_openai/gpt-4o` → OpenRouter backend
+- `litellm_groq/llama-3.1-8b-instant` → LiteLLM backend
+- `vllm_llama-2-7b-chat` → vLLM backend
+- `hf_gpt2` → HuggingFace backend
 
-```python
-from game_reasoning_arena.backends.backend_config import config
+## Multi-Backend Configuration
 
-# List all supported providers
-providers = config.get_supported_providers()
-print(f"Supported providers: {providers}")
-```
+You can mix backends in the same experiment:
 
-### Model Naming Best Practices
-
-- **LiteLLM models**: Always prefix with `litellm_`
-  - Format: `litellm_<provider>/<model_name>`
-  - Examples: `litellm_openai/gpt-4`, `litellm_groq/llama3-8b-8192`
-
-- **vLLM models**: Always prefix with `vllm_`
-  - Format: `vllm_<model_name>`
-  - Examples: `vllm_Llama-2-7b-chat-hf`, `vllm_Qwen2-7B-Instruct`
-
-### Complete Example: Adding a New Provider
-
-1. **Add to configuration** (`configs/api_providers.yaml`):
-```yaml
-providers:
-  perplexity:
-    api_key_env: "PERPLEXITY_API_KEY"
-    description: "Perplexity AI API"
-```
-
-2. **Add models** (`configs/litellm_models.yaml`):
-```yaml
-models:
-  - litellm_perplexity/llama-3.1-sonar-small-128k-online
-  - litellm_perplexity/llama-3.1-sonar-large-128k-online
-```
-
-3. **Set environment variable**:
-```bash
-export PERPLEXITY_API_KEY="pplx-your-api-key"
-```
-
-4. **Use in your configuration**:
 ```yaml
 agents:
   player_0:
-    type: "llm"
-    model: "litellm_perplexity/llama-3.1-sonar-small-128k-online"
+    type: llm
+    model: openrouter_anthropic/claude-3.5-sonnet  # OpenRouter
+  player_1:
+    type: llm
+    model: litellm_groq/llama-3.1-8b-instant       # LiteLLM
+  player_2:
+    type: llm
+    model: vllm_llama-2-7b-chat                    # Local vLLM
 ```
 
-### Configuration Files
-- `configs/api_providers.yaml` - API provider settings
-- `configs/litellm_models.yaml` - Available LiteLLM models
-- `configs/vllm_models.yaml` - Available vLLM models
+## Configuration Files
 
+- `openrouter_models.yaml` - Available OpenRouter models
+- `litellm_models.yaml` - Available LiteLLM models
+- `vllm_models.yaml` - Local vLLM model configurations
+
+## Adding New Models
+
+### OpenRouter Models
+Edit `../configs/openrouter_models.yaml` and add the model:
+```yaml
+models:
+  - openrouter_provider/new-model-name
+```
+
+### LiteLLM Models
+Edit `../configs/litellm_models.yaml` and add the model:
+```yaml
+models:
+  - litellm_provider/new-model-name
+```
+
+Set the provider's API key in `.env`:
+```bash
+PROVIDER_API_KEY=your-key-here
+```
+
+### vLLM Models
+1. Download the model locally
+2. Edit `../configs/vllm_models.yaml`:
+```yaml
+models:
+  - name: vllm_new-model
+    model_path: /absolute/path/to/model
+    description: Description of the model
+```
 
 ## Troubleshooting
 
+### OpenRouter Issues
+- Check `OPENROUTER_API_KEY` is set in `.env`
+- Use the validator to check credits: `python3 scripts/utils/model_validator.py --models openrouter_openai/gpt-4o-mini`
+- Verify model names match the configuration
+
 ### LiteLLM Issues
-- Ensure API keys are set (OPENAI_API_KEY, ANTHROPIC_API_KEY, etc.)
+- Ensure provider API keys are set (e.g., `GROQ_API_KEY`, `TOGETHER_API_KEY`)
 - Check model names match provider documentation
+- Verify the model is listed in `litellm_models.yaml`
 
 ### vLLM Issues
 - Ensure CUDA is properly installed
 - Check GPU memory availability
-- Verify model files exist at the specified absolute paths
-- Try reducing `gpu_memory_utilization` in config
+- Verify model files exist at the specified paths
+- Check that vLLM package is installed: `pip install vllm`
+
+### General Issues
+- Ensure the `.env` file is in the project root
+- Check that model names use the correct prefixes
+- Use the model validator to diagnose issues
+
+## Development
+
+To extend the backend system:
+
+1. **Create a new backend class** inheriting from `BaseLLMBackend`
+2. **Implement required methods**: `generate_response()`, `is_model_available()`, `get_available_models()`
+3. **Add backend detection** in `llm_registry.py`
+4. **Update configuration files** as needed

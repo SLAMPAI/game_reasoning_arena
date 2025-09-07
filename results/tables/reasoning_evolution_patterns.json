@@ -1,0 +1,54 @@
+{
+  "models": {
+    "llm_openrouter_openai_gpt_4o_mini": {
+      "games": {
+        "tic_tac_toe": {
+          "turns_analyzed": [
+            0,
+            2,
+            4,
+            6,
+            8
+          ],
+          "dominant_by_turn": {
+            "0": {
+              "category": "Rule-Based",
+              "proportion": 0.55,
+              "count": 11,
+              "total": 20
+            },
+            "2": {
+              "category": "Blocking",
+              "proportion": 0.5,
+              "count": 10,
+              "total": 20
+            },
+            "4": {
+              "category": "Blocking",
+              "proportion": 0.45,
+              "count": 9,
+              "total": 20
+            },
+            "6": {
+              "category": "Winning Logic",
+              "proportion": 0.3888888888888889,
+              "count": 7,
+              "total": 18
+            },
+            "8": {
+              "category": "Positional",
+              "proportion": 0.8,
+              "count": 8,
+              "total": 10
+            }
+          },
+          "pattern": "Evolution: Rule-Based \u2192 ... \u2192 Positional (progresses through 4 categories)"
+        }
+      }
+    }
+  },
+  "summary": {
+    "total_models": 1,
+    "evolution_patterns": []
+  }
+}

@@ -1,0 +1,46 @@
+# Available OpenRouter models
+# These models are accessible via OpenRouter's unified API
+# Documentation: https://openrouter.ai/models
+# Verified against OpenRouter API on 2025-09-07
+
+models:
+  # OpenAI models via OpenRouter
+  - openrouter_openai/gpt-3.5-turbo
+  - openrouter_openai/gpt-4
+  - openrouter_openai/gpt-4-turbo
+  - openrouter_openai/gpt-4o
+  - openrouter_openai/gpt-4o-mini
+
+  # Anthropic models via OpenRouter
+  - openrouter_anthropic/claude-3-haiku
+  - openrouter_anthropic/claude-3-opus
+  - openrouter_anthropic/claude-3.5-sonnet
+
+  # Google models via OpenRouter
+  - openrouter_google/gemini-2.0-flash-001
+  - openrouter_google/gemini-2.5-flash
+  - openrouter_google/gemini-2.5-pro
+  - openrouter_google/gemini-flash-1.5
+  - openrouter_google/gemini-flash-1.5-8b
+  - openrouter_google/gemini-pro-1.5
+  - openrouter_google/gemma-2-9b-it
+  - openrouter_google/gemma-2-27b-it
+
+  # Meta models via OpenRouter
+  - openrouter_meta-llama/llama-3.1-8b-instruct
+  - openrouter_meta-llama/llama-3.1-70b-instruct
+  - openrouter_meta-llama/llama-3.1-405b-instruct
+  - openrouter_meta-llama/llama-3.2-3b-instruct
+  - openrouter_meta-llama/llama-3.2-11b-vision-instruct
+  - openrouter_meta-llama/llama-3.2-90b-vision-instruct
+
+  # Mistral models via OpenRouter
+  - openrouter_mistralai/mistral-7b-instruct
+  - openrouter_mistralai/mixtral-8x7b-instruct
+  - openrouter_mistralai/mixtral-8x22b-instruct
+
+  # Other verified models via OpenRouter
+  - openrouter_microsoft/wizardlm-2-8x22b
+  - openrouter_qwen/qwen3-max
+  - openrouter_cohere/command-r
+  - openrouter_cohere/command-r-plus

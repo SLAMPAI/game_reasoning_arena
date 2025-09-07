@@ -59,6 +59,14 @@ from game_reasoning_arena.configs.config_parser import (  # noqa: E402
     parse_config
 )
 
+# Import model validation utility
+try:
+    from utils.model_validator import validate_models_and_credits
+    MODEL_VALIDATOR_AVAILABLE = True
+except ImportError:
+    MODEL_VALIDATOR_AVAILABLE = False
+    print("⚠️  Model validator not available - skipping pre-validation")
+
 
 @ray.remote
 def run_single_model_all_games(
@@ -292,12 +300,16 @@ def run_analysis_phase() -> bool:
 
     try:
         # Run post-game processing
+        env = os.environ.copy()
+        env["PYTHONPATH"] = "."
+        
         subprocess.run(
             [sys.executable, "analysis/post_game_processing.py"],
             capture_output=True,
             text=True,
             timeout=300,
-            check=True
+            check=True,
+            env=env
         )
         print("✅ Post-game processing completed")
 
@@ -307,7 +319,8 @@ def run_analysis_phase() -> bool:
             capture_output=True,
             text=True,
             timeout=600,
-            check=True
+            check=True,
+            env=env
         )
         print("✅ Full analysis pipeline completed")
 
@@ -337,7 +350,29 @@ def main():
     # Extract configuration information
     models, num_games, num_episodes = extract_config_info(config)
 
-    print("📊 Execution Plan:")
+    # Validate models and check credits before running
+    if MODEL_VALIDATOR_AVAILABLE:
+        print("\n🔍 PRE-RUN VALIDATION")
+        print("=" * 50)
+        validation_result = validate_models_and_credits(models)
+
+        if not validation_result["all_valid"]:
+            print("\n❌ VALIDATION FAILED!")
+            print("Fix the above issues before running expensive experiments.")
+            print("This prevents wasted time and API costs.")
+            return
+
+        # Show credit warnings if any
+        if validation_result["summary"]["credits_warnings"]:
+            print("\n⚠️  Proceeding with credit warnings.")
+            print("Monitor your usage during the experiment.")
+
+        print("\n✅ Pre-validation passed! Starting experiments...")
+
+    else:
+        print("\n⚠️  Skipping pre-validation (validator not available)")
+
+    print("\n📊 Execution Plan:")
     print(
         f"   Models: {len(models)} "
         f"({', '.join([m.split('/')[-1] for m in models])})"
@@ -413,9 +448,6 @@ def main():
             print("Check 'plots/' and 'results/' directories")
         else:
             print("\n⚠️  Analysis had issues, but model runs completed")
-
-    print("\n🎉 RAY PARALLEL EXECUTION COMPLETE! 🎉")
-    print("Effective parallelization: Models + Games + Episodes")
 
 
 if __name__ == "__main__":

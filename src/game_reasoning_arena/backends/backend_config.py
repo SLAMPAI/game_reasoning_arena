@@ -24,6 +24,11 @@ class BackendConfig:
             str(config_dir / "vllm_models.yaml")
         )
 
+        self.openrouter_config = os.getenv(
+            "OPENROUTER_CONFIG_FILE",
+            str(config_dir / "openrouter_models.yaml")
+        )
+
         # Backend selection
         self.inference_backend = os.getenv("INFERENCE_BACKEND", "litellm")
 
@@ -55,7 +60,7 @@ class BackendConfig:
 
     def validate(self) -> bool:
         """Validate the configuration."""
-        valid_backends = ["litellm", "vllm", "hybrid"]
+        valid_backends = ["litellm", "vllm", "hybrid", "openrouter"]
         if self.inference_backend not in valid_backends:
             raise ValueError(f"Invalid backend: {self.inference_backend}. "
                              f"Must be one of {valid_backends}")

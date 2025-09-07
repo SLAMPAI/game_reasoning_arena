@@ -74,6 +74,14 @@ from game_reasoning_arena.configs.config_parser import (  # noqa: E402
     parse_config
 )
 
+# Import model validation utility
+try:
+    from utils.model_validator import validate_models_and_credits
+    MODEL_VALIDATOR_AVAILABLE = True
+except ImportError:
+    MODEL_VALIDATOR_AVAILABLE = False
+    print("⚠️  Model validator not available - skipping pre-validation")
+
 
 def load_config_vars(config):
     """Extract games, models, num_episodes from parsed config."""
@@ -200,6 +208,30 @@ def main():
     games, models, num_episodes = load_config_vars(config)
 
     print("🎮 Multi-Model Game Reasoning Arena Runner")
+
+    # Validate models and check credits before running
+    if MODEL_VALIDATOR_AVAILABLE:
+        print("\n🔍 PRE-RUN VALIDATION")
+        print("=" * 50)
+        validation_result = validate_models_and_credits(models)
+
+        if not validation_result["all_valid"]:
+            print("\n❌ VALIDATION FAILED!")
+            print("Fix the above issues before running expensive experiments.")
+            print("This prevents wasted time and API costs.")
+            return
+
+        # Show credit warnings if any
+        if validation_result["summary"]["credits_warnings"]:
+            print("\n⚠️  Proceeding with credit warnings.")
+            print("Monitor your usage during the experiment.")
+
+        print("\n✅ Pre-validation passed! Starting experiments...")
+
+    else:
+        print("\n⚠️  Skipping pre-validation (validator not available)")
+
+    print("\n📊 Execution Plan:")
     print(f"Games: {', '.join(games)}")
     print(f"Models: {', '.join([m.split('/')[-1] for m in models])}")
     print(f"Episodes per game: {num_episodes}")

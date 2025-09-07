@@ -1,0 +1,83 @@
+# Ray-Optimized Multi-Model Configuration - OpenRouter Edition
+# This config is designed for maximum parallel throughput using Ray with OpenRouter models
+#
+# Usage:
+# python3 scripts/run_ray_multi_model.py --config src/game_reasoning_arena/configs/ray_multi_model_openrouter.yaml
+
+# Games to run (including longer games with Ray parallelization)
+# Use env_configs (plural) for multiple games as a list
+env_configs:
+   - game_name: tic_tac_toe
+     max_game_rounds: null
+  # - game_name: kuhn_poker
+  #   max_game_rounds: null
+  # - game_name: matrix_rps
+  #   max_game_rounds: 10
+  # - game_name: matrix_pd
+  #   max_game_rounds: 10
+  # - game_name: matching_pennies
+  #   max_game_rounds: 10
+  # - game_name: connect_four
+  #   max_game_rounds: null
+  # - game_name: hex
+  #   max_game_rounds: 120      # Limited rounds to prevent infinite games
+
+# Parallel execution settings
+num_episodes: 3              # More episodes for better statistics
+seed: 42
+use_ray: true                 # Enable Ray distributed computing
+parallel_episodes: true       # Parallelize episodes within games
+mode: llm_vs_random
+
+# OpenRouter Models - Verified and tested with credits
+models:
+  # OpenAI models via OpenRouter (reliable, fast)
+  - openrouter_openai/gpt-4o-mini        # Cost-effective, fast
+  # - openrouter_openai/gpt-4o             # High quality
+  # - openrouter_openai/gpt-3.5-turbo      # Fast, economical
+
+  # # Anthropic models via OpenRouter (excellent reasoning)
+  # - openrouter_anthropic/claude-3-haiku-20240307     # Fast, cost-effective
+  # - openrouter_anthropic/claude-3.5-sonnet-20241022  # High quality reasoning
+
+  # # Meta Llama models via OpenRouter (open source, good performance)
+  # - openrouter_meta-llama/llama-3.1-8b-instruct      # Fast, efficient
+  # - openrouter_meta-llama/llama-3.1-70b-instruct     # High quality, slower
+
+  # # Google models via OpenRouter (competitive performance)
+  # - openrouter_google/gemini-2.0-flash-exp           # Latest Gemini
+  # - openrouter_google/gemma-2-9b-it                  # Fast, lightweight
+
+  # # Other competitive models
+  # - openrouter_qwen/qwen-2.5-72b-instruct           # Strong reasoning
+  # - openrouter_mistralai/mistral-7b-instruct        # Fast, efficient
+
+# Agent configuration
+agents:
+  player_0:
+    type: llm
+    model: openrouter_openai/gpt-4o-mini  # Default (will be overridden per model)
+  player_1:
+    type: random
+
+# Ray configuration optimized for multi-model parallel execution
+ray_config:
+  # num_cpus: auto-detected by Ray (recommended)
+  # object_store_memory: auto-detected by Ray (recommended)
+  include_dashboard: false              # Disable for headless operation
+
+# LLM settings optimized for speed and cost-effectiveness
+llm_backend:
+  max_tokens: 100                       # Reduced for faster responses and lower costs
+  temperature: 0.1                      # Low temperature for consistency
+  default_model: openrouter_openai/gpt-4o-mini
+
+# Logging optimized for parallel execution
+log_level: ERROR # WARNING          # Minimal logging to reduce overhead
+tensorboard_logging: false             # Disabled for performance during parallel runs
+
+# OpenRouter specific settings
+# Note: This configuration assumes you have:
+# 1. Set up your OPENROUTER_API_KEY in .env file
+# 2. Sufficient credits in your OpenRouter account
+# 3. Run validation first: python3 scripts/utils/model_validator.py --config <this-config>

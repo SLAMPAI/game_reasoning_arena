@@ -1,0 +1,86 @@
+# Config for running multiple games with multiple OpenRouter models
+# Example command to run:
+# python3 scripts/run_multi_model_games.py --config src/game_reasoning_arena/configs/multi_game_multi_model_openrouter.yaml
+
+# Make sure to set your OpenRouter API key:
+# export OPENROUTER_API_KEY="your_openrouter_api_key_here"
+
+# Use env_configs (plural) for multiple games as a list
+env_configs:
+  - game_name: kuhn_poker
+    max_game_rounds: null
+  - game_name: connect_four
+    max_game_rounds: null
+  - game_name: tic_tac_toe
+    max_game_rounds: null
+  - game_name: matrix_rps
+    max_game_rounds: 10
+  - game_name: matrix_pd
+    max_game_rounds: 10
+  - game_name: matching_pennies
+    max_game_rounds: 10
+  - game_name: hex  # takes time, consider running standalone
+    max_game_rounds: 120      # Limit HEX games to 120 to prevent infinite loops
+
+num_episodes: 1
+seed: 42
+use_ray: false
+parallel_episodes: true     # Parallelize episodes within games
+mode: llm_vs_random
+
+# OpenRouter models - curated selection for good performance/cost balance
+models:
+  # Fast and cost-effective models
+  - openrouter_openai/gpt-3.5-turbo           # Fast, reliable
+  - openrouter_openai/gpt-4o-mini             # Very fast, cheap
+  - openrouter_google/gemini-flash-1.5        # Fast Google model
+  - openrouter_google/gemma-2-9b-it           # Fast, open-source
+
+  # High-performance models (slower/more expensive)
+  - openrouter_openai/gpt-4o                  # High quality
+  - openrouter_anthropic/claude-3-haiku       # Fast Claude
+  - openrouter_anthropic/claude-3.5-sonnet    # High quality Claude
+  - openrouter_google/gemini-2.5-flash        # Latest Google
+
+  # Open-source large models
+  - openrouter_meta-llama/llama-3.1-8b-instruct   # Fast Llama
+  - openrouter_meta-llama/llama-3.1-70b-instruct  # High quality Llama
+  - openrouter_mistralai/mistral-7b-instruct      # Efficient Mistral
+  - openrouter_mistralai/mixtral-8x7b-instruct    # High quality Mistral
+
+  # Specialized models
+  - openrouter_cohere/command-r                    # Good reasoning
+  - openrouter_qwen/qwen3-max                      # Latest Qwen
+
+# Alternative model sets for different use cases:
+
+# Budget-focused models (uncomment to use):
+# models:
+#   - openrouter_openai/gpt-3.5-turbo
+#   - openrouter_openai/gpt-4o-mini
+#   - openrouter_google/gemma-2-9b-it
+#   - openrouter_meta-llama/llama-3.1-8b-instruct
+#   - openrouter_mistralai/mistral-7b-instruct
+
+# Premium models only (uncomment to use):
+# models:
+#   - openrouter_openai/gpt-4o
+#   - openrouter_anthropic/claude-3.5-sonnet
+#   - openrouter_google/gemini-2.5-pro
+#   - openrouter_meta-llama/llama-3.1-405b-instruct
+
+
+agents:
+  player_0:
+    type: llm
+    model: openrouter_openai/gpt-3.5-turbo  # Default (will be overridden per model)
+  player_1:
+    type: random
+
+llm_backend:
+  max_tokens: 150           # Reduced for faster responses
+  temperature: 0.1          # Low temperature for consistent reasoning
+  default_model: openrouter_openai/gpt-3.5-turbo
+
+log_level: WARNING          # Reduced logging for speed
+tensorboard_logging: false # Disabled by default for performance

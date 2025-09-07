@@ -19,6 +19,7 @@ from .llm_registry import (
 from .litellm_backend import LiteLLMBackend
 from .vllm_backend import VLLMBackend
 from .huggingface_backend import HuggingFaceBackend
+from .openrouter_backend import OpenRouterBackend
 from .base_backend import BaseLLMBackend
 
 __all__ = [
@@ -33,5 +34,6 @@ __all__ = [
     "LiteLLMBackend",
     "VLLMBackend",
     "HuggingFaceBackend",
+    "OpenRouterBackend",
     "BaseLLMBackend"
 ]

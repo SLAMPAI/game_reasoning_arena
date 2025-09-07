@@ -1,0 +1,2 @@
+total_moves,avg_reasoning_length,%_opponent_mentions,reasoning_diversity,reasoning_entropy,agent_name,game_name
+88,80.25,0.32954545454545453,7,2.506029445859033,llm_openrouter_openai_gpt_4o_mini,tic_tac_toe
