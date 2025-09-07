@@ -3,9 +3,13 @@ inspect_game.py
 
 Used to retrieve the player's symbols (checkers) used in OpenSpiel games
 by playing one move per player and visualizing the board.
+
+Useful to understand how the game is represented in OpenSpiel.
+and create the prompts for LLMs.
 """
 
 import pyspiel
+
 
 def inspect_game(game_name: str):
     print("=" * 60)
@@ -30,7 +34,10 @@ def inspect_game(game_name: str):
             break
 
         if state.current_player() != pid:
-            print(f" It's player {state.current_player()}'s turn, not {pid}. Skipping.")
+            print(
+                f" It's player {state.current_player()}'s turn, not {pid}. "
+                f"Skipping."
+            )
             continue
 
         legal = state.legal_actions()
