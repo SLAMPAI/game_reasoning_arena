@@ -13,13 +13,16 @@ import pandas as pd
 from datetime import datetime
 
 
-def merge_sqlite_logs(log_dir: str = "results/") -> pd.DataFrame:
+def merge_sqlite_logs(log_dir: str = "results/",
+                      output_filename: str = None) -> pd.DataFrame:
     """
     Merges all SQLite log files in the specified directory into a
     single DataFrame.
 
     Args:
         log_dir (str): Directory where agent-specific SQLite logs are stored.
+        output_filename (str): Optional custom filename for the merged CSV.
+                              If None, uses timestamped filename.
 
     Returns:
         pd.DataFrame: Merged DataFrame containing all moves, rewards,
@@ -119,10 +122,13 @@ def merge_sqlite_logs(log_dir: str = "results/") -> pd.DataFrame:
         ]
         df_full = df_full[column_order]
 
-        # Save to CSV with timestamp
+        # Save to CSV with timestamp or custom filename
         log_path = Path(log_dir)
-        timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
-        merged_csv = log_path / f"merged_logs_{timestamp}.csv"
+        if output_filename:
+            merged_csv = log_path / output_filename
+        else:
+            timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
+            merged_csv = log_path / f"merged_logs_{timestamp}.csv"
         # Drop verbose or unnecessary fields
         df_full = df_full.drop(columns=["result_timestamp"], errors="ignore")
         df_full.to_csv(merged_csv, index=False)
@@ -190,35 +196,23 @@ def save_summary(summary: dict, output_dir: str = "results/") -> str:
 ###########################################################
 def main():
     """Main function to process game logs and compute statistics."""
+    import argparse
+    parser = argparse.ArgumentParser(description="Post-game processing")
+    parser.add_argument('--output', type=str, default=None,
+                        help='Custom output filename for merged CSV')
+    args = parser.parse_args()
+
     print("Starting post-game processing...")
 
     #  Merge all SQLite logs
-    merged_df = merge_sqlite_logs(log_dir="results")
+    merged_df = merge_sqlite_logs(log_dir="results",
+                                  output_filename=args.output)
     if merged_df.empty:
         print("No log files found or merged.")
         return
 
     # Compute statistics - Not needed for now
     # summary = compute_summary_statistics(merged_df)
-
-    # Ensure `agent_name` is the second column
-    column_order = ["game_name", "agent_name"] + [
-        col for col in merged_df.columns
-        if col not in ["game_name", "agent_name"]
-    ]
-    merged_df = merged_df[column_order]
-
-    # Save logs for review - saves the reasoning behind each move !
-    # Use absolute path to results directory (project root level)
-    project_root = Path(__file__).resolve().parent.parent
-    results_dir = project_root / "results"
-    results_dir.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
-    merged_csv = results_dir / f"merged_logs_{timestamp}.csv"
-    # Drop verbose or unnecessary fields
-    merged_df = merged_df.drop(columns=["result_timestamp"], errors="ignore")
-    merged_df.to_csv(merged_csv, index=False)
-    print(f"Merged logs saved as CSV to {merged_csv}")
 
     # Save summary results into a JSON file - not needed for now
     # save_summary(summary, output_dir="results")

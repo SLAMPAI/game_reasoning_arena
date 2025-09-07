@@ -56,7 +56,12 @@ OUTPUT:
 Results are saved to:
 - plots/ - Visualizations and analysis charts
 - results/ - Raw data and processed results
+  - merged_logs_latest.csv - Single consolidated CSV (overwrites on each run)
+  - Individual .db files for each agent/model
 - runs/ - Individual game run data
+
+NOTE: This script now creates ONE merged CSV file (merged_logs_latest.csv)
+instead of multiple timestamped files, preventing data duplication.
 """
 
 import subprocess
@@ -186,10 +191,11 @@ def run_analysis():
     print("🔍 STARTING ANALYSIS PHASE")
     print("="*60)
 
-    # Post-game processing
+    # Post-game processing - creates/overwrites merged_logs_latest.csv
     run_command(
-        f"{sys.executable} analysis/post_game_processing.py",
-        "Post-game processing - Merging logs"
+        f"{sys.executable} analysis/post_game_processing.py "
+        f"--output merged_logs_latest.csv",
+        "Post-game processing - Merging logs into single CSV"
     )
     # Run full analysis pipeline (comprehensive)
     run_command(

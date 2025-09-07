@@ -33,7 +33,10 @@ def load_priority_models_config(config_path: str = None) -> Dict[str, Any]:
             config = yaml.safe_load(f)
         return config
     except FileNotFoundError:
-        logger.warning(f"Priority models config not found at {config_path}, using defaults")
+        logger.warning(
+            "Priority models config not found at %s, using defaults",
+            config_path
+        )
         return get_default_config()
     except Exception as e:
         logger.error(f"Error loading config: {e}, using defaults")
@@ -96,17 +99,24 @@ def filter_models_for_aggregate_plot(
         force_include = []
 
     # Filter out excluded patterns
-    exclude_patterns = priority_config.get("exclude_patterns", ["random", "human"])
+    exclude_patterns = priority_config.get(
+        "exclude_patterns", ["random", "human"]
+    )
     filtered_models = []
     for model in available_models:
         model_lower = model.lower()
-        should_exclude = any(pattern.lower() in model_lower for pattern in exclude_patterns)
+        should_exclude = any(
+            pattern.lower() in model_lower
+            for pattern in exclude_patterns
+        )
         if not should_exclude:
             filtered_models.append(model)
 
     # If we have few enough models, return all
     if len(filtered_models) <= max_models:
-        logger.info(f"Using all {len(filtered_models)} available models (under limit)")
+        logger.info(
+            f"Using all {len(filtered_models)} available models (under limit)"
+        )
         return filtered_models
 
     # Start with force_include models
@@ -141,18 +151,27 @@ def filter_models_for_aggregate_plot(
                 available_clean.replace('-', '').replace('_', '')):
 
                 selected_models.append(available_model)
-                logger.debug(f"Matched priority model '{priority_model}' to '{available_model}'")
+                logger.debug(
+                    "Matched priority model '%s' to '%s'",
+                    priority_model, available_model
+                )
                 break
 
     # Fill remaining slots with other models if needed
     fallback_behavior = priority_config.get("fallback_behavior", "first_n")
-    while len(selected_models) < max_models and len(selected_models) < len(filtered_models):
+    while (
+        len(selected_models) < max_models and
+        len(selected_models) < len(filtered_models)
+    ):
         for model in filtered_models:
             if model not in selected_models:
                 selected_models.append(model)
                 break
 
-    logger.info(f"Selected {len(selected_models)} models for aggregate plot: {selected_models}")
+    logger.info(
+        f"Selected {len(selected_models)} models for aggregate plot: "
+        f"{selected_models}"
+    )
     return selected_models[:max_models]
 
 

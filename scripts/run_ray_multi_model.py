@@ -10,6 +10,7 @@ Key differences from run_multi_model_games.py:
 - Each model gets its own Ray task
 - Better resource utilization
 - Significantly faster execution
+- Creates single merged CSV instead of multiple timestamped files
 
 USAGE:
 ======
@@ -299,12 +300,13 @@ def run_analysis_phase() -> bool:
     print("="*60)
 
     try:
-        # Run post-game processing
+        # Run post-game processing - creates/overwrites merged_logs_latest.csv
         env = os.environ.copy()
         env["PYTHONPATH"] = "."
 
         subprocess.run(
-            [sys.executable, "analysis/post_game_processing.py"],
+            [sys.executable, "analysis/post_game_processing.py",
+             "--output", "merged_logs_latest.csv"],
             capture_output=True,
             text=True,
             timeout=300,
