@@ -25,3 +25,4 @@ board_game_arena_blog_post.md
 
 # Ignore open_spiel directory (external repository)
 open_spiel/
+backups/
