@@ -15,22 +15,22 @@ priority_models:
   # Meta Llama models (open source representatives)
   - "meta-llama/llama-3.1-8b-instruct"
   - "meta-llama/llama-3.1-70b-instruct"
-  - "llama-3.1-8b-instruct"
-  - "llama-3.1-70b-instruct"
-  - "llama3-8b-8192"  # Alternative naming patterns
-  - "llama3-70b-8192"
+#  - "llama-3.1-8b-instruct"
+#  - "llama-3.1-70b-instruct"
+#  - "llama3-8b-8192"  # Alternative naming patterns
+#  - "llama3-70b-8192"
 
   # Google models (competitive alternatives)
-  - "google/gemma-2-9b-it"
-  - "google/gemini-2.0-flash-exp"
+ # - "google/gemma-2-9b-it"
+  #- "google/gemini-2.0-flash-exp"
   - "gemma-2-9b-it"
-  - "gemini-2.0-flash-exp"
+  #- "gemini-2.0-flash-exp"
 
 
   # Other strong performers
   - "qwen/qwen-2.5-72b-instruct"
-  - "qwen-2.5-72b-instruct"
-  - "mistralai/mistral-7b-instruct"
+  # - "qwen-2.5-72b-instruct"
+  # - "mistralai/mistral-7b-instruct"
   - "mistral-7b-instruct"
 
 # Fallback behavior when no priority models are found

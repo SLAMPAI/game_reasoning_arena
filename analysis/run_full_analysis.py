@@ -325,7 +325,7 @@ class AnalysisPipeline:
                     try:
                         from model_filtering import (
                             filter_models_for_aggregate_plot,
-                             load_priority_models_config
+                            load_priority_models_config
                              )
 
                         # Get all available models

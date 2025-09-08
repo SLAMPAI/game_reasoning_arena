@@ -1,8 +1,8 @@
 {
   "total_models": 11,
   "total_games": 7,
-  "top_performer": "GPT-4-mini",
-  "top_win_rate": "75.38",
+  "top_performer": "GPT-4o-mini",
+  "top_win_rate": "68.00",
   "tables_generated": [
     "tables/overall_performance_table.csv",
     "tables/per_game_performance_table.csv",

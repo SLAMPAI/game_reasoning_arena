@@ -34,7 +34,7 @@ models:
   # OpenAI models via OpenRouter (reliable, fast)
   - openrouter_openai/gpt-4o-mini        # Cost-effective, fast
   - openrouter_openai/gpt-4o             # High quality
-  - openrouter_openai/gpt-3.5-turbo      # Fast, economical
+# - openrouter_openai/gpt-3.5-turbo      # Fast, economical
 
   # # Anthropic models via OpenRouter (excellent reasoning)
   - openrouter_anthropic/claude-3-haiku-20240307     # Fast, cost-effective

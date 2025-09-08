@@ -1,12 +1,12 @@
 agent_name,Connect Four,Hex,Kuhn Poker,Matching Pennies,Prisoner's Dilemma,Rock Paper Scissors,Tic Tac Toe,Overall
-GPT-4-mini,5,5,10,5,5,5,30,9
-GPT-3.5-turbo,5,5,10,5,5,5,10,6
-GPT-4,5,5,10,5,5,5,10,6
-openrouter-meta-llama-llama-3.1-8b-instruct,5,5,10,5,5,5,10,6
-openrouter-meta-llama-llama-3.1-70b-instruct,5,5,10,5,5,5,10,6
-openrouter-anthropic-claude-3.5-sonnet-20241022,5,5,5,5,5,5,5,5
-openrouter-google-gemma-2-9b-it,5,5,5,5,5,5,5,5
-openrouter-mistralai-mistral-7b-instruct,5,5,5,5,5,5,5,5
-openrouter-qwen-qwen-2.5-72b-instruct,5,5,5,5,5,5,5,5
-openrouter-google-gemini-2.0-flash-exp,0,0,0,0,0,0,0,0
-openrouter-anthropic-claude-3-haiku-20240307,0,0,0,0,0,0,0,0
+GPT-4o-mini,10,10,15,10,10,10,35,14
+GPT-3.5-turbo,10,10,15,10,10,10,15,11
+GPT-4o,10,10,15,10,10,10,15,11
+Llama-3.1-70B-Instruct,10,10,15,10,10,10,15,11
+Llama-3.1-8B-Instruct,10,10,15,10,10,10,15,11
+Claude-3.5-Sonnet-20241022,10,10,10,10,10,10,10,10
+Gemma-2-9B-IT,10,10,10,10,10,10,10,10
+Mistral-7B-Instruct,10,10,10,10,10,10,10,10
+Qwen-2.5-72B-Instruct,10,10,10,10,10,10,10,10
+Claude-3-haiku-20240307,0,0,0,0,0,0,0,0
+gemini-2.0-flash-exp,0,0,0,0,0,0,0,0

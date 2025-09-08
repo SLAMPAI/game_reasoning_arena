@@ -1,12 +1,12 @@
 Model,Games Played,Games Won,Win Rate (%),Avg Reward
-GPT-4-mini,65,49,75.38,0.831 ± 0.166
-GPT-3.5-turbo,45,28,62.22,0.533 ± 0.107
-GPT-4,45,28,62.22,0.822 ± 0.164
-openrouter-qwen-qwen-2.5-72b-instruct,35,21,60.00,1.029 ± 0.206
-openrouter-meta-llama-llama-3.1-8b-instruct,45,27,60.00,0.622 ± 0.124
-openrouter-anthropic-claude-3.5-sonnet-20241022,35,20,57.14,0.829 ± 0.166
-openrouter-mistralai-mistral-7b-instruct,35,19,54.29,0.600 ± 0.120
-openrouter-google-gemma-2-9b-it,35,19,54.29,0.657 ± 0.131
-openrouter-meta-llama-llama-3.1-70b-instruct,45,23,51.11,0.533 ± 0.107
-openrouter-google-gemini-2.0-flash-exp,0,0,0.00,0.000 ± 0.000
-openrouter-anthropic-claude-3-haiku-20240307,0,0,0.00,0.000 ± 0.000
+GPT-4o-mini,100,68,68.00,0.810 ± 0.162
+GPT-4o,80,50,62.50,0.838 ± 0.168
+Qwen-2.5-72B-Instruct,70,43,61.43,1.086 ± 0.217
+Llama-3.1-8B-Instruct,80,49,61.25,0.637 ± 0.128
+GPT-3.5-turbo,80,48,60.00,0.550 ± 0.110
+Claude-3.5-Sonnet-20241022,70,41,58.57,0.914 ± 0.183
+Mistral-7B-Instruct,70,36,51.43,0.571 ± 0.114
+Gemma-2-9B-IT,70,35,50.00,0.529 ± 0.106
+Llama-3.1-70B-Instruct,80,38,47.50,0.637 ± 0.128
+gemini-2.0-flash-exp,0,0,0.00,0.000 ± 0.000
+Claude-3-haiku-20240307,0,0,0.00,0.000 ± 0.000

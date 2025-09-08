@@ -111,6 +111,11 @@ def clean_model_name(model_name) -> str:
         # Extract GPT model variants
         if "gpt_3.5" in model_name.lower() or "gpt-3.5" in model_name.lower():
             return "GPT-3.5-turbo"
+        elif "4o" in model_name.lower():  # Handle GPT-4o variants first
+            if "mini" in model_name.lower():
+                return "GPT-4o-mini"
+            else:
+                return "GPT-4o"
         elif "gpt_4" in model_name.lower() or "gpt-4" in model_name.lower():
             if "turbo" in model_name.lower():
                 return "GPT-4-turbo"
@@ -138,6 +143,14 @@ def clean_model_name(model_name) -> str:
         cleaned = model_part.replace("_", "-")
         return cleaned
 
+    # For openrouter models, extract everything after the last slash
+    if "openrouter_" in model_name and "/" in model_name:
+        # Split by "/" and take the last part
+        model_part = model_name.split("/")[-1]
+        # Clean up underscores and make it more readable
+        cleaned = model_part.replace("_", "-")
+        return cleaned
+
     # For vllm models, extract the model name part
     if model_name.startswith("vllm_"):
         # Remove vllm_ prefix
@@ -145,6 +158,91 @@ def clean_model_name(model_name) -> str:
         # Clean up underscores
         cleaned = model_part.replace("_", "-")
         return cleaned
+
+    # For openrouter models without slashes (from database storage)
+    # These correspond to the slash-separated patterns in the YAML
+    # Models are stored as llm_openrouter_provider_model_name
+    if model_name.startswith("llm_openrouter_"):
+        parts = model_name.split("_")
+
+        # Handle OpenAI models via OpenRouter: llm_openrouter_openai_*
+        if len(parts) >= 4 and parts[2] == "openai":
+            # Everything after "llm_openrouter_openai_"
+            model_parts = parts[3:]
+            cleaned = "-".join(model_parts)
+            # Clean up common GPT model patterns
+            if "gpt" in cleaned.lower():
+                # Handle GPT-4o variants first (more specific)
+                if "4o" in cleaned:
+                    # Replace gpt-4o or gpt_4o with GPT-4o
+                    cleaned = cleaned.replace("gpt-4o", "GPT-4o")
+                    cleaned = cleaned.replace("gpt_4o", "GPT-4o")
+                elif "3.5" in cleaned:
+                    cleaned = cleaned.replace("gpt-3.5", "GPT-3.5")
+                    cleaned = cleaned.replace("gpt_3.5", "GPT-3.5")
+                elif "gpt-4" in cleaned:
+                    # Only replace if it's not part of "gpt-4o"
+                    cleaned = cleaned.replace("gpt-4", "GPT-4")
+                    cleaned = cleaned.replace("gpt_4", "GPT-4")
+            return cleaned
+
+        # Handle Anthropic models via OpenRouter: llm_openrouter_anthropic_*
+        if len(parts) >= 4 and parts[2] == "anthropic":
+            # Everything after "llm_openrouter_anthropic_"
+            model_parts = parts[3:]
+            cleaned = "-".join(model_parts)
+            # Capitalize Claude
+            if "claude" in cleaned.lower():
+                cleaned = cleaned.replace("claude", "Claude")
+            return cleaned
+
+        # Handle Meta Llama models via OpenRouter: llm_openrouter_meta_llama_*
+        if len(parts) >= 5 and parts[2] == "meta" and parts[3] == "llama":
+            # Everything after "llm_openrouter_meta_llama_"
+            model_parts = parts[4:]
+            cleaned = "-".join(model_parts)
+            # Capitalize Llama
+            if "llama" in cleaned.lower():
+                cleaned = cleaned.replace("llama", "Llama")
+            return cleaned
+
+        # Handle Google models via OpenRouter: llm_openrouter_google_*
+        if len(parts) >= 4 and parts[2] == "google":
+            # Everything after "llm_openrouter_google_"
+            model_parts = parts[3:]
+            cleaned = "-".join(model_parts)
+            # Capitalize common Google model names
+            if "gemini" in cleaned.lower():
+                cleaned = cleaned.replace("gemini", "Gemini")
+            elif "gemma" in cleaned.lower():
+                cleaned = cleaned.replace("gemma", "Gemma")
+            return cleaned
+
+        # Handle Qwen models via OpenRouter: llm_openrouter_qwen_*
+        if len(parts) >= 4 and parts[2] == "qwen":
+            # Everything after "llm_openrouter_qwen_"
+            model_parts = parts[3:]
+            cleaned = "-".join(model_parts)
+            # Capitalize Qwen
+            cleaned = cleaned.replace("qwen", "Qwen")
+            return cleaned
+
+        # Handle MistralAI models via OpenRouter: llm_openrouter_mistralai_*
+        if len(parts) >= 4 and parts[2] == "mistralai":
+            # Everything after "llm_openrouter_mistralai_"
+            model_parts = parts[3:]
+            cleaned = "-".join(model_parts)
+            # Capitalize Mistral
+            if "mistral" in cleaned.lower():
+                cleaned = cleaned.replace("mistral", "Mistral")
+            return cleaned
+
+        # For other llm_openrouter patterns, skip first three parts
+        # (llm_openrouter_provider_)
+        if len(parts) >= 4:
+            model_parts = parts[3:]  # Everything after provider
+            cleaned = "-".join(model_parts)
+            return cleaned
 
     # For litellm models without slashes (from database storage)
     # These correspond to the slash-separated patterns in the YAML
@@ -214,6 +312,86 @@ def clean_model_name(model_name) -> str:
     # For models with slashes but not litellm (like direct model paths)
     if "/" in model_name:
         return model_name.split("/")[-1].replace("_", "-")
+
+    # Handle intermediate OpenRouter format: openrouter-provider-model-name
+    # Also handle underscore version: openrouter_provider_model_name
+    if (model_name.startswith("openrouter-") or
+            model_name.startswith("openrouter_")):
+        # Normalize to use dashes for consistent processing
+        normalized_name = model_name.replace("_", "-")
+        parts = normalized_name.split("-")
+        if len(parts) >= 3:  # At least openrouter-provider-model
+            # Remove "openrouter" prefix
+            remaining_parts = parts[1:]
+
+            # Handle specific provider patterns
+            if remaining_parts[0] == "openai":
+                # openrouter-openai-gpt-4o-mini -> GPT-4o-mini
+                model_parts = remaining_parts[1:]
+                cleaned = "-".join(model_parts)
+                if "gpt" in cleaned.lower():
+                    if "4o" in cleaned:
+                        cleaned = cleaned.replace("gpt", "GPT")
+                        return cleaned.replace("GPT-4o", "GPT-4o")
+                    elif "3.5" in cleaned:
+                        cleaned = cleaned.replace("gpt", "GPT")
+                        return cleaned.replace("GPT-3.5", "GPT-3.5")
+                    elif "4" in cleaned:
+                        return cleaned.replace("gpt", "GPT")
+                return cleaned
+
+            elif remaining_parts[0] == "anthropic":
+                # openrouter-anthropic-claude-3.5-sonnet -> Claude-3.5-Sonnet
+                model_parts = remaining_parts[1:]
+                cleaned = "-".join(model_parts)
+                if "claude" in cleaned.lower():
+                    cleaned = cleaned.replace("claude", "Claude")
+                    return cleaned.replace("sonnet", "Sonnet")
+                return cleaned
+
+            elif (remaining_parts[0] == "meta" and len(remaining_parts) >= 2
+                  and remaining_parts[1] == "llama"):
+                # openrouter-meta-llama-llama-3.1-8b-instruct
+                # -> Llama-3.1-8B-Instruct
+                model_parts = remaining_parts[2:]  # Skip meta-llama
+                cleaned = "-".join(model_parts)
+                cleaned = cleaned.replace("llama", "Llama")
+                cleaned = cleaned.replace("8b", "8B")
+                cleaned = cleaned.replace("70b", "70B")
+                cleaned = cleaned.replace("instruct", "Instruct")
+                return cleaned
+
+            elif remaining_parts[0] == "google":
+                # openrouter-google-gemma-2-9b-it -> Gemma-2-9B-IT
+                model_parts = remaining_parts[1:]
+                cleaned = "-".join(model_parts)
+                cleaned = cleaned.replace("gemma", "Gemma")
+                cleaned = cleaned.replace("9b", "9B")
+                cleaned = cleaned.replace("it", "IT")
+                return cleaned
+
+            elif remaining_parts[0] == "qwen":
+                # openrouter-qwen-qwen-2.5-72b-instruct
+                # -> Qwen-2.5-72B-Instruct
+                model_parts = remaining_parts[1:]
+                cleaned = "-".join(model_parts)
+                cleaned = cleaned.replace("qwen", "Qwen")
+                cleaned = cleaned.replace("72b", "72B")
+                cleaned = cleaned.replace("instruct", "Instruct")
+                return cleaned
+
+            elif remaining_parts[0] == "mistralai":
+                # openrouter-mistralai-mistral-7b-instruct
+                # -> Mistral-7B-Instruct
+                model_parts = remaining_parts[1:]
+                cleaned = "-".join(model_parts)
+                cleaned = cleaned.replace("mistral", "Mistral")
+                cleaned = cleaned.replace("7b", "7B")
+                cleaned = cleaned.replace("instruct", "Instruct")
+                return cleaned
+
+            # For other providers, just remove openrouter prefix
+            return "-".join(remaining_parts)
 
     # Default: just replace underscores with dashes
     return model_name.replace("_", "-")
