@@ -73,8 +73,8 @@ llm_backend:
   default_model: openrouter_openai/gpt-4o-mini
 
 # Logging optimized for parallel execution
-log_level: ERROR # WARNING          # Minimal logging to reduce overhead
-tensorboard_logging: false             # Disabled for performance during parallel runs
+log_level: ERROR # WARNING       # Minimal logging to reduce overhead
+tensorboard_logging: false       # Disabled for performance during parallel runs
 
 # OpenRouter specific settings
 # Note: This configuration assumes you have:

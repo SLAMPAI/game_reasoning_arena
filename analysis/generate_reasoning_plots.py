@@ -19,15 +19,13 @@ import seaborn as sns
 
 # Add the parent directory to sys.path to import ui modules
 sys.path.append(str(Path(__file__).parent.parent))
-from ui.utils import clean_model_name
-
-from utils import display_game_name
-from reasoning_analysis import (LLMReasoningAnalyzer,
-                                get_reasoning_colors)  # noqa: E402
-
 # Add analysis directory to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+from ui.utils import clean_model_name
+from utils import display_game_name
+from reasoning_analysis import (LLMReasoningAnalyzer,
+                                get_reasoning_colors)  # noqa: E402
 
 
 def plot_reasoning_bar_chart(

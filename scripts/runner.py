@@ -369,8 +369,12 @@ if __name__ == "__main__":
     main()
 
 
-# start tensorboard from the terminal:
+# To enable tensorboard logging:
+# Set tensorboard_logging: true in your config file or use:
+# --override tensorboard_logging=true
+#
+# Then start tensorboard from the terminal:
 # tensorboard --logdir=runs
-
+#
 # In the browser:
 # http://localhost:6006/

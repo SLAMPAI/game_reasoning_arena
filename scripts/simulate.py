@@ -134,7 +134,6 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
             agent_type=agent_config["type"],
             model_name=sanitized_model_name
         )
-    writer = SummaryWriter(log_dir=f"runs/{game_name}")  # Tensorboard writer
 
     # Initialize Tensorboard writer only if logging is enabled
     writer = None
