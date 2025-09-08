@@ -47,6 +47,7 @@ import os
 import sys
 import tempfile
 import yaml
+import shutil
 from pathlib import Path
 from typing import List, Dict, Any, Tuple
 import ray
@@ -300,13 +301,12 @@ def run_analysis_phase() -> bool:
     print("="*60)
 
     try:
-        # Run post-game processing - creates/overwrites merged_logs_latest.csv
+        # Run post-game processing - create dated CSV (efficient single run)
         env = os.environ.copy()
         env["PYTHONPATH"] = "."
 
         subprocess.run(
-            [sys.executable, "analysis/post_game_processing.py",
-             "--output", "merged_logs_latest.csv"],
+            [sys.executable, "analysis/post_game_processing.py"],
             capture_output=True,
             text=True,
             timeout=300,
@@ -314,6 +314,26 @@ def run_analysis_phase() -> bool:
             env=env
         )
         print("✅ Post-game processing completed")
+
+        # Find most recent merged_logs file and create latest copy
+        results_dir = Path("results")
+        merged_files = list(results_dir.glob("merged_logs_*.csv"))
+        # Filter out the latest file if it already exists
+        merged_files = [f for f in merged_files
+                        if f.name != "merged_logs_latest.csv"]
+
+        if merged_files:
+            # Get the most recent file by modification time
+            latest_file = max(merged_files, key=lambda f: f.stat().st_mtime)
+            latest_link = results_dir / "merged_logs_latest.csv"
+
+            # Remove existing latest file if it exists
+            if latest_link.exists():
+                latest_link.unlink()
+
+            # Create a copy (safer than symlink for cross-platform)
+            shutil.copy2(latest_file, latest_link)
+            print(f"✅ Created merged_logs_latest.csv → {latest_file.name}")
 
         # Run full analysis
         subprocess.run(

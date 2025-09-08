@@ -68,6 +68,7 @@ import subprocess
 import time
 import os
 import sys
+import shutil
 from pathlib import Path
 
 # Add src to path for imports
@@ -191,12 +192,32 @@ def run_analysis():
     print("🔍 STARTING ANALYSIS PHASE")
     print("="*60)
 
-    # Post-game processing - creates/overwrites merged_logs_latest.csv
+    # Post-game processing - create dated CSV file (efficient single run)
     run_command(
-        f"{sys.executable} analysis/post_game_processing.py "
-        f"--output merged_logs_latest.csv",
-        "Post-game processing - Merging logs into single CSV"
+        f"{sys.executable} analysis/post_game_processing.py",
+        "Post-game processing - Merging logs into timestamped CSV"
     )
+
+    # Find the most recently created merged_logs file and create latest symlink
+    results_dir = Path("results")
+    merged_files = list(results_dir.glob("merged_logs_*.csv"))
+    # Filter out the latest file if it already exists
+    merged_files = [f for f in merged_files
+                    if f.name != "merged_logs_latest.csv"]
+
+    if merged_files:
+        # Get the most recent file by modification time
+        latest_file = max(merged_files, key=lambda f: f.stat().st_mtime)
+        latest_link = results_dir / "merged_logs_latest.csv"
+
+        # Remove existing latest file/link if it exists
+        if latest_link.exists():
+            latest_link.unlink()
+
+        # Create a copy (safer than symlink for cross-platform compatibility)
+        shutil.copy2(latest_file, latest_link)
+        print(f"Created merged_logs_latest.csv → {latest_file.name}")
+
     # Run full analysis pipeline (comprehensive)
     run_command(
         f"{sys.executable} analysis/run_full_analysis.py",
