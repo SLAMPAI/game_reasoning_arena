@@ -21,15 +21,19 @@ import sys
 # Add the parent directory to sys.path to import ui modules
 sys.path.append(str(Path(__file__).parent.parent))
 from ui.utils import clean_model_name
-from utils import display_game_name
+from analysis.utils import display_game_name
 
 
 REASONING_RULES = {
+    # Spatial/Board Game Categories
     "Positional": [
         re.compile(r"\bcenter column\b"),
         re.compile(r"\bcenter square\b"),
+        re.compile(r"\bcenter position\b"),
+        re.compile(r"\bcenter cell\b"),
         re.compile(r"\bcorner\b"),
-        re.compile(r"\bedge\b")
+        re.compile(r"\bedge\b"),
+        re.compile(r"\bposition\b")
     ],
     "Blocking": [
         re.compile(r"\bblock\b"),
@@ -37,13 +41,20 @@ REASONING_RULES = {
         re.compile(r"\bprevent\b"),
         re.compile(r"\bstop opponent\b"),
         re.compile(r"\bavoid opponent\b"),
-        re.compile(r"\bcounter\b")
+        re.compile(r"\bcounter\b"),
+        re.compile(r"\bdefense\b"),
+        re.compile(r"\bdefensive\b")
     ],
     "Opponent Modeling": [
         re.compile(r"\bopponent\b"),
         re.compile(r"\bthey are trying\b"),
         re.compile(r"\btheir strategy\b"),
-        re.compile(r"\btheir move\b")
+        re.compile(r"\btheir move\b"),
+        re.compile(r"\bother player\b"),
+        re.compile(r"\bexpected behavior\b"),
+        re.compile(r"\bpredict\b"),
+        re.compile(r"\banticipate\b"),
+        re.compile(r"\bother player's choice\b")
     ],
     "Winning Logic": [
         re.compile(r"\bwin\b"),
@@ -51,35 +62,129 @@ REASONING_RULES = {
         re.compile(r"\bconnect\b"),
         re.compile(r"\bfork\b"),
         re.compile(r"\bthreat\b"),
-        re.compile(r"\bchance of winning\b")
+        re.compile(r"\bchance of winning\b"),
+        re.compile(r"\bvictory\b"),
+        re.compile(r"\bwin condition\b")
     ],
     "Heuristic": [
         re.compile(r"\bbest move\b"),
         re.compile(r"\bmost likely\b"),
         re.compile(r"\badvantageous\b"),
-        re.compile(r"\bbetter chance\b")
+        re.compile(r"\bbetter chance\b"),
+        re.compile(r"\boptimal\b"),
+        re.compile(r"\beffective\b")
     ],
     "Rule-Based": [
         re.compile(r"\baccording to\b"),
         re.compile(r"\brule\b"),
-        re.compile(r"\bstrategy\b")
+        re.compile(r"\bstrategy\b"),
+        re.compile(r"\brational choice\b"),
+        re.compile(r"\bgame theory\b"),
+        re.compile(r"\baccording to theory\b"),
+        re.compile(r"\bstandard strategy\b")
     ],
     "Random/Unjustified": [
         re.compile(r"\brandom\b"),
-        re.compile(r"\bguess\b")
+        re.compile(r"\bguess\b"),
+        re.compile(r"\bno particular reason\b"),
+        re.compile(r"\barbitrarily\b")
+    ],
+
+    # Strategic/Matrix Game Categories
+    "Strategic Reasoning": [
+        re.compile(r"\bdominant strategy\b"),
+        re.compile(r"\bpayoff\b"),
+        re.compile(r"\bmaximize\b"),
+        re.compile(r"\boptimal choice\b"),
+        re.compile(r"\bnash equilibrium\b"),
+        re.compile(r"\bequilibrium\b"),
+        re.compile(r"\bgame theory\b"),
+        re.compile(r"\bstrategic\b"),
+        re.compile(r"\brational\b"),
+        re.compile(r"\banalysis\b"),
+        re.compile(r"\bcalculate\b")
+    ],
+    "Risk Management": [
+        re.compile(r"\bworst case\b"),
+        re.compile(r"\bminimize risk\b"),
+        re.compile(r"\bsafest choice\b"),
+        re.compile(r"\bavoid\b"),
+        re.compile(r"\bprotect against\b"),
+        re.compile(r"\bsafe\b"),
+        re.compile(r"\bminimize\b"),
+        re.compile(r"\brisk\b"),
+        re.compile(r"\bcautious\b"),
+        re.compile(r"\bconservative\b")
+    ],
+    "Cooperative Strategy": [
+        re.compile(r"\bmutual benefit\b"),
+        re.compile(r"\bboth benefit\b"),
+        re.compile(r"\bcooperate\b"),
+        re.compile(r"\bcooperation\b"),
+        re.compile(r"\bestablish trust\b"),
+        re.compile(r"\blong term\b"),
+        re.compile(r"\blong-term\b"),
+        re.compile(r"\btrust\b"),
+        re.compile(r"\bmutually beneficial\b"),
+        re.compile(r"\bwork together\b"),
+        re.compile(r"\bshared benefit\b")
+    ],
+    "Competitive Strategy": [
+        re.compile(r"\badvantage\b"),
+        re.compile(r"\bexploit\b"),
+        re.compile(r"\boutperform\b"),
+        re.compile(r"\bbeat opponent\b"),
+        re.compile(r"\bindividual gain\b"),
+        re.compile(r"\bpersonal gain\b"),
+        re.compile(r"\bself-interest\b"),
+        re.compile(r"\bdefect\b"),
+        re.compile(r"\bcompetitive\b"),
+        re.compile(r"\bmaximize my\b"),
+        re.compile(r"\bhighest.*reward\b")
     ]
 }
 
 # Consistent color mapping for all reasoning types
+# Colors chosen for maximum visual distinction and accessibility
 REASONING_COLOR_MAP = {
-    "Positional": "#1f77b4",          # Blue
+    # Spatial/Board Game Categories (Cool colors - Blues/Greens)
+    "Positional": "#1f77b4",          # Bright Blue
     "Blocking": "#ff7f0e",            # Orange
     "Opponent Modeling": "#2ca02c",   # Green
     "Winning Logic": "#d62728",       # Red
-    "Heuristic": "#9467bd",           # Purple
-    "Rule-Based": "#8c564b",          # Brown
-    "Random/Unjustified": "#e377c2",  # Pink
-    "Uncategorized": "#7f7f7f"        # Gray
+    "Heuristic": "#8c564b",           # Brown
+    "Rule-Based": "#ff9896",          # Light Red/Pink
+    "Random/Unjustified": "#c5b0d5",  # Light Purple
+
+    # Strategic/Matrix Game Categories (Warm colors - Reds/Yellows/Purples)
+    "Strategic Reasoning": "#e377c2",  # Bright Magenta/Pink (very distinct from gray)
+    "Cooperative Strategy": "#bcbd22", # Olive/Yellow-Green
+    "Competitive Strategy": "#ff4500", # Red-Orange (very distinct)
+    "Risk Management": "#9467bd",      # Purple
+
+    # Special Categories
+    "Uncategorized": "#7f7f7f"         # Gray (distinct from Strategic Reasoning)
+}
+
+# Pattern/hatching mapping for additional visual distinction
+REASONING_PATTERN_MAP = {
+    # Spatial/Board Game Categories
+    "Positional": None,               # Solid
+    "Blocking": "//",                 # Diagonal lines
+    "Opponent Modeling": "\\\\",       # Reverse diagonal lines
+    "Winning Logic": "++",            # Plus pattern
+    "Heuristic": "xx",                # Cross-hatch
+    "Rule-Based": "..",               # Dots
+    "Random/Unjustified": "oo",       # Circles
+
+    # Strategic/Matrix Game Categories
+    "Strategic Reasoning": "|||",      # Vertical lines (distinct pattern)
+    "Cooperative Strategy": "---",     # Horizontal lines
+    "Competitive Strategy": "***",     # Stars/asterisks
+    "Risk Management": "///",          # Dense diagonal
+
+    # Special Categories
+    "Uncategorized": None             # Solid gray
 }
 
 
@@ -87,13 +192,41 @@ def get_reasoning_colors(reasoning_types):
     """Get consistent colors for a list of reasoning types.
 
     Args:
-        reasoning_types: List or iterable of reasoning type names
+        reasoning_types: List of reasoning type names
 
     Returns:
         List of hex color codes matching the reasoning types
     """
     return [REASONING_COLOR_MAP.get(rtype, "#999999")
             for rtype in reasoning_types]
+
+
+def get_reasoning_patterns(reasoning_types):
+    """Get consistent patterns/hatching for a list of reasoning types.
+
+    Args:
+        reasoning_types: List of reasoning type names
+
+    Returns:
+        List of matplotlib hatch patterns matching the reasoning types
+    """
+    return [REASONING_PATTERN_MAP.get(rtype, None)
+            for rtype in reasoning_types]
+
+
+def get_reasoning_colors_and_patterns(reasoning_types):
+    """Get both colors and patterns for enhanced visual distinction.
+
+    Args:
+        reasoning_types: List of reasoning type names
+
+    Returns:
+        tuple: (colors, patterns) where colors is a list of hex codes
+               and patterns is a list of matplotlib hatch patterns
+    """
+    colors = get_reasoning_colors(reasoning_types)
+    patterns = get_reasoning_patterns(reasoning_types)
+    return colors, patterns
 
 
 def generate_agent_colors_and_styles(agent_names):
@@ -717,6 +850,7 @@ if __name__ == "__main__":
     #   WORDCLOUD DISABLED
     # analyzer.plot_entropy_trendlines()
     #   Individual entropy trends per model-game pair
+    
     analyzer.plot_entropy_by_turn_across_models()
     analyzer.plot_avg_entropy_across_games(output_dir="plots")
 

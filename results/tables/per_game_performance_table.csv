@@ -1,78 +1,85 @@
 Game,Model,Games Played,Games Won,Win Rate (%),Avg Reward
-Connect Four,Qwen-2.5-72B-Instruct,10,10,100.00,1.000 ± 0.200
-Connect Four,GPT-4o-mini,10,10,100.00,1.000 ± 0.200
-Connect Four,Claude-3.5-Sonnet-20241022,10,10,100.00,1.000 ± 0.200
-Connect Four,Llama-3.1-8B-Instruct,10,9,90.00,0.800 ± 0.160
-Connect Four,GPT-3.5-turbo,10,9,90.00,0.800 ± 0.160
-Connect Four,GPT-4o,10,8,80.00,0.600 ± 0.120
-Connect Four,Gemma-2-9B-IT,10,8,80.00,0.600 ± 0.120
-Connect Four,Llama-3.1-70B-Instruct,10,7,70.00,0.400 ± 0.080
-Connect Four,Mistral-7B-Instruct,10,5,50.00,0.000 ± 0.000
+Connect Four,Llama-3.1-8B-Instruct,5,5,100.00,1.000 ± 0.200
+Connect Four,gemini-flash-1.5,5,5,100.00,1.000 ± 0.200
+Connect Four,Claude-3.5-Sonnet-20241022,5,5,100.00,1.000 ± 0.200
+Connect Four,GPT-4o,10,9,90.00,0.800 ± 0.160
+Connect Four,Gemma-2-9B-IT,10,9,90.00,0.800 ± 0.160
+Connect Four,Qwen-2.5-72B-Instruct,5,4,80.00,0.600 ± 0.120
+Connect Four,GPT-4o-mini,10,8,80.00,0.600 ± 0.120
+Connect Four,GPT-3.5-turbo,5,4,80.00,0.600 ± 0.120
+Connect Four,Llama-3.1-70B-Instruct,5,3,60.00,0.200 ± 0.040
+Connect Four,Mistral-7B-Instruct,5,2,40.00,-0.200 ± -0.040
 Connect Four,gemini-2.0-flash-exp,0,0,0.00,0.000 ± 0.000
 Connect Four,Claude-3-haiku-20240307,0,0,0.00,0.000 ± 0.000
-Hex,Llama-3.1-8B-Instruct,10,5,50.00,0.000 ± 0.000
-Hex,Mistral-7B-Instruct,10,4,40.00,-0.200 ± -0.040
-Hex,GPT-3.5-turbo,10,4,40.00,-0.200 ± -0.040
-Hex,Qwen-2.5-72B-Instruct,10,2,20.00,-0.500 ± -0.100
-Hex,GPT-4o-mini,10,2,20.00,-0.600 ± -0.120
-Hex,Llama-3.1-70B-Instruct,10,2,20.00,-0.400 ± -0.080
-Hex,GPT-4o,10,0,0.00,-1.000 ± -0.200
+Hex,Llama-3.1-8B-Instruct,5,3,60.00,0.400 ± 0.080
+Hex,GPT-3.5-turbo,4,2,50.00,0.250 ± 0.050
+Hex,Llama-3.1-70B-Instruct,5,2,40.00,-0.200 ± -0.040
+Hex,Mistral-7B-Instruct,5,1,20.00,-0.200 ± -0.040
+Hex,Gemma-2-9B-IT,10,1,10.00,-0.800 ± -0.160
+Hex,Qwen-2.5-72B-Instruct,5,0,0.00,-1.000 ± -0.200
+Hex,GPT-4o-mini,6,0,0.00,-0.833 ± -0.167
+Hex,gemini-flash-1.5,2,0,0.00,-1.000 ± -0.200
+Hex,GPT-4o,5,0,0.00,-1.000 ± -0.200
 Hex,gemini-2.0-flash-exp,0,0,0.00,0.000 ± 0.000
-Hex,Claude-3.5-Sonnet-20241022,10,0,0.00,-0.900 ± -0.180
-Hex,Gemma-2-9B-IT,10,0,0.00,-1.000 ± -0.200
+Hex,Claude-3.5-Sonnet-20241022,5,0,0.00,-1.000 ± -0.200
 Hex,Claude-3-haiku-20240307,0,0,0.00,0.000 ± 0.000
-Kuhn Poker,GPT-4o-mini,15,9,60.00,-0.200 ± -0.040
-Kuhn Poker,GPT-3.5-turbo,15,9,60.00,-0.200 ± -0.040
-Kuhn Poker,Llama-3.1-70B-Instruct,15,8,53.33,-0.333 ± -0.067
-Kuhn Poker,GPT-4o,15,8,53.33,-0.267 ± -0.053
-Kuhn Poker,Mistral-7B-Instruct,10,5,50.00,-0.200 ± -0.040
-Kuhn Poker,Llama-3.1-8B-Instruct,15,7,46.67,-0.467 ± -0.093
-Kuhn Poker,Qwen-2.5-72B-Instruct,10,4,40.00,-0.200 ± -0.040
-Kuhn Poker,Claude-3.5-Sonnet-20241022,10,4,40.00,-0.500 ± -0.100
-Kuhn Poker,Gemma-2-9B-IT,10,4,40.00,-0.400 ± -0.080
+Kuhn Poker,gemini-flash-1.5,5,5,100.00,1.200 ± 0.240
+Kuhn Poker,GPT-3.5-turbo,5,5,100.00,1.200 ± 0.240
+Kuhn Poker,GPT-4o-mini,10,8,80.00,0.500 ± 0.100
+Kuhn Poker,GPT-4o,10,6,60.00,0.100 ± 0.020
+Kuhn Poker,Gemma-2-9B-IT,10,6,60.00,0.300 ± 0.060
+Kuhn Poker,Qwen-2.5-72B-Instruct,5,2,40.00,-0.400 ± -0.080
+Kuhn Poker,Llama-3.1-8B-Instruct,5,2,40.00,-0.600 ± -0.120
+Kuhn Poker,Mistral-7B-Instruct,5,2,40.00,-0.600 ± -0.120
+Kuhn Poker,Llama-3.1-70B-Instruct,5,2,40.00,-0.600 ± -0.120
+Kuhn Poker,Claude-3.5-Sonnet-20241022,5,2,40.00,-0.400 ± -0.080
 Kuhn Poker,gemini-2.0-flash-exp,0,0,0.00,0.000 ± 0.000
 Kuhn Poker,Claude-3-haiku-20240307,0,0,0.00,0.000 ± 0.000
+Matching Pennies,Llama-3.1-8B-Instruct,5,4,80.00,0.600 ± 0.120
+Matching Pennies,gemini-flash-1.5,5,4,80.00,0.600 ± 0.120
+Matching Pennies,GPT-3.5-turbo,5,4,80.00,0.600 ± 0.120
 Matching Pennies,GPT-4o-mini,10,7,70.00,0.400 ± 0.080
-Matching Pennies,Qwen-2.5-72B-Instruct,10,6,60.00,0.200 ± 0.040
-Matching Pennies,Llama-3.1-70B-Instruct,10,6,60.00,0.200 ± 0.040
-Matching Pennies,GPT-3.5-turbo,10,6,60.00,0.200 ± 0.040
-Matching Pennies,GPT-4o,10,6,60.00,0.200 ± 0.040
-Matching Pennies,Claude-3.5-Sonnet-20241022,10,6,60.00,0.200 ± 0.040
-Matching Pennies,Gemma-2-9B-IT,10,6,60.00,0.200 ± 0.040
-Matching Pennies,Llama-3.1-8B-Instruct,10,5,50.00,0.000 ± 0.000
-Matching Pennies,Mistral-7B-Instruct,10,2,20.00,-0.600 ± -0.120
+Matching Pennies,GPT-4o,10,7,70.00,0.400 ± 0.080
+Matching Pennies,Gemma-2-9B-IT,10,7,70.00,0.400 ± 0.080
+Matching Pennies,Qwen-2.5-72B-Instruct,5,3,60.00,0.200 ± 0.040
+Matching Pennies,Mistral-7B-Instruct,5,3,60.00,0.200 ± 0.040
+Matching Pennies,Llama-3.1-70B-Instruct,5,3,60.00,0.200 ± 0.040
+Matching Pennies,Claude-3.5-Sonnet-20241022,5,3,60.00,0.200 ± 0.040
 Matching Pennies,gemini-2.0-flash-exp,0,0,0.00,0.000 ± 0.000
 Matching Pennies,Claude-3-haiku-20240307,0,0,0.00,0.000 ± 0.000
-Prisoner's Dilemma,Qwen-2.5-72B-Instruct,10,10,100.00,6.400 ± 1.280
-Prisoner's Dilemma,GPT-4o,10,10,100.00,5.900 ± 1.180
-Prisoner's Dilemma,Mistral-7B-Instruct,10,8,80.00,4.200 ± 0.840
-Prisoner's Dilemma,GPT-4o-mini,10,8,80.00,5.200 ± 1.040
-Prisoner's Dilemma,Claude-3.5-Sonnet-20241022,10,8,80.00,5.700 ± 1.140
-Prisoner's Dilemma,Gemma-2-9B-IT,10,8,80.00,3.700 ± 0.740
-Prisoner's Dilemma,Llama-3.1-70B-Instruct,10,7,70.00,5.600 ± 1.120
-Prisoner's Dilemma,GPT-3.5-turbo,10,7,70.00,3.100 ± 0.620
-Prisoner's Dilemma,Llama-3.1-8B-Instruct,10,6,60.00,3.500 ± 0.700
+Prisoner's Dilemma,Qwen-2.5-72B-Instruct,5,5,100.00,6.400 ± 1.280
+Prisoner's Dilemma,Mistral-7B-Instruct,5,5,100.00,3.400 ± 0.680
+Prisoner's Dilemma,gemini-flash-1.5,5,5,100.00,8.200 ± 1.640
+Prisoner's Dilemma,GPT-4o,10,9,90.00,6.700 ± 1.340
+Prisoner's Dilemma,Gemma-2-9B-IT,10,9,90.00,5.700 ± 1.140
+Prisoner's Dilemma,GPT-4o-mini,10,8,80.00,5.600 ± 1.120
+Prisoner's Dilemma,GPT-3.5-turbo,5,4,80.00,4.000 ± 0.800
+Prisoner's Dilemma,Llama-3.1-8B-Instruct,5,3,60.00,3.000 ± 0.600
+Prisoner's Dilemma,Llama-3.1-70B-Instruct,5,3,60.00,3.000 ± 0.600
+Prisoner's Dilemma,Claude-3.5-Sonnet-20241022,5,3,60.00,5.000 ± 1.000
 Prisoner's Dilemma,gemini-2.0-flash-exp,0,0,0.00,0.000 ± 0.000
 Prisoner's Dilemma,Claude-3-haiku-20240307,0,0,0.00,0.000 ± 0.000
-Rock Paper Scissors,Llama-3.1-8B-Instruct,10,5,50.00,0.400 ± 0.080
-Rock Paper Scissors,GPT-4o,10,5,50.00,0.300 ± 0.060
-Rock Paper Scissors,Mistral-7B-Instruct,10,4,40.00,0.100 ± 0.020
-Rock Paper Scissors,Claude-3.5-Sonnet-20241022,10,4,40.00,0.000 ± 0.000
-Rock Paper Scissors,Gemma-2-9B-IT,10,4,40.00,0.200 ± 0.040
-Rock Paper Scissors,Qwen-2.5-72B-Instruct,10,2,20.00,-0.100 ± -0.020
+Rock Paper Scissors,Mistral-7B-Instruct,5,2,40.00,0.200 ± 0.040
+Rock Paper Scissors,Llama-3.1-70B-Instruct,5,2,40.00,0.200 ± 0.040
+Rock Paper Scissors,gemini-flash-1.5,5,2,40.00,0.000 ± 0.000
+Rock Paper Scissors,GPT-3.5-turbo,5,2,40.00,0.200 ± 0.040
+Rock Paper Scissors,Claude-3.5-Sonnet-20241022,5,2,40.00,0.200 ± 0.040
+Rock Paper Scissors,Gemma-2-9B-IT,10,4,40.00,0.100 ± 0.020
+Rock Paper Scissors,GPT-4o,10,3,30.00,0.100 ± 0.020
+Rock Paper Scissors,Qwen-2.5-72B-Instruct,5,1,20.00,-0.200 ± -0.040
 Rock Paper Scissors,GPT-4o-mini,10,2,20.00,-0.100 ± -0.020
-Rock Paper Scissors,Llama-3.1-70B-Instruct,10,2,20.00,-0.100 ± -0.020
-Rock Paper Scissors,GPT-3.5-turbo,10,2,20.00,-0.200 ± -0.040
+Rock Paper Scissors,Llama-3.1-8B-Instruct,5,0,0.00,-0.200 ± -0.040
 Rock Paper Scissors,gemini-2.0-flash-exp,0,0,0.00,0.000 ± 0.000
 Rock Paper Scissors,Claude-3-haiku-20240307,0,0,0.00,0.000 ± 0.000
-Tic Tac Toe,Qwen-2.5-72B-Instruct,10,9,90.00,0.800 ± 0.160
-Tic Tac Toe,Claude-3.5-Sonnet-20241022,10,9,90.00,0.900 ± 0.180
-Tic Tac Toe,GPT-4o,15,13,86.67,0.733 ± 0.147
-Tic Tac Toe,GPT-4o-mini,35,30,85.71,0.714 ± 0.143
-Tic Tac Toe,Llama-3.1-8B-Instruct,15,12,80.00,0.733 ± 0.147
-Tic Tac Toe,Mistral-7B-Instruct,10,8,80.00,0.700 ± 0.140
-Tic Tac Toe,GPT-3.5-turbo,15,11,73.33,0.667 ± 0.133
-Tic Tac Toe,Gemma-2-9B-IT,10,5,50.00,0.400 ± 0.080
-Tic Tac Toe,Llama-3.1-70B-Instruct,15,6,40.00,-0.067 ± -0.013
+Tic Tac Toe,Qwen-2.5-72B-Instruct,5,5,100.00,1.000 ± 0.200
+Tic Tac Toe,Llama-3.1-70B-Instruct,5,5,100.00,1.000 ± 0.200
+Tic Tac Toe,Llama-3.1-8B-Instruct,5,4,80.00,0.800 ± 0.160
+Tic Tac Toe,GPT-3.5-turbo,5,4,80.00,0.600 ± 0.120
+Tic Tac Toe,Claude-3.5-Sonnet-20241022,5,4,80.00,0.600 ± 0.120
+Tic Tac Toe,GPT-4o-mini,4,3,75.00,0.750 ± 0.150
+Tic Tac Toe,GPT-4o,10,7,70.00,0.600 ± 0.120
+Tic Tac Toe,gemini-flash-1.5,5,3,60.00,0.200 ± 0.040
+Tic Tac Toe,Gemma-2-9B-IT,10,6,60.00,0.400 ± 0.080
+Tic Tac Toe,Mistral-7B-Instruct,5,2,40.00,-0.200 ± -0.040
 Tic Tac Toe,gemini-2.0-flash-exp,0,0,0.00,0.000 ± 0.000
 Tic Tac Toe,Claude-3-haiku-20240307,0,0,0.00,0.000 ± 0.000

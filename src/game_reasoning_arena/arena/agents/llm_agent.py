@@ -206,23 +206,72 @@ def extract_action(response_text: str, legal_actions: List[int]) -> int:
 
 
 def extract_reasoning(response_text: str) -> str:
-    """Fixes the issue that the LLM outputs a string instead of a dictionary"""
-    # Try the primary pattern first
-    match = re.search(r"'reasoning'\s*:\s*'(.*?)'", response_text, re.DOTALL)
-    if match:
-        return match.group(1)
+    """
+    Robustly extracts reasoning from LLM responses that may be in various
+    formats. Handles JSON structures, plain text, and malformed responses.
+    """
+    if not response_text or not response_text.strip():
+        return "No reasoning provided"
 
-    # Try alternative patterns
-    match = re.search(r'"reasoning"\s*:\s*"(.*?)"', response_text, re.DOTALL)
-    if match:
-        return match.group(1)
+    response_text = response_text.strip()
 
-    # If no structured reasoning found, return the first part of the response
-    if response_text.strip():
-        # Take first 200 characters as reasoning
-        reasoning = response_text.strip()
-        if len(reasoning) > 200:
-            return reasoning[:200] + "..."
-        return reasoning
+    # Try to parse as JSON first (most structured format)
+    try:
+        import json
+        # Handle cases where response might be wrapped in extra quotes
+        # or have JSON-like structure
+        cleaned_response = response_text
+        if (cleaned_response.startswith('{"') or
+                cleaned_response.startswith("{'{")):
+            parsed = json.loads(cleaned_response)
+            if 'reasoning' in parsed:
+                return str(parsed['reasoning']).strip()
+    except (json.JSONDecodeError, TypeError):
+        pass
 
-    return "No reasoning provided"
+    # Try regex patterns for JSON-like structures with single quotes
+    patterns = [
+        # Standard JSON with double quotes
+        r'"reasoning"\s*:\s*"(.*?)"(?:\s*[,}])',
+        # JSON with single quotes
+        r"'reasoning'\s*:\s*'(.*?)'(?:\s*[,}])",
+        # Mixed quotes
+        r'"reasoning"\s*:\s*\'(.*?)\'(?:\s*[,}])',
+        r"'reasoning'\s*:\s*\"(.*?)\"(?:\s*[,}])",
+        # With potential line breaks and more content after
+        r'"reasoning"\s*:\s*"([^"]*(?:\\.[^"]*)*)"',
+        r"'reasoning'\s*:\s*'([^']*(?:\\.[^']*)*)'",
+    ]
+
+    for pattern in patterns:
+        match = re.search(pattern, response_text, re.DOTALL | re.MULTILINE)
+        if match:
+            reasoning = match.group(1)
+            # Clean up escaped characters
+            reasoning = reasoning.replace('\\"', '"').replace("\\'", "'")
+            reasoning = reasoning.replace('\\n', ' ').replace('\\t', ' ')
+            # Remove excessive whitespace
+            reasoning = ' '.join(reasoning.split())
+            return reasoning.strip()
+
+    # Check if the response starts with a JSON-like structure but is malformed
+    if (response_text.startswith('{') or
+            response_text.startswith('{\n') or
+            "'reasoning':" in response_text or
+            '"reasoning":' in response_text):
+
+        # Try to extract reasoning from malformed JSON
+        for line in response_text.split('\n'):
+            if 'reasoning' in line and ':' in line:
+                # Extract everything after the colon
+                after_colon = line.split(':', 1)[1].strip()
+                # Remove quotes and clean up
+                after_colon = after_colon.strip('\'"')
+                if after_colon and after_colon not in ['{', '}', ',']:
+                    # Remove trailing punctuation that might be JSON syntax
+                    after_colon = re.sub(r'[,}"\']$', '', after_colon)
+                    return after_colon.strip()
+
+    # If it's plain text reasoning (no JSON structure detected)
+    # Return the full text without arbitrary truncation
+    return response_text

@@ -2,8 +2,6 @@
 # Example command to run:
 # python3 scripts/run_multi_model_games.py --config src/game_reasoning_arena/configs/multi_game_multi_model_openrouter.yaml
 
-# Make sure to set your OpenRouter API key:
-# export OPENROUTER_API_KEY="your_openrouter_api_key_here"
 
 # Use env_configs (plural) for multiple games as a list
 env_configs:
@@ -22,7 +20,7 @@ env_configs:
   - game_name: hex  # takes time, consider running standalone
     max_game_rounds: 120      # Limit HEX games to 120 to prevent infinite loops
 
-num_episodes: 1
+num_episodes: 5
 seed: 42
 use_ray: false
 parallel_episodes: true     # Parallelize episodes within games
