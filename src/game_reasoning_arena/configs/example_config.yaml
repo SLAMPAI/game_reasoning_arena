@@ -1,4 +1,5 @@
 # Simple tic-tac-toe test config
+
 # Use env_config as a single dict for single games
 env_config:
   game_name: tic_tac_toe
@@ -22,4 +23,4 @@ llm_backend:
   default_model: litellm_groq/llama-3.1-8b-instant
 
 log_level: INFO
-tensorboard_logging: false 
+tensorboard_logging: false
