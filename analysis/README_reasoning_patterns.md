@@ -115,6 +115,8 @@ These categories are designed for matrix games and strategic scenarios like Pris
 
 **Example:** "I'll defect because it gives me the highest individual reward, regardless of what happens to my opponent."
 
+
+
 ## Implementation Details
 
 ### Scoring System
@@ -129,12 +131,7 @@ Each reasoning trace is scored against all categories using the following method
 - Word boundaries (`\b`) are used to ensure precise matching
 - Patterns are designed to capture both exact phrases and conceptual variations
 
-### Future Extensions
-This classification system can be extended by:
-1. Adding new categories for specific game types
-2. Refining patterns based on empirical analysis of reasoning traces
-3. Implementing weighted scoring for different pattern importance
-4. Adding contextual pattern matching based on game type
+
 
 ## Usage
 

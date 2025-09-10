@@ -6,20 +6,17 @@
 
 # Use env_configs (plural) for multiple games as a list
 env_configs:
-  - game_name: kuhn_poker
-    max_game_rounds: null
-  - game_name: connect_four
-    max_game_rounds: null
-  - game_name: tic_tac_toe
-    max_game_rounds: null
-  - game_name: matrix_rps
-    max_game_rounds: 10
+  # - game_name: kuhn_poker
+  #   max_game_rounds: null
+  # - game_name: connect_four
+  #   max_game_rounds: null
+  # - game_name: tic_tac_toe
+  #   max_game_rounds: null
+  # - game_name: matrix_rps
   - game_name: matrix_pd
-    max_game_rounds: 10
-  - game_name: matching_pennies
-    max_game_rounds: 10
-  - game_name: hex  #  takes too much time, run standalone
-    max_game_rounds: 120      # Limit HEX games to 120 to prevent infinite loops
+  # - game_name: matching_pennies
+  # - game_name: hex  #  takes too much time, run standalone
+  #   max_game_rounds: 120      # Limit HEX games to 120 to prevent infinite loops
 
 num_episodes: 1
 seed: 42
@@ -31,23 +28,23 @@ mode: llm_vs_random
 models:
   # - litellm_groq/llama3-8b-8192  HAS BEEN DECOMMISIONED Aug 30   # Fast, good performance
   - litellm_groq/llama-3.1-8b-instant  # new models
-#  - litellm_groq/llama-3.1-70b-versatile # new models - it doesnt work
-  - litellm_groq/gemma2-9b-it        # Fast, reliable
-  - litellm_groq/llama3-70b-8192   # SLOW - commented out for HEX
-  - litellm_gpt-3.5-turbo
-  - litellm_gpt-4
-  - litellm_gpt-4-turbo
-  - litellm_gpt-o4-mini
-#  - litellm_gpt-5  # Not working well - need fix
-#  - litellm_gpt-5-mini  # Not working well - need fix
-  - litellm_together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
-  - litellm_together_ai/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo
-  - litellm_together_ai/mistralai/Mixtral-8x7B-Instruct-v0.1
-  - litellm_fireworks_ai/accounts/fireworks/models/llama-v3-8b-instruct
-  - litellm_fireworks_ai/accounts/fireworks/models/llama-v3-70b-instruct
-  - litellm_fireworks_ai/accounts/fireworks/models/qwen3-235b-a22b-thinking-2507
-  - litellm_fireworks_ai/accounts/fireworks/models/glm-4p5-air
-  - litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct
+# #  - litellm_groq/llama-3.1-70b-versatile # new models - it doesnt work
+#   - litellm_groq/gemma2-9b-it        # Fast, reliable
+#   - litellm_groq/llama3-70b-8192   # SLOW - commented out for HEX
+#   - litellm_gpt-3.5-turbo
+#   - litellm_gpt-4
+#   - litellm_gpt-4-turbo
+#   - litellm_gpt-o4-mini
+# #  - litellm_gpt-5  # Not working well - need fix
+# #  - litellm_gpt-5-mini  # Not working well - need fix
+#   - litellm_together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
+#   - litellm_together_ai/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo
+#   - litellm_together_ai/mistralai/Mixtral-8x7B-Instruct-v0.1
+#   - litellm_fireworks_ai/accounts/fireworks/models/llama-v3-8b-instruct
+#   - litellm_fireworks_ai/accounts/fireworks/models/llama-v3-70b-instruct
+#   - litellm_fireworks_ai/accounts/fireworks/models/qwen3-235b-a22b-thinking-2507
+#   - litellm_fireworks_ai/accounts/fireworks/models/glm-4p5-air
+#   - litellm_fireworks_ai/accounts/fireworks/models/kimi-k2-instruct
 
 
 
@@ -63,5 +60,5 @@ llm_backend:
   temperature: 0.1
   default_model: litellm_groq/llama3-8b-8192
 
-log_level: WARNING          # Reduced logging for speed
+log_level: DEBUG # WARNING     # ERROR     # Reduced logging for speed
 tensorboard_logging: false # Disabled by default for performance

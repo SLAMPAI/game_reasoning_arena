@@ -3454,6 +3454,9 @@
         }
       }
     },
+    "llm_litellm_groq_llama_3.1_8b_instant": {
+      "games": {}
+    },
     "llm_openrouter_openai_gpt_3.5_turbo": {
       "games": {
         "connect_four": {
@@ -5642,7 +5645,7 @@
     }
   },
   "summary": {
-    "total_models": 10,
+    "total_models": 11,
     "evolution_patterns": []
   }
 }

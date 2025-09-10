@@ -12,11 +12,8 @@ env_configs:
    - game_name: kuhn_poker
      max_game_rounds: null
    - game_name: matrix_rps
-     max_game_rounds: 10
    - game_name: matrix_pd
-     max_game_rounds: 10
    - game_name: matching_pennies
-     max_game_rounds: 10
    - game_name: connect_four
      max_game_rounds: null
    - game_name: hex

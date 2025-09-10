@@ -39,6 +39,7 @@ total_moves,avg_reasoning_length,%_opponent_mentions,reasoning_diversity,reasoni
 12,94.66666666666667,0.0,4,1.4182958340544896,llm_openrouter_openai_gpt_4o,matching_pennies
 10,92.2,0.8,2,0.4689955935892812,llm_openrouter_openai_gpt_4o_mini,matching_pennies
 7,82.85714285714286,1.0,1,-0.0,llm_openrouter_qwen_qwen_2.5_72b_instruct,matching_pennies
+2,67.5,0.0,2,1.0,llm_litellm_groq_llama_3.1_8b_instant,matrix_pd
 7,94.71428571428571,0.0,2,0.863120568566631,llm_openrouter_anthropic_claude_3.5_sonnet_20241022,matrix_pd
 5,82.2,0.0,1,-0.0,llm_openrouter_google_gemini_flash_1.5,matrix_pd
 18,71.05555555555556,0.0,1,-0.0,llm_openrouter_google_gemma_2_9b_it,matrix_pd

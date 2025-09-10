@@ -1,8 +1,8 @@
 {
-  "total_models": 12,
+  "total_models": 13,
   "total_games": 7,
-  "top_performer": "gemini-flash-1.5",
-  "top_win_rate": "75.00",
+  "top_performer": "llama-3.1-8b-instant",
+  "top_win_rate": "100.00",
   "tables_generated": [
     "tables/overall_performance_table.csv",
     "tables/per_game_performance_table.csv",

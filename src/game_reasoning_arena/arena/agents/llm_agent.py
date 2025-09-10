@@ -138,7 +138,7 @@ def batch_llm_decide_moves(
                 f"LLM endpoint failed for {model_name}: {str(e)}",
                 e,
                 model_name
-            )
+            ) from e
 
     return actions_dict
 
@@ -193,14 +193,15 @@ def extract_action(response_text: str, legal_actions: List[int]) -> int:
     if legal_actions:
         fallback_action = random.choice(legal_actions)
         logging.warning(
-            f"No valid action found in response: '{response_text[:100]}...' "
-            f"Using random fallback: {fallback_action}"
+            "No valid action found in response: '%s...' "
+            "Using random fallback: %s",
+            response_text[:100], fallback_action
         )
         return fallback_action
 
     # Ultimate fallback if somehow no legal actions provided
     logging.error(
-        f"No legal actions provided! Response: {response_text[:100]}..."
+        "No legal actions provided! Response: %s...", response_text[:100]
     )
     return 0
 
