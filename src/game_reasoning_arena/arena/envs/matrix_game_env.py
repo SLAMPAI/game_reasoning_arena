@@ -78,6 +78,7 @@ class MatrixGameEnv(OpenSpielEnv):
         action_list = "\n".join(action_descriptions)
 
         prompt = f"""You are Player {agent_id} in the game: {self.game_name}
+                This is not a repeated/iterated game.
 
                 Available actions:
                 {action_list}
