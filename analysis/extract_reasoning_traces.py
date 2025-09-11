@@ -5,6 +5,48 @@ Reasoning Traces Extractor
 Utility to extract and analyze reasoning traces with board states from
 game logs. This script can be used to analyze LLM decision-making patterns
 across games.
+
+Usage Examples:
+
+    # List available databases (run without --db argument)
+    python3 analysis/extract_reasoning_traces.py
+
+    # Extract all traces from a specific database
+    python3 analysis/extract_reasoning_traces.py --db results/model.db
+
+    # Filter by specific game and episode
+    python3 analysis/extract_reasoning_traces.py --db results/model.db \\
+           --game tic_tac_toe --episode 1
+
+    # Export to CSV for further analysis
+    python3 analysis/extract_reasoning_traces.py --db results/model.db \\
+           --export-csv traces.csv
+
+    # Export formatted traces to text file (perfect for academic papers)
+    python3 analysis/extract_reasoning_traces.py --db results/model.db \\
+           --game tic_tac_toe --export-txt report.txt
+
+    # View analysis summary only (no detailed traces)
+    python3 analysis/extract_reasoning_traces.py --db results/model.db \\
+           --analyze-only
+
+Key Features:
+    - Database Discovery: Automatically finds available database files in
+      results/
+    - Flexible Filtering: Extract by game type, episode, or custom criteria
+    - Multiple Output Formats: Text display, CSV export, formatted text export
+    - Pattern Analysis: Built-in statistics and reasoning pattern detection
+    - Comprehensive Analysis: Move counts, reasoning coverage, agent breakdowns
+
+Arguments:
+    --db: Database file path (if not specified, will list available databases)
+    --game: Filter by game name (e.g., tic_tac_toe, connect_four, hex)
+    --episode: Filter by episode number
+    --export-csv: Export traces to CSV file
+    --export-txt: Export formatted traces to text file
+    --analyze-only: Show analysis summary without detailed traces
+
+Dependencies: sqlite3, pandas, pathlib, argparse
 """
 
 import sys
@@ -13,9 +55,19 @@ import sqlite3
 import pandas as pd
 import argparse
 from pathlib import Path
+from datetime import datetime
 
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+
+
+def create_timestamped_filename(filename):
+    """Create a timestamped filename to avoid overwriting existing files"""
+    path_obj = Path(filename)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    stem = path_obj.stem
+    suffix = path_obj.suffix
+    return f"{stem}_{timestamp}{suffix}"
 
 
 def list_available_databases():
@@ -125,13 +177,22 @@ def display_traces_text(df):
 def export_traces_csv(df, output_file):
     """Export reasoning traces to CSV format"""
 
+    # Create reasoning_exports directory if it doesn't exist
+    project_root = Path(__file__).resolve().parent.parent
+    export_dir = project_root / "results" / "reasoning_exports"
+    export_dir.mkdir(parents=True, exist_ok=True)
+
+    # Create timestamped filename to avoid overwriting
+    timestamped_filename = create_timestamped_filename(Path(output_file).name)
+    final_output_path = export_dir / timestamped_filename
+
     # Clean up board state formatting for CSV
     df_export = df.copy()
     df_export['board_state'] = (df_export['board_state']
-                                .str.replace('\\n', '\n'))
+                                .str.replace('\\n', '\n', regex=False))
 
-    df_export.to_csv(output_file, index=False)
-    print(f"✅ Reasoning traces exported to: {output_file}")
+    df_export.to_csv(final_output_path, index=False)
+    print(f"✅ Reasoning traces exported to: {final_output_path}")
 
 
 def export_traces_txt(df, output_file):
@@ -139,7 +200,16 @@ def export_traces_txt(df, output_file):
 
     from contextlib import redirect_stdout
 
-    with open(output_file, 'w', encoding='utf-8') as f:
+    # Create reasoning_exports directory if it doesn't exist
+    project_root = Path(__file__).resolve().parent.parent
+    export_dir = project_root / "results" / "reasoning_exports"
+    export_dir.mkdir(parents=True, exist_ok=True)
+
+    # Create timestamped filename to avoid overwriting
+    timestamped_filename = create_timestamped_filename(Path(output_file).name)
+    final_output_path = export_dir / timestamped_filename
+
+    with open(final_output_path, 'w', encoding='utf-8') as f:
         with redirect_stdout(f):
             # Print header
             print("🔍 Board Game Arena - Reasoning Traces Extractor")
@@ -154,7 +224,7 @@ def export_traces_txt(df, output_file):
             print(f"\n✨ Extraction complete! Found {len(df)} reasoning "
                   f"traces.")
 
-    print(f"✅ Formatted traces exported to: {output_file}")
+    print(f"✅ Formatted traces exported to: {final_output_path}")
 
 
 def analyze_reasoning_patterns(df):
@@ -253,18 +323,27 @@ def main():
         export_traces_txt(df, args.export_txt)
         return  # Don't print to console if saving to file
 
-    # Show analysis
-    analyze_reasoning_patterns(df)
-
     # Export to CSV if requested
     if args.export_csv:
+        # Show analysis summary but don't print detailed traces
+        analyze_reasoning_patterns(df)
         export_traces_csv(df, args.export_csv)
+        print(f"\n✨ Extraction complete! Found {len(df)} reasoning traces.")
+        return  # Don't print detailed traces to console
 
-    # Display traces unless analyze-only mode
+    # Default behavior: export to TXT with auto-generated filename
     if not args.analyze_only:
-        display_traces_text(df)
+        # Generate default filename based on filters
+        game_part = f"_{args.game}" if args.game else ""
+        episode_part = f"_ep{args.episode}" if args.episode else ""
+        default_filename = f"reasoning_traces{game_part}{episode_part}.txt"
 
-    print(f"\n✨ Extraction complete! Found {len(df)} reasoning traces.")
+        export_traces_txt(df, default_filename)
+        return
+
+    # Show analysis only (when --analyze-only is used)
+    analyze_reasoning_patterns(df)
+    print(f"\n✨ Analysis complete! Found {len(df)} reasoning traces.")
 
 
 if __name__ == "__main__":
