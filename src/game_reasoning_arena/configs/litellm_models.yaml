@@ -11,6 +11,7 @@ models:
   - litellm_gpt-5-mini
 
   # Gemini models
+  - litellm_gemini/gemini-2.5-flash
 
   # Groq models (fast inference)
   # https://docs.litellm.ai/docs/providers/groq

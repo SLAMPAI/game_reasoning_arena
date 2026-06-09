@@ -10,23 +10,64 @@ import logging
 import sys
 from pathlib import Path
 from typing import Dict, Any
+
+# Ensure the src directory is in the Python path before package imports.
+current_dir = Path(__file__).parent
+src_dir = current_dir / ".." / "src"
+sys.path.insert(0, str(src_dir.resolve()))
+
 from game_reasoning_arena.arena.utils.seeding import set_seed
 from game_reasoning_arena.arena.games.registry import registry  # Gamesregistry
-from game_reasoning_arena.backends import initialize_llm_registry
 from game_reasoning_arena.arena.agents.policy_manager import (
     initialize_policies, policy_mapping_fn
 )
 from game_reasoning_arena.arena.utils.loggers import SQLiteLogger
 from game_reasoning_arena.arena.agents.llm_agent import LLMEndpointError
-from torch.utils.tensorboard import SummaryWriter
-
-# Ensure the src directory is in the Python path
-current_dir = Path(__file__).parent
-src_dir = current_dir / ".." / "src"
-sys.path.insert(0, str(src_dir.resolve()))
 
 
 logger = logging.getLogger(__name__)
+
+
+def config_has_llm_agent(config: Dict[str, Any]) -> bool:
+    """Return True when any configured player uses an LLM-backed agent."""
+    return any(
+        agent.get("type", "").lower() == "llm"
+        for agent in config.get("agents", {}).values()
+    )
+
+
+def get_agent_metadata(config: Dict[str, Any], agent_id: int) -> tuple[str, str]:
+    """Return normalized agent type/model metadata for logging."""
+    player_key = f"player_{agent_id}"
+    agent_config = config["agents"].get(
+        player_key, {"type": "unknown", "model": "None"}
+    )
+    agent_type = agent_config.get("type", "unknown")
+    agent_model = (
+        agent_config.get("model", "None")
+        if agent_type == "llm"
+        else "None"
+    )
+    return agent_type, agent_model
+
+
+def format_opponents(config: Dict[str, Any], agent_id: int) -> str:
+    """Build normalized opponent metadata for result tables."""
+    opponents_list = []
+    for player_key, agent_config in config["agents"].items():
+        if player_key == f"player_{agent_id}":
+            continue
+
+        opp_agent_type = agent_config.get("type", "unknown")
+        opp_model = (
+            agent_config.get("model", "None")
+            if opp_agent_type == "llm"
+            else "None"
+        )
+        model_clean = opp_model.replace("-", "_")
+        opponents_list.append(f"{opp_agent_type}_{model_clean}")
+
+    return ", ".join(opponents_list)
 
 
 def log_llm_action(agent_id: int,
@@ -110,8 +151,10 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
     # Set global seed for reproducibility across all random number generators
     set_seed(seed)
 
-    # Initialize LLM registry
-    initialize_llm_registry()
+    # Initialize LLM registry only for experiments that use LLM agents.
+    if config_has_llm_agent(config):
+        from game_reasoning_arena.backends import initialize_llm_registry
+        initialize_llm_registry()
 
     # Initialize loggers for all agents
     logger.info("Initializing environment for %s.", game_name)
@@ -123,21 +166,19 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
     agent_loggers_dict = {}
     for agent_id, policy_name in enumerate(policies_dict.keys()):
         # Get agent config and pass it to the logger
-        player_key = f"player_{agent_id}"
-        default_config = {"type": "unknown", "model": "None"}
-        agent_config = config["agents"].get(player_key, default_config)
+        agent_type, model_name = get_agent_metadata(config, agent_id)
 
         # Sanitize model name for filename use
-        model_name = agent_config.get("model", "None")
         sanitized_model_name = model_name.replace("-", "_").replace("/", "_")
         agent_loggers_dict[policy_name] = SQLiteLogger(
-            agent_type=agent_config["type"],
+            agent_type=agent_type,
             model_name=sanitized_model_name
         )
 
     # Initialize Tensorboard writer only if logging is enabled
     writer = None
     if config.get("tensorboard_logging", False):
+        from torch.utils.tensorboard import SummaryWriter
         writer = SummaryWriter(log_dir=f"runs/{game_name}")
         logger.info(
             "Tensorboard logging enabled - writing to runs/%s", game_name
@@ -181,14 +222,9 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
                     agent_logger = agent_loggers_dict[policy_key]
 
                     # Get agent config for logging
-                    agent_type = "unknown"
-                    agent_model = "None"
-                    player_key = f"player_{agent_id}"
-                    if player_key in config["agents"]:
-                        agent_config = config["agents"][player_key]
-                        agent_type = agent_config["type"]
-                        if agent_type == "llm":
-                            agent_model = agent_config.get("model", "None")
+                    agent_type, agent_model = get_agent_metadata(
+                        config, agent_id
+                    )
 
                     # Log as a special illegal move for LLM endpoint failure
                     if agent_type == "llm" and agent_model == e.model_name:
@@ -220,17 +256,7 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
 
                 # Get agent config for logging - ensure we get the right
                 # agent's config
-                agent_type = None
-                agent_model = "None"
-                player_key = f"player_{agent_id}"
-                if player_key in config["agents"]:
-                    agent_config = config["agents"][player_key]
-                    agent_type = agent_config["type"]
-                    # Only set model for LLM agents
-                    if agent_type == "llm":
-                        agent_model = agent_config.get("model", "None")
-                    else:
-                        agent_model = "None"
+                agent_type, agent_model = get_agent_metadata(config, agent_id)
 
                 # Check if the chosen action is legal
                 if (chosen_action is None or
@@ -264,16 +290,7 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
                     )
 
                 # Logging
-                opponents_list = []
-                for a_id in config["agents"]:
-                    if a_id != f"player_{agent_id}":
-                        opp_agent_type = config['agents'][a_id]['type']
-                        model = config['agents'][a_id].get('model', 'None')
-                        model_clean = model.replace('-', '_')
-                        opponents_list.append(
-                            f"{opp_agent_type}_{model_clean}"
-                        )
-                opponents = ", ".join(opponents_list)
+                opponents = format_opponents(config, agent_id)
 
                 agent_logger.log_move(
                     game_name=game_name,
@@ -312,15 +329,7 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
             agent_logger = agent_loggers_dict[policy_key]
 
             # Calculate opponents for this agent
-            opponents_list = []
-            for a_id in config["agents"]:
-                if a_id != f"player_{agent_id}":
-                    opp_agent_type = config['agents'][a_id]['type']
-                    opp_model = config['agents'][a_id].get('model', 'None')
-                    opp_model_clean = opp_model.replace('-', '_')
-                    opponent_str = f"{opp_agent_type}_{opp_model_clean}"
-                    opponents_list.append(opponent_str)
-            opponents = ", ".join(opponents_list)
+            opponents = format_opponents(config, agent_id)
 
             # Log reward to the rewards table
             agent_logger.log_rewards(
@@ -337,20 +346,7 @@ def simulate_game(game_name: str, config: Dict[str, Any], seed: int) -> str:
                 opponent=opponents
             )
             # Tensorboard logging
-            agent_type = "unknown"
-            agent_model = "None"
-
-            # Find the agent config by index - handle both string and int keys
-            for key, value in config["agents"].items():
-                if (key.startswith("player_") and
-                        int(key.split("_")[1]) == agent_id):
-                    agent_type = value["type"]
-                    agent_model = value.get("model", "None")
-                    break
-                elif str(key) == str(agent_id):
-                    agent_type = value["type"]
-                    agent_model = value.get("model", "None")
-                    break
+            agent_type, agent_model = get_agent_metadata(config, agent_id)
 
             # Tensorboard logging (only if enabled)
             if writer is not None:

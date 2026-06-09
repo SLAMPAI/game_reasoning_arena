@@ -42,5 +42,6 @@ models:
   # Other verified models via OpenRouter
   - openrouter_microsoft/wizardlm-2-8x22b
   - openrouter_qwen/qwen3-max
+  - openrouter_x-ai/grok-4
   - openrouter_cohere/command-r
   - openrouter_cohere/command-r-plus

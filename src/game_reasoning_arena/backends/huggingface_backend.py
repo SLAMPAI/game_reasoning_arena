@@ -4,8 +4,12 @@ Uses transformers.pipeline() for lightweight models that run without API keys.
 """
 
 from typing import Any, Dict, Optional
-from transformers import pipeline
 from .base_backend import BaseLLMBackend
+
+try:
+    from transformers import pipeline
+except ImportError:
+    pipeline = None
 
 
 class HuggingFaceBackend(BaseLLMBackend):
@@ -53,6 +57,12 @@ class HuggingFaceBackend(BaseLLMBackend):
 
     def load_model(self, model_name: str) -> Any:
         """Load model using transformers pipeline."""
+        if pipeline is None:
+            raise ImportError(
+                "transformers is required to use HuggingFace models. "
+                "Install it with: python3 -m pip install transformers"
+            )
+
         if not self.is_model_available(model_name):
             raise ValueError(
                 f"Model {model_name} not available in HuggingFace backend")

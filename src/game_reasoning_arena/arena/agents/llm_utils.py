@@ -1,13 +1,8 @@
-# utils/llm_utils.py
 """Utility functions for Large Language Model (LLM) integration.
 
 Provides helper functions to generate prompts and interact with LLMs
 for decision-making in game simulations.
 """
-
-from ...backends import initialize_llm_registry
-
-initialize_llm_registry()
 
 
 def format_prompt(input_text: str, request_explanation=True) -> str:

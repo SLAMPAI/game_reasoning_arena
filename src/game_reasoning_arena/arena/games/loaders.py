@@ -54,6 +54,43 @@ class ConnectFourLoader(GameLoader):
         return pyspiel.load_game("connect_four")
 
 
+# Gin Rummy is available in OpenSpiel but did not previously have a custom
+# repository environment. We register it with GenericTextEnv so the app can run
+# early research trials using OpenSpiel's built-in observation/action strings.
+@registry.register(
+    name="gin_rummy",
+    module_path="game_reasoning_arena.arena.games.loaders",
+    class_name="GinRummyLoader",
+    environment_path="game_reasoning_arena.arena.envs.generic_text_env.GenericTextEnv",
+    display_name="Gin Rummy"
+)
+class GinRummyLoader(GameLoader):
+    @staticmethod
+    def load():
+        # This is OpenSpiel's gin_rummy implementation, not an Arkadium-specific
+        # game integration.
+        return pyspiel.load_game("gin_rummy")
+
+
+# OpenSpiel's solitaire game is also exposed through GenericTextEnv. This gives
+# the frontend a single-player card-game path for pipeline testing, but it
+# should not be treated as a verified Arkadium Klondike implementation.
+@registry.register(
+    name="solitaire",
+    module_path="game_reasoning_arena.arena.games.loaders",
+    class_name="SolitaireLoader",
+    environment_path="game_reasoning_arena.arena.envs.generic_text_env.GenericTextEnv",
+    display_name="Solitaire"
+)
+class SolitaireLoader(GameLoader):
+    @staticmethod
+    def load():
+        # This loads OpenSpiel's solitaire. Future Arkadium work should replace
+        # or augment this with a game-specific adapter if Klondike semantics are
+        # required.
+        return pyspiel.load_game("solitaire")
+
+
 @registry.register(
     name="kuhn_poker",
     module_path="game_reasoning_arena.arena.games.loaders",

@@ -1,0 +1,24 @@
+env_config:
+  game_name: connect_four
+  max_game_rounds: null
+
+num_episodes: 1
+seed: 42
+use_ray: false
+mode: llm_vs_random
+
+agents:
+  player_0:
+    type: llm
+    model: litellm_gpt-4o-mini
+  player_1:
+    type: random
+
+llm_backend:
+  max_tokens: 250
+  temperature: 0.1
+  default_model: litellm_gpt-4o-mini
+
+log_level: INFO
+tensorboard_logging: false
+run_post_processing: false

@@ -10,7 +10,22 @@ as well as retrieve this data for analysis.
 import sqlite3
 from datetime import datetime
 from pathlib import Path
-import pandas as pd
+from typing import Any
+
+try:
+    import pandas as pd
+except ImportError:
+    pd = None
+
+
+def _require_pandas() -> Any:
+    """Return pandas or raise a clear error for DataFrame-based helpers."""
+    if pd is None:
+        raise ImportError(
+            "pandas is required for DataFrame-based log queries. "
+            "Install pandas or use the tuple-returning SQLiteLogger methods."
+        )
+    return pd
 
 
 class SQLiteLogger:
@@ -293,8 +308,9 @@ class SQLiteLogger:
             Pandas DataFrame containing game_name, episode, status, reward,
             opponent, and timestamp.
         """
+        pandas = _require_pandas()
         conn = sqlite3.connect(self.db_path)
-        df = pd.read_sql_query("""
+        df = pandas.read_sql_query("""
             SELECT game_name, episode, status, reward, opponent,
                    timestamp, run_id
             FROM game_results
@@ -311,9 +327,10 @@ class SQLiteLogger:
         conn.close()
         return run_ids
 
-    def get_moves_by_run(self, run_id: str) -> pd.DataFrame:
+    def get_moves_by_run(self, run_id: str) -> Any:
+        pandas = _require_pandas()
         conn = sqlite3.connect(self.db_path)
-        df = pd.read_sql_query("""
+        df = pandas.read_sql_query("""
             SELECT *
             FROM moves
             WHERE run_id = ?
@@ -322,7 +339,7 @@ class SQLiteLogger:
         conn.close()
         return df
 
-    def get_game_results_by_run(self, run_id: str) -> pd.DataFrame:
+    def get_game_results_by_run(self, run_id: str) -> Any:
         """
         Retrieves all game results for a specific run ID.
 
@@ -332,8 +349,9 @@ class SQLiteLogger:
         Returns:
             pd.DataFrame: Game results for that run.
         """
+        pandas = _require_pandas()
         conn = sqlite3.connect(self.db_path)
-        df = pd.read_sql_query("""
+        df = pandas.read_sql_query("""
             SELECT *
             FROM game_results
             WHERE run_id = ?
@@ -342,15 +360,16 @@ class SQLiteLogger:
         conn.close()
         return df
 
-    def list_all_runs(self) -> pd.DataFrame:
+    def list_all_runs(self) -> Any:
         """
         Lists all runs stored in the DB with metadata.
 
         Returns:
             pd.DataFrame: One row per run_id with timestamp and game count.
         """
+        pandas = _require_pandas()
         conn = sqlite3.connect(self.db_path)
-        df = pd.read_sql_query("""
+        df = pandas.read_sql_query("""
             SELECT run_id, MIN(timestamp) AS start_time,
                    COUNT(DISTINCT episode) AS games_played
             FROM game_results

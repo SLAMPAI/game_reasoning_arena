@@ -7,7 +7,11 @@ to ensure reproducible results in experiments.
 
 import random
 import numpy as np
-import torch
+
+try:
+    import torch
+except ImportError:
+    torch = None
 
 def set_seed(seed: int) -> None:
     """Sets the global seed for reproducibility across all used random number generators.
@@ -18,9 +22,13 @@ def set_seed(seed: int) -> None:
     random.seed(seed)
     np.random.seed(seed)
 
+    if torch is None:
+        return
+
     # Set PyTorch seed if used
     torch.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
 
     # Ensure deterministic behavior in PyTorch
     torch.backends.cudnn.deterministic = True

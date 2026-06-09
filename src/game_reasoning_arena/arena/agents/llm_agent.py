@@ -7,11 +7,14 @@ Implements an agent that queries an LLM for its action.
 import logging
 import os
 import re
-import ray
 import random
 from typing import Any, Dict, List
-from ...backends import generate_response
 from .base_agent import BaseAgent
+
+try:
+    import ray
+except ImportError:
+    ray = None
 
 MAX_TOKENS = int(os.getenv("MAX_TOKENS", 250))
 # The lower the more deterministic
@@ -70,7 +73,7 @@ class LLMAgent(BaseAgent):
 
         # Call batch function (use Ray if initialized, otherwise direct)
         try:
-            if ray.is_initialized():
+            if ray is not None and ray.is_initialized():
                 action_dict = ray.get(batch_llm_decide_moves_ray.remote(
                     {0: self.model_name},
                     {0: prompt},
@@ -87,7 +90,9 @@ class LLMAgent(BaseAgent):
             raise
         except Exception as e:
             logging.warning(
-                "Error in Ray execution (Ray: %s): %s", ray.is_initialized(), e
+                "Error in Ray execution (Ray: %s): %s",
+                ray is not None and ray.is_initialized(),
+                e
             )
             # Fallback to direct call if Ray fails (but not for LLM errors)
             action_dict = batch_llm_decide_moves(
@@ -117,6 +122,8 @@ def batch_llm_decide_moves(
     for player_id, model_name in model_names.items():
         legal_actions = legal_actions_dict.get(player_id, [0])
         try:
+            from ...backends import generate_response
+
             response_text = generate_response(
                 model_name=model_name,
                 prompt=prompts[player_id],
@@ -143,17 +150,20 @@ def batch_llm_decide_moves(
     return actions_dict
 
 
-@ray.remote
-def batch_llm_decide_moves_ray(
-    model_names: Dict[int, str],
-    prompts: Dict[int, str],
-    legal_actions_dict: Dict[int, List[int]]
-) -> Dict[int, Dict[str, Any]]:
-    """
-    Ray remote version of batch_llm_decide_moves.
-    Same functionality but can be executed as a Ray task.
-    """
-    return batch_llm_decide_moves(model_names, prompts, legal_actions_dict)
+if ray is not None:
+    @ray.remote
+    def batch_llm_decide_moves_ray(
+        model_names: Dict[int, str],
+        prompts: Dict[int, str],
+        legal_actions_dict: Dict[int, List[int]]
+    ) -> Dict[int, Dict[str, Any]]:
+        """
+        Ray remote version of batch_llm_decide_moves.
+        Same functionality but can be executed as a Ray task.
+        """
+        return batch_llm_decide_moves(model_names, prompts, legal_actions_dict)
+else:
+    batch_llm_decide_moves_ray = None
 
 
 def extract_action(response_text: str, legal_actions: List[int]) -> int:

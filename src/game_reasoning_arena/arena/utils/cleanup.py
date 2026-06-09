@@ -11,9 +11,16 @@ import multiprocessing
 import contextlib
 import gc
 from pathlib import Path
-import torch
-import ray
-from torch.utils.tensorboard import SummaryWriter
+
+try:
+    import ray
+except ImportError:
+    ray = None
+
+try:
+    import torch
+except ImportError:
+    torch = None
 
 
 def full_cleanup(backend_type: str = "litellm"):
@@ -21,7 +28,7 @@ def full_cleanup(backend_type: str = "litellm"):
     print("Shutting down: Clearing all resources...")
 
     # Shut down Ray if it's running
-    if ray.is_initialized():
+    if ray is not None and ray.is_initialized():
         ray.shutdown()
 
     # Only run vLLM cleanup if the backend is vLLM
@@ -44,15 +51,16 @@ def full_cleanup(backend_type: str = "litellm"):
     for child in multiprocessing.active_children():
         child.terminate()
 
-    # Clean up PyTorch Distributed
-    with contextlib.suppress(AssertionError):
-        torch.distributed.destroy_process_group()
+    if torch is not None:
+        # Clean up PyTorch Distributed
+        with contextlib.suppress(AssertionError):
+            torch.distributed.destroy_process_group()
 
     # Run garbage collection to clear lingering references
     gc.collect()
 
     # Free unused GPU memory (only if CUDA is available)
-    if torch.cuda.is_available():
+    if torch is not None and torch.cuda.is_available():
         torch.cuda.empty_cache()
         torch.cuda.synchronize()
         print("GPU memory cleared.")

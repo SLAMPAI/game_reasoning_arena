@@ -65,8 +65,16 @@ class OpenRouterBackend(BaseLLMBackend):
 
     def generate_response(self, model_name: str, prompt: str, **kwargs) -> str:
         """Generate response using OpenRouter API."""
+        # Frontends may set OPENROUTER_API_KEY after this backend object was
+        # constructed. Refresh before every request so a newly pasted key is
+        # picked up without restarting Python.
+        self._set_api_key()
         if not self.api_key:
-            raise RuntimeError("OpenRouter API key not available")
+            raise RuntimeError(
+                "OpenRouter API key not available. Set OPENROUTER_API_KEY "
+                "or paste an OpenRouter key in the frontend when using an "
+                "OpenRouter model preset."
+            )
 
         try:
             # Use backend config defaults if not provided

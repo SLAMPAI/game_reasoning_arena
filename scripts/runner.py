@@ -14,8 +14,21 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
-import ray
-from dotenv import load_dotenv
+# Ensure the src directory is in the Python path before local imports.
+current_dir = Path(__file__).parent
+src_dir = current_dir / ".." / "src"
+sys.path.insert(0, str(src_dir.resolve()))
+
+try:
+    import ray
+except ImportError:
+    ray = None
+
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    def load_dotenv(*args, **kwargs):
+        return False
 
 from simulate import simulate_game
 from game_reasoning_arena.arena.utils.cleanup import full_cleanup
@@ -24,11 +37,6 @@ from game_reasoning_arena.configs.config_parser import (
     build_cli_parser,
     parse_config
 )
-
-# Ensure the src directory is in the Python path
-current_dir = Path(__file__).parent
-src_dir = current_dir / ".." / "src"
-sys.path.insert(0, str(src_dir.resolve()))
 
 # Set the soft and hard core file size limits to 0 (disable core dumps)
 resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
@@ -53,6 +61,9 @@ def initialize_ray(config=None):
     Args:
         config: Optional configuration dictionary containing Ray settings
     """
+    if ray is None:
+        raise ImportError("Ray is not installed. Install ray or set use_ray=false.")
+
     if not ray.is_initialized():
         ray_config = config.get("ray_config", {}) if config else {}
 
@@ -79,17 +90,20 @@ def initialize_ray(config=None):
         logger.info("Ray initialized with config: %s", init_params)
 
 
-@ray.remote
-def simulate_game_ray(
-    game_name: str,
-    config: Dict[str, Any],
-    seed: int
-) -> Tuple[str, List[Dict[str, Any]]]:
-    """
-    Ray remote wrapper for parallel game simulation.
-    Calls the standard simulate_game function.
-    """
-    return simulate_game(game_name, config, seed)
+if ray is not None:
+    @ray.remote
+    def simulate_game_ray(
+        game_name: str,
+        config: Dict[str, Any],
+        seed: int
+    ) -> Tuple[str, List[Dict[str, Any]]]:
+        """
+        Ray remote wrapper for parallel game simulation.
+        Calls the standard simulate_game function.
+        """
+        return simulate_game(game_name, config, seed)
+else:
+    simulate_game_ray = None
 
 
 def create_episode_tasks(
@@ -351,12 +365,15 @@ def main():
         print("Running simulation...")
         run_simulation(config)
 
-        print("Running post-game processing...")
-        current_dir = Path(__file__).parent
-        script_path = (
-            current_dir / ".." / "analysis" / "post_game_processing.py"
-        )
-        subprocess.run(["python3", str(script_path)], check=True)
+        if config.get("run_post_processing", True):
+            print("Running post-game processing...")
+            current_dir = Path(__file__).parent
+            script_path = (
+                current_dir / ".." / "analysis" / "post_game_processing.py"
+            )
+            subprocess.run(["python3", str(script_path)], check=True)
+        else:
+            print("Skipping post-game processing.")
 
         print("Simulation completed.")
 
